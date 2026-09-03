@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>The AI Office Landscape · Lesson 01</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,0,400;9..144,0,600;9..144,0,800;9..144,1,600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+
+:root{
+  --orange:#EF7F1A; --orange-light:#FF9429; --orange-dark:#D55222;
+  --brown:#412C23; --brown-dark:#2F1D19; --tan:#A34E1C;
+  --yellow:#FECC00; --cream:#FBF6EE; --paper:#FFFCF6;
+  --ink:#1C1410; --muted:#6E5C50; --line:#E8DCC8; --accent:#008DD2;
+  --sheet-green:#217346;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',system-ui,sans-serif;
+  background:var(--paper); color:var(--ink); line-height:1.6; overflow-x:hidden;
+}
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:radial-gradient(circle at 1px 1px,rgba(65,44,35,0.05) 1px,transparent 0);
+  background-size:24px 24px;
+}
+.topbar{
+  position:sticky;top:0;z-index:100;
+  background:rgba(255,252,246,0.92); backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+  padding:14px 40px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.brand{font-family:'Fraunces',serif;font-weight:800;font-size:17px;letter-spacing:-0.01em;color:var(--brown-dark)}
+.brand .dot{color:var(--orange)}
+.brand .sub{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.15em;color:var(--muted);font-weight:500;text-transform:uppercase;margin-left:8px}
+.logo-slot{width:44px;height:44px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.logo-slot svg{width:100%;height:100%;display:block}
+.page{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:50px 40px 100px}
+.hero{padding:30px 0 50px;border-bottom:1px solid var(--line)}
+.eyebrow{
+  font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.18em;
+  text-transform:uppercase;color:var(--orange-dark);font-weight:600;
+  display:inline-flex;align-items:center;gap:10px;
+}
+.eyebrow::before{content:"";width:24px;height:2px;background:var(--orange)}
+h1{
+  font-family:'Fraunces',serif;font-weight:800;
+  font-size:clamp(38px,7vw,80px);line-height:0.98;letter-spacing:-0.03em;
+  margin:18px 0 20px;color:var(--brown-dark);
+}
+h1 em{font-style:italic;color:var(--orange-dark);font-weight:600}
+.lede{font-size:19px;max-width:680px;color:var(--muted)}
+section{padding:70px 0;border-bottom:1px solid var(--line)}
+section:last-of-type{border-bottom:none}
+.section-num{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--orange);font-weight:600;letter-spacing:0.08em}
+h2{
+  font-family:'Fraunces',serif;font-weight:700;
+  font-size:clamp(28px,4.5vw,48px);line-height:1.05;letter-spacing:-0.02em;
+  margin:10px 0 22px;color:var(--brown-dark);max-width:720px;
+}
+h3{font-family:'Fraunces',serif;font-weight:600;font-size:24px;color:var(--brown-dark);margin:28px 0 12px}
+p{max-width:680px;margin-bottom:14px;color:var(--ink)}
+.lead{font-size:17px;color:var(--muted);max-width:680px;margin-bottom:26px}
+code{font-family:'JetBrains Mono',monospace;font-size:0.92em;background:var(--cream);padding:2px 6px;border-radius:4px;color:var(--brown-dark)}
+.illus{
+  background:var(--cream);border:1px solid var(--line);border-radius:18px;
+  padding:32px;margin:24px 0;position:relative;overflow:hidden;
+}
+.illus-title{
+  font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);
+  letter-spacing:0.12em;text-transform:uppercase;
+  margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:10px;
+}
+.controls{display:flex;gap:8px;flex-wrap:wrap}
+.controls button{
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  background:var(--paper);border:1px solid var(--line);color:var(--brown);
+  padding:6px 12px;border-radius:6px;cursor:pointer;
+  text-transform:uppercase;letter-spacing:0.1em;transition:all .2s;
+}
+.controls button:hover{background:var(--orange);color:#fff;border-color:var(--orange)}
+.controls button.active{background:var(--brown-dark);color:#fff;border-color:var(--brown-dark)}
+.takeaway{
+  background:var(--brown-dark);color:var(--paper);
+  border-radius:18px;padding:44px;margin-top:50px;position:relative;overflow:hidden;
+}
+.takeaway::after{
+  content:"";position:absolute;top:-40px;right:-40px;width:180px;height:180px;
+  border-radius:50%;background:radial-gradient(circle,var(--orange),transparent 70%);opacity:0.4;
+}
+.takeaway h2{color:var(--paper);margin-bottom:16px}
+.takeaway p{color:#E8D9C5;font-size:16px;max-width:680px}
+.takeaway ul{list-style:none;margin-top:18px;display:grid;gap:8px}
+.takeaway li{font-family:'JetBrains Mono',monospace;font-size:13px;padding-left:22px;position:relative;color:#FBE7CB}
+.takeaway li::before{content:"→";position:absolute;left:0;color:var(--orange);font-weight:bold}
+footer{text-align:center;padding:36px;color:var(--muted);font-size:12px;font-family:'JetBrains Mono',monospace;letter-spacing:0.1em}
+@media(max-width:700px){
+  .topbar{padding:12px 18px}
+  .page{padding:30px 18px 70px}
+  .illus{padding:20px}
+  .takeaway{padding:28px}
+  .logo-slot{width:38px;height:38px}
+}
+
+/* ============ Figure 1 · grounding flow ============ */
+.flow{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:30px 22px 22px;position:relative}
+.flow-row{display:flex;align-items:stretch;gap:0}
+.fnode{
+  flex:0 0 auto;width:150px;text-align:center;padding:16px 10px 13px;
+  background:var(--cream);border:2px solid var(--line);border-radius:12px;
+  transition:border-color .3s,background .3s,transform .3s,box-shadow .3s;
+}
+.fnode h5{font-family:'Fraunces',serif;font-size:16px;color:var(--brown-dark);line-height:1.15;margin-bottom:4px}
+.fnode .fsub{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);line-height:1.4;display:block}
+.fnode .fmark{width:34px;height:34px;border-radius:50%;background:var(--brown-dark);color:var(--paper);font-family:'Fraunces',serif;font-weight:700;font-size:16px;display:flex;align-items:center;justify-content:center;margin:0 auto 8px;transition:background .3s}
+.fnode.on{border-color:var(--orange);background:#FDEBD7;transform:translateY(-4px);box-shadow:0 8px 18px rgba(239,127,26,0.22)}
+.fnode.on .fmark{background:var(--orange)}
+.fconn{flex:1;min-width:26px;align-self:center;height:3px;background:var(--line);position:relative;border-radius:2px}
+.fdot{
+  position:absolute;top:50%;left:0;width:15px;height:15px;border-radius:50%;
+  transform:translate(-50%,-50%);opacity:0;z-index:2;
+}
+.fdot.data{background:var(--yellow);border:2px solid var(--tan);box-shadow:0 0 0 4px rgba(254,204,0,0.25)}
+.fdot.answer{background:var(--sheet-green);border:2px solid var(--brown-dark);box-shadow:0 0 0 4px rgba(33,115,70,0.18)}
+.fconn.go .fdot,.frail.go .fdot{animation:dotR 1.35s ease-in-out forwards}
+.fconn.go.rev .fdot,.frail.go.rev .fdot{animation:dotL 1.35s ease-in-out forwards}
+@keyframes dotR{0%{left:0%;opacity:0}14%{opacity:1}86%{opacity:1}100%{left:100%;opacity:0}}
+@keyframes dotL{0%{left:100%;opacity:0}14%{opacity:1}86%{opacity:1}100%{left:0%;opacity:0}}
+.frail{margin:30px 10px 6px;height:3px;background:var(--line);position:relative;border-radius:2px}
+.frail-label{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);text-align:center;margin-top:8px}
+.fcap-wrap{display:flex;gap:14px;align-items:flex-start;margin-top:20px;background:var(--cream);border:1px solid var(--line);border-radius:10px;padding:14px 16px;min-height:74px}
+.fstep{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;letter-spacing:0.08em;color:#fff;background:var(--orange);border-radius:6px;padding:4px 9px;white-space:nowrap;flex-shrink:0;margin-top:2px}
+.fcap{font-size:14.5px;color:var(--brown-dark);line-height:1.5}
+.fkey{display:flex;gap:22px;margin-top:14px;font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted)}
+.fkey span{display:inline-flex;align-items:center;gap:7px}
+.fkey i{width:12px;height:12px;border-radius:50%;display:inline-block}
+.fkey .km{background:var(--yellow);border:2px solid var(--tan)}
+.fkey .kp{background:var(--sheet-green);border:2px solid var(--brown-dark)}
+@media(max-width:700px){
+  .flow{padding:18px 10px 14px}
+  .fnode{width:96px;padding:10px 5px 9px}
+  .fnode h5{font-size:12.5px}
+  .fnode .fsub{font-size:8px}
+  .fnode .fmark{width:26px;height:26px;font-size:13px}
+}
+
+/* ============ Figure 2 · tool comparison matrix ============ */
+.mcalc{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:26px}
+.toolgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+.tcard{
+  background:var(--cream);border:2px solid var(--line);border-radius:12px;
+  padding:16px 13px;cursor:pointer;transition:all .25s;position:relative;
+}
+.tcard:hover{border-color:var(--orange);transform:translateY(-3px);box-shadow:0 8px 18px rgba(239,127,26,0.16)}
+.tcard.active{border-color:var(--brown-dark);background:#FDEBD7}
+.tcard .tname{font-family:'Fraunces',serif;font-weight:700;font-size:15px;color:var(--brown-dark);line-height:1.1;margin-bottom:8px}
+.tcard .ttag{font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;padding:3px 6px;border-radius:5px;display:inline-block;margin-bottom:11px}
+.ttag.paid{background:#F6E3C8;color:var(--tan)}
+.ttag.free{background:#D9EEDF;color:var(--sheet-green)}
+.ttag.ext{background:#DCEAF4;color:var(--accent)}
+.tcard .tmeta{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);line-height:1.65}
+.tcard .tmeta b{color:var(--brown-dark)}
+.tdetail{
+  margin-top:20px;background:var(--cream);border:1px solid var(--line);
+  border-radius:12px;padding:22px;min-height:130px;
+}
+.tdetail.swap{animation:panelIn .4s ease}
+.tdetail h4{font-family:'Fraunces',serif;font-size:20px;color:var(--brown-dark);margin-bottom:4px}
+.tdetail .dtag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--orange-dark);font-weight:600;display:block;margin-bottom:12px}
+.tdetail .drow{display:flex;gap:10px;align-items:baseline;font-size:14px;color:var(--ink);margin-bottom:8px;line-height:1.45}
+.tdetail .dk{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);font-weight:600;flex:0 0 92px}
+.tdetail .warn{background:#FCEBD6;border-left:3px solid var(--orange);border-radius:0 8px 8px 0;padding:10px 14px;font-size:13px;color:var(--brown);margin-top:6px;line-height:1.5}
+@media(max-width:700px){
+  .toolgrid{grid-template-columns:1fr 1fr}
+  .tdetail .drow{flex-direction:column;gap:2px}
+  .tdetail .dk{flex-basis:auto}
+}
+
+/* ============ Figure 3 · four moments ============ */
+.aimap-chain{display:flex;align-items:center;gap:0;margin-bottom:20px}
+.ainode{
+  flex:1;text-align:center;padding:16px 8px;background:var(--paper);
+  border:2px solid var(--line);border-radius:12px;cursor:pointer;
+  transition:all .25s;font-family:'JetBrains Mono',monospace;
+  font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--brown);font-weight:600;
+}
+.ainode .aidx{display:block;font-family:'Fraunces',serif;font-size:24px;font-weight:800;color:var(--line);margin-bottom:4px;transition:color .25s;text-transform:none;letter-spacing:0}
+.ainode:hover{border-color:var(--orange);transform:translateY(-2px)}
+.ainode.active{background:var(--brown-dark);border-color:var(--brown-dark);color:var(--paper)}
+.ainode.active .aidx{color:var(--orange)}
+.ailink{width:26px;height:3px;background:var(--line);flex-shrink:0;position:relative}
+.ailink::after{content:"";position:absolute;right:-1px;top:50%;transform:translateY(-50%);border-left:7px solid var(--line);border-top:5px solid transparent;border-bottom:5px solid transparent}
+.aipanel{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:26px;min-height:250px}
+.aipanel.swap{animation:panelIn .4s ease}
+@keyframes panelIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.aipanel h4{font-family:'Fraunces',serif;font-size:22px;color:var(--brown-dark);margin-bottom:4px}
+.aipanel .aitag{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:0.12em;text-transform:uppercase;color:var(--orange-dark);font-weight:600;display:block;margin-bottom:14px}
+.aipanel ul{list-style:none;display:grid;gap:9px;margin-bottom:18px}
+.aipanel li{font-size:14.5px;color:var(--ink);padding-left:24px;position:relative;line-height:1.5}
+.aipanel li::before{content:"✦";position:absolute;left:0;color:var(--orange);font-size:13px}
+.ai-human{
+  background:var(--cream);border-left:3px solid var(--brown);border-radius:0 10px 10px 0;
+  padding:13px 16px;font-size:13.5px;color:var(--brown);line-height:1.5;
+}
+.ai-human strong{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--brown-dark);display:block;margin-bottom:3px}
+.aiprompt{font-family:'JetBrains Mono',monospace;font-size:12px;background:var(--brown-dark);color:#F3E7D5;border-radius:8px;padding:12px 14px;margin-bottom:16px;line-height:1.55;overflow-x:auto}
+.aiprompt .plab{color:var(--yellow);font-size:9.5px;letter-spacing:0.12em;text-transform:uppercase;display:block;margin-bottom:6px}
+@media(max-width:700px){
+  .aimap-chain{flex-wrap:wrap;gap:8px}
+  .ainode{flex:1 1 42%}
+  .ailink{display:none}
+}
+
+/* ============ Figure 2b · where Copilot lives (hover reveal) ============ */
+.appstrip{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:8px}
+.appcell{
+  background:var(--paper);border:2px solid var(--line);border-radius:12px;
+  padding:18px 14px;position:relative;overflow:hidden;transition:all .3s;cursor:default;
+}
+.appcell:hover{border-color:var(--orange);transform:translateY(-4px);box-shadow:0 10px 22px rgba(239,127,26,0.16)}
+.appcell .aicon{width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-weight:800;font-size:18px;color:#fff;margin-bottom:12px}
+.appcell .aname{font-family:'Fraunces',serif;font-weight:700;font-size:17px;color:var(--brown-dark);margin-bottom:2px}
+.appcell .arole{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:0}
+.appcell .areveal{
+  max-height:0;opacity:0;overflow:hidden;transition:max-height .35s ease,opacity .3s ease,margin .3s ease;
+  font-size:12.5px;color:var(--brown);line-height:1.5;margin-top:0;
+}
+.appcell:hover .areveal{max-height:130px;opacity:1;margin-top:12px}
+.i-word{background:#2B579A}.i-out{background:#0F6CBD}.i-teams{background:#5059C9}.i-ppt{background:#C43E1C}
+.graphbar{
+  margin-top:18px;background:var(--brown-dark);border-radius:12px;padding:20px 22px;position:relative;overflow:hidden;
+}
+.graphbar .gtitle{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--yellow);font-weight:600;margin-bottom:10px}
+.graphbar p{color:#EBDCC7;font-size:13.5px;line-height:1.55;margin:0;max-width:none}
+.graphbar .gchips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.graphbar .gchip{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.06em;text-transform:uppercase;background:rgba(251,246,238,0.1);border:1px solid rgba(251,246,238,0.2);color:#FBE7CB;padding:5px 10px;border-radius:20px}
+@media(max-width:700px){
+  .appstrip{grid-template-columns:1fr 1fr}
+  .appcell:hover .areveal{max-height:180px}
+}
+
+/* ============ Figure 4 · hype cards ============ */
+.hgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.hcard{height:225px;perspective:1100px;cursor:pointer;opacity:0;transform:translateY(12px)}
+.hgrid.show .hcard{animation:hIn .5s forwards}
+.hgrid.show .hcard:nth-child(1){animation-delay:.05s}
+.hgrid.show .hcard:nth-child(2){animation-delay:.2s}
+.hgrid.show .hcard:nth-child(3){animation-delay:.35s}
+.hgrid.show .hcard:nth-child(4){animation-delay:.5s}
+@keyframes hIn{to{opacity:1;transform:translateY(0)}}
+.hinner{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .65s cubic-bezier(.4,.1,.2,1)}
+.hcard.flipped .hinner{transform:rotateY(180deg)}
+.hface{
+  position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;
+  border-radius:14px;padding:22px;display:flex;flex-direction:column;justify-content:center;
+}
+.hfront{background:linear-gradient(135deg,var(--orange) 0%,var(--orange-dark) 100%);color:#fff;text-align:center;align-items:center}
+.hfront .hclaim{font-family:'Fraunces',serif;font-weight:800;font-size:25px;line-height:1.1;margin-bottom:8px}
+.hfront .hsub{font-size:13px;opacity:.92;max-width:260px}
+.hfront .hhint{position:absolute;bottom:12px;left:0;right:0;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:0.15em;text-transform:uppercase;opacity:.75}
+.hback{background:var(--brown-dark);color:#F3E7D5;transform:rotateY(180deg);border:1px solid var(--brown)}
+.hback .hlab{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--yellow);font-weight:600;margin-bottom:8px}
+.hback p{font-size:13px;line-height:1.5;color:#F3E7D5;margin:0;max-width:none}
+@media(max-width:700px){
+  .hgrid{grid-template-columns:1fr}
+  .hcard{height:210px}
+  .hfront .hclaim{font-size:22px}
+}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="brand">MokshPath <span class="dot">·</span> <span class="sub">Week 2 · Lesson 01 · AI Office</span></div>
+  <div class="logo-slot" aria-label="MokshPath logo">
+    <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="4" y="13" width="36" height="27" rx="6" fill="#412C23"/>
+      <path d="M14 13 C14 4.5 30 4.5 30 13" stroke="#EF7F1A" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+      <path d="M12 32 L12 22 L17 28 L22 21 L27 28 L32 22 L32 32" stroke="#FECC00" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="36" cy="9" r="4.5" fill="#EF7F1A"/>
+    </svg>
+  </div>
+</div>
+<div class="page">
+
+<section class="hero">
+  <div class="eyebrow">Week 2 · Lesson 01 · The AI Office</div>
+  <h1>The AI Office <em>landscape</em>.</h1>
+  <p class="lede">Word, Outlook, Teams and PowerPoint are where most office work actually happens — and every one of them now has an AI assistant sitting inside it. But "AI in Office" is not one thing you switch on; it's a confusing family of products with wildly different prices, privacy rules and abilities. This lesson gives you the honest map: what these assistants really are, which one you actually have, where AI genuinely saves you time across the workday — and where it still hands you a confident, generic draft you have to fix.</p>
+</section>
+
+<section>
+  <div class="section-num">01 / 04</div>
+  <h2>Why the Office suite plus AI matters</h2>
+  <p class="lead">You don't live in a spreadsheet all day. You write documents, answer email, sit in meetings and hunt for a file someone sent last month. The Office suite is the connective tissue of knowledge work — and that's exactly why putting AI inside it is a bigger deal than any single clever chatbot.</p>
+
+  <p>For decades the assistant in Office was passive: spellcheck, autocomplete, a paperclip nobody asked for. What's changed is that an assistant can now <em>read your actual work</em> — the report you're writing, the email thread you're replying to, the meeting you just left — and act on it in plain English. "Draft a reply", "summarise this thread", "turn these notes into slides." The knowledge gap that used to eat your afternoon was rarely about ideas; it was the grind of turning intent into a finished, well-formatted artifact.</p>
+  <p>"AI in Office" simply means closing that gap where you already work. The key word — and the whole reason enterprise AI feels different from a public chatbot — is <strong>grounding</strong>. A grounded assistant doesn't answer from the open internet alone; it answers using <em>your</em> files, email and meetings, while respecting who's allowed to see what. Press the buttons below to watch how a request gets grounded and travels back to you.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 1 · How a request gets grounded in your work</span>
+      <div class="controls">
+        <button id="btnGr" class="active" onclick="runFlow('grounded')">▶ Grounded assistant (Copilot)</button>
+        <button id="btnPub" onclick="runFlow('public')">▶ Public chatbot (no access)</button>
+        <button onclick="resetFlow(true)">↺ Reset</button>
+      </div>
+    </div>
+    <div class="flow grounded" id="flow">
+      <div class="flow-row">
+        <div class="fnode" id="fnYou">
+          <div class="fmark">Q</div>
+          <h5>You</h5>
+          <span class="fsub">Ask in plain English</span>
+        </div>
+        <div class="fconn" id="fc1"><div class="fdot data"></div></div>
+        <div class="fnode" id="fnGraph">
+          <div class="fmark">G</div>
+          <h5>Microsoft Graph</h5>
+          <span class="fsub">Your files · mail · chats</span>
+        </div>
+        <div class="fconn" id="fc2"><div class="fdot data"></div></div>
+        <div class="fnode" id="fnWeb">
+          <div class="fmark">?</div>
+          <h5>Open Web</h5>
+          <span class="fsub">Generic · no context</span>
+        </div>
+        <div class="fconn" id="fc3"><div class="fdot answer"></div></div>
+        <div class="fnode" id="fnAI">
+          <div class="fmark">AI</div>
+          <h5>AI Assistant</h5>
+          <span class="fsub">Drafts a reply</span>
+        </div>
+      </div>
+      <div class="frail" id="frail"><div class="fdot answer"></div></div>
+      <div class="frail-label" id="frailLabel">← the grounded draft travels back to you along this rail</div>
+      <div class="fcap-wrap">
+        <div class="fstep" id="fstep">— / —</div>
+        <div class="fcap" id="fcap">Press ▶ Grounded assistant or ▶ Public chatbot to run the sequence.</div>
+      </div>
+      <div class="fkey">
+        <span><i class="km"></i> your request / data</span>
+        <span><i class="kp"></i> the draft coming back</span>
+      </div>
+    </div>
+  </div>
+
+  <h3>What "grounding" really buys you</h3>
+  <p>Notice the difference in the two runs. The grounded assistant routes your request through <strong>Microsoft Graph</strong> — the permission-aware index of your organisation's files, mail and meetings — so the answer knows about <em>your</em> project, <em>your</em> client, <em>your</em> Tuesday meeting. Critically, it only ever sees what <em>you</em> already have permission to see, and the data stays inside your organisation's tenant. A public chatbot has none of that context, so it writes a plausible, polished paragraph about nothing in particular. That's the entire value proposition of AI-in-Office: relevance, earned by respecting permissions.</p>
+</section>
+
+<section>
+  <div class="section-num">02 / 04</div>
+  <h2>Five doors into AI-in-Office</h2>
+  <p class="lead">"Copilot" is not one product, and that's the most expensive misunderstanding beginners make. There are at least five different offerings with the same friendly name-space, and they differ sharply on cost, what data they can touch, and privacy. Click each card to see exactly what it is, what it costs, and when to reach for it.</p>
+
+  <p>In plain terms: <strong>free Microsoft Copilot</strong> is a public chatbot with no access to your work files. <strong>Copilot Pro</strong> is a personal upgrade that adds AI buttons inside your home Office apps. <strong>Microsoft 365 Copilot</strong> is the enterprise version that grounds on your organisation's data via Graph. <strong>Google Gemini for Workspace</strong> is Google's equivalent inside Docs, Gmail and Meet. And <strong>ChatGPT / Claude</strong> are standalone assistants you paste work into. Same friendly promise, five very different doors.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 2 · Five doors · click a tool</span>
+      <div class="controls">
+        <button onclick="toolStep(-1)">◀ Prev</button>
+        <button onclick="toolStep(1)">Next ▶</button>
+      </div>
+    </div>
+    <div class="mcalc">
+      <div class="toolgrid" id="toolGrid">
+        <div class="tcard" data-k="free" onclick="pickTool('free')">
+          <div class="tname">Microsoft Copilot (free)</div>
+          <span class="ttag free">Free</span>
+          <div class="tmeta"><b>Access:</b> web only<br><b>Use:</b> general Q&amp;A</div>
+        </div>
+        <div class="tcard" data-k="pro" onclick="pickTool('pro')">
+          <div class="tname">Copilot Pro</div>
+          <span class="ttag paid">~$20/mo</span>
+          <div class="tmeta"><b>Access:</b> your files<br><b>Use:</b> personal Office</div>
+        </div>
+        <div class="tcard" data-k="m365" onclick="pickTool('m365')">
+          <div class="tname">Microsoft 365 Copilot</div>
+          <span class="ttag paid">~$30/user</span>
+          <div class="tmeta"><b>Access:</b> Graph<br><b>Use:</b> work / teams</div>
+        </div>
+        <div class="tcard" data-k="gemini" onclick="pickTool('gemini')">
+          <div class="tname">Gemini for Workspace</div>
+          <span class="ttag ext">Google</span>
+          <div class="tmeta"><b>Access:</b> Workspace<br><b>Use:</b> Docs/Gmail</div>
+        </div>
+        <div class="tcard" data-k="chatbot" onclick="pickTool('chatbot')">
+          <div class="tname">ChatGPT / Claude</div>
+          <span class="ttag ext">External</span>
+          <div class="tmeta"><b>Access:</b> pasted text<br><b>Use:</b> reasoning</div>
+        </div>
+      </div>
+      <div class="tdetail" id="toolDetail"></div>
+    </div>
+  </div>
+
+  <h3>The privacy line you should never forget</h3>
+  <p>There's one dividing line across all five: does your work data <em>stay inside your organisation's environment</em>, or does it <em>leave</em>? Free Microsoft Copilot and public ChatGPT/Claude are consumer-grade — anything you paste travels to a third party, and you should never paste salaries, contracts, client lists or unreleased plans. Microsoft 365 Copilot and Gemini for Workspace keep your data inside the enterprise tenant, honour your existing file permissions, and (under commercial data protection) don't use your prompts to train public models. Before you lean on any of them for real work, learn which tier you're on — it's the difference between a convenience and a leak.</p>
+</section>
+
+<section>
+  <div class="section-num">03 / 04</div>
+  <h2>Where Copilot lives across your apps</h2>
+  <p class="lead">Once you have a grounded assistant, it isn't in one place — it's woven into the four apps you already open every day. Hover over each app to see what Copilot actually does there, then read how it "grounds" on your work underneath.</p>
+
+  <p>The mental model that makes this click: Copilot is the <em>same brain</em> appearing in different rooms of your office. In each app it sees the context of that app — the document open in Word, the thread open in Outlook, the meeting live in Teams — and it reaches, through Microsoft Graph, into the rest of your work when it needs to. Hover the cards to reveal what it does in each room.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 2b · Hover an app to reveal Copilot's job there</span>
+      <div class="controls"><button onclick="void 0">Hover to explore</button></div>
+    </div>
+    <div class="mcalc">
+      <div class="appstrip">
+        <div class="appcell">
+          <div class="aicon i-word">W</div>
+          <div class="aname">Word</div>
+          <div class="arole">Write &amp; rewrite</div>
+          <div class="areveal">Drafts a document from a prompt or an existing file, rewrites paragraphs in a chosen tone, summarises long reports, and turns bullet notes into prose — grounded on files you point it at.</div>
+        </div>
+        <div class="appcell">
+          <div class="aicon i-out">O</div>
+          <div class="aname">Outlook</div>
+          <div class="arole">Communicate</div>
+          <div class="areveal">Summarises a 40-message thread into three bullets, drafts replies in your voice, adjusts length and tone, and surfaces the action items buried in your inbox so nothing slips.</div>
+        </div>
+        <div class="appcell">
+          <div class="aicon i-teams">T</div>
+          <div class="aname">Teams</div>
+          <div class="arole">Meet</div>
+          <div class="areveal">Takes live notes, recaps a meeting you missed, lists decisions and who owns each action, and answers "what did they say about the budget?" from the transcript afterward.</div>
+        </div>
+        <div class="appcell">
+          <div class="aicon i-ppt">P</div>
+          <div class="aname">PowerPoint</div>
+          <div class="arole">Present</div>
+          <div class="areveal">Builds a first-draft deck from a Word document or a prompt, designs and lays out slides, condenses a wall of text into speaker points, and adds a summary slide.</div>
+        </div>
+      </div>
+      <div class="graphbar">
+        <div class="gtitle">Underneath · Microsoft Graph (plain English)</div>
+        <p>All four rooms share one engine. Microsoft Graph is the permission-aware map of your work — every file, email, chat and meeting you already have access to. When you ask Copilot something, it looks up only the pieces <strong>you're allowed to see</strong>, grounds its answer on them, and keeps the whole exchange inside your organisation's tenant. It never invents access you don't have, and your data isn't used to train public models.</p>
+        <div class="gchips">
+          <span class="gchip">Respects your permissions</span>
+          <span class="gchip">Stays in your tenant</span>
+          <span class="gchip">Files · Mail · Chats · Meetings</span>
+          <span class="gchip">Not used to train public models</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Your AI-assisted workday · four moments</h3>
+  <p>Zoom out from the apps and a simpler pattern appears. Across a normal day, AI helps at exactly four moments — <strong>write, communicate, meet, find</strong>. Learn these four and you'll always know what to ask for. Click each moment to see concrete tasks, a sample prompt, and the check that stays your job.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 3 · Your AI-assisted workday</span>
+      <div class="controls">
+        <button onclick="stageStep(-1)">◀ Prev moment</button>
+        <button onclick="stageStep(1)">Next moment ▶</button>
+      </div>
+    </div>
+    <div class="aimap-chain" id="aiChain">
+      <div class="ainode" data-k="write" onclick="pickStage('write')"><span class="aidx">1</span>Write</div>
+      <div class="ailink"></div>
+      <div class="ainode" data-k="communicate" onclick="pickStage('communicate')"><span class="aidx">2</span>Communicate</div>
+      <div class="ailink"></div>
+      <div class="ainode" data-k="meet" onclick="pickStage('meet')"><span class="aidx">3</span>Meet</div>
+      <div class="ailink"></div>
+      <div class="ainode" data-k="find" onclick="pickStage('find')"><span class="aidx">4</span>Find</div>
+    </div>
+    <div class="aipanel" id="aiPanel"></div>
+  </div>
+
+  <h3>The pattern under all four</h3>
+  <p>Read the four moments back to back and the shape is always the same: <strong>you bring intent and context, AI brings a fast first draft, and then you edit.</strong> That last step is not optional. The most productive AI-Office users aren't the ones who send whatever Copilot writes — they're the ones who use the minutes AI saves to sharpen the draft, add the one detail only they know, and make sure the meeting recap actually names the right owner.</p>
+</section>
+
+<section>
+  <div class="section-num">04 / 04</div>
+  <h2>Hype vs. reality: four claims, flipped</h2>
+  <p class="lead">The internet is full of "AI runs your whole office now" promises. Before you lean on it, flip each card and read what the claim looks like once you've actually used these assistants on real work. Honest expectations now save you from a generic email — or a leaked file — later.</p>
+
+  <p>None of this means "don't use AI in Office." It means use it as leverage, not as an oracle. The realistic workflow is boring and reliable: ask for a draft, read what it wrote, fix the tone and the facts only you know, then send. AI makes each loop faster. It does not remove your responsibility for what goes out under your name.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 4 · Flip the claim</span>
+      <div class="controls">
+        <button onclick="allReal()">Show all realities</button>
+        <button onclick="allHype()">↺ Back to hype</button>
+      </div>
+    </div>
+    <div class="hgrid" id="hgrid">
+      <div class="hcard" onclick="this.classList.toggle('flipped')">
+        <div class="hinner">
+          <div class="hface hfront">
+            <div class="hclaim">"Copilot never makes things up"</div>
+            <div class="hsub">Just send whatever it drafts.</div>
+            <div class="hhint">tap to flip</div>
+          </div>
+          <div class="hface hback">
+            <div class="hlab">Reality</div>
+            <p>Even grounded assistants hallucinate — they can misattribute a quote, invent a meeting action item, or cite a file that doesn't say what they claim. It always sounds confident. Read the draft against what you actually know before it goes out under your name.</p>
+          </div>
+        </div>
+      </div>
+      <div class="hcard" onclick="this.classList.toggle('flipped')">
+        <div class="hinner">
+          <div class="hface hfront">
+            <div class="hclaim">"Copilot is free in Office"</div>
+            <div class="hsub">It's just there, right?</div>
+            <div class="hhint">tap to flip</div>
+          </div>
+          <div class="hface hback">
+            <div class="hlab">Reality</div>
+            <p>Free Microsoft Copilot is a web chatbot with no access to your files. The version that lives inside Word, Outlook and Teams and grounds on your work is Copilot Pro (personal) or Microsoft 365 Copilot (paid per user). Know which one you actually have before planning around it.</p>
+          </div>
+        </div>
+      </div>
+      <div class="hcard" onclick="this.classList.toggle('flipped')">
+        <div class="hinner">
+          <div class="hface hfront">
+            <div class="hclaim">"Paste any work into ChatGPT"</div>
+            <div class="hsub">Data in, answers out.</div>
+            <div class="hhint">tap to flip</div>
+          </div>
+          <div class="hface hback">
+            <div class="hlab">Reality</div>
+            <p>Public chatbots are powerful, but pasting work sends it outside your organisation to a third party. Never do that with contracts, salaries, client data or unreleased plans. Use your approved enterprise assistant, or anonymise ruthlessly before you paste a single line.</p>
+          </div>
+        </div>
+      </div>
+      <div class="hcard" onclick="this.classList.toggle('flipped')">
+        <div class="hinner">
+          <div class="hface hfront">
+            <div class="hclaim">"AI writes it better than you"</div>
+            <div class="hsub">No need to review the draft.</div>
+            <div class="hhint">tap to flip</div>
+          </div>
+          <div class="hface hback">
+            <div class="hlab">Reality</div>
+            <p>AI's first draft is fast, fluent and generic — it doesn't know the client's history, the political sub-text, or the one number that matters. Its output is a strong starting point, not a finished product. Your edit is where the real value, and your voice, gets added.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Your getting-started path</h3>
+  <p>Start small and safe. <strong>First,</strong> find out which assistant your organisation has actually licensed — free Copilot, Copilot Pro, Microsoft 365 Copilot or Gemini — because everything else depends on it. <strong>Second,</strong> pick one low-risk task: ask it to summarise a long email thread or turn a page of notes into bullet points. <strong>Third,</strong> practice the edit — never send the first draft; add the one thing only you know. <strong>Always,</strong> keep confidential work inside approved tools and read every draft before it leaves your hands. Do that ten times and AI becomes a genuine part of your workday.</p>
+</section>
+
+<div class="takeaway">
+  <h2>What to carry forward</h2>
+  <p>You now have the honest map of AI across the Office suite. The apps still matter; AI just lets you talk to your own work in plain English. The magic word is <em>grounding</em> — a good assistant answers from your files, mail and meetings through Microsoft Graph, respecting permissions and staying in your tenant. There are five doors (free Copilot, Copilot Pro, Microsoft 365 Copilot, Gemini for Workspace, ChatGPT/Claude) with real price and privacy differences, and AI helps at four moments: write, communicate, meet and find. It can be wrong and it can be generic, so you edit. Next lesson: writing and rewriting with Copilot in Word, step by step.</p>
+  <ul>
+    <li>Office endures — AI is an assistant inside the apps, not a replacement for them</li>
+    <li>Grounding = answers from YOUR files/mail/meetings via Graph, permission-aware, in-tenant</li>
+    <li>Five doors: free Copilot · Copilot Pro · Microsoft 365 Copilot · Gemini · ChatGPT/Claude</li>
+    <li>Never paste confidential work into a public chatbot — mind the privacy line</li>
+    <li>Four moments: write · communicate · meet · find</li>
+    <li>AI drafts fast but hallucinates and writes generic — always read and edit before you send</li>
+  </ul>
+</div>
+
+</div>
+<footer>MokshPath · Lesson 01 of Week 2 · Next up: Writing with Copilot in Word →</footer>
+<script>
+
+function el(id){return document.getElementById(id)}
+
+/* ===== Figure 1 · grounding flow ===== */
+const flowEl=el('flow'),fcap=el('fcap'),fstep=el('fstep');
+let flowTimers=[];
+const FLOWS={
+  grounded:[
+    {n:['fnYou','fnGraph'],c:[['fc1','data',false]],cap:'You ask in plain English — "draft a reply to Priya about the Q3 timeline" — right where you\'re working. No copy-pasting, no context to set up.'},
+    {n:['fnGraph'],c:[],cap:'Your request goes through Microsoft Graph, the permission-aware map of your work. It pulls in the actual thread, the timeline file and the meeting notes — only the pieces you\'re allowed to see.'},
+    {n:['fnGraph','fnAI'],c:[['fc3','data',false]],cap:'The grounded context reaches the AI assistant. It now knows who Priya is, what Q3 means for this project, and what was already agreed.'},
+    {n:['fnAI','fnYou'],c:[['frail','answer',true]],cap:'A specific, on-topic draft travels straight back to YOU. Nothing is sent automatically — it lands as a proposal referencing your real project.'},
+    {n:['fnYou'],c:[],cap:'You read it, fix the tone, add the one detail only you know, and send. Grounding did the context-gathering; you kept the judgment and the voice.'}
+  ],
+  public:[
+    {n:['fnYou','fnWeb'],c:[['fc1','data',false],['fc2','data',false]],cap:'You paste your question into a public chatbot in a separate tab. It has no connection to your files, email or meetings.'},
+    {n:['fnWeb'],c:[],cap:'With no access to your work, it reaches only into the open web and general training — nothing about Priya, your project, or your actual timeline.'},
+    {n:['fnWeb','fnAI'],c:[['fc3','answer',false]],cap:'It produces a fluent, polished paragraph — but it\'s generic. "I wanted to follow up regarding the timeline..." could be about anyone\'s anything.'},
+    {n:['fnAI','fnYou'],c:[['frail','answer',true]],cap:'The generic draft comes back to you. Now you have to add all the context yourself — the names, the numbers, the history it never had.'},
+    {n:['fnYou'],c:[],cap:'It saved you a blank page, but not much else. And if you\'d pasted the real thread to fix that, confidential work would have left your organisation.'}
+  ]
+};
+function clearFlowState(){
+  ['fnYou','fnGraph','fnWeb','fnAI'].forEach(id=>el(id).classList.remove('on'));
+  ['fc1','fc2','fc3','frail'].forEach(id=>el(id).classList.remove('go','rev'));
+}
+function applyFlowStep(s,i,total){
+  clearFlowState();
+  s.n.forEach(id=>el(id).classList.add('on'));
+  s.c.forEach(pair=>{
+    const c=el(pair[0]),d=c.querySelector('.fdot');
+    d.className='fdot '+pair[1];
+    void c.offsetWidth;
+    if(pair[2])c.classList.add('rev');
+    c.classList.add('go');
+  });
+  fstep.textContent=(i+1)+' / '+total;
+  fcap.textContent=s.cap;
+}
+function runFlow(mode){
+  resetFlow(false);
+  el('btnGr').classList.toggle('active',mode==='grounded');
+  el('btnPub').classList.toggle('active',mode==='public');
+  flowEl.classList.remove('grounded','public');
+  flowEl.classList.add(mode);
+  el('frailLabel').textContent = mode==='grounded'
+    ? '← the grounded, on-topic draft travels back to you along this rail'
+    : '← a generic draft comes back — you supply the missing context yourself';
+  const steps=FLOWS[mode];
+  steps.forEach((s,i)=>{
+    flowTimers.push(setTimeout(()=>applyFlowStep(s,i,steps.length), 300+i*2100));
+  });
+}
+function resetFlow(full){
+  flowTimers.forEach(t=>clearTimeout(t));
+  flowTimers=[];
+  clearFlowState();
+  if(full){
+    fstep.textContent='— / —';
+    fcap.textContent='Press ▶ Grounded assistant or ▶ Public chatbot to run the sequence.';
+  }
+}
+new IntersectionObserver((es,o)=>es.forEach(e=>{if(e.isIntersecting){runFlow('grounded');o.unobserve(e.target)}}),{threshold:0.35}).observe(flowEl);
+
+/* ===== Figure 2 · five doors comparison ===== */
+const TOOLS={
+  free:{t:'Microsoft Copilot (free)',tag:'Web chatbot · no work-file access',rows:[
+    ['Cost','Free with a Microsoft account. No subscription required.'],
+    ['Data access','The open web and what you type. It cannot see your files, email or meetings.'],
+    ['Privacy','Consumer-grade. Don\'t paste confidential work — treat it like any public chatbot.'],
+    ['When to use','Quick general questions, brainstorming, drafting from scratch with no sensitive data.']
+  ],warn:'This is NOT the version inside Word and Outlook. It has zero grounding on your organisation\'s work.'},
+  pro:{t:'Copilot Pro',tag:'Personal upgrade · ~$20/user/month',rows:[
+    ['Cost','About $20 per user per month, added to a personal Microsoft 365 subscription.'],
+    ['Data access','Adds AI buttons inside your home Office apps and can work on files you open.'],
+    ['Privacy','Better than free, but built for individuals — not full enterprise data governance.'],
+    ['When to use','Freelancers and solo users who want Copilot in Word, Excel and PowerPoint at home.']
+  ],warn:'For a workplace with shared files and compliance needs, you likely want Microsoft 365 Copilot instead.'},
+  m365:{t:'Microsoft 365 Copilot',tag:'Enterprise · ~$30/user/month',rows:[
+    ['Cost','About $30 per user per month, added to a qualifying business Microsoft 365 plan.'],
+    ['Data access','Grounds on your organisation\'s data through Microsoft Graph — files, mail, chats, meetings you can see.'],
+    ['Privacy','Enterprise-grade: honours your permissions, stays in the tenant, not used to train public models.'],
+    ['When to use','Real work inside a company — the version that actually knows your projects and colleagues.']
+  ],warn:'Confirm your organisation has enabled the license and that your data is Graph-indexed before relying on it.'},
+  gemini:{t:'Gemini for Workspace',tag:'Google\'s office AI',rows:[
+    ['Cost','Included in, or added to, Google Workspace business plans that offer Gemini.'],
+    ['Data access','Works inside Docs, Sheets, Gmail and Meet, grounding on your Workspace content.'],
+    ['Privacy','Enterprise data protection under Workspace terms — your content isn\'t used to train public models.'],
+    ['When to use','Teams that live in Google Workspace rather than Microsoft Office.']
+  ],warn:'Same idea as Microsoft 365 Copilot, different ecosystem — know your org\'s Workspace data settings.'},
+  chatbot:{t:'ChatGPT / Claude',tag:'Standalone assistants',rows:[
+    ['Cost','Free tiers exist; paid tiers add stronger reasoning, longer context and file uploads.'],
+    ['Data access','Only what you paste or upload. Not connected to your Office files unless you add them.'],
+    ['Privacy','Consumer tiers send data to a third party — enterprise/team tiers add data protection.'],
+    ['When to use','Deep reasoning, rewriting, explaining — on non-confidential or anonymised text.']
+  ],warn:'Powerful for thinking, but your work leaves the file. Never paste confidential data into a consumer tier.'}
+};
+const TOOLORDER=['free','pro','m365','gemini','chatbot'];
+let toolCurrent='free';
+function pickTool(k){
+  toolCurrent=k;
+  document.querySelectorAll('#toolGrid .tcard').forEach(c=>c.classList.toggle('active',c.dataset.k===k));
+  const d=TOOLS[k],box=el('toolDetail');
+  let html='<span class="dtag">'+d.tag+'</span><h4>'+d.t+'</h4>';
+  d.rows.forEach(r=>{html+='<div class="drow"><span class="dk">'+r[0]+'</span><span>'+r[1]+'</span></div>'});
+  html+='<div class="warn">'+d.warn+'</div>';
+  box.innerHTML=html;
+  box.classList.remove('swap');void box.offsetWidth;box.classList.add('swap');
+}
+function toolStep(dir){
+  let i=TOOLORDER.indexOf(toolCurrent)+dir;
+  if(i<0)i=TOOLORDER.length-1;
+  if(i>=TOOLORDER.length)i=0;
+  pickTool(TOOLORDER[i]);
+}
+pickTool('free');
+new IntersectionObserver((es,o)=>es.forEach(e=>{if(e.isIntersecting){pickTool('free');o.unobserve(e.target)}}),{threshold:0.3}).observe(el('toolGrid'));
+
+/* ===== Figure 3 · four moments of the workday ===== */
+const AIMAP={
+  write:{t:'Write',tag:'Moment 1 · blank page to first draft',prompt:'"Draft a one-page project update for leadership based on this planning document, in a confident but plain tone."',tasks:[
+    'Turn bullet notes or a source file into a full first-draft document in Word',
+    'Rewrite a clumsy paragraph in a chosen tone — formal, friendly, concise',
+    'Summarise a long report into an executive paragraph or a page of bullets',
+    'Draft a first-pass slide deck in PowerPoint from an existing document'
+  ],h:'AI\'s draft is fluent but generic — it doesn\'t know your reader\'s history or the one number that matters. You add the specifics, the voice, and the point.'},
+  communicate:{t:'Communicate',tag:'Moment 2 · tame the inbox',prompt:'"Summarise this email thread into three bullets, then draft a reply agreeing to the Thursday deadline in my usual tone."',tasks:[
+    'Compress a 40-message thread into the three things that actually matter',
+    'Draft replies in your voice, then adjust length and tone in a click',
+    'Surface the action items and questions buried across your inbox',
+    'Translate or soften a message before it goes to a sensitive recipient'
+  ],h:'AI can misread who agreed to what, or invent a commitment. You confirm the facts of the thread before a reply goes out under your name.'},
+  meet:{t:'Meet',tag:'Moment 3 · never take manual notes again',prompt:'"Recap this meeting: list the decisions made, the action items with owners, and anything left unresolved."',tasks:[
+    'Take live notes and produce a clean recap the moment a meeting ends',
+    'Catch you up on a call you missed, or joined late, in a paragraph',
+    'List decisions, owners and open questions from the transcript',
+    'Answer "what did they say about the budget?" hours after the call'
+  ],h:'A transcript recap can name the wrong owner or overstate a "decision" that was really a maybe. You sanity-check the action list before sending it round.'},
+  find:{t:'Find',tag:'Moment 4 · stop hunting for that file',prompt:'"Find the latest version of the client proposal and summarise what changed since the draft I reviewed last week."',tasks:[
+    'Locate a file, email or chat from a plain-English description, not a filename',
+    'Pull an answer out of documents you have permission to see',
+    'Compare versions and summarise what changed between them',
+    'Gather scattered context — file plus thread plus meeting — into one answer'
+  ],h:'It only searches what you\'re allowed to see, and it can miss or mis-rank a source. Treat its find as a strong lead, then open the real file to confirm.'}
+};
+const AIORDER=['write','communicate','meet','find'];
+let aiCurrent='write';
+function pickStage(k){
+  aiCurrent=k;
+  document.querySelectorAll('#aiChain .ainode').forEach(n=>{
+    n.classList.toggle('active',n.dataset.k===k);
+  });
+  const d=AIMAP[k],panel=el('aiPanel');
+  let html='<span class="aitag">'+d.tag+'</span><h4>'+d.t+'</h4>';
+  html+='<div class="aiprompt"><span class="plab">Try this prompt</span>'+d.prompt+'</div><ul>';
+  d.tasks.forEach(t=>{html+='<li>'+t+'</li>'});
+  html+='</ul><div class="ai-human"><strong>You still decide</strong>'+d.h+'</div>';
+  panel.innerHTML=html;
+  panel.classList.remove('swap');
+  void panel.offsetWidth;
+  panel.classList.add('swap');
+}
+function stageStep(dir){
+  let i=AIORDER.indexOf(aiCurrent)+dir;
+  if(i<0)i=AIORDER.length-1;
+  if(i>=AIORDER.length)i=0;
+  pickStage(AIORDER[i]);
+}
+pickStage('write');
+new IntersectionObserver((es,o)=>es.forEach(e=>{if(e.isIntersecting){pickStage('write');o.unobserve(e.target)}}),{threshold:0.3}).observe(el('aiChain'));
+
+/* ===== Figure 4 · hype vs reality ===== */
+const hgrid=el('hgrid');
+function allReal(){document.querySelectorAll('.hcard').forEach(c=>c.classList.add('flipped'))}
+function allHype(){document.querySelectorAll('.hcard').forEach(c=>c.classList.remove('flipped'))}
+new IntersectionObserver((es,o)=>es.forEach(e=>{if(e.isIntersecting){hgrid.classList.add('show');o.unobserve(e.target)}}),{threshold:0.25}).observe(hgrid);
+
+</script>
+</body>
+</html>
