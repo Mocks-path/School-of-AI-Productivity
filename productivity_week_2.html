@@ -1,0 +1,1149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Office Week 2 — Sam's Monday Morning: Turn 200 Unread Emails and 3 Missed Meetings into One Calm, Handled Inbox</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --orange:#E87A2E;--orange-dark:#D06A20;--orange-light:#F5943E;--orange-glow:rgba(232,122,46,0.12);
+  --navy:#2B2D42;--navy-dark:#1A1B2E;
+  --bg:#F3EDE7;--bg-card:#FFFFFF;--bg-light:#F9F5F0;
+  --text-primary:#2B2D42;--text-secondary:#6B6D7B;--text-muted:#9597A6;
+  --border:#E5DDD4;
+  --green:#4CAF50;--green-light:#E8F5E9;
+  --blue:#3F88C5;--purple:#8B5CF6;--pink:#EC4899;--red:#E74C3C;
+  --shadow-sm:0 2px 8px rgba(43,45,66,0.06);
+  --shadow-md:0 8px 24px rgba(43,45,66,0.08);
+  --shadow-lg:0 16px 48px rgba(43,45,66,0.12);
+  --radius:14px;--radius-sm:8px;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text-primary);overflow-x:hidden;-webkit-font-smoothing:antialiased;line-height:1.6}
+
+/* ─── HEADER ─── */
+.header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:.8rem 2rem;display:flex;align-items:center;justify-content:space-between}
+.header-left{display:flex;align-items:center;gap:.7rem}
+.header-title{font-family:'DM Serif Display',serif;font-size:1.15rem;color:var(--navy);line-height:1.2}
+.header-title span{color:var(--orange)}
+.header-tag{font-size:.65rem;color:var(--text-muted);font-weight:500;letter-spacing:.04em;text-transform:uppercase}
+.logo-mascot{width:44px;height:44px;flex-shrink:0}
+.progress-pill{display:flex;align-items:center;gap:.6rem;padding:.4rem .9rem;background:var(--orange-glow);border-radius:50px;font-size:.72rem;color:var(--orange);font-weight:700}
+.progress-pill .dot{width:7px;height:7px;border-radius:50%;background:var(--orange);animation:pulse 2s infinite}
+
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.9)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes popIn{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:scale(1)}}
+@keyframes shimmer{0%{background-position:-400px 0}100%{background-position:400px 0}}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ─── HERO ─── */
+.hero{padding:3.5rem 2rem 2.5rem;background:linear-gradient(180deg,var(--bg) 0%,var(--bg-light) 100%);position:relative;overflow:hidden}
+.hero-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1.4fr 1fr;gap:2.5rem;align-items:center}
+.hero-badge{display:inline-flex;align-items:center;gap:.45rem;padding:.4rem 1rem;border-radius:50px;background:var(--orange-glow);color:var(--orange);font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:1rem;animation:fadeUp .7s ease}
+.hero h1{font-family:'DM Serif Display',serif;font-size:clamp(1.9rem,4vw,2.8rem);line-height:1.15;color:var(--navy);margin-bottom:.9rem;animation:fadeUp .7s ease .1s both}
+.hero h1 em{font-style:normal;color:var(--orange)}
+.hero-sub{font-size:.95rem;color:var(--text-secondary);line-height:1.7;margin-bottom:1.4rem;animation:fadeUp .7s ease .2s both}
+.usecase-banner{background:#fff;border-radius:var(--radius);padding:1rem 1.2rem;border:1px solid var(--border);box-shadow:var(--shadow-sm);display:flex;align-items:center;gap:1rem;animation:fadeUp .7s ease .3s both}
+.usecase-icon{width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,#3F88C5,#8B5CF6);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.4rem}
+.usecase-text{font-size:.82rem;color:var(--text-secondary);line-height:1.5}
+.usecase-text strong{color:var(--navy);font-weight:700}
+.hero-visual{display:flex;justify-content:center;align-items:center;animation:fadeUp .8s ease .2s both}
+.hero-mascot{width:230px;height:auto;animation:float 3.5s ease-in-out infinite;filter:drop-shadow(0 12px 40px rgba(232,122,46,0.22))}
+.budget-strip{max-width:1100px;margin:1.6rem auto 0;display:grid;grid-template-columns:repeat(4,1fr);gap:.8rem;animation:fadeUp .8s ease .35s both}
+.budget-chip{background:#fff;border:1px solid var(--border);border-radius:10px;padding:.75rem .9rem;text-align:center;box-shadow:var(--shadow-sm)}
+.budget-chip .bv{font-family:'DM Serif Display',serif;font-size:1.25rem;color:var(--orange)}
+.budget-chip .bl{font-size:.64rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;font-weight:700;margin-top:.15rem}
+
+/* ─── SECTION SHELL ─── */
+.section{padding:3rem 2rem;scroll-margin-top:80px}
+.section.alt{background:var(--bg-light)}
+.container{max-width:1100px;margin:0 auto}
+.section-header{margin-bottom:2rem}
+.section-num{display:inline-flex;align-items:center;gap:.5rem;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--orange);margin-bottom:.5rem}
+.section-num .num{width:24px;height:24px;border-radius:50%;background:var(--orange);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.7rem}
+.section-title{font-family:'DM Serif Display',serif;font-size:clamp(1.5rem,2.8vw,2rem);color:var(--navy);line-height:1.25;margin-bottom:.4rem}
+.section-sub{font-size:.92rem;color:var(--text-secondary);line-height:1.65;max-width:720px}
+.story-beat{background:#fff;border-left:4px solid var(--orange);border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:1rem 1.2rem;font-size:.88rem;color:var(--text-primary);line-height:1.65;box-shadow:var(--shadow-sm);margin-bottom:1.6rem}
+.story-beat .sb-tag{display:inline-block;font-size:.62rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--orange);margin-bottom:.3rem}
+.story-beat em{color:var(--text-secondary)}
+
+/* ─── TAB NAV ─── */
+.tab-nav{display:flex;gap:.4rem;overflow-x:auto;padding:.4rem;background:rgba(255,255,255,0.7);backdrop-filter:blur(8px);border-radius:50px;border:1px solid var(--border);box-shadow:var(--shadow-sm);position:sticky;top:72px;z-index:50;margin:0 auto 2rem;max-width:fit-content;flex-wrap:nowrap;-ms-overflow-style:none;scrollbar-width:none}
+.tab-nav::-webkit-scrollbar{display:none}
+.tab-btn{padding:.55rem 1.1rem;border-radius:50px;border:none;background:transparent;color:var(--text-secondary);font-size:.78rem;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap;transition:all .2s}
+.tab-btn:hover{color:var(--orange)}
+.tab-btn.active{background:var(--orange);color:#fff;box-shadow:0 3px 12px rgba(232,122,46,0.35)}
+
+/* ─── GENERIC CARDS/GRIDS ─── */
+.pick-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;margin-bottom:1.5rem}
+.pick-grid.four{grid-template-columns:repeat(4,1fr)}
+.pick-card{background:#fff;border-radius:var(--radius);padding:1.4rem;border:2px solid var(--border);cursor:pointer;transition:all .3s;position:relative;overflow:hidden}
+.pick-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;transition:height .3s}
+.pick-card:nth-child(1)::before{background:linear-gradient(90deg,var(--green),#7BC67E)}
+.pick-card:nth-child(2)::before{background:linear-gradient(90deg,var(--blue),#5DADE2)}
+.pick-card:nth-child(3)::before{background:linear-gradient(90deg,var(--purple),#B39DDB)}
+.pick-card:nth-child(4)::before{background:linear-gradient(90deg,var(--pink),#F48FB1)}
+.pick-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-md)}
+.pick-card.active{border-color:var(--orange);box-shadow:var(--shadow-md)}
+.pick-card.active::before{height:6px}
+.pick-icon{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;margin-bottom:.8rem;background:var(--bg-light)}
+.pick-card h4{font-family:'DM Serif Display',serif;font-size:1.05rem;color:var(--navy);margin-bottom:.3rem}
+.pick-card .pc-tag{font-size:.66rem;color:var(--orange);font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:.6rem}
+.pick-card p{font-size:.78rem;color:var(--text-secondary);line-height:1.5}
+.pick-detail{background:#fff;border-radius:var(--radius);padding:1.3rem 1.5rem;border:1px solid var(--border);box-shadow:var(--shadow-sm);font-size:.86rem;line-height:1.65;display:none}
+.pick-detail.show{display:block;animation:fadeUp .4s ease}
+.pick-detail strong{color:var(--navy)}
+.pick-detail .verdict-pill{display:inline-block;padding:.2rem .7rem;border-radius:50px;font-size:.68rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;margin-bottom:.5rem}
+.vp-good{background:var(--green-light);color:#2E7D32}
+.vp-mid{background:#FFF3CD;color:#856404}
+.vp-bad{background:#FEE;color:#C62828}
+
+/* ─── SCENARIO QUIZ ─── */
+.scenario-panel{background:#fff;border-radius:var(--radius);padding:1.5rem;border:1px solid var(--border);box-shadow:var(--shadow-sm);margin-top:1.4rem}
+.scenario-title{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-muted);margin-bottom:.6rem}
+.scenario-q{font-size:1rem;color:var(--navy);margin-bottom:1rem;font-weight:600;line-height:1.5}
+.scenario-options{display:grid;grid-template-columns:1fr;gap:.6rem;margin-bottom:1rem}
+.scenario-btn{padding:.75rem .9rem;border-radius:8px;border:1.5px solid var(--border);background:#fff;font-size:.82rem;font-weight:600;color:var(--text-primary);cursor:pointer;font-family:inherit;transition:all .2s;text-align:left;line-height:1.45}
+.scenario-btn:hover{border-color:var(--orange);color:var(--orange)}
+.scenario-btn.correct{background:var(--green-light);border-color:var(--green);color:#2E7D32}
+.scenario-btn.wrong{background:#FEE;border-color:var(--red);color:#C62828}
+.scenario-feedback{padding:.9rem;border-radius:8px;font-size:.83rem;line-height:1.55;display:none}
+.scenario-feedback.show{display:block;animation:fadeUp .4s ease}
+.scenario-feedback.success{background:var(--green-light);color:#2E7D32;border-left:3px solid var(--green)}
+.scenario-feedback.fail{background:#FEE;color:#C62828;border-left:3px solid var(--red)}
+.btn-action{padding:.55rem 1.1rem;border-radius:8px;background:var(--orange);color:#fff;border:none;font-size:.82rem;font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s}
+.btn-action:hover{background:var(--orange-dark);transform:translateY(-1px);box-shadow:0 4px 12px rgba(232,122,46,0.3)}
+.btn-secondary{background:transparent;color:var(--text-primary);border:1.5px solid var(--border);padding:.55rem 1.1rem;border-radius:8px;font-size:.82rem;font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s}
+.btn-secondary:hover{border-color:var(--orange);color:var(--orange)}
+
+/* ─── CHAT MOCK (prompt showdown) ─── */
+.chat-mock{background:#fff;border-radius:var(--radius);border:1px solid var(--border);box-shadow:var(--shadow-sm);overflow:hidden;margin-top:1rem}
+.chat-head{background:var(--navy-dark);color:#fff;padding:.6rem 1rem;font-size:.78rem;font-weight:600;display:flex;align-items:center;gap:.5rem}
+.chat-head .cdot{width:8px;height:8px;border-radius:50%;background:var(--green)}
+.chat-body{padding:1.1rem;display:flex;flex-direction:column;gap:.8rem;min-height:150px}
+.chat-msg{max-width:88%;padding:.8rem 1rem;border-radius:12px;font-size:.83rem;line-height:1.55}
+.chat-msg.user{align-self:flex-end;background:var(--orange-glow);color:var(--text-primary);border:1px solid rgba(232,122,46,0.25);border-bottom-right-radius:3px}
+.chat-msg.ai{align-self:flex-start;background:var(--bg-light);border:1px solid var(--border);border-bottom-left-radius:3px}
+.chat-msg.ai strong{color:var(--orange)}
+.chat-msg .who{display:block;font-size:.62rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--text-muted);margin-bottom:.3rem}
+
+/* ─── APP MOCK (Word / Outlook / Teams chrome) ─── */
+.app-wrap{background:#fff;border-radius:var(--radius);border:1px solid var(--border);box-shadow:var(--shadow-md);overflow:hidden;margin-top:1rem}
+.app-chrome{color:#fff;padding:.5rem 1rem;font-size:.75rem;font-weight:700;display:flex;align-items:center;gap:.5rem}
+.app-chrome.word{background:#185ABD}
+.app-chrome.outlook{background:#0F6CBD}
+.app-chrome.teams{background:#5059C9}
+.app-chrome .aicon{width:18px;height:18px;background:#fff;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:800}
+.app-chrome.word .aicon{color:#185ABD}
+.app-chrome.outlook .aicon{color:#0F6CBD}
+.app-chrome.teams .aicon{color:#5059C9}
+.app-tabs{background:#F3F2F1;border-bottom:1px solid var(--border);display:flex;font-size:.7rem}
+.app-tabs .atab{padding:.4rem .9rem;color:var(--text-secondary);border-right:1px solid var(--border)}
+.app-tabs .atab.on{background:#fff;color:var(--orange-dark);font-weight:700;border-bottom:2px solid var(--orange)}
+.app-body{padding:1.2rem 1.4rem}
+.doc-page{background:#fff;border:1px solid var(--border);border-radius:6px;padding:1.2rem 1.4rem;font-size:.82rem;line-height:1.7;color:var(--text-primary)}
+.doc-page h3{font-family:'DM Serif Display',serif;font-size:1.05rem;color:var(--navy);margin-bottom:.4rem}
+.doc-page .doc-meta{font-size:.7rem;color:var(--text-muted);margin-bottom:.8rem;border-bottom:1px solid var(--border);padding-bottom:.5rem}
+.doc-page p{margin-bottom:.6rem}
+.doc-page .hl-fact{background:#FEE;color:#C62828;font-weight:600;border-radius:3px;padding:0 3px}
+.doc-page .hl-good{background:var(--green-light);color:#2E7D32;font-weight:600;border-radius:3px;padding:0 3px}
+.app-cap{font-size:.76rem;color:var(--text-muted);padding:.6rem 1rem;background:var(--bg-light);border-top:1px solid var(--border)}
+
+/* ─── INBOX MOCK ─── */
+.inbox{background:#fff;border-radius:var(--radius);border:1px solid var(--border);box-shadow:var(--shadow-md);overflow:hidden;margin-top:1rem}
+.inbox-head{background:#0F6CBD;color:#fff;padding:.5rem 1rem;font-size:.75rem;font-weight:700;display:flex;align-items:center;gap:.5rem}
+.inbox-head .aicon{width:18px;height:18px;background:#fff;color:#0F6CBD;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:800}
+.mail-row{display:flex;gap:.7rem;align-items:flex-start;padding:.7rem 1rem;border-bottom:1px solid var(--border);font-size:.8rem;cursor:default;transition:background .2s}
+.mail-row:hover{background:var(--bg-light)}
+.mail-dot{width:9px;height:9px;border-radius:50%;margin-top:.35rem;flex-shrink:0}
+.mail-dot.red{background:var(--red)}.mail-dot.amber{background:#E0A800}.mail-dot.grey{background:var(--text-muted)}
+.mail-meta{flex:1;min-width:0}
+.mail-from{font-weight:700;color:var(--navy);display:flex;justify-content:space-between;gap:.5rem}
+.mail-from .mt{font-size:.66rem;color:var(--text-muted);font-weight:600;flex-shrink:0}
+.mail-subj{color:var(--text-secondary);line-height:1.4;margin-top:.15rem}
+.mail-tag{display:inline-block;font-size:.6rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase;padding:.1rem .45rem;border-radius:50px;margin-top:.3rem}
+.mt-urgent{background:#FEE;color:#C62828}.mt-soon{background:#FFF3CD;color:#856404}.mt-fyi{background:var(--bg-light);color:var(--text-muted)}
+
+/* ─── SUMMARY / TRIAGE PANEL ─── */
+.summary-panel{background:#fff;border-radius:var(--radius);padding:1.4rem;border:1px solid var(--border);box-shadow:var(--shadow-sm);margin-top:1.4rem}
+.summary-panel .sp-head{font-family:'DM Serif Display',serif;font-size:1.1rem;color:var(--navy);margin-bottom:.6rem;display:flex;align-items:center;gap:.5rem}
+.summary-panel ul{list-style:none;padding:0}
+.summary-panel li{display:flex;gap:.6rem;align-items:flex-start;padding:.4rem 0;font-size:.83rem;line-height:1.5;color:var(--text-primary);border-bottom:1px dashed var(--border)}
+.summary-panel li:last-child{border-bottom:none}
+.summary-panel li .pri{font-size:.6rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase;padding:.12rem .5rem;border-radius:50px;flex-shrink:0;margin-top:.1rem}
+.pri.p1{background:#FEE;color:#C62828}.pri.p2{background:#FFF3CD;color:#856404}.pri.p3{background:var(--green-light);color:#2E7D32}
+
+/* ─── TONE LAB (Word re-tone) ─── */
+.tone-lab{background:#fff;border-radius:var(--radius);padding:1.4rem;border:1px solid var(--border);box-shadow:var(--shadow-sm);margin-top:1.4rem}
+.tone-tabs{display:flex;gap:.4rem;margin-bottom:1rem;flex-wrap:wrap}
+.tone-tab{padding:.45rem .9rem;border-radius:50px;border:1.5px solid var(--border);background:#fff;font-size:.74rem;font-weight:600;color:var(--text-secondary);cursor:pointer;font-family:inherit;transition:all .2s}
+.tone-tab:hover{border-color:var(--orange);color:var(--orange)}
+.tone-tab.active{background:var(--orange);border-color:var(--orange);color:#fff}
+.tone-prompt{background:var(--orange-glow);border:1px solid rgba(232,122,46,0.25);border-radius:8px;padding:.8rem 1rem;font-size:.83rem;line-height:1.5;margin-bottom:.9rem}
+.tone-prompt .who{display:block;font-size:.62rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--orange);margin-bottom:.3rem}
+.tone-out{background:var(--bg-light);border:1px solid var(--border);border-radius:8px;padding:.9rem 1.1rem;font-size:.84rem;color:var(--text-primary);line-height:1.6;margin-bottom:.9rem}
+.tone-explain{font-size:.83rem;line-height:1.6;color:var(--text-secondary)}
+.tone-explain strong{color:var(--navy)}
+
+/* ─── ERROR / CATCH PANEL ─── */
+.err-panel{background:#fff;border-radius:var(--radius);padding:1.5rem;border:1px solid var(--border);box-shadow:var(--shadow-sm);margin-top:1.4rem}
+.err-badge{display:inline-flex;align-items:center;gap:.4rem;background:#FEE;color:#C62828;font-weight:800;font-size:.85rem;padding:.35rem .8rem;border-radius:7px}
+.err-cell{background:var(--bg-light);border:1px solid var(--border);border-radius:6px;padding:.6rem .8rem;font-size:.82rem;margin:.8rem 0;color:var(--text-primary);line-height:1.55}
+.err-cell b{color:#C62828}
+
+/* ─── review-style two column ─── */
+.review-mine{background:#fff;border-radius:var(--radius);padding:1.4rem;border:1px solid var(--border);box-shadow:var(--shadow-sm);margin-top:1.4rem}
+.review-cols{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:.9rem}
+.review-col{border-radius:var(--radius-sm);padding:1rem 1.1rem}
+.review-col.love{background:var(--green-light)}
+.review-col.hate{background:#FEE}
+.review-col h5{font-size:.72rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.6rem}
+.review-col.love h5{color:#2E7D32}
+.review-col.hate h5{color:#C62828}
+.review-col li{font-size:.8rem;line-height:1.5;margin-left:1.1rem;margin-bottom:.35rem;color:var(--text-primary)}
+
+/* ─── MEETING RECAP FEED / CHECKLIST ─── */
+.build-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1.5rem}
+.build-card{background:#fff;border-radius:var(--radius);padding:1.3rem;border:1px solid var(--border);box-shadow:var(--shadow-sm)}
+.build-card h4{font-size:.95rem;color:var(--navy);margin-bottom:.7rem;display:flex;align-items:center;gap:.5rem}
+.build-card h4::before{content:'';width:10px;height:10px;border-radius:50%;background:var(--orange)}
+.checklist{list-style:none;padding:0}
+.checklist li{display:flex;align-items:flex-start;gap:.6rem;padding:.42rem 0;font-size:.84rem;color:var(--text-primary);cursor:pointer;line-height:1.45}
+.checklist li .check{width:18px;height:18px;border-radius:5px;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;transition:all .2s}
+.checklist li.done .check{background:var(--green);border-color:var(--green)}
+.checklist li.done .check::after{content:'✓';color:#fff;font-size:.7rem;font-weight:800}
+.checklist li.done{color:var(--text-muted);text-decoration:line-through}
+.feed{background:var(--navy-dark);border-radius:10px;padding:1rem 1.1rem;min-height:220px;max-height:280px;overflow-y:auto}
+.feed-line{display:flex;gap:.6rem;font-size:.78rem;line-height:1.55;padding:.3rem 0;color:#D8DAE5;animation:fadeUp .4s ease}
+.feed-line .ft{color:var(--orange-light);font-weight:700;flex-shrink:0}
+.feed-line.hint-line{color:#8B8DA0;font-style:italic}
+.done-note{margin-top:1rem;padding:.8rem;background:var(--green-light);border-radius:7px;font-size:.78rem;color:#2E7D32;display:none}
+
+/* ─── ACTION-ITEM EXTRACTOR ─── */
+.action-table{width:100%;border-collapse:collapse;font-size:.8rem;margin-top:.6rem;border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.action-table th,.action-table td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left}
+.action-table thead th{background:#F3F2F1;color:var(--text-secondary);font-weight:700;font-size:.72rem;text-transform:uppercase;letter-spacing:.04em}
+.action-table td.owner{font-weight:700;color:var(--navy)}
+.action-table td.date{color:var(--orange-dark);font-weight:600;white-space:nowrap}
+.action-table tr.missing td{background:#FEE;color:#C62828}
+
+/* ─── FOLLOW-UP ASSEMBLER (like dashboard builder) ─── */
+.dash-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:1.4rem;margin-top:1.4rem}
+.dash-controls .prompt-field{display:flex;flex-direction:column;gap:.4rem;margin-bottom:.9rem}
+.dash-controls label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted)}
+.dash-controls select{padding:.6rem .8rem;border:1.5px solid var(--border);border-radius:7px;font-family:inherit;font-size:.83rem;color:var(--text-primary);background:#fff}
+.dash-controls select:focus{outline:none;border-color:var(--orange)}
+.dash-preview{background:#fff;border-radius:var(--radius);border:1px solid var(--border);box-shadow:var(--shadow-md);overflow:hidden}
+.dashp-head{background:var(--navy-dark);color:#fff;padding:.7rem 1rem;display:flex;align-items:center;justify-content:space-between}
+.dashp-title{font-family:'DM Serif Display',serif;font-size:1rem}
+.dashp-when{font-size:.66rem;color:rgba(255,255,255,.6)}
+.dashp-body{padding:1rem;font-size:.82rem;line-height:1.6;color:var(--text-primary)}
+.dashp-body .greeting{font-weight:700;color:var(--navy);margin-bottom:.4rem}
+.dashp-body p{margin-bottom:.5rem}
+.dashp-body .sig{color:var(--text-muted);font-size:.76rem;margin-top:.5rem}
+.dashp-note{padding:0 1rem 1rem;font-size:.78rem;line-height:1.55;color:var(--text-secondary)}
+.dashp-note strong{color:var(--navy)}
+
+/* ─── VERDICT ─── */
+.week-verdict{display:none;margin-top:1.4rem;background:var(--navy-dark);border-radius:var(--radius);padding:1.6rem;color:#fff;animation:popIn .5s ease}
+.week-verdict.show{display:block}
+.week-verdict h4{font-family:'DM Serif Display',serif;font-size:1.35rem;margin-bottom:.8rem}
+.week-verdict h4 em{font-style:normal;color:var(--orange-light)}
+.wv-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.7rem;margin-bottom:1rem}
+.wv-tile{background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.14);border-radius:9px;padding:.8rem;text-align:center}
+.wv-tile .v{font-family:'DM Serif Display',serif;font-size:1.3rem;color:var(--orange-light)}
+.wv-tile .l{font-size:.62rem;text-transform:uppercase;letter-spacing:.05em;color:rgba(255,255,255,0.55);font-weight:700;margin-top:.25rem}
+.week-verdict p{font-size:.87rem;line-height:1.65;color:rgba(255,255,255,0.85)}
+.week-verdict p strong{color:var(--orange-light)}
+
+/* ─── FOOTER / RECAP ─── */
+.footer-cta{text-align:center;padding:3rem 2rem 5.5rem;background:var(--navy-dark);color:#fff}
+.footer-cta h2{font-family:'DM Serif Display',serif;font-size:1.9rem;margin-bottom:.6rem}
+.footer-cta h2 em{color:var(--orange);font-style:normal}
+.footer-cta>p{font-size:.92rem;color:rgba(255,255,255,0.7);max-width:600px;margin:0 auto 1.8rem}
+.recap-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.9rem;max-width:1050px;margin:0 auto 1.8rem;text-align:left}
+.recap-card{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.13);border-radius:var(--radius);padding:1.2rem 1.3rem}
+.recap-card .rn{font-size:.62rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--orange-light);margin-bottom:.35rem}
+.recap-card h4{font-family:'DM Serif Display',serif;font-size:1.02rem;margin-bottom:.35rem;color:#fff}
+.recap-card p{font-size:.76rem;color:rgba(255,255,255,0.65);line-height:1.55}
+.footer-note{font-size:.72rem;color:rgba(255,255,255,0.4);margin-top:1.6rem;max-width:640px;margin-left:auto;margin-right:auto;line-height:1.6}
+
+/* ─── COMPLETION BAR ─── */
+.completion-bar{position:fixed;bottom:0;left:0;right:0;background:rgba(255,255,255,0.95);backdrop-filter:blur(10px);border-top:1px solid var(--border);padding:.7rem 2rem;display:flex;align-items:center;justify-content:space-between;z-index:90;box-shadow:0 -2px 12px rgba(0,0,0,0.05)}
+.completion-info{display:flex;align-items:center;gap:.8rem;font-size:.82rem;color:var(--text-primary);font-weight:600}
+.completion-track{flex:1;max-width:280px;height:8px;background:var(--bg-light);border-radius:4px;overflow:hidden;margin:0 1rem}
+.completion-fill{height:100%;background:linear-gradient(90deg,var(--orange),var(--orange-light));border-radius:4px;transition:width .5s ease}
+.completion-percent{font-family:'DM Serif Display',serif;color:var(--orange);font-size:1.15rem}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:880px){
+  .hero-inner{grid-template-columns:1fr;text-align:center}
+  .hero-mascot{width:170px;margin:0 auto}
+  .usecase-banner{text-align:left}
+  .budget-strip{grid-template-columns:repeat(2,1fr)}
+  .pick-grid,.pick-grid.four{grid-template-columns:1fr}
+  .build-grid,.dash-grid,.review-cols{grid-template-columns:1fr}
+  .wv-grid,.recap-grid{grid-template-columns:repeat(2,1fr)}
+  .header{padding:.7rem 1rem}
+  .section{padding:2.2rem 1rem}
+  .hero{padding:2.5rem 1rem 2rem}
+}
+</style>
+</head>
+<body>
+
+<!-- ─── HEADER ─── -->
+<header class="header">
+  <div class="header-left">
+    <svg class="logo-mascot" viewBox="0 0 955 1486" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="477" cy="380" rx="285" ry="324" fill="#EBE3D6"/>
+      <ellipse cx="477" cy="380" rx="240" ry="270" fill="#412C23"/>
+      <circle cx="389" cy="430" r="36" fill="#fff"/>
+      <circle cx="565" cy="430" r="36" fill="#fff"/>
+      <circle cx="389" cy="430" r="14" fill="#2B2D42"/>
+      <circle cx="565" cy="430" r="14" fill="#2B2D42"/>
+      <path d="M380 1180c30 28 65 42 97 42s67-14 97-42" stroke="#A34E1C" stroke-width="14" stroke-linecap="round" fill="none"/>
+      <ellipse cx="477" cy="1350" rx="430" ry="100" fill="#EF7F1A"/>
+      <ellipse cx="477" cy="1350" rx="380" ry="78" fill="#FF9429"/>
+    </svg>
+    <div>
+      <div class="header-title">MokshPath · <span>AI Office</span></div>
+      <div class="header-tag">Week 2 · Fun While You Learn</div>
+    </div>
+  </div>
+  <div class="progress-pill"><span class="dot"></span> <span id="headerProgressText">0 of 5 chapters explored</span></div>
+</header>
+
+<!-- ─── HERO ─── -->
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-badge"><span style="width:7px;height:7px;border-radius:50%;background:var(--orange);display:inline-block"></span> Story Project · One Chaotic Monday Morning</div>
+      <h1>Rescue Sam's Monday — Turn <em>200 Unread Emails</em> and 3 Missed Meetings into One Calm, Handled Inbox</h1>
+      <p class="hero-sub">Sam just got promoted to team lead at <strong>Northwind Logistics</strong> — then took one week off. Monday, 8:40 a.m.: the laptop opens to <em>200 unread emails</em>, three missed meeting recordings, one furious client thread, and a status report due to the director by noon. No time to read it all the old way. But Sam has AI across the whole Office suite. Over four chapters you'll help Sam pick the right AI helper for each job, draft a polished report in Word, tame the inbox and reply in the right tone in Outlook, and catch up on every missed meeting from a recap — while catching the moments AI quietly gets it wrong. Every choice has a consequence. Choose like a pro.</p>
+      <div class="usecase-banner">
+        <div class="usecase-icon">📥</div>
+        <div class="usecase-text"><strong>The Mission:</strong> By noon, that terrifying inbox must become a calm, honest, under-control morning — a shipped report, sent replies, booked meetings, and follow-ups — using AI in the Office suite, not by working through lunch. Win or lose, you'll walk away knowing the full AI-Office playbook: tools, Word, Outlook, and meetings.</div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <svg class="hero-mascot" viewBox="0 0 955 1486" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="bodyGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#EBE3D6"/><stop offset="1" stop-color="#D1D0CC"/></linearGradient>
+          <linearGradient id="faceGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7A6A48"/><stop offset="1" stop-color="#412C23"/></linearGradient>
+          <linearGradient id="feetGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FF9429"/><stop offset="1" stop-color="#EF7F1A"/></linearGradient>
+        </defs>
+        <ellipse cx="210" cy="408" rx="68" ry="82" fill="#D9DADA"/>
+        <ellipse cx="740" cy="408" rx="68" ry="82" fill="#D9DADA"/>
+        <ellipse cx="477" cy="380" rx="285" ry="324" fill="url(#bodyGrad)"/>
+        <ellipse cx="477" cy="392" rx="240" ry="225" fill="url(#faceGrad)"/>
+        <circle cx="389" cy="430" r="38" fill="#fff"/>
+        <circle cx="565" cy="430" r="38" fill="#fff"/>
+        <circle cx="389" cy="430" r="15" fill="#2B2D42"/>
+        <circle cx="565" cy="430" r="15" fill="#2B2D42"/>
+        <circle cx="395" cy="424" r="5" fill="#fff"/>
+        <circle cx="571" cy="424" r="5" fill="#fff"/>
+        <path d="M380 1180c30 28 65 42 97 42s67-14 97-42" stroke="#A34E1C" stroke-width="16" stroke-linecap="round" fill="none"/>
+        <ellipse cx="477" cy="1350" rx="430" ry="105" fill="url(#feetGrad)"/>
+        <ellipse cx="477" cy="1320" rx="380" ry="78" fill="#FF9429"/>
+      </svg>
+    </div>
+  </div>
+  <div class="budget-strip">
+    <div class="budget-chip"><div class="bv">200 emails</div><div class="bl">Unread after one week off</div></div>
+    <div class="budget-chip"><div class="bv">Noon</div><div class="bl">Status report deadline</div></div>
+    <div class="budget-chip"><div class="bv">3 meetings</div><div class="bl">Missed &amp; recorded</div></div>
+    <div class="budget-chip"><div class="bv">4 lessons</div><div class="bl">Woven into 1 story</div></div>
+  </div>
+</section>
+
+<!-- ─── TAB NAVIGATION ─── -->
+<div class="tab-nav" id="tabNav">
+  <button class="tab-btn active" data-target="s1">Ch 1 · Pick the AI</button>
+  <button class="tab-btn" data-target="s2">Ch 2 · Word</button>
+  <button class="tab-btn" data-target="s3">Ch 3 · Outlook</button>
+  <button class="tab-btn" data-target="s4">Ch 4 · Meetings</button>
+  <button class="tab-btn" data-target="s5">Ship It · Noon</button>
+</div>
+
+<!-- ═══════════ CHAPTER 1: THE AI OFFICE LANDSCAPE ═══════════ -->
+<section class="section" id="s1">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-num"><div class="num">1</div> Chapter One · 8:40 a.m.</div>
+      <h2 class="section-title">The AI Office Landscape — Meet the Tools, Pick the Right Helper</h2>
+      <p class="section-sub">Rule one of AI in the Office: there is no single "AI button." There are several very different helpers — free Copilot on the web, Copilot Pro, Microsoft 365 Copilot, Gemini for Workspace, and standalone ChatGPT/Claude — each with a licence, a privacy trade-off, and a sweet spot. Before touching the inbox, Sam matches the job to the right tool — and learns what is safe to paste where.</p>
+    </div>
+
+    <div class="story-beat">
+      <span class="sb-tag">📖 The story so far</span>
+      Monday, 8:40 a.m. Sam opens the laptop for the first time in a week and the coffee goes cold. <strong>200 unread emails.</strong> A red thread from a client named Rivera Freight titled <em>"Still waiting — this is unacceptable."</em> Three missed meetings sitting as recordings in Teams. And a calendar reminder: <em>"Status report to Director Okafor — due 12:00 noon."</em> Before panicking, Sam does the professional thing: <em>figures out which AI helper fits each job — and which is even allowed to see company data.</em> Click each tool to inspect it, then commit.
+    </div>
+
+    <div class="pick-grid four">
+      <div class="pick-card" data-tool="free" onclick="pickTool('free')">
+        <div class="pick-icon">🟢</div>
+        <div class="pc-tag">Free · web chat</div>
+        <h4>Copilot (free)</h4>
+        <p>The free Microsoft Copilot chat on the web or in the sidebar. Great for general drafting, rewriting and questions — but it does <em>not</em> read your actual emails, files or meetings, and free-tier chats aren't covered by your org's data promise.</p>
+      </div>
+      <div class="pick-card" data-tool="pro" onclick="pickTool('pro')">
+        <div class="pick-icon">🔵</div>
+        <div class="pc-tag">Paid · personal</div>
+        <h4>Copilot Pro</h4>
+        <p>A paid <em>personal</em> subscription. Adds Copilot inside personal Word, Excel, PowerPoint and Outlook.com, plus priority access. Powerful for individuals — but it is not the enterprise licence that safely reaches your work tenant's data.</p>
+      </div>
+      <div class="pick-card" data-tool="m365" onclick="pickTool('m365')">
+        <div class="pick-icon">🏢</div>
+        <div class="pc-tag">Paid · work tenant</div>
+        <h4>Microsoft 365 Copilot</h4>
+        <p>The enterprise licence, grounded in <em>your</em> work emails, files, chats and meetings via Microsoft Graph — inside Word, Outlook and Teams. This is the one that can summarise Sam's real inbox. Your org must buy and enable it; data stays in the tenant.</p>
+      </div>
+      <div class="pick-card" data-tool="gemini" onclick="pickTool('gemini')">
+        <div class="pick-icon">🟦</div>
+        <div class="pc-tag">If you're on Google</div>
+        <h4>Gemini for Workspace</h4>
+        <p>Google's enterprise AI inside Gmail, Docs, Sheets and Meet. Same idea as M365 Copilot, different suite. Excellent — only if your company runs on Google Workspace, not Microsoft 365.</p>
+      </div>
+    </div>
+    <div class="pick-detail" id="toolDetail"></div>
+
+    <div class="chat-mock">
+      <div class="chat-head"><span class="cdot"></span> AI Assistant · The prompt showdown — vague vs. specific</div>
+      <div class="chat-body" id="promptChat">
+        <div class="chat-msg ai"><span class="who">Narrator</span>You get out of AI exactly what you put in. Below are three ways Sam could ask Copilot for help drafting a reply to the angry client. <strong>Pick the one you think earns the most useful answer</strong> — then see what comes back.</div>
+      </div>
+    </div>
+    <div class="scenario-panel">
+      <div class="scenario-title">🎯 Checkpoint · Pick Sam's prompt</div>
+      <div class="scenario-q">Which prompt does Sam give the AI helper?</div>
+      <div class="scenario-options">
+        <button class="scenario-btn" onclick="pickPrompt(0)">"Write a good email."</button>
+        <button class="scenario-btn" onclick="pickPrompt(1)">"Make the client happy again, promise them whatever fixes it."</button>
+        <button class="scenario-btn" onclick="pickPrompt(2)">"Draft a reply to a client who's upset their shipment update is late. Tone: calm, professional, accountable — acknowledge the delay, don't promise a date I haven't confirmed, and offer to call today. Keep it under 120 words. I'll edit before sending."</button>
+      </div>
+      <div class="scenario-feedback" id="promptFb"></div>
+    </div>
+
+    <div class="scenario-panel">
+      <div class="scenario-title">🧠 Pop Quiz · Tool &amp; privacy instincts (3 rounds)</div>
+      <div class="scenario-q" id="toolQ">Loading…</div>
+      <div class="scenario-options" id="toolOpts"></div>
+      <div class="scenario-feedback" id="toolFb"></div>
+      <button class="btn-secondary" id="toolNext" onclick="nextToolQ()" style="margin-top:.5rem;display:none">Next round →</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ CHAPTER 2: AI IN WORD ═══════════ -->
+<section class="section alt" id="s2">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-num"><div class="num">2</div> Chapter Two · 9:15 a.m.</div>
+      <h2 class="section-title">AI in Word — Turn Messy Notes into a Polished One-Page Report</h2>
+      <p class="section-sub">The status report is due at noon and Sam has only a page of scrappy handover notes and two source files. Today Copilot in Word drafts a clean one-pager from those notes, re-tones it for a director, and — the crucial beat — <strong>invents a statistic that Sam must catch before it ships.</strong></p>
+    </div>
+
+    <div class="story-beat">
+      <span class="sb-tag">📖 The story so far</span>
+      9:15 a.m. Sam opens a blank Word doc, clicks <strong>Draft with Copilot</strong>, and points it at the handover notes and last quarter's numbers. In seconds it returns a tidy one-page status report — headings, summary, next steps. It looks great. But Sam remembers Chapter 1's lesson: <em>AI drafts, you verify.</em> Read the messy input, watch the draft appear, then re-tone it and hunt for the thing AI made up.
+    </div>
+
+    <div class="app-wrap">
+      <div class="app-chrome word"><span class="aicon">W</span> handover_notes.docx — the messy input Sam feeds Copilot</div>
+      <div class="app-tabs"><span class="atab on">Notes</span><span class="atab">Q2 numbers</span><span class="atab">Draft</span></div>
+      <div class="app-body">
+        <div class="doc-page" style="font-family:'Consolas','Courier New',monospace;font-size:.78rem;line-height:1.7;background:var(--bg-light)">
+          - rivera freight unhappy, shipment tracking portal was down 2 days last wk<br>
+          - warehouse B hit 94% on-time, warehouse A only 71% (staffing??)<br>
+          - new driver onboarding delayed, HR waiting on us<br>
+          - Q2 volume up vs Q1, exact % TBD - ask finance<br>
+          - carrier contract renewal due end of month, legal reviewing<br>
+          - team morale ok, two people asked about the promotion backfill
+        </div>
+      </div>
+      <div class="app-cap">⚠️ Six fragments, no structure, one open question ("exact % TBD"). This is exactly the kind of raw input Copilot turns into prose — including, if you're not careful, filling that blank with an invented number.</div>
+    </div>
+
+    <div class="app-wrap">
+      <div class="app-chrome word"><span class="aicon">W</span> status_report.docx — Copilot's first draft</div>
+      <div class="app-body">
+        <div class="doc-page">
+          <h3>Weekly Operations Status — Northwind Logistics</h3>
+          <div class="doc-meta">Prepared for: Director Okafor · Author: Sam (Team Lead) · Draft by Copilot, pending review</div>
+          <p><strong>Summary.</strong> Operations held steady this week with one service incident. The Rivera Freight tracking portal was unavailable for two days, prompting a client complaint now being addressed.</p>
+          <p><strong>Performance.</strong> Warehouse B delivered <span class="hl-good">94% on-time</span>; Warehouse A trailed at <span class="hl-good">71%</span>, likely a staffing gap under review. Q2 shipment volume rose <span class="hl-fact">by exactly 27.4% over Q1</span>, a strong quarter-over-quarter gain.</p>
+          <p><strong>Next steps.</strong> Restore Rivera's portal SLA, staff up Warehouse A, unblock driver onboarding with HR, and support Legal on the carrier contract renewal due month-end.</p>
+        </div>
+      </div>
+      <div class="app-cap">🔎 Read the "Performance" paragraph carefully. The notes said the Q2 figure was <em>"TBD — ask finance."</em> Where did "exactly 27.4%" come from?</div>
+    </div>
+
+    <div class="tone-lab">
+      <div style="font-family:'DM Serif Display',serif;font-size:1.1rem;color:var(--navy);margin-bottom:.9rem">🎚️ The Tone Lab — same content, re-toned for the audience</div>
+      <div class="tone-tabs">
+        <button class="tone-tab active" data-tone="director" onclick="setTone('director')">For the Director · concise</button>
+        <button class="tone-tab" data-tone="team" onclick="setTone('team')">For the Team · warm</button>
+        <button class="tone-tab" data-tone="bullets" onclick="setTone('bullets')">Bullet TL;DR</button>
+        <button class="tone-tab" data-tone="client" onclick="setTone('client')">Client-safe · careful</button>
+      </div>
+      <div class="tone-prompt" id="tonePrompt"><span class="who">Sam → Copilot</span></div>
+      <div class="tone-out" id="toneOut"></div>
+      <div class="tone-explain" id="toneExplain"></div>
+    </div>
+
+    <div class="err-panel">
+      <div style="font-family:'DM Serif Display',serif;font-size:1.1rem;color:var(--navy);margin-bottom:.5rem">🚨 The Invented Fact — catching Copilot's <span class="err-badge">hallucination</span></div>
+      <p style="font-size:.83rem;color:var(--text-secondary);line-height:1.6">The handover notes clearly said <em>"Q2 volume up vs Q1, exact % TBD — ask finance."</em> Yet the draft states a precise <strong>"27.4%."</strong> AI filled a gap with a confident, specific, and completely fabricated number. Same trap applies to citations: ask for a source and a model may invent a real-looking reference that doesn't exist.</p>
+      <div class="err-cell">Notes said: <b>"exact % TBD — ask finance"</b> &nbsp;→&nbsp; Draft says: <b>"up by exactly 27.4% over Q1"</b> &nbsp;→&nbsp; the number was never in the source</div>
+      <div class="scenario-panel" style="margin-top:1rem">
+        <div class="scenario-title">🎯 Checkpoint · The draft has an invented statistic. Now what?</div>
+        <div class="scenario-q">Copilot wrote "up by exactly 27.4%" but your notes said the figure was TBD. What does a pro do?</div>
+        <div class="scenario-options">
+          <button class="scenario-btn" onclick="factQ(0)">Leave it — 27.4% is specific and sounds credible, so it's probably right.</button>
+          <button class="scenario-btn" onclick="factQ(1)">Delete the fabricated number, replace it with "up quarter-over-quarter (exact figure to be confirmed with Finance)," and only insert a real number once Finance sends it.</button>
+          <button class="scenario-btn" onclick="factQ(2)">Round it to "about 27%" so it feels less made-up.</button>
+        </div>
+        <div class="scenario-feedback" id="factFb"></div>
+      </div>
+    </div>
+
+    <div class="scenario-panel">
+      <div class="scenario-title">🧠 Pop Quiz · AI-in-Word instincts (3 rounds)</div>
+      <div class="scenario-q" id="wordQ">Loading…</div>
+      <div class="scenario-options" id="wordOpts"></div>
+      <div class="scenario-feedback" id="wordFb"></div>
+      <button class="btn-secondary" id="wordNext" onclick="nextWordQ()" style="margin-top:.5rem;display:none">Next round →</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ CHAPTER 3: AI IN OUTLOOK ═══════════ -->
+<section class="section" id="s3">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-num"><div class="num">3</div> Chapter Three · 10:00 a.m.</div>
+      <h2 class="section-title">AI in Outlook — Summarize the Scary Inbox, Triage, Reply in the Right Tone</h2>
+      <p class="section-sub">200 unread emails is not a reading problem — it's a triage problem. Today Copilot summarizes the whole inbox, ranks what matters, drafts a tricky reply in the right tone, and turns an email into a meeting — while Sam catches a hallucinated commitment and a wrong recipient <em>before</em> hitting send.</p>
+    </div>
+
+    <div class="story-beat">
+      <span class="sb-tag">📖 The story so far</span>
+      10:00 a.m. Instead of opening 200 emails one by one, Sam clicks <strong>Summarize</strong> in Outlook. Copilot compresses the week into a short briefing and flags what needs a reply today. The angry Rivera Freight thread rises to the top. Sam asks Copilot to draft a calm, accountable reply — then reads every word before sending, because in Chapter 2 the AI already proved it will invent things.
+    </div>
+
+    <div class="inbox">
+      <div class="inbox-head"><span class="aicon">O</span> Outlook · Focused inbox · 200 unread · Copilot triage</div>
+      <div class="mail-row">
+        <span class="mail-dot red"></span>
+        <div class="mail-meta">
+          <div class="mail-from">Rivera Freight (client) <span class="mt">Thu 4:12 p.m.</span></div>
+          <div class="mail-subj">"Still waiting — this is unacceptable." Tracking portal was down; wants an update and a call.</div>
+          <span class="mail-tag mt-urgent">Reply today</span>
+        </div>
+      </div>
+      <div class="mail-row">
+        <span class="mail-dot amber"></span>
+        <div class="mail-meta">
+          <div class="mail-from">Director Okafor <span class="mt">Fri 9:02 a.m.</span></div>
+          <div class="mail-subj">"Status report by Monday noon — plus your take on Warehouse A." Needs the report you're writing.</div>
+          <span class="mail-tag mt-soon">Due noon</span>
+        </div>
+      </div>
+      <div class="mail-row">
+        <span class="mail-dot amber"></span>
+        <div class="mail-meta">
+          <div class="mail-from">HR · Priya <span class="mt">Wed 2:30 p.m.</span></div>
+          <div class="mail-subj">Driver onboarding blocked — waiting on your sign-off to release the new hires.</div>
+          <span class="mail-tag mt-soon">Quick reply</span>
+        </div>
+      </div>
+      <div class="mail-row">
+        <span class="mail-dot grey"></span>
+        <div class="mail-meta">
+          <div class="mail-from">All-Staff · Facilities <span class="mt">Tue 11:00 a.m.</span></div>
+          <div class="mail-subj">Parking lot resurfacing next month + 46 other newsletters, digests and CC-all threads.</div>
+          <span class="mail-tag mt-fyi">FYI · archive</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="summary-panel">
+      <div class="sp-head">🧭 Copilot's inbox summary — 200 emails, triaged in 20 seconds</div>
+      <ul>
+        <li><span class="pri p1">Now</span> <span><strong>Rivera Freight</strong> is the only genuinely urgent thread — a client escalation about a 2-day portal outage. Reply today, offer a call.</span></li>
+        <li><span class="pri p1">Now</span> <span><strong>Director Okafor</strong> is expecting your status report at noon and your read on Warehouse A. Blocks nothing else, but it's the deadline.</span></li>
+        <li><span class="pri p2">Soon</span> <span><strong>HR / Priya</strong> needs a one-line sign-off to unblock driver onboarding. 30 seconds of your time removes someone else's blocker.</span></li>
+        <li><span class="pri p3">Later</span> <span><strong>~185 emails</strong> are newsletters, CC-all chains, and FYIs. Bulk-archive; nothing here needs you today.</span></li>
+      </ul>
+      <p style="font-size:.78rem;color:var(--text-muted);line-height:1.55;margin-top:.6rem">💡 The win isn't reading faster — it's reading <em>less</em>. Copilot separates the 3 threads that need Sam from the 185 that don't. Sam still opens the top 3 to confirm the summary is accurate before acting.</p>
+    </div>
+
+    <div class="app-wrap">
+      <div class="app-chrome outlook"><span class="aicon">O</span> Reply to Rivera Freight — Copilot draft, awaiting Sam's review</div>
+      <div class="app-body">
+        <div class="doc-page">
+          <div class="doc-meta">To: <b>ops@riverafreight.com</b> · From: sam@northwind.example · Subject: Re: Still waiting — an update and a call today</div>
+          <p>Hi Maria,</p>
+          <p>Thank you for your patience, and I'm sorry for the disruption — our tracking portal was down for two days last week, which is not the experience you should have with us.</p>
+          <p><span class="hl-fact">As compensation, we've credited your account $5,000 and upgraded you to priority routing permanently.</span> I'm available for a call today between 2 and 4 p.m. — would either work? I'll personally make sure you get real-time visibility going forward.</p>
+          <p>Best regards,<br>Sam · Team Lead, Northwind Logistics</p>
+        </div>
+      </div>
+      <div class="app-cap">🔎 The tone is excellent — calm, accountable, offers a call. But read the highlighted sentence. <em>Sam never approved a $5,000 credit or a permanent upgrade.</em> Copilot invented a commitment the company would be bound to.</div>
+    </div>
+
+    <div class="err-panel">
+      <div style="font-family:'DM Serif Display',serif;font-size:1.1rem;color:var(--navy);margin-bottom:.5rem">🚨 Two catches before you hit send</div>
+      <p style="font-size:.83rem;color:var(--text-secondary);line-height:1.6">AI drafts fast, but you sign it. This reply hides <strong>two</strong> problems: a <b>hallucinated commitment</b> ($5,000 credit + permanent upgrade Sam never authorised) and, on another draft, a <b>wrong recipient</b> — Copilot auto-filled "Maria" from a different Rivera contact who left the company. Both are the kind of thing that only a human reading the output can catch.</p>
+      <div class="err-cell">Draft promises: <b>"$5,000 credit + permanent priority routing"</b> &nbsp;→&nbsp; Sam authorised: <b>nothing of the sort</b> &nbsp;→&nbsp; sending this creates a real obligation</div>
+      <div class="scenario-panel" style="margin-top:1rem">
+        <div class="scenario-title">🎯 Checkpoint · The draft promises something you never approved</div>
+        <div class="scenario-q">Copilot's reply commits the company to a $5,000 credit you never authorised. What do you do before sending?</div>
+        <div class="scenario-options">
+          <button class="scenario-btn" onclick="sendQ(0)">Send it — a happy client is worth $5,000 and it sounds generous.</button>
+          <button class="scenario-btn" onclick="sendQ(1)">Delete the invented commitment, verify the recipient's name and address, keep the apology + call offer, and only promise remedies I actually have authority to make.</button>
+          <button class="scenario-btn" onclick="sendQ(2)">Forward the AI draft to my boss to send, so it's their problem.</button>
+        </div>
+        <div class="scenario-feedback" id="sendFb"></div>
+      </div>
+    </div>
+
+    <div class="review-mine">
+      <div style="font-family:'DM Serif Display',serif;font-size:1.1rem;color:var(--navy)">📅 Turn the email into a meeting — in one click</div>
+      <p style="font-size:.82rem;color:var(--text-secondary);margin-top:.3rem">Once the Rivera reply is fixed, Sam asks Copilot: <em>"Schedule a 30-minute call with Rivera Freight today between 2 and 4 p.m. and draft the invite."</em> Copilot checks the calendar, proposes a slot, and drafts the invite — but Sam still confirms the details before it goes out.</p>
+      <div class="review-cols">
+        <div class="review-col love">
+          <h5>💚 What Copilot got right</h5>
+          <ul>
+            <li>Found a free 2:30–3:00 p.m. slot that avoids the report deadline</li>
+            <li>Drafted a clear agenda: "Portal outage recap + prevention plan"</li>
+            <li>Attached the right dial-in and set a 15-min reminder</li>
+          </ul>
+        </div>
+        <div class="review-col hate">
+          <h5>💔 What Sam still verifies</h5>
+          <ul>
+            <li>Confirms the invite goes to the <strong>current</strong> Rivera contact, not the one who left</li>
+            <li>Removes any auto-added attendees who don't belong on a client call</li>
+            <li>Double-checks the time zone before accepting — clients aren't always local</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ CHAPTER 4: AI FOR MEETINGS & NOTES ═══════════ -->
+<section class="section alt" id="s4">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-num"><div class="num">4</div> Chapter Four · 11:00 a.m.</div>
+      <h2 class="section-title">AI for Meetings &amp; Notes — Catch Up on 3 Missed Meetings, Extract Actions, Follow Up</h2>
+      <p class="section-sub">Sam missed three meetings while away. Reading full transcripts would eat the whole morning. Today Copilot in Teams delivers a recap of each, extracts the action items with owners and dates, and drafts a follow-up — <em>and</em> Sam handles a recording-consent moment correctly before joining the next live call.</p>
+    </div>
+
+    <div class="story-beat">
+      <span class="sb-tag">📖 The story so far</span>
+      11:00 a.m. Three missed meetings sit in Teams as recordings with transcripts. Sam opens the <strong>Recap</strong> tab and Copilot produces a summary, a list of decisions, and — most valuable — the <strong>action items with owners and due dates</strong>. But one action has no owner, so it would fall through the cracks. And before the 11:30 live sync, Sam gets a prompt about recording consent that has to be handled the right way. Work the recap checklist and watch the catch-up come together.
+    </div>
+
+    <div class="scenario-panel">
+      <div class="scenario-title">🎯 Checkpoint · The recording-consent moment</div>
+      <div class="scenario-q">Sam joins the 11:30 live sync and clicks "Record &amp; transcribe" so Copilot can take notes. What's the right thing to do?</div>
+      <div class="scenario-options">
+        <button class="scenario-btn" onclick="consentQ(0)">Record silently — the meeting banner counts as notice, so nobody needs to be told.</button>
+        <button class="scenario-btn" onclick="consentQ(1)">Announce that the meeting is being recorded and transcribed, confirm everyone's okay with it, and follow the local law and company policy — some places require all-party consent.</button>
+        <button class="scenario-btn" onclick="consentQ(2)">Record everything always; consent is old-fashioned and slows meetings down.</button>
+      </div>
+      <div class="scenario-feedback" id="consentFb"></div>
+    </div>
+
+    <div class="build-grid">
+      <div class="build-card">
+        <h4>Sam's meeting catch-up checklist</h4>
+        <ul class="checklist" id="buildList">
+          <li data-step="0" onclick="runBuildStep(0)"><span class="check"></span>Open the <strong>&nbsp;Recap&nbsp;</strong> for each missed meeting — read the AI summary, not the full transcript</li>
+          <li data-step="1" onclick="runBuildStep(1)"><span class="check"></span>Ask Copilot: <strong>&nbsp;"What was decided, and what did I miss that affects my team?"</strong></li>
+          <li data-step="2" onclick="runBuildStep(2)"><span class="check"></span>Extract <strong>&nbsp;action items with owner + due date&nbsp;</strong> into a clean list</li>
+          <li data-step="3" onclick="runBuildStep(3)"><span class="check"></span>Spot the <strong>&nbsp;ownerless action&nbsp;</strong> AI left unassigned and assign it before it's lost</li>
+          <li data-step="4" onclick="runBuildStep(4)"><span class="check"></span>Verify one recap claim against the transcript — AI can mis-attribute who said what</li>
+          <li data-step="5" onclick="runBuildStep(5)"><span class="check"></span>Send a short <strong>&nbsp;follow-up&nbsp;</strong> with the action list so nobody's waiting on Sam</li>
+        </ul>
+        <div class="done-note" id="buildDone">✅ <strong>Three meetings caught up in fifteen minutes.</strong> Sam knows every decision, owns the right actions, and sent a follow-up — without watching a single full recording. AI summarised; Sam verified and assigned.</div>
+      </div>
+      <div class="build-card">
+        <h4>Catch-up feed (click checklist items)</h4>
+        <div class="feed" id="buildFeed">
+          <div class="feed-line hint-line"><span class="ft">--:--</span>Waiting for you to start… tick items on the left.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="err-panel" style="margin-top:1.4rem">
+      <div style="font-family:'DM Serif Display',serif;font-size:1.1rem;color:var(--navy);margin-bottom:.5rem">📋 Action items Copilot extracted — spot the gap</div>
+      <p style="font-size:.83rem;color:var(--text-secondary);line-height:1.6">Copilot pulled these action items from the three recaps. Three are complete. One has <strong>no owner</strong> — which means in real life nobody does it. Sam's job: assign it before it falls through the cracks.</p>
+      <table class="action-table">
+        <thead><tr><th>Action item</th><th>Owner</th><th>Due</th></tr></thead>
+        <tbody>
+          <tr><td>Restore Rivera Freight portal SLA &amp; write incident report</td><td class="owner">Sam</td><td class="date">Wed</td></tr>
+          <tr><td>Staffing plan for Warehouse A (fix 71% on-time)</td><td class="owner">Ops Manager</td><td class="date">Fri</td></tr>
+          <tr class="missing"><td>Confirm Q2 volume % with Finance for the report</td><td class="owner">— unassigned —</td><td class="date">before noon</td></tr>
+          <tr><td>Sign off new-driver onboarding with HR</td><td class="owner">Sam</td><td class="date">Today</td></tr>
+        </tbody>
+      </table>
+      <p style="font-size:.78rem;color:var(--text-muted);line-height:1.55;margin-top:.7rem">💡 That unassigned row is the same "27.4%" figure from Chapter 2 — the real number is still owed by Finance. An action item with no owner is a decision to do nothing. Sam assigns it to <strong>Sam</strong>, due before noon, so the report ships with a real figure or an honest "TBC."</p>
+    </div>
+
+    <div class="dash-grid">
+      <div class="dash-controls">
+        <div style="font-family:'DM Serif Display',serif;font-size:1.1rem;color:var(--navy);margin-bottom:.8rem">✉️ Follow-Up Assembler — configure the recap email</div>
+        <div class="prompt-field">
+          <label>Send to</label>
+          <select id="fAudience" onchange="renderFollow()">
+            <option value="team">My team (owners of the actions)</option>
+            <option value="director">Director Okafor (decisions only)</option>
+            <option value="all">Everyone who was invited</option>
+          </select>
+        </div>
+        <div class="prompt-field">
+          <label>Include</label>
+          <select id="fContent" onchange="renderFollow()">
+            <option value="actions">Action items + owners + dates</option>
+            <option value="decisions">Key decisions only</option>
+            <option value="full">Full recap + actions</option>
+          </select>
+        </div>
+        <div class="prompt-field">
+          <label>Tone</label>
+          <select id="fTone" onchange="renderFollow()">
+            <option value="brief">Brief &amp; friendly</option>
+            <option value="formal">Formal &amp; complete</option>
+            <option value="urgent">Direct — flag the deadline</option>
+          </select>
+        </div>
+        <p style="font-size:.78rem;color:var(--text-muted);line-height:1.55;margin-top:.6rem">💡 The email on the right updates as you choose. Copilot drafts it from the recap; Sam reads it, fixes any owner AI guessed wrong, and sends. AI drafts, human signs.</p>
+      </div>
+      <div>
+        <div class="dash-preview">
+          <div class="dashp-head">
+            <div class="dashp-title" id="followTitle">Follow-up · Team</div>
+            <div class="dashp-when" id="followWhen">Drafted by Copilot · Sam to review</div>
+          </div>
+          <div class="dashp-body" id="followBody">
+            <div class="greeting">Hi team,</div>
+            <p id="followText">Quick recap from the meetings I missed while away, with who owns what and when it's due:</p>
+            <p style="font-size:.78rem;color:var(--text-secondary)" id="followList">• Rivera portal SLA + incident report — <b>Sam</b>, Wed<br>• Warehouse A staffing plan — <b>Ops Manager</b>, Fri<br>• Confirm Q2 % with Finance — <b>Sam</b>, before noon<br>• Driver onboarding sign-off — <b>Sam</b>, today</p>
+            <div class="sig">— Sam · Team Lead</div>
+          </div>
+          <div class="dashp-note" id="followNote"><strong>Note:</strong> AI drafted this follow-up from the recap. Sam confirmed each owner and due date against the action list before sending — no ownerless items, no invented commitments.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ SHIP IT: NOON ═══════════ -->
+<section class="section" id="s5">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-num"><div class="num">5</div> Ship It · 12:00 Noon</div>
+      <h2 class="section-title">The Noon Verdict — Review Every AI Draft, Sign It, Send It</h2>
+      <p class="section-sub">The deadline is here. Feelings don't matter now — the checks do. Sam reviews everything AI touched this morning and decides whether each item is <strong>Verified</strong>, <strong>Flag &amp; fix</strong>, or <strong>Trust blindly</strong> (never that last one). Judge each line the way a professional would.</p>
+    </div>
+
+    <div class="story-beat">
+      <span class="sb-tag">📖 The story so far</span>
+      11:58 a.m. The report is drafted, the inbox is triaged, the client reply is fixed, the meetings are caught up. But shipping isn't clicking "send." It's taking two minutes to confirm the AI didn't quietly lie or over-promise anywhere. Judge the three items below before the noon deadline.
+    </div>
+
+    <div class="err-panel">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:.6rem">
+        <div>
+          <div style="font-family:'DM Serif Display',serif;font-size:1.15rem;color:var(--navy)">Sam's Morning — Final Review Before Noon</div>
+          <div style="font-size:.78rem;color:var(--text-muted)">Everything AI drafted · awaiting Sam's sign-off · 11:58 a.m.</div>
+        </div>
+      </div>
+
+      <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted);margin:.4rem 0 .8rem">Judge each line before you hit send</div>
+
+      <div class="scenario-panel" style="margin-top:0">
+        <div class="scenario-q" style="font-size:.92rem">📄 Line 1 — Word report: "Q2 volume up quarter-over-quarter (figure to be confirmed with Finance)" (Sam removed the invented 27.4%)</div>
+        <div class="scenario-options" style="grid-template-columns:1fr 1fr 1fr;gap:.5rem">
+          <button class="scenario-btn" style="text-align:center" onclick="judge('A','verify',this)">Verified ✓</button>
+          <button class="scenario-btn" style="text-align:center" onclick="judge('A','flag',this)">Flag &amp; fix</button>
+          <button class="scenario-btn" style="text-align:center" onclick="judge('A','trust',this)">Trust blindly</button>
+        </div>
+        <div class="scenario-feedback" id="fbA"></div>
+      </div>
+
+      <div class="scenario-panel">
+        <div class="scenario-q" style="font-size:.92rem">📧 Line 2 — Outlook reply to Rivera: "As compensation, we've credited your account $5,000 and upgraded you permanently" (Sam never authorised this)</div>
+        <div class="scenario-options" style="grid-template-columns:1fr 1fr 1fr;gap:.5rem">
+          <button class="scenario-btn" style="text-align:center" onclick="judge('B','verify',this)">Verified ✓</button>
+          <button class="scenario-btn" style="text-align:center" onclick="judge('B','flag',this)">Flag &amp; fix</button>
+          <button class="scenario-btn" style="text-align:center" onclick="judge('B','trust',this)">Trust blindly</button>
+        </div>
+        <div class="scenario-feedback" id="fbB"></div>
+      </div>
+
+      <div class="scenario-panel">
+        <div class="scenario-q" style="font-size:.92rem">📋 Line 3 — Meeting follow-up: "Q2 % confirmation — owner: Sam, due before noon" (Sam assigned the ownerless action to himself)</div>
+        <div class="scenario-options" style="grid-template-columns:1fr 1fr 1fr;gap:.5rem">
+          <button class="scenario-btn" style="text-align:center" onclick="judge('C','verify',this)">Verified ✓</button>
+          <button class="scenario-btn" style="text-align:center" onclick="judge('C','flag',this)">Flag &amp; fix</button>
+          <button class="scenario-btn" style="text-align:center" onclick="judge('C','trust',this)">Trust blindly</button>
+        </div>
+        <div class="scenario-feedback" id="fbC"></div>
+      </div>
+
+      <div class="week-verdict" id="weekVerdict">
+        <h4>📜 The Noon Verdict: <em>everything shipped — with Sam's name on it, honestly.</em></h4>
+        <div class="wv-grid">
+          <div class="wv-tile"><div class="v">1 morning</div><div class="l">Instead of the whole day</div></div>
+          <div class="wv-tile"><div class="v">3 threads</div><div class="l">Not 200, thanks to triage</div></div>
+          <div class="wv-tile"><div class="v">2 catches</div><div class="l">Fake stat + fake $5k credit</div></div>
+          <div class="wv-tile"><div class="v">11:58 a.m.</div><div class="l">Report sent · 2 min early</div></div>
+        </div>
+        <p>Sam kept Line 1 (the honest "to be confirmed" figure) and Line 3 (the ownerless action, now assigned) — both defensible. And Sam <strong>flagged and fixed Line 2</strong>, deleting the fabricated $5,000 credit Copilot invented, because no one had authorised it. Those catches are the difference between a team lead and a copy-paste button. Director Okafor replied: <em>"Clear report, early, and you already handled Rivera. Good to have you back."</em> The secret wasn't working harder through lunch. It was <strong>AI as leverage across the whole Office — Word, Outlook, Teams — verified by a human who reads the output.</strong> 🎉</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FOOTER RECAP ─── -->
+<div class="footer-cta">
+  <h2>🎉 At 8:40, that inbox was a <em>nightmare</em>.</h2>
+  <p>By noon it was a calm, handled morning Sam signed off with confidence. Here's what the story secretly taught you — the four lessons of Week 2: AI Office.</p>
+  <div class="recap-grid">
+    <div class="recap-card">
+      <div class="rn">Lesson 1</div>
+      <h4>The AI Office Landscape</h4>
+      <p>Match the tool to the job: free Copilot (general chat, no work data), Copilot Pro (paid personal), Microsoft 365 Copilot (enterprise, grounded in your tenant), Gemini for Workspace (Google's version). And know what's safe to paste where. Chapter 1.</p>
+    </div>
+    <div class="recap-card">
+      <div class="rn">Lesson 2</div>
+      <h4>AI in Word</h4>
+      <p>Turn messy notes into a polished one-pager, re-tone it for any audience — and always catch the invented statistic or fake citation. AI drafts prose; you supply the true numbers and sources. Chapter 2's "27.4%" is the whole point.</p>
+    </div>
+    <div class="recap-card">
+      <div class="rn">Lesson 3</div>
+      <h4>AI in Outlook</h4>
+      <p>Summarize a 200-email inbox, triage to the few that matter, draft a tricky reply in the right tone, and turn an email into a meeting — while catching hallucinated commitments and wrong recipients before you hit send. Chapter 3.</p>
+    </div>
+    <div class="recap-card">
+      <div class="rn">Lesson 4</div>
+      <h4>AI for Meetings &amp; Notes</h4>
+      <p>Catch up on missed meetings from a recap, extract action items with owner + due date, assign the ownerless ones, send a follow-up — and handle recording consent correctly. Summaries save time; you verify and own the actions. Chapter 4.</p>
+    </div>
+  </div>
+  <button class="btn-action" style="font-size:.9rem;padding:.8rem 1.8rem" onclick="document.getElementById('s1').scrollIntoView({behavior:'smooth'})">↻ Replay Sam's morning</button>
+  <div class="footer-note">Northwind Logistics is a teaching scenario. Real AI tools, licences, privacy rules and recording laws change — always confirm what your workplace and local law allow before pasting company data into an AI or recording a meeting, and remember the golden rule this whole week was built on: <strong>AI is leverage, not truth. A human who reads the output ships the work.</strong></div>
+</div>
+
+<!-- ─── COMPLETION BAR ─── -->
+<div class="completion-bar">
+  <div class="completion-info"><span style="font-size:1.1rem">📥</span><span>Sam's Morning Progress</span></div>
+  <div class="completion-track"><div class="completion-fill" id="completionFill" style="width:0%"></div></div>
+  <div class="completion-percent" id="completionPct">0%</div>
+</div>
+
+<script>
+/* ───────── PROGRESS TRACKING ───────── */
+const visited = new Set();
+function markVisited(id){
+  visited.add(id);
+  const pct = Math.round((visited.size / 5) * 100);
+  document.getElementById('completionFill').style.width = pct + '%';
+  document.getElementById('completionPct').textContent = pct + '%';
+  document.getElementById('headerProgressText').textContent = `${visited.size} of 5 chapters explored`;
+}
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.target).scrollIntoView({behavior:'smooth', block:'start'});
+    markVisited(btn.dataset.target);
+  });
+});
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting && e.intersectionRatio > 0.3) {
+      markVisited(e.target.id);
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.target === e.target.id));
+    }
+  });
+}, {threshold:[0.3]});
+document.querySelectorAll('.section').forEach(s => observer.observe(s));
+
+/* ───────── CHAPTER 1: TOOL PICK ───────── */
+const toolInfo = {
+  free: `<span class="verdict-pill vp-mid">Free · but can't see your work data</span><br><strong>Copilot (free)</strong> is the no-cost Microsoft Copilot chat on the web or in the Edge/Windows sidebar. It's genuinely useful for <em>general</em> drafting, rewriting, brainstorming and questions. Two honest limits: it <strong>cannot read your actual work emails, files or meetings</strong> (no Microsoft Graph grounding), and free-tier conversations aren't covered by your organisation's enterprise data protection — so <strong>don't paste confidential company content into it.</strong> <em>Great for generic help; wrong tool for real inbox data.</em>`,
+  pro: `<span class="verdict-pill vp-mid">Paid · personal, not enterprise</span><br><strong>Copilot Pro</strong> is a paid <em>personal</em> subscription (~a monthly fee for individuals). It adds Copilot features inside your <em>personal</em> Word, Excel, PowerPoint and Outlook.com, plus priority model access. Useful if you're an individual creator — but it is <strong>not</strong> the enterprise licence, so it doesn't safely connect to your work tenant's emails and files. For Sam's actual work inbox, this isn't the one. <em>Personal power-up; not a work-data tool.</em>`,
+  m365: `<span class="verdict-pill vp-good">✓ The one that can see Sam's real inbox</span><br><strong>Microsoft 365 Copilot</strong> is the <em>enterprise</em> licence your organisation buys and enables. It's grounded in <strong>your</strong> work emails, documents, chats and meetings through Microsoft Graph, and lives inside Word, Outlook and Teams — with your data staying inside the company tenant under enterprise data protection. This is the tool that can summarise Sam's 200 emails and recap the missed meetings. <strong>Powerful — but only if IT has provisioned it.</strong> <em>The workhorse of AI Office, when licensed.</em>`,
+  gemini: `<span class="verdict-pill vp-mid">Right idea · wrong suite for Sam</span><br><strong>Gemini for Workspace</strong> is Google's enterprise AI built into Gmail, Docs, Sheets, Slides and Meet — generate drafts, summarise threads and take meeting notes with a prompt, much like M365 Copilot but in Google's suite. It's excellent… if your organisation runs on <strong>Google Workspace</strong>. Northwind runs on Microsoft 365, so this isn't Sam's tool today — but it's the exact same skill, portable to whichever suite you land in. <em>Know it exists; use it when you're on Google.</em>`
+};
+function pickTool(k){
+  document.querySelectorAll('#s1 .pick-card').forEach(c => c.classList.toggle('active', c.dataset.tool === k));
+  const d = document.getElementById('toolDetail');
+  d.innerHTML = toolInfo[k];
+  d.classList.add('show');
+}
+
+/* prompt showdown */
+const promptResults = [
+  {ok:false, fb:'✗ Too vague. "Write a good email" gives the AI nothing — it doesn\'t know the situation, the tone you need, or what you can promise. You\'ll get a generic template, not a reply you can send to an angry client. Vague prompt in, vague answer out. Try the detailed one.',
+   chat:`<div class="chat-msg user"><span class="who">Sam</span>Write a good email.</div><div class="chat-msg ai"><span class="who">AI</span>Sure! Here's a general template: "Dear [Name], Thank you for reaching out. We value your business…" <strong>(A hollow template, because you gave it no situation, tone or constraints to work with.)</strong></div>`},
+  {ok:false, fb:'✗ Dangerous. "Promise them whatever fixes it" hands the AI authority you never gave it — this is exactly how a draft ends up committing the company to a refund or upgrade nobody approved (you\'ll see that trap in Chapter 3). Never let AI invent commitments on your behalf.',
+   chat:`<div class="chat-msg user"><span class="who">Sam</span>Make the client happy again, promise them whatever fixes it.</div><div class="chat-msg ai"><span class="who">AI</span>Understood — here's a warm reply offering a generous account credit and a permanent service upgrade to win them back… <strong>(It will happily invent commitments you never had the authority to make. Don't outsource authority to a model.)</strong></div>`},
+  {ok:true, fb:'✓ Exactly. Situation + tone + explicit guardrails ("don\'t promise a date I haven\'t confirmed") + a length limit + "I\'ll edit before sending." That last clause is the whole course in one line — you\'re using AI as leverage, not blind trust. This becomes the calm, accountable draft you\'ll fix and ship in Chapter 3.',
+   chat:`<div class="chat-msg user"><span class="who">Sam</span>Draft a reply to a client upset their shipment update is late. Calm, professional, accountable — acknowledge the delay, don't promise a date I haven't confirmed, offer to call today. Under 120 words. I'll edit before sending.</div><div class="chat-msg ai"><span class="who">AI</span>"Hi [Name], I'm sorry for the delay and the disruption it caused. Our tracking portal was down for two days last week — that's on us. I'd like to walk you through what happened and how we'll prevent it; are you free for a short call today? I'll follow up in writing straight after." <strong>← Notice it made no promise you hadn't approved. Now read it before you send.</strong></div>`}
+];
+let promptAnswered = false;
+function pickPrompt(i){
+  const r = promptResults[i];
+  const btns = document.querySelectorAll('#s1 .scenario-panel:first-of-type .scenario-btn');
+  if (!promptAnswered){
+    btns.forEach((b,j) => { if (j===2) b.classList.add('correct'); else if (j===i && !r.ok) b.classList.add('wrong'); });
+    if (r.ok) promptAnswered = true;
+  }
+  const fb = document.getElementById('promptFb');
+  fb.className = 'scenario-feedback show ' + (r.ok ? 'success' : 'fail');
+  fb.innerHTML = r.fb;
+  document.getElementById('promptChat').innerHTML = r.chat;
+}
+
+/* tool + privacy quiz */
+const toolQs = [
+  {q:"You want to summarise your real work inbox with its confidential client threads. Which tool is built for that?", opts:["The free Copilot web chat — paste the emails in","Microsoft 365 Copilot (enterprise) — it's grounded in your tenant and keeps data inside the company","Copilot Pro personal subscription"], correct:1, explain:"Only the enterprise Microsoft 365 Copilot licence connects to your work emails/files via Microsoft Graph with enterprise data protection. Free Copilot can't see your inbox and isn't covered by your org's data promise; Copilot Pro is personal, not enterprise."},
+  {q:"You only have free Copilot, no enterprise licence. What should you NOT do?", opts:["Ask it to help reword a sentence you typed yourself","Paste a confidential client contract into it to 'summarise'","Use it to brainstorm meeting-agenda ideas"], correct:1, explain:"Free-tier chat isn't covered by your organisation's data protection, so pasting confidential company documents can breach policy. Use it for generic, non-sensitive help — or use the enterprise tool for real company data."},
+  {q:"Your company runs entirely on Google Workspace, not Microsoft 365. Which AI is the natural fit?", opts:["Microsoft 365 Copilot","Gemini for Workspace, built into Gmail, Docs and Meet","Neither — Google has no AI"], correct:1, explain:"Gemini for Workspace is Google's enterprise AI inside Gmail, Docs, Sheets and Meet — the same idea as M365 Copilot, different suite. Match the AI to the suite your org actually uses."}
+];
+let tqIdx = 0;
+function renderToolQ(){
+  const s = toolQs[tqIdx];
+  document.getElementById('toolQ').textContent = `Round ${tqIdx+1}/3 — ${s.q}`;
+  document.getElementById('toolOpts').innerHTML = s.opts.map((o,i)=>`<button class="scenario-btn" onclick="answerToolQ(${i})">${o}</button>`).join('');
+  const fb = document.getElementById('toolFb');
+  fb.className = 'scenario-feedback'; fb.innerHTML = '';
+  document.getElementById('toolNext').style.display = 'none';
+}
+function answerToolQ(i){
+  const s = toolQs[tqIdx];
+  document.querySelectorAll('#toolOpts .scenario-btn').forEach((b,j)=>{
+    b.disabled = true;
+    if (j===s.correct) b.classList.add('correct'); else if (j===i) b.classList.add('wrong');
+  });
+  const fb = document.getElementById('toolFb');
+  fb.className = 'scenario-feedback show ' + (i===s.correct ? 'success' : 'fail');
+  fb.innerHTML = (i===s.correct ? '✓ Spot on! ' : '✗ Not quite. ') + s.explain + (tqIdx===toolQs.length-1 ? '<br><br>🎉 Chapter 1 complete — Sam will use Microsoft 365 Copilot for real inbox/meeting work and free Copilot only for generic, non-sensitive help. Next: draft the report in Word.' : '');
+  document.getElementById('toolNext').style.display = tqIdx < toolQs.length-1 ? 'inline-block' : 'none';
+}
+function nextToolQ(){ tqIdx++; if (tqIdx < toolQs.length) renderToolQ(); }
+renderToolQ();
+
+/* ───────── CHAPTER 2: TONE LAB ───────── */
+const tones = {
+  director: {
+    prompt:'Rewrite the status report for Director Okafor: concise, exec-level, lead with the one thing that needs a decision. Under 60 words.',
+    out:'"One client escalation (Rivera portal outage, being handled) and one performance gap: Warehouse A at 71% on-time vs B\'s 94% — recommend a staffing review. Q2 volume up over Q1; exact figure to be confirmed with Finance. Report and Rivera call both actioned today."',
+    explain:`<strong>Executives skim.</strong> This version leads with the decision (Warehouse A staffing), states facts, and flags the one number that\'s still unconfirmed rather than pretending it\'s solid. Same content as the draft — reshaped for who\'s reading it. Copilot can re-tone in one prompt; you decide which framing is honest.`
+  },
+  team: {
+    prompt:'Rewrite it as a warm, encouraging note to my team so they don\'t feel blamed for Warehouse A.',
+    out:'"Team — great week overall. Warehouse B\'s 94% on-time is excellent. Warehouse A dipped to 71%, which looks like a staffing issue, not effort — let\'s fix the rota together. I\'ll handle the Rivera follow-up and the report. Thank you all."',
+    explain:`<strong>Same facts, different feeling.</strong> A team reading "trailed at 71%" hears blame; "looks like a staffing issue, not effort" builds trust. Tone is a real deliverable, and AI is fast at it — but <em>you</em> choose the intent. Never let a cold auto-draft go to people who\'ll read emotion into it.`
+  },
+  bullets: {
+    prompt:'Give me a 4-bullet TL;DR I can paste into a Teams channel.',
+    out:'• Rivera Freight: portal outage → client escalation, reply + call today.<br>• Warehouse A 71% vs B 94% on-time → staffing review.<br>• Q2 volume up vs Q1 → exact % TBC with Finance.<br>• Driver onboarding blocked on my HR sign-off → clearing today.',
+    explain:`<strong>Format is part of tone.</strong> For a fast-moving channel, four scannable bullets beat three paragraphs. Notice the Q2 line honestly says "TBC" — the same discipline as the prose version. AI reformats instantly; you keep the honesty in every format.`
+  },
+  client: {
+    prompt:'Rewrite the summary so it would be safe if it were accidentally forwarded to a client — no internal blame, no unconfirmed numbers.',
+    out:'"We experienced a short service incident last week affecting tracking visibility, which we\'re actively resolving with the affected client, and we\'re reviewing operational capacity to keep on-time performance high across all sites. Volume continues to grow quarter over quarter."',
+    explain:`<strong>Audience-safety is a skill.</strong> Internal drafts name warehouses and percentages; a client-safe version removes anything embarrassing-if-leaked and drops unconfirmed figures entirely. Ask AI for this variant deliberately before anything leaves the building. <em>Assume every doc can be forwarded.</em>`
+  }
+};
+function setTone(k){
+  document.querySelectorAll('.tone-tab').forEach(t => t.classList.toggle('active', t.dataset.tone === k));
+  const t = tones[k];
+  document.getElementById('tonePrompt').innerHTML = '<span class="who">Sam → Copilot</span>' + t.prompt;
+  document.getElementById('toneOut').innerHTML = t.out;
+  document.getElementById('toneExplain').innerHTML = t.explain;
+}
+setTone('director');
+
+/* invented-fact checkpoint */
+const factFbs = [
+  {ok:false, fb:'✗ <strong>The classic trap.</strong> Specificity is not accuracy — "27.4%" sounds credible precisely because it\'s precise, and that\'s what makes a hallucination dangerous. Your own notes said the figure was unknown, so any number the AI produced is invented. Never ship a number your source didn\'t contain.'},
+  {ok:true, fb:'✓ <strong>Exactly right.</strong> The notes said "TBD — ask finance," so the honest move is to remove the fabricated 27.4%, state the direction you <em>do</em> know ("up quarter-over-quarter"), and mark the exact figure as pending until Finance confirms it. AI can draft prose beautifully; it cannot invent facts for you. You supply the true numbers.'},
+  {ok:false, fb:'✗ <strong>Rounding a made-up number doesn\'t make it real.</strong> "About 27%" is still a figure your source never contained — you\'ve just disguised the fabrication. Either get the real number from Finance or say it\'s to be confirmed. Don\'t launder a hallucination into an estimate.'}
+];
+function factQ(i){
+  const btns = document.querySelectorAll('#s2 .err-panel .scenario-btn');
+  btns.forEach((b,j)=>{ b.disabled = true; if (factFbs[j].ok) b.classList.add('correct'); else if (j===i) b.classList.add('wrong'); });
+  const fb = document.getElementById('factFb');
+  fb.className = 'scenario-feedback show ' + (factFbs[i].ok ? 'success' : 'fail');
+  fb.innerHTML = factFbs[i].fb;
+}
+
+/* AI-in-Word quiz */
+const wordQs = [
+  {q:"Copilot drafts a report and cites a study: 'Gartner, 2023, p.42.' Best practice?", opts:["Trust it — it looks like a real citation","Verify the source actually exists and says that before keeping it — AI invents real-looking references","Delete all citations to be safe"], correct:1, explain:"Fabricated citations are a well-known AI failure: a model can produce a plausible author, year and page for a source that doesn't exist. Always confirm a reference is real and says what's claimed before it ships."},
+  {q:"You feed Copilot rough notes and it returns a polished one-pager. What's the honest way to use it?", opts:["Send it as-is — it's cleaner than yours","Treat it as a first draft: check every fact against your notes, fix tone, remove anything invented, then sign it","Never use AI drafts at all"], correct:1, explain:"AI is superb at structure and prose from messy input — that's a real time-saver. But the draft is a starting point you verify and own, not a finished document. AI drafts, you verify."},
+  {q:"You need the same report for the Director and for your team. Fastest professional approach?", opts:["Write it twice by hand","Ask Copilot to re-tone the single verified draft for each audience, then review each version","Send one version to everyone and hope"], correct:1, explain:"Re-toning is where AI shines — one prompt turns a verified draft into a concise exec version or a warm team note. You still review each, because tone changes how facts land."}
+];
+let wqIdx = 0;
+function renderWordQ(){
+  const s = wordQs[wqIdx];
+  document.getElementById('wordQ').textContent = `Round ${wqIdx+1}/3 — ${s.q}`;
+  document.getElementById('wordOpts').innerHTML = s.opts.map((o,i)=>`<button class="scenario-btn" onclick="answerWordQ(${i})">${o}</button>`).join('');
+  const fb = document.getElementById('wordFb');
+  fb.className = 'scenario-feedback'; fb.innerHTML = '';
+  document.getElementById('wordNext').style.display = 'none';
+}
+function answerWordQ(i){
+  const s = wordQs[wqIdx];
+  document.querySelectorAll('#wordOpts .scenario-btn').forEach((b,j)=>{
+    b.disabled = true;
+    if (j===s.correct) b.classList.add('correct'); else if (j===i) b.classList.add('wrong');
+  });
+  const fb = document.getElementById('wordFb');
+  fb.className = 'scenario-feedback show ' + (i===s.correct ? 'success' : 'fail');
+  fb.innerHTML = (i===s.correct ? '✓ Spot on! ' : '✗ Not quite. ') + s.explain + (wqIdx===wordQs.length-1 ? '<br><br>🎉 Chapter 2 complete — the report is drafted, re-toned, and the invented 27.4% is gone. Next: tame the 200-email inbox.' : '');
+  document.getElementById('wordNext').style.display = wqIdx < wordQs.length-1 ? 'inline-block' : 'none';
+}
+function nextWordQ(){ wqIdx++; if (wqIdx < wordQs.length) renderWordQ(); }
+renderWordQ();
+
+/* ───────── CHAPTER 3: OUTLOOK ───────── */
+/* send checkpoint */
+const sendFbs = [
+  {ok:false, fb:'✗ <strong>The expensive mistake.</strong> A $5,000 credit and a permanent upgrade are real obligations — sending them because the AI wrote them binds the company to something Sam had no authority to give. "It sounds generous" is exactly how a hallucinated commitment becomes a contract. Never send a promise you didn\'t make.'},
+  {ok:true, fb:'✓ <strong>This is the whole chapter in one move.</strong> Delete the invented commitment, confirm the recipient is the current contact (not the one who left), keep the genuine apology and call offer, and only promise remedies you actually have authority to make. AI drafted the tone beautifully; you supply the truth and the authority. A human who reads the output ships the reply.'},
+  {ok:false, fb:'✗ <strong>Passing the buck doesn\'t fix it.</strong> Forwarding an unverified AI draft to your boss just moves an invented $5,000 promise to someone else\'s outbox — it\'s still wrong, and now it\'s slower. You own the review of anything you drafted. Fix it, then send the reply you can stand behind.'}
+];
+function sendQ(i){
+  const btns = document.querySelectorAll('#s3 .err-panel .scenario-btn');
+  btns.forEach((b,j)=>{ b.disabled = true; if (sendFbs[j].ok) b.classList.add('correct'); else if (j===i) b.classList.add('wrong'); });
+  const fb = document.getElementById('sendFb');
+  fb.className = 'scenario-feedback show ' + (sendFbs[i].ok ? 'success' : 'fail');
+  fb.innerHTML = sendFbs[i].fb;
+}
+
+/* ───────── CHAPTER 4: MEETINGS ───────── */
+/* consent checkpoint */
+const consentFbs = [
+  {ok:false, fb:'✗ <strong>A banner isn\'t always enough.</strong> Some jurisdictions require you to actively inform participants — or get everyone\'s consent — before recording, and quietly relying on a notice can breach privacy law and erode trust. Announce it and confirm people are okay.'},
+  {ok:true, fb:'✓ <strong>Exactly right.</strong> Say clearly that the meeting is being recorded and transcribed, check that everyone\'s comfortable, and follow local law and company policy — some regions require all-party (two-party) consent, and people may want to speak off the record. AI note-taking is powerful, but consent and transparency come first.'},
+  {ok:false, fb:'✗ <strong>Consent isn\'t optional.</strong> "Always record, never ask" ignores privacy law and the trust of the people in the room. In some places recording without proper consent is illegal, and even where it\'s allowed, surprising people erodes psychological safety. Be transparent every time.'}
+];
+function consentQ(i){
+  const btns = document.querySelectorAll('#s4 .scenario-panel:first-of-type .scenario-btn');
+  btns.forEach((b,j)=>{ b.disabled = true; if (consentFbs[j].ok) b.classList.add('correct'); else if (j===i) b.classList.add('wrong'); });
+  const fb = document.getElementById('consentFb');
+  fb.className = 'scenario-feedback show ' + (consentFbs[i].ok ? 'success' : 'fail');
+  fb.innerHTML = consentFbs[i].fb;
+}
+
+/* recap checklist + feed */
+const buildEvents = [
+  {t:'11:02', msg:'Recaps opened for all 3 missed meetings. Copilot summary read in place of ~4 hours of recordings. Time bought.'},
+  {t:'11:05', msg:'Asked Copilot "what was decided and what affects my team?" — got decisions on Warehouse A staffing and the carrier renewal in plain language.'},
+  {t:'11:08', msg:'Action items extracted with owner + due date into one clean list. Three fully assigned, one blank.'},
+  {t:'11:10', msg:'Ownerless action spotted: "Confirm Q2 % with Finance." Left blank, it dies. Assigned to Sam, due before noon.'},
+  {t:'11:13', msg:'One recap claim ("Ops agreed to hire two temps") checked against the transcript — it was a proposal, not a decision. Corrected before it spread.'},
+  {t:'11:16', msg:'Follow-up sent to the team with the verified action list. Everyone knows who owns what. Nobody\'s waiting on Sam.'}
+];
+const buildSteps = new Set();
+function runBuildStep(i){
+  if (buildSteps.has(i)) return;
+  buildSteps.add(i);
+  document.querySelector(`#buildList li[data-step="${i}"]`).classList.add('done');
+  const feed = document.getElementById('buildFeed');
+  if (buildSteps.size === 1) feed.innerHTML = '';
+  const e = buildEvents[i];
+  feed.innerHTML += `<div class="feed-line"><span class="ft">${e.t}</span><span>${e.msg}</span></div>`;
+  feed.scrollTop = feed.scrollHeight;
+  if (buildSteps.size === buildEvents.length) document.getElementById('buildDone').style.display = 'block';
+}
+
+/* follow-up assembler */
+const followData = {
+  audiences: {
+    team:{title:'Follow-up · Team', greet:'Hi team,'},
+    director:{title:'Follow-up · Director Okafor', greet:'Hi Director Okafor,'},
+    all:{title:'Follow-up · All invited', greet:'Hi all,'}
+  },
+  contents: {
+    actions:{lead:'Quick recap from the meetings I missed while away, with who owns what and when it\'s due:',
+             list:'• Rivera portal SLA + incident report — <b>Sam</b>, Wed<br>• Warehouse A staffing plan — <b>Ops Manager</b>, Fri<br>• Confirm Q2 % with Finance — <b>Sam</b>, before noon<br>• Driver onboarding sign-off — <b>Sam</b>, today'},
+    decisions:{lead:'Summary of the key decisions from the meetings I missed:',
+             list:'• Warehouse A: staffing review approved to fix on-time rate.<br>• Carrier contract: renewal proceeding, Legal reviewing terms.<br>• Q2 volume: up over Q1 — exact figure to be confirmed with Finance.'},
+    full:{lead:'Full recap of the three sessions plus the actions arising, so we\'re aligned:',
+             list:'Decisions: Warehouse A staffing review; carrier renewal in Legal review.<br>Actions: Rivera SLA (Sam, Wed) · Warehouse A plan (Ops Mgr, Fri) · Q2 % (Sam, before noon) · onboarding sign-off (Sam, today).'}
+  },
+  tones: {
+    brief:'Drafted by Copilot · Sam to review · brief',
+    formal:'Drafted by Copilot · Sam to review · formal',
+    urgent:'Drafted by Copilot · Sam to review · deadline-flagged'
+  }
+};
+function renderFollow(){
+  const a = document.getElementById('fAudience').value;
+  const c = document.getElementById('fContent').value;
+  const t = document.getElementById('fTone').value;
+  document.getElementById('followTitle').textContent = followData.audiences[a].title;
+  document.querySelector('#followBody .greeting').textContent = followData.audiences[a].greet;
+  document.getElementById('followWhen').textContent = followData.tones[t];
+  let lead = followData.contents[c].lead;
+  if (t === 'urgent') lead = '⏰ Time-sensitive — please note the deadlines below. ' + lead;
+  if (t === 'formal') lead = 'Please find below a record of the sessions and resulting actions. ' + lead;
+  document.getElementById('followText').innerHTML = lead;
+  document.getElementById('followList').innerHTML = followData.contents[c].list;
+}
+
+/* ───────── SHIP IT: NOON JUDGE ───────── */
+const judgeKey = {
+  A: {right:'verify', fb:{
+    verify:'✓ Correct — <strong>VERIFIED.</strong> Sam removed the fabricated 27.4% and stated only what the notes actually supported: "up quarter-over-quarter, figure to be confirmed with Finance." It\'s honest and defensible. Ship it — and drop the real number in once Finance replies.',
+    flag:'△ Over-cautious. This line has already been fixed — the invented number is gone and the honest "to be confirmed" wording is in. Nothing left to flag; it\'s clean. Verdict: <strong>VERIFIED</strong>.',
+    trust:'✗ Right answer, wrong reason — never "trust blindly," even when a line is correct. This one is fine because Sam verified it against the notes and removed the hallucination. Verdict: <strong>VERIFIED</strong> (because checked, not because trusted).'}},
+  B: {right:'flag', fb:{
+    flag:'✓ Correct — <strong>FLAG &amp; FIX.</strong> Copilot invented a $5,000 credit and a permanent upgrade that Sam never authorised — a real commitment the company would be bound to. Delete it, keep the genuine apology and call offer, and promise only what Sam actually has authority to give. This single edit is what separates a team lead from a copy-paste button.',
+    verify:'✗ You can\'t "verify" a commitment nobody made. There is no approval anywhere for a $5,000 credit — it\'s a hallucination the AI produced, not a fact to confirm. Sending it creates a liability. Verdict: <strong>FLAG &amp; FIX</strong>.',
+    trust:'✗ This is the exact trap the whole week warns about. A confident AI draft promising money the company never agreed to, sent unread, is how real obligations get created by accident. Verdict: <strong>FLAG &amp; remove it</strong>.'}},
+  C: {right:'verify', fb:{
+    verify:'✓ Correct — <strong>VERIFIED.</strong> The recap left this action ownerless — and an action with no owner is a decision to do nothing. Sam assigned it to himself, due before noon, so the Q2 figure gets confirmed and the report ships honestly. Assigning the gap is the fix; it\'s now solid.',
+    flag:'△ No further flag needed — the gap has already been fixed. Sam caught the ownerless item and assigned it to himself with a clear deadline. That\'s exactly what "verified" looks like here. Verdict: <strong>VERIFIED</strong>.',
+    trust:'✗ It happens to be handled correctly, but "trust blindly" is never the habit. It\'s verified because Sam noticed the missing owner and assigned it — vigilance, not faith. Verdict: <strong>VERIFIED</strong>.'}}
+};
+const judged = {};
+function judge(line, verdict, btn){
+  if (judged[line]) return;
+  const k = judgeKey[line];
+  judged[line] = true;
+  const panel = btn.closest('.scenario-panel');
+  panel.querySelectorAll('.scenario-btn').forEach(b => {
+    b.disabled = true;
+    b.dataset.v = b.getAttribute('onclick').includes("'"+k.right+"'") ? 'r' : '';
+  });
+  panel.querySelectorAll('.scenario-btn').forEach(b => {
+    if (b.getAttribute('onclick').includes("'"+k.right+"'")) b.classList.add('correct');
+    else if (b === btn) b.classList.add('wrong');
+  });
+  const fb = document.getElementById('fb'+line);
+  fb.className = 'scenario-feedback show ' + (verdict===k.right ? 'success' : 'fail');
+  fb.innerHTML = k.fb[verdict];
+  if (judged.A && judged.B && judged.C){
+    setTimeout(()=>{ document.getElementById('weekVerdict').classList.add('show'); document.getElementById('weekVerdict').scrollIntoView({behavior:'smooth', block:'center'}); }, 600);
+  }
+}
+</script>
+</body>
+</html>
