@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>AI Automation &amp; Reporting · Lesson 04</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,0,400;9..144,0,600;9..144,0,800;9..144,1,600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+
+:root{
+  --orange:#EF7F1A; --orange-light:#FF9429; --orange-dark:#D55222;
+  --brown:#412C23; --brown-dark:#2F1D19; --tan:#A34E1C;
+  --yellow:#FECC00; --cream:#FBF6EE; --paper:#FFFCF6;
+  --ink:#1C1410; --muted:#6E5C50; --line:#E8DCC8; --accent:#008DD2;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',system-ui,sans-serif;
+  background:var(--paper); color:var(--ink); line-height:1.6; overflow-x:hidden;
+}
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:radial-gradient(circle at 1px 1px,rgba(65,44,35,0.05) 1px,transparent 0);
+  background-size:24px 24px;
+}
+.topbar{
+  position:sticky;top:0;z-index:100;
+  background:rgba(255,252,246,0.92); backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+  padding:14px 40px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.brand{font-family:'Fraunces',serif;font-weight:800;font-size:17px;letter-spacing:-0.01em;color:var(--brown-dark)}
+.brand .dot{color:var(--orange)}
+.brand .sub{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.15em;color:var(--muted);font-weight:500;text-transform:uppercase;margin-left:8px}
+.logo-slot{width:44px;height:44px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.logo-slot svg{width:100%;height:100%;display:block}
+.page{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:50px 40px 100px}
+.hero{padding:30px 0 50px;border-bottom:1px solid var(--line)}
+.eyebrow{
+  font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.18em;
+  text-transform:uppercase;color:var(--orange-dark);font-weight:600;
+  display:inline-flex;align-items:center;gap:10px;
+}
+.eyebrow::before{content:"";width:24px;height:2px;background:var(--orange)}
+h1{
+  font-family:'Fraunces',serif;font-weight:800;
+  font-size:clamp(38px,7vw,80px);line-height:0.98;letter-spacing:-0.03em;
+  margin:18px 0 20px;color:var(--brown-dark);
+}
+h1 em{font-style:italic;color:var(--orange-dark);font-weight:600}
+.lede{font-size:19px;max-width:680px;color:var(--muted)}
+section{padding:70px 0;border-bottom:1px solid var(--line)}
+section:last-of-type{border-bottom:none}
+.section-num{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--orange);font-weight:600;letter-spacing:0.08em}
+h2{
+  font-family:'Fraunces',serif;font-weight:700;
+  font-size:clamp(28px,4.5vw,48px);line-height:1.05;letter-spacing:-0.02em;
+  margin:10px 0 22px;color:var(--brown-dark);max-width:720px;
+}
+h3{font-family:'Fraunces',serif;font-weight:600;font-size:24px;color:var(--brown-dark);margin:28px 0 12px}
+p{max-width:680px;margin-bottom:14px;color:var(--ink)}
+.lead{font-size:17px;color:var(--muted);max-width:680px;margin-bottom:26px}
+code{font-family:'JetBrains Mono',monospace;font-size:0.92em;background:var(--cream);padding:2px 6px;border-radius:4px;color:var(--brown-dark)}
+.illus{
+  background:var(--cream);border:1px solid var(--line);border-radius:18px;
+  padding:32px;margin:24px 0;position:relative;overflow:hidden;
+}
+.illus-title{
+  font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);
+  letter-spacing:0.12em;text-transform:uppercase;
+  margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:10px;
+}
+.controls{display:flex;gap:8px;flex-wrap:wrap}
+.controls button{
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  background:var(--paper);border:1px solid var(--line);color:var(--brown);
+  padding:6px 12px;border-radius:6px;cursor:pointer;
+  text-transform:uppercase;letter-spacing:0.1em;transition:all .2s;
+}
+.controls button:hover{background:var(--orange);color:#fff;border-color:var(--orange)}
+.controls button.active{background:var(--brown-dark);color:#fff;border-color:var(--brown-dark)}
+.takeaway{
+  background:var(--brown-dark);color:var(--paper);
+  border-radius:18px;padding:44px;margin-top:50px;position:relative;overflow:hidden;
+}
+.takeaway::after{
+  content:"";position:absolute;top:-40px;right:-40px;width:180px;height:180px;
+  border-radius:50%;background:radial-gradient(circle,var(--orange),transparent 70%);opacity:0.4;
+}
+.takeaway h2{color:var(--paper);margin-bottom:16px}
+.takeaway p{color:#E8D9C5;font-size:16px;max-width:680px}
+.takeaway ul{list-style:none;margin-top:18px;display:grid;gap:8px}
+.takeaway li{font-family:'JetBrains Mono',monospace;font-size:13px;padding-left:22px;position:relative;color:#FBE7CB}
+.takeaway li::before{content:"→";position:absolute;left:0;color:var(--orange);font-weight:bold}
+footer{text-align:center;padding:36px;color:var(--muted);font-size:12px;font-family:'JetBrains Mono',monospace;letter-spacing:0.1em}
+@media(max-width:700px){
+  .topbar{padding:12px 18px}
+  .page{padding:30px 18px 70px}
+  .illus{padding:20px}
+  .takeaway{padding:28px}
+  .logo-slot{width:42px;height:66px}
+}
+
+/* ── page-specific: automation scoring grid ───────────────── */
+.score-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-bottom:20px}
+.task-card{
+  background:var(--paper);border:1px solid var(--line);border-radius:14px;
+  padding:18px 20px;cursor:pointer;transition:all .25s;position:relative;
+}
+.task-card:hover{border-color:var(--orange);transform:translateY(-2px)}
+.task-card.picked{border-color:var(--orange);box-shadow:0 0 0 2px rgba(239,127,26,0.18)}
+.task-card h4{font-family:'Fraunces',serif;font-size:18px;color:var(--brown-dark);margin-bottom:4px}
+.task-card .tdesc{font-size:12.5px;color:var(--muted);max-width:none;margin-bottom:12px}
+.metric{margin-bottom:9px}
+.metric .mlab{display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.06em;text-transform:uppercase;color:var(--muted);margin-bottom:3px}
+.mbar{height:7px;background:var(--cream);border-radius:4px;overflow:hidden}
+.mfill{height:100%;border-radius:4px;width:0;transition:width .6s ease}
+.mfill.freq{background:var(--orange)}
+.mfill.pain{background:var(--tan)}
+.mfill.stab{background:var(--accent)}
+.score-verdict{
+  background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:18px 20px;
+  display:flex;align-items:center;gap:18px;flex-wrap:wrap;
+}
+.score-ring{flex-shrink:0;width:84px;height:84px;position:relative}
+.score-ring svg{transform:rotate(-90deg)}
+.score-ring .snum{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-weight:800;font-size:26px;color:var(--brown-dark)}
+.score-text{flex:1;min-width:200px}
+.score-text .stag{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;font-weight:600;margin-bottom:4px}
+.score-text p{font-size:13.5px;color:var(--ink);margin:0;max-width:none;line-height:1.5}
+.stag.go{color:#2E7D46} .stag.maybe{color:#7A6200} .stag.skip{color:var(--orange-dark)}
+
+/* ── page-specific: toolkit comparison cards ──────────────── */
+.tool-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+.tool-tab{
+  font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.06em;
+  background:var(--paper);border:1px solid var(--line);color:var(--brown);
+  padding:9px 16px;border-radius:999px;cursor:pointer;transition:all .2s;
+}
+.tool-tab:hover{border-color:var(--orange);color:var(--orange-dark)}
+.tool-tab.active{background:var(--orange);border-color:var(--orange);color:#fff}
+.tool-panel{
+  background:var(--paper);border:1px solid var(--line);border-radius:14px;
+  overflow:hidden;display:none;
+}
+.tool-panel.shown{display:block;animation:nodeIn .4s both}
+@keyframes nodeIn{from{opacity:0;transform:translateY(14px) scale(.97)}to{opacity:1;transform:none}}
+.tool-band{padding:14px 20px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#fff;font-weight:600;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.tool-band .lvl{font-size:10px;opacity:.9;letter-spacing:0.1em}
+.tp-scripts .tool-band{background:var(--orange-dark)}
+.tp-flow .tool-band{background:var(--tan)}
+.tp-vba .tool-band{background:var(--brown)}
+.tp-pq .tool-band{background:var(--accent)}
+.tool-body{padding:20px}
+.tool-body h4{font-family:'Fraunces',serif;font-size:22px;color:var(--brown-dark);margin-bottom:8px}
+.tool-plain{font-size:14px;color:var(--ink);max-width:none;margin-bottom:16px;line-height:1.55}
+.tool-when{background:var(--cream);border-radius:10px;padding:12px 16px;margin-bottom:14px;border-left:3px solid var(--orange)}
+.tool-when .k{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--tan);display:block;margin-bottom:4px;font-weight:600}
+.tool-when p{font-size:13.5px;color:var(--ink);margin:0;max-width:none;line-height:1.5}
+.tool-pc{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.tool-pc h5{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:6px}
+.tool-pc .gp h5{color:#2E7D46} .tool-pc .gc h5{color:var(--muted)}
+.tool-pc ul{list-style:none;display:grid;gap:5px}
+.tool-pc li{font-size:12.5px;color:var(--ink);padding-left:16px;position:relative;line-height:1.45}
+.tool-pc .gp li::before{content:"+";position:absolute;left:0;color:#2E7D46;font-weight:700}
+.tool-pc .gc li::before{content:"−";position:absolute;left:0;color:var(--muted);font-weight:700}
+
+/* ── page-specific: describe → script reveal ──────────────── */
+.desc-wrap{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:stretch}
+.desc-col{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:18px 20px;display:flex;flex-direction:column}
+.desc-col .k{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--tan);margin-bottom:12px;font-weight:600}
+.desc-picks{display:grid;gap:8px}
+.desc-pick{
+  font-size:13.5px;color:var(--ink);background:var(--cream);border:1px solid var(--line);
+  border-radius:9px;padding:11px 14px;cursor:pointer;transition:all .2s;line-height:1.45;
+}
+.desc-pick:hover{border-color:var(--orange)}
+.desc-pick.picked{border-color:var(--orange);background:rgba(239,127,26,0.08);color:var(--brown-dark);font-weight:500}
+.desc-out{background:var(--brown-dark);border-radius:12px;padding:0;overflow:hidden;flex:1;min-height:220px;display:flex;flex-direction:column}
+.desc-out .oh{padding:10px 14px;background:rgba(0,0,0,0.25);font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#E8D9C5;display:flex;justify-content:space-between}
+.desc-out pre{margin:0;padding:16px;font-family:'JetBrains Mono',monospace;font-size:11.5px;line-height:1.65;color:#FBE7CB;white-space:pre-wrap;overflow:auto;flex:1}
+.desc-out .cm{color:#9C8A7A}
+.desc-out .kw{color:var(--orange-light)}
+.desc-out .st{color:#FECC00}
+.desc-note{font-size:12.5px;color:var(--muted);margin-top:14px;max-width:none;font-style:italic}
+
+/* ── page-specific: dashboard mock ────────────────────────── */
+.dash{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:20px;overflow:hidden}
+.dash-head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid var(--line)}
+.dash-head h4{font-family:'Fraunces',serif;font-size:19px;color:var(--brown-dark)}
+.dash-head .stamp{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:0.08em}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin-bottom:18px}
+.kpi{background:var(--cream);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.kpi .k{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:4px}
+.kpi .v{font-family:'Fraunces',serif;font-size:26px;font-weight:800;color:var(--brown-dark);line-height:1}
+.kpi .d{font-family:'JetBrains Mono',monospace;font-size:10px;margin-top:3px}
+.kpi .d.up{color:#2E7D46} .kpi .d.down{color:var(--orange-dark)}
+.dash-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:16px}
+.chart-box{background:var(--cream);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.chart-box .k{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:12px}
+.bars{display:flex;align-items:flex-end;gap:10px;height:120px}
+.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end}
+.bar{width:100%;background:var(--orange);border-radius:5px 5px 0 0;height:0;transition:height .8s cubic-bezier(.2,.7,.3,1)}
+.bar-col:nth-child(even) .bar{background:var(--tan)}
+.bar-lab{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted)}
+.donut-box{display:flex;flex-direction:column;align-items:center;justify-content:center}
+.legend{display:grid;gap:5px;margin-top:12px;width:100%}
+.legend .li{display:flex;align-items:center;gap:8px;font-size:11.5px;color:var(--ink)}
+.legend .sw{width:11px;height:11px;border-radius:3px;flex-shrink:0}
+
+/* ── page-specific: scheduled report flow ─────────────────── */
+.flow{display:flex;flex-direction:column;gap:0}
+.fstep{
+  display:flex;gap:16px;align-items:flex-start;opacity:0;transform:translateX(-14px);
+}
+.flow.reveal .fstep{animation:fstepIn .5s forwards}
+.flow.reveal .fstep:nth-child(1){animation-delay:.05s}
+.flow.reveal .fstep:nth-child(3){animation-delay:.2s}
+.flow.reveal .fstep:nth-child(5){animation-delay:.35s}
+.flow.reveal .fstep:nth-child(7){animation-delay:.5s}
+.flow.reveal .fstep:nth-child(9){animation-delay:.65s}
+@keyframes fstepIn{to{opacity:1;transform:translateX(0)}}
+.fnum{
+  flex-shrink:0;width:40px;height:40px;border-radius:10px;background:var(--brown-dark);color:var(--paper);
+  display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-weight:600;font-size:14px;
+}
+.fstep:nth-child(1) .fnum{background:var(--orange-dark)}
+.fstep:nth-child(3) .fnum{background:var(--tan)}
+.fstep:nth-child(5) .fnum{background:var(--orange)}
+.fstep:nth-child(7) .fnum{background:var(--brown)}
+.fstep:nth-child(9) .fnum{background:var(--accent)}
+.fbody{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:14px 18px;flex:1}
+.fbody h4{font-family:'Fraunces',serif;font-size:17px;color:var(--brown-dark);margin-bottom:4px}
+.fbody p{font-size:13px;color:var(--muted);margin:0;max-width:none;line-height:1.5}
+.fbody .tool-tag{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:0.08em;text-transform:uppercase;color:var(--tan);background:var(--cream);padding:2px 8px;border-radius:5px;margin-top:8px}
+.fconn{width:40px;display:flex;justify-content:center;height:22px;opacity:0}
+.flow.reveal .fconn{animation:fstepIn .4s forwards;animation-delay:.4s}
+.fconn::before{content:"";width:2px;background:var(--line);height:100%}
+
+/* ── page-specific: safety checklist ──────────────────────── */
+.check-list{display:grid;gap:10px}
+.check{
+  display:flex;gap:14px;align-items:flex-start;background:var(--paper);
+  border:1px solid var(--line);border-radius:12px;padding:14px 18px;cursor:pointer;transition:all .2s;
+}
+.check:hover{border-color:var(--orange)}
+.check.on{border-color:#2E7D46;background:rgba(46,125,70,0.05)}
+.check-box{
+  flex-shrink:0;width:24px;height:24px;border-radius:7px;border:2px solid var(--line);
+  display:flex;align-items:center;justify-content:center;transition:all .2s;
+  font-family:'JetBrains Mono',monospace;font-size:14px;color:transparent;font-weight:700;
+}
+.check.on .check-box{background:#2E7D46;border-color:#2E7D46;color:#fff}
+.check-text h4{font-family:'Fraunces',serif;font-size:16.5px;color:var(--brown-dark);margin-bottom:3px}
+.check-text p{font-size:12.5px;color:var(--muted);margin:0;max-width:none;line-height:1.5}
+.check-progress{
+  margin-top:16px;background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:14px 18px;
+  display:flex;align-items:center;gap:14px;
+}
+.cp-bar{flex:1;height:8px;background:var(--cream);border-radius:4px;overflow:hidden}
+.cp-fill{height:100%;background:#2E7D46;width:0;transition:width .4s ease}
+.cp-lab{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--brown-dark);font-weight:600;white-space:nowrap}
+
+@media(max-width:760px){
+  .desc-wrap{grid-template-columns:1fr}
+  .tool-pc{grid-template-columns:1fr}
+  .dash-grid{grid-template-columns:1fr}
+}
+
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="brand">MokshPath <span class="dot">·</span> <span class="sub">Lesson 04 · AI Excel</span></div>
+  <div class="logo-slot" aria-label="MokshPath logo">
+    <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="22" cy="22" r="20" fill="#412C23"/>
+      <path d="M12 30V15l6 8 4-9 4 9 6-8v15" stroke="#EF7F1A" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <circle cx="22" cy="10" r="3" fill="#FECC00"/>
+    </svg>
+  </div>
+</div>
+<div class="page">
+
+<section class="hero">
+  <div class="eyebrow">Week 1 · Lesson 04 · AI Excel</div>
+  <h1>Automate the <em>boring</em>, report the rest.</h1>
+  <p class="lede">You now know how to clean data and write formulas with AI. This lesson is about doing all of that without you — on a schedule, every Monday, while you sleep. But automation cuts both ways: done right it saves hours; done carelessly it silently reports wrong numbers for weeks. We will build the good kind, and stay honest about the traps.</p>
+</section>
+
+<section>
+  <div class="section-num">01 / 04</div>
+  <h2>Not everything deserves a robot</h2>
+  <p class="lead">The most common automation mistake is automating the wrong task — spending three hours scripting something you do twice a year. A task is worth automating when three things line up: you do it <strong>often</strong>, it's <strong>painful</strong> or error-prone by hand, and the underlying data is <strong>stable</strong> (same columns, same layout, every time).</p>
+
+  <p><strong>Frequency</strong> is the obvious one: a report you build every Monday will repay a script within a month; a one-off cleanup never will. <strong>Pain</strong> is about human cost — thirty minutes of mind-numbing copy-paste is worth removing even at the same frequency, because tired humans make quiet mistakes. <strong>Stability</strong> is the sneaky one everybody forgets: automation only works if next week's file looks like this week's. If your source keeps changing shape, a script just breaks in new and creative ways.</p>
+  <p>Multiply those three and you get a rough automation score. High on all three? Build it today. High on frequency and pain but low on stability? Fix the source first, or you're automating a moving target. Click a task below to see how it scores.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 1 · Should you automate this? Frequency × Pain × Stability</span>
+    </div>
+    <div class="score-grid" id="scoreGrid">
+      <div class="task-card" data-task="weekly" onclick="pickTask(this,'weekly')">
+        <h4>Weekly sales report</h4>
+        <div class="tdesc">Same export from the same system, rebuilt into the same summary every Monday.</div>
+        <div class="metric"><div class="mlab"><span>Frequency</span><span>High</span></div><div class="mbar"><div class="mfill freq" data-w="92"></div></div></div>
+        <div class="metric"><div class="mlab"><span>Pain</span><span>Med</span></div><div class="mbar"><div class="mfill pain" data-w="70"></div></div></div>
+        <div class="metric"><div class="mlab"><span>Stability</span><span>High</span></div><div class="mbar"><div class="mfill stab" data-w="88"></div></div></div>
+      </div>
+      <div class="task-card" data-task="messy" onclick="pickTask(this,'messy')">
+        <h4>Cleaning a partner's file</h4>
+        <div class="tdesc">A spreadsheet emailed by someone else — columns move, headers change, formats vary.</div>
+        <div class="metric"><div class="mlab"><span>Frequency</span><span>Med</span></div><div class="mbar"><div class="mfill freq" data-w="55"></div></div></div>
+        <div class="metric"><div class="mlab"><span>Pain</span><span>High</span></div><div class="mbar"><div class="mfill pain" data-w="85"></div></div></div>
+        <div class="metric"><div class="mlab"><span>Stability</span><span>Low</span></div><div class="mbar"><div class="mfill stab" data-w="22"></div></div></div>
+      </div>
+      <div class="task-card" data-task="oneoff" onclick="pickTask(this,'oneoff')">
+        <h4>One-time data merge</h4>
+        <div class="tdesc">Combining last year's four regional files, once, for a single board meeting.</div>
+        <div class="metric"><div class="mlab"><span>Frequency</span><span>Low</span></div><div class="mbar"><div class="mfill freq" data-w="14"></div></div></div>
+        <div class="metric"><div class="mlab"><span>Pain</span><span>Med</span></div><div class="mbar"><div class="mfill pain" data-w="58"></div></div></div>
+        <div class="metric"><div class="mlab"><span>Stability</span><span>High</span></div><div class="mbar"><div class="mfill stab" data-w="80"></div></div></div>
+      </div>
+    </div>
+    <div class="score-verdict">
+      <div class="score-ring">
+        <svg width="84" height="84" viewBox="0 0 84 84">
+          <circle cx="42" cy="42" r="36" fill="none" stroke="#E8DCC8" stroke-width="8"/>
+          <circle id="ringFill" cx="42" cy="42" r="36" fill="none" stroke="#EF7F1A" stroke-width="8" stroke-linecap="round" stroke-dasharray="226" stroke-dashoffset="226" style="transition:stroke-dashoffset .7s ease, stroke .3s"/>
+        </svg>
+        <div class="snum" id="ringNum">–</div>
+      </div>
+      <div class="score-text">
+        <div class="stag" id="scoreTag">Pick a task above</div>
+        <p id="scoreMsg">Each score multiplies frequency, pain, and stability. A robot is only worth building when all three cooperate.</p>
+      </div>
+    </div>
+  </div>
+
+  <h3>The rule this figure teaches</h3>
+  <p>Notice the messy partner file: high pain, high enough frequency — but low stability drags the whole score down. That's correct. The honest move there isn't a fancier script; it's asking the partner for a consistent format, or building the cleaning in a tool designed to <em>expect</em> mess (we'll meet it in a moment). Automate stable pain. Negotiate away unstable pain.</p>
+</section>
+
+<section>
+  <div class="section-num">02 / 04</div>
+  <h2>Four tools, four jobs — in plain English</h2>
+  <p class="lead">Microsoft gives you several ways to automate Excel, and beginners waste weeks picking wrong. You don't need to master all four. You need to know which one fits the job in front of you. Here they are, honestly compared — click a tab.</p>
+
+  <p>The short version: <strong>Power Query</strong> is for repeatedly reshaping and cleaning imported data. <strong>Office Scripts</strong> is for automating steps <em>inside</em> a modern Excel workbook, and it plays nicely with the cloud. <strong>Power Automate</strong> is the scheduler and connector that ties Excel to email, Teams, and other apps. <strong>Macros / VBA</strong> is the old, powerful, desktop-only workhorse — still everywhere, but the past rather than the future. Pick by where your data lives and what you're trying to trigger.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 2 · The Excel automation toolkit, compared</span>
+    </div>
+    <div class="tool-tabs">
+      <button class="tool-tab active" onclick="showTool('pq',this)">Power Query</button>
+      <button class="tool-tab" onclick="showTool('scripts',this)">Office Scripts</button>
+      <button class="tool-tab" onclick="showTool('flow',this)">Power Automate</button>
+      <button class="tool-tab" onclick="showTool('vba',this)">Macros / VBA</button>
+    </div>
+
+    <div class="tool-panel tp-pq shown" id="tool-pq">
+      <div class="tool-band"><span>Power Query</span><span class="lvl">No code · Beginner-friendly</span></div>
+      <div class="tool-body">
+        <h4>The data janitor that remembers</h4>
+        <p class="tool-plain">You clean a messy import once — split columns, remove junk rows, fix dates — using menus, not code. Power Query records every step. Next month, drop in the new file, hit Refresh, and it re-runs the whole cleanup instantly. It is the single highest-value automation tool most beginners never open.</p>
+        <div class="tool-when"><span class="k">Reach for it when</span><p>You import the same kind of messy data regularly and need it reshaped the same way every time — especially exports from other systems.</p></div>
+        <div class="tool-pc">
+          <div class="gp"><h5>Strong points</h5><ul><li>No coding — all point-and-click</li><li>Tolerates messy, changing source data</li><li>Steps are visible and editable</li></ul></div>
+          <div class="gc"><h5>Trade-offs</h5><ul><li>Only for import/transform, not full logic</li><li>Menu maze until you learn it</li><li>Won't send emails or schedule itself</li></ul></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tool-panel tp-scripts" id="tool-scripts">
+      <div class="tool-band"><span>Office Scripts</span><span class="lvl">Light code · Modern Excel</span></div>
+      <div class="tool-body">
+        <h4>Record-and-replay for the cloud era</h4>
+        <p class="tool-plain">The modern successor to macros, built for Excel on the web and Microsoft 365. You can record actions or write short TypeScript, and — crucially — AI is genuinely good at generating these from a plain description. They run in the cloud and connect straight into Power Automate for scheduling.</p>
+        <div class="tool-when"><span class="k">Reach for it when</span><p>You're on Excel for the web or M365 and want to automate steps inside a workbook, then hand it off to run on a schedule.</p></div>
+        <div class="tool-pc">
+          <div class="gp"><h5>Strong points</h5><ul><li>Works in the browser and cloud</li><li>AI writes them well from a description</li><li>Slots into Power Automate for scheduling</li></ul></div>
+          <div class="gc"><h5>Trade-offs</h5><ul><li>Needs a Microsoft 365 business plan</li><li>Not available in old desktop-only Excel</li><li>Some light TypeScript to read/tweak</li></ul></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tool-panel tp-flow" id="tool-flow">
+      <div class="tool-band"><span>Power Automate</span><span class="lvl">Low code · The scheduler</span></div>
+      <div class="tool-body">
+        <h4>The wiring between apps</h4>
+        <p class="tool-plain">Power Automate is less about Excel itself and more about <em>when</em> and <em>what next</em>. It's the tool that says "every Monday at 8am, run this Office Script, then email the result to the team." It connects Excel to Outlook, Teams, SharePoint and hundreds of other services with drag-and-drop steps.</p>
+        <div class="tool-when"><span class="k">Reach for it when</span><p>You need something to happen on a schedule or in response to an event — and to move results between Excel and email, Teams, or files.</p></div>
+        <div class="tool-pc">
+          <div class="gp"><h5>Strong points</h5><ul><li>Scheduling and triggers built in</li><li>Connects Excel to email, Teams, files</li><li>Mostly visual, drag-and-drop</li></ul></div>
+          <div class="gc"><h5>Trade-offs</h5><ul><li>Overkill for changes inside one sheet</li><li>Can get fiddly with complex conditions</li><li>Licensing tiers can be confusing</li></ul></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tool-panel tp-vba" id="tool-vba">
+      <div class="tool-band"><span>Macros / VBA</span><span class="lvl">Code · Legacy but everywhere</span></div>
+      <div class="tool-body">
+        <h4>The old workhorse still pulling carts</h4>
+        <p class="tool-plain">VBA is the classic macro language baked into desktop Excel for decades. It's powerful, runs entirely on your machine with no extra licence, and there's a mountain of examples online. But it's desktop-only, doesn't run in Excel for the web, and Microsoft is steering new work toward Office Scripts instead.</p>
+        <div class="tool-when"><span class="k">Reach for it when</span><p>You live in desktop Excel, can't use cloud tools, or you're maintaining a macro that already exists and works.</p></div>
+        <div class="tool-pc">
+          <div class="gp"><h5>Strong points</h5><ul><li>No extra licence — built into desktop Excel</li><li>Very powerful, decades of examples</li><li>Runs fully offline on your machine</li></ul></div>
+          <div class="gc"><h5>Trade-offs</h5><ul><li>Desktop-only — no web or cloud</li><li>Macro files can trigger security warnings</li><li>Microsoft is investing in Scripts instead</li></ul></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h3>A one-line decision rule</h3>
+  <p>If the job is <em>cleaning imported data</em>, start with Power Query. If it's <em>steps inside a modern cloud workbook</em>, use Office Scripts. If it's <em>"do this on a schedule and email someone"</em>, that's Power Automate. And if you're on old desktop Excel with no cloud, VBA is still a perfectly good answer — just know it's the road behind you, not ahead.</p>
+</section>
+
+<section>
+  <div class="section-num">03 / 04</div>
+  <h2>Describe it, and AI writes the script</h2>
+  <p class="lead">Here's the shift that makes automation beginner-friendly: you no longer have to know how to write an Office Script or a macro. You describe what you want in plain English, and AI writes the code. Your job moves from <em>author</em> to <em>editor</em> — reading, testing, and sanity-checking what it produced.</p>
+
+  <p>The trick is describing the task the way you'd brief a careful assistant: name the sheet, the columns, and exactly what "done" looks like. Vague requests get vague scripts. Pick a task below and watch a plausible Office Script appear. Read it — you don't have to write it, but you absolutely must be able to follow roughly what it does.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 3 · Describe the task → get a script</span>
+    </div>
+    <div class="desc-wrap">
+      <div class="desc-col">
+        <span class="k">1 · Describe what you want (click one)</span>
+        <div class="desc-picks" id="descPicks">
+          <div class="desc-pick picked" data-job="highlight" onclick="pickDesc(this,'highlight')">"In the Sales sheet, highlight every row where Amount is over 1000 in orange, then bold the header row."</div>
+          <div class="desc-pick" data-job="total" onclick="pickDesc(this,'total')">"Add a Total column that sums Qty times Price for each row, and put a grand total at the bottom."</div>
+          <div class="desc-pick" data-job="clean" onclick="pickDesc(this,'clean')">"Delete any blank rows, trim extra spaces from the Name column, and format the Date column as YYYY-MM-DD."</div>
+        </div>
+        <p class="desc-note">You never typed a semicolon. But notice how specific each request is — sheet name, column names, exact rule.</p>
+      </div>
+      <div class="desc-col" style="padding:0;background:transparent;border:none">
+        <span class="k" style="padding:0 2px">2 · AI drafts the Office Script</span>
+        <div class="desc-out">
+          <div class="oh"><span>AutoScript.ts</span><span id="descLang">Office Script · TypeScript</span></div>
+          <pre id="descCode"></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h3>The part you cannot skip: reading it</h3>
+  <p>AI-written scripts are usually right, but "usually" is doing heavy lifting. It might target the wrong column, assume your header is on row 1 when it's on row 3, or hard-code a value that changes. You don't need to write TypeScript — but before you trust a script with real data, read it line by line and ask: <em>does this touch the sheet I think it touches, and would I notice if it did the wrong thing?</em> Then test it on a copy. Always a copy.</p>
+</section>
+
+<section>
+  <div class="section-num">04 / 04</div>
+  <h2>From script to scheduled dashboard</h2>
+  <p class="lead">The payoff of automation is a report that builds and delivers itself. Two pieces make that real: a <strong>dashboard</strong> — a single view of the numbers that matter — and a <strong>schedule</strong> that refreshes and sends it without you lifting a finger.</p>
+
+  <p>A dashboard isn't a fancy chart contest. It's the two or three numbers a decision-maker actually checks, plus just enough context to know if they're good or bad. Build it once from your cleaned data, and every refresh repaints it. Here's a simple one — the kind you can assemble in an afternoon.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 4 · A simple auto-refreshing dashboard</span>
+      <div class="controls">
+        <button onclick="refreshDash()">↻ Refresh data</button>
+      </div>
+    </div>
+    <div class="dash" id="dash">
+      <div class="dash-head">
+        <h4>Weekly Sales Summary</h4>
+        <span class="stamp" id="dashStamp">Auto-refreshed · Mon 08:00</span>
+      </div>
+      <div class="kpi-row">
+        <div class="kpi"><span class="k">Revenue</span><span class="v" id="kRev">$48.2k</span><span class="d up" id="kRevD">▲ 12% wk</span></div>
+        <div class="kpi"><span class="k">Orders</span><span class="v" id="kOrd">614</span><span class="d up" id="kOrdD">▲ 5% wk</span></div>
+        <div class="kpi"><span class="k">Avg order</span><span class="v" id="kAov">$78</span><span class="d up" id="kAovD">▲ 3% wk</span></div>
+        <div class="kpi"><span class="k">Returns</span><span class="v" id="kRet">2.1%</span><span class="d down" id="kRetD">▼ 0.4% wk</span></div>
+      </div>
+      <div class="dash-grid">
+        <div class="chart-box">
+          <span class="k">Revenue by day</span>
+          <div class="bars" id="bars">
+            <div class="bar-col"><div class="bar" data-h="55"></div><span class="bar-lab">Mon</span></div>
+            <div class="bar-col"><div class="bar" data-h="70"></div><span class="bar-lab">Tue</span></div>
+            <div class="bar-col"><div class="bar" data-h="48"></div><span class="bar-lab">Wed</span></div>
+            <div class="bar-col"><div class="bar" data-h="82"></div><span class="bar-lab">Thu</span></div>
+            <div class="bar-col"><div class="bar" data-h="95"></div><span class="bar-lab">Fri</span></div>
+            <div class="bar-col"><div class="bar" data-h="60"></div><span class="bar-lab">Sat</span></div>
+            <div class="bar-col"><div class="bar" data-h="38"></div><span class="bar-lab">Sun</span></div>
+          </div>
+        </div>
+        <div class="chart-box donut-box">
+          <span class="k" style="align-self:flex-start">Revenue by region</span>
+          <svg width="130" height="130" viewBox="0 0 42 42" id="donut">
+            <circle cx="21" cy="21" r="15.9" fill="none" stroke="#E8DCC8" stroke-width="6"/>
+            <circle cx="21" cy="21" r="15.9" fill="none" stroke="#EF7F1A" stroke-width="6" stroke-dasharray="45 55" stroke-dashoffset="25" style="transition:stroke-dasharray .8s"/>
+            <circle cx="21" cy="21" r="15.9" fill="none" stroke="#A34E1C" stroke-width="6" stroke-dasharray="30 70" stroke-dashoffset="-20" style="transition:stroke-dasharray .8s"/>
+            <circle cx="21" cy="21" r="15.9" fill="none" stroke="#008DD2" stroke-width="6" stroke-dasharray="25 75" stroke-dashoffset="-50" style="transition:stroke-dasharray .8s"/>
+          </svg>
+          <div class="legend">
+            <div class="li"><span class="sw" style="background:#EF7F1A"></span>North · 45%</div>
+            <div class="li"><span class="sw" style="background:#A34E1C"></span>South · 30%</div>
+            <div class="li"><span class="sw" style="background:#008DD2"></span>West · 25%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <p>Now the schedule. A recurring report is a small assembly line: a trigger fires, data refreshes, the dashboard rebuilds, and it lands in someone's inbox. Each stage maps to a tool from Figure 2. Watch it assemble.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 5 · The recurring report pipeline</span>
+      <div class="controls">
+        <button onclick="runFlow()">▶ Run the pipeline</button>
+      </div>
+    </div>
+    <div class="flow" id="flow">
+      <div class="fstep">
+        <div class="fnum">1</div>
+        <div class="fbody"><h4>Trigger fires on schedule</h4><p>Every Monday at 8:00am, a timer kicks the whole thing off — no human involved.</p><span class="tool-tag">Power Automate</span></div>
+      </div>
+      <div class="fconn"></div>
+      <div class="fstep">
+        <div class="fnum">2</div>
+        <div class="fbody"><h4>Fresh data is pulled &amp; cleaned</h4><p>Last week's export is imported and reshaped with the saved cleanup steps.</p><span class="tool-tag">Power Query</span></div>
+      </div>
+      <div class="fconn"></div>
+      <div class="fstep">
+        <div class="fnum">3</div>
+        <div class="fbody"><h4>The script rebuilds the dashboard</h4><p>Totals recalculate, charts repaint, KPIs update — the whole summary regenerates.</p><span class="tool-tag">Office Script</span></div>
+      </div>
+      <div class="fconn"></div>
+      <div class="fstep">
+        <div class="fnum">4</div>
+        <div class="fbody"><h4>The report is delivered</h4><p>The finished file or a snapshot is emailed to the team, or posted to a Teams channel.</p><span class="tool-tag">Power Automate</span></div>
+      </div>
+      <div class="fconn"></div>
+      <div class="fstep">
+        <div class="fnum">5</div>
+        <div class="fbody"><h4>You skim it — that's your only job</h4><p>Ten seconds of human eyes catches the day something looks obviously wrong.</p><span class="tool-tag">You</span></div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Automate boldly, but guard carefully</h3>
+  <p>Every step above can run untouched for months — which is exactly the danger. A silent pipeline reporting wrong numbers is worse than no report at all, because everyone trusts it. Automation earns that trust only if you build it defensively. Before you let any of this run unattended, walk the checklist below. Tick each one honestly.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 6 · The safe-automation checklist</span>
+      <div class="controls">
+        <button onclick="checkAll()">Tick all</button>
+        <button onclick="checkClear()">Reset</button>
+      </div>
+    </div>
+    <div class="check-list" id="checkList">
+      <div class="check" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div class="check-text"><h4>Test on a copy — never the original</h4><p>Run any new script on a duplicate file first. If it does something dumb, it destroys the copy, not your real data.</p></div>
+      </div>
+      <div class="check" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div class="check-text"><h4>Read the script before trusting it</h4><p>AI-written code is usually right, not always. Follow it line by line and confirm it touches the sheet and columns you expect.</p></div>
+      </div>
+      <div class="check" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div class="check-text"><h4>Assume the layout will change one day</h4><p>Automation breaks when someone adds a column or renames a header. Build in a check, or expect the day it silently misfires.</p></div>
+      </div>
+      <div class="check" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div class="check-text"><h4>Add a sanity check to the output</h4><p>Have the report flag the obvious — "total is negative" or "row count dropped 90%." A robot that shouts when confused is a safe robot.</p></div>
+      </div>
+      <div class="check" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div class="check-text"><h4>Keep a human in the loop</h4><p>Even a ten-second Monday skim catches the failure a fully hands-off pipeline would hide for a month.</p></div>
+      </div>
+    </div>
+    <div class="check-progress">
+      <span class="cp-lab" id="cpLab">0 / 5 safeguards</span>
+      <div class="cp-bar"><div class="cp-fill" id="cpFill"></div></div>
+    </div>
+  </div>
+
+  <h3>Why "test on a copy" is the whole game</h3>
+  <p>Almost every automation horror story ends the same way: a script ran on the real file, did exactly what it was told, and what it was told was subtly wrong. Manual mistakes are loud — you see the mess. Automated mistakes are quiet and repeat perfectly, every Monday, until someone notices the numbers stopped making sense. A copy costs you thirty seconds. Skipping it can cost a quarter of trusted reports.</p>
+</section>
+
+<div class="takeaway">
+  <h2>What to carry forward</h2>
+  <p>Automation is leverage, not magic. Automate tasks that are frequent, painful, and stable — and negotiate away the unstable ones. Match the tool to the job: Power Query cleans, Office Scripts act, Power Automate schedules, VBA holds the fort on old desktops. Let AI write the code, but never stop reading it. And build every pipeline as if it will one day be quietly wrong — because eventually it will.</p>
+  <ul>
+    <li>Worth automating = Frequency × Pain × Stability. Low stability kills the score</li>
+    <li>Power Query cleans · Office Scripts act · Power Automate schedules · VBA = legacy desktop</li>
+    <li>Describe the task precisely — sheet, columns, "done" — and AI writes the script</li>
+    <li>A dashboard is 2–3 numbers a decision-maker checks, not a chart contest</li>
+    <li>Test on a copy · read the code · assume the layout changes · keep a human skimming</li>
+  </ul>
+</div>
+
+</div>
+<footer>MokshPath · Lesson 04 of 04 · Week 1 complete — Week 2: AI for Documents &amp; Email →</footer>
+<script>
+
+/* ══ Figure 1 · automation scoring ══ */
+const TASK_DATA={
+  weekly:{f:92,p:70,s:88,tag:'go',label:'Automate it — now',
+    msg:'High frequency, real pain, rock-solid layout. This is the textbook case. A script pays for itself within a month and runs for years.'},
+  messy:{f:55,p:85,s:22,tag:'skip',label:'Fix the source first',
+    msg:'Painful and frequent enough — but the layout keeps shifting, so a rigid script just breaks weekly. Ask for a consistent format, or use Power Query, which expects mess.'},
+  oneoff:{f:14,p:58,s:80,tag:'maybe',label:'Just do it by hand',
+    msg:'Stable and a bit annoying, but you do it once. The time to build automation would dwarf the time to just finish the task. Save scripting for the repeats.'}
+};
+const RING_LEN=226;
+function pickTask(card,key){
+  document.querySelectorAll('#scoreGrid .task-card').forEach(c=>c.classList.remove('picked'));
+  card.classList.add('picked');
+  const d=TASK_DATA[key];
+  /* score = geometric-ish blend, weighted so low stability really hurts */
+  const raw=Math.round(Math.pow((d.f/100)*(d.p/100)*(d.s/100),1/3)*100);
+  const ring=document.getElementById('ringFill');
+  ring.style.strokeDashoffset=RING_LEN-(RING_LEN*raw/100);
+  const col=d.tag==='go'?'#2E7D46':d.tag==='maybe'?'#C79F00':'#D55222';
+  ring.style.stroke=col;
+  document.getElementById('ringNum').textContent=raw;
+  const tag=document.getElementById('scoreTag');
+  tag.className='stag '+d.tag;
+  tag.textContent=d.label;
+  document.getElementById('scoreMsg').textContent=d.msg;
+}
+function fillBars(root){
+  root.querySelectorAll('.mfill').forEach(f=>{f.style.width=f.dataset.w+'%'});
+}
+new IntersectionObserver((es,o)=>es.forEach(e=>{
+  if(e.isIntersecting){
+    fillBars(e.target);
+    pickTask(document.querySelector('.task-card[data-task="weekly"]'),'weekly');
+    o.unobserve(e.target);
+  }
+}),{threshold:0.25}).observe(document.getElementById('scoreGrid'));
+
+/* ══ Figure 2 · toolkit tabs ══ */
+function showTool(key,btn){
+  document.querySelectorAll('.tool-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.tool-panel').forEach(p=>p.classList.remove('shown'));
+  const el=document.getElementById('tool-'+key);
+  void el.offsetWidth;
+  el.classList.add('shown');
+}
+
+/* ══ Figure 3 · describe → script ══ */
+const SCRIPTS={
+  highlight:
+`<span class="kw">function</span> main(workbook: ExcelScript.Workbook) {
+  <span class="cm">// Highlight big orders + bold the header</span>
+  <span class="kw">let</span> sheet = workbook.getWorksheet(<span class="st">"Sales"</span>);
+  <span class="kw">let</span> range = sheet.getUsedRange();
+  <span class="kw">let</span> values = range.getValues();
+
+  <span class="cm">// Column index of "Amount" (assumes header row 1)</span>
+  <span class="kw">let</span> amtCol = values[0].indexOf(<span class="st">"Amount"</span>);
+
+  <span class="kw">for</span> (<span class="kw">let</span> r = 1; r &lt; values.length; r++) {
+    <span class="kw">if</span> (Number(values[r][amtCol]) &gt; 1000) {
+      sheet.getRangeByIndexes(r, 0, 1, values[0].length)
+           .getFormat().getFill().setColor(<span class="st">"EF7F1A"</span>);
+    }
+  }
+  <span class="cm">// Bold the header row</span>
+  sheet.getRange(<span class="st">"1:1"</span>).getFormat().getFont().setBold(<span class="kw">true</span>);
+}`,
+  total:
+`<span class="kw">function</span> main(workbook: ExcelScript.Workbook) {
+  <span class="cm">// Add a Total column = Qty * Price, plus grand total</span>
+  <span class="kw">let</span> sheet = workbook.getActiveWorksheet();
+  <span class="kw">let</span> used = sheet.getUsedRange();
+  <span class="kw">let</span> rows = used.getRowCount();
+  <span class="kw">let</span> cols = used.getColumnCount();
+
+  sheet.getCell(0, cols).setValue(<span class="st">"Total"</span>);
+  <span class="kw">for</span> (<span class="kw">let</span> r = 1; r &lt; rows; r++) {
+    sheet.getCell(r, cols)
+         .setFormula(<span class="st">"=B"</span> + (r+1) + <span class="st">"*C"</span> + (r+1));
+  }
+  <span class="cm">// Grand total at the bottom</span>
+  sheet.getCell(rows, cols)
+       .setFormula(<span class="st">"=SUM("</span> + <span class="st">"the Total column)"</span>);
+}`,
+  clean:
+`<span class="kw">function</span> main(workbook: ExcelScript.Workbook) {
+  <span class="cm">// Drop blanks, trim names, format dates</span>
+  <span class="kw">let</span> sheet = workbook.getActiveWorksheet();
+  <span class="kw">let</span> range = sheet.getUsedRange();
+  <span class="kw">let</span> vals = range.getValues();
+
+  <span class="cm">// Delete fully blank rows (bottom-up so indexes hold)</span>
+  <span class="kw">for</span> (<span class="kw">let</span> r = vals.length - 1; r &gt; 0; r--) {
+    <span class="kw">if</span> (vals[r].every(c =&gt; c === <span class="st">""</span>)) {
+      sheet.getRange(<span class="st">"A"</span> + (r+1)).getEntireRow().delete(
+        ExcelScript.DeleteShiftDirection.up);
+    }
+  }
+  <span class="cm">// Trim the Name column, format Date column</span>
+  sheet.getRange(<span class="st">"A:A"</span>);   <span class="cm">// TRIM applied per cell</span>
+  sheet.getRange(<span class="st">"C:C"</span>).setNumberFormat(<span class="st">"yyyy-mm-dd"</span>);
+}`
+};
+function pickDesc(el,job){
+  document.querySelectorAll('#descPicks .desc-pick').forEach(p=>p.classList.remove('picked'));
+  el.classList.add('picked');
+  const pre=document.getElementById('descCode');
+  pre.style.opacity='0';
+  setTimeout(()=>{pre.innerHTML=SCRIPTS[job];pre.style.transition='opacity .3s';pre.style.opacity='1';},120);
+}
+document.getElementById('descCode').innerHTML=SCRIPTS.highlight;
+
+/* ══ Figure 4 · dashboard ══ */
+function paintBars(){
+  document.querySelectorAll('#bars .bar').forEach(b=>{b.style.height=b.dataset.h+'%'});
+}
+function refreshDash(){
+  const bars=document.querySelectorAll('#bars .bar');
+  bars.forEach(b=>{
+    const nh=30+Math.round(Math.random()*68);
+    b.dataset.h=nh; b.style.height=nh+'%';
+  });
+  const rev=(40+Math.random()*18).toFixed(1);
+  document.getElementById('kRev').textContent='$'+rev+'k';
+  const ord=560+Math.round(Math.random()*120);
+  document.getElementById('kOrd').textContent=ord;
+  document.getElementById('kAov').textContent='$'+Math.round(rev*1000/ord);
+  const now=new Date();
+  const hh=String(now.getHours()).padStart(2,'0'), mm=String(now.getMinutes()).padStart(2,'0');
+  document.getElementById('dashStamp').textContent='Auto-refreshed · '+hh+':'+mm;
+}
+new IntersectionObserver((es,o)=>es.forEach(e=>{
+  if(e.isIntersecting){paintBars();o.unobserve(e.target)}
+}),{threshold:0.3}).observe(document.getElementById('dash'));
+
+/* ══ Figure 5 · report pipeline ══ */
+const flowEl=document.getElementById('flow');
+function runFlow(){
+  flowEl.classList.remove('reveal');void flowEl.offsetWidth;flowEl.classList.add('reveal');
+}
+new IntersectionObserver((es,o)=>es.forEach(e=>{
+  if(e.isIntersecting){runFlow();o.unobserve(e.target)}
+}),{threshold:0.2}).observe(flowEl);
+
+/* ══ Figure 6 · safety checklist ══ */
+function updateProgress(){
+  const total=document.querySelectorAll('#checkList .check').length;
+  const on=document.querySelectorAll('#checkList .check.on').length;
+  document.getElementById('cpFill').style.width=(on/total*100)+'%';
+  document.getElementById('cpLab').textContent=on+' / '+total+' safeguards';
+}
+function toggleCheck(el){el.classList.toggle('on');updateProgress()}
+function checkAll(){document.querySelectorAll('#checkList .check').forEach(c=>c.classList.add('on'));updateProgress()}
+function checkClear(){document.querySelectorAll('#checkList .check').forEach(c=>c.classList.remove('on'));updateProgress()}
+
+</script>
+</body>
+</html>
