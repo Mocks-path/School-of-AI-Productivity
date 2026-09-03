@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 2 · AI in Word — Documents &amp; Writing — MokshPath</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=JetBrains+Mono:wght@400;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --orange:#E87A2E;--orange-dark:#D06A20;--orange-light:#F5943E;--orange-glow:rgba(232,122,46,0.12);
+  --navy:#2B2D42;--navy-dark:#1A1B2E;
+  --bg:#F3EDE7;--bg-card:#FFFFFF;--bg-light:#F9F5F0;
+  --text-primary:#2B2D42;--text-secondary:#6B6D7B;--text-muted:#9597A6;
+  --border:#E5DDD4;--green:#4CAF50;--green-light:#E8F5E9;--red:#E04E3C;--red-light:#FDECEA;
+  --shadow-sm:0 2px 8px rgba(43,45,66,0.06);--shadow-md:0 8px 24px rgba(43,45,66,0.08);
+  --shadow-lg:0 16px 48px rgba(43,45,66,0.12);
+  --radius:14px;--radius-sm:8px;
+  --mono:'JetBrains Mono',monospace;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text-primary);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+
+/* ── NAV ── */
+.nav{position:sticky;top:0;z-index:100;background:var(--bg-card);border-bottom:1px solid var(--border);padding:0 2rem;height:64px;display:flex;align-items:center;justify-content:space-between;box-shadow:var(--shadow-sm)}
+.nav-left{display:flex;align-items:center;gap:.7rem}
+.lesson-badge{font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--orange);background:var(--orange-glow);padding:.3rem .7rem;border-radius:50px}
+.nav-logo{display:flex;align-items:center;gap:.7rem;text-decoration:none}
+.nav-logo-icon{width:auto;height:48px;display:block;object-fit:contain}
+.nav-logo-text{display:flex;flex-direction:column;line-height:1.15}
+.nav-logo-name{font-family:'DM Serif Display',serif;font-size:1.25rem;color:var(--navy)}
+.nav-logo-name span{color:var(--orange)}
+.nav-logo-tag{font-size:.62rem;color:var(--text-muted);font-weight:500;letter-spacing:.02em}
+
+/* ── HERO ── */
+.hero{padding:3.5rem 2rem 2.5rem;text-align:center;position:relative}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:.45rem;padding:.4rem 1rem;border-radius:50px;background:var(--orange-glow);color:var(--orange);font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:1.2rem}
+.hero-eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--orange);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.hero h1{font-family:'DM Serif Display',serif;font-size:clamp(2rem,4vw,3rem);line-height:1.13;color:var(--navy);margin-bottom:1rem;max-width:780px;margin-left:auto;margin-right:auto}
+.hero h1 em{font-style:normal;color:var(--orange)}
+.hero-sub{font-size:1.02rem;color:var(--text-secondary);line-height:1.7;max-width:620px;margin:0 auto}
+
+/* ── PROGRESS RAIL ── */
+.progress-rail{max-width:760px;margin:1.8rem auto 0;display:flex;align-items:center;gap:.5rem}
+.progress-dot{flex:1;height:6px;background:var(--border);border-radius:3px;transition:background .3s}
+.progress-dot.done{background:linear-gradient(90deg,var(--orange),var(--orange-light))}
+.progress-label{font-size:.7rem;color:var(--text-muted);font-weight:600;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+
+/* ── SECTIONS ── */
+section.lesson{padding:3rem 2rem}
+.container{max-width:1080px;margin:0 auto}
+.lesson-num{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;background:var(--orange);color:#fff;font-family:'DM Serif Display',serif;font-size:1.1rem;margin-bottom:.9rem}
+.lesson-title{font-family:'DM Serif Display',serif;font-size:clamp(1.6rem,2.5vw,2.1rem);color:var(--navy);margin-bottom:.55rem;line-height:1.2}
+.lesson-intro{font-size:.95rem;color:var(--text-secondary);line-height:1.7;max-width:680px;margin-bottom:2rem}
+.lesson-card{background:var(--bg-card);border-radius:var(--radius);box-shadow:var(--shadow-sm);border:1px solid var(--border);padding:2rem;margin-top:1.5rem}
+
+/* ── LOOP STRIP ── */
+.loop-strip{display:flex;gap:.5rem;margin-top:1.2rem;flex-wrap:wrap;align-items:center}
+.loop-step{flex:1;min-width:120px;background:var(--bg-card);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:.9rem 1rem;transition:all .3s}
+.loop-step:hover{transform:translateY(-2px);box-shadow:var(--shadow-sm);border-color:var(--orange)}
+.loop-step .ls-num{font-family:var(--mono);font-size:.66rem;font-weight:600;color:var(--orange);letter-spacing:.06em;text-transform:uppercase}
+.loop-step h5{font-family:'DM Serif Display',serif;font-size:1rem;color:var(--navy);margin:.15rem 0 .3rem}
+.loop-step p{font-size:.76rem;color:var(--text-secondary);line-height:1.5}
+.loop-arrow{color:var(--text-muted);font-weight:700;font-size:1rem}
+@media (max-width:760px){.loop-arrow{display:none}.loop-step{min-width:100%}}
+
+/* ── ACTIVITY: DRAG SORTER ── */
+.classify-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:1rem}
+@media (max-width:760px){.classify-grid{grid-template-columns:1fr}}
+.classify-scenarios{display:flex;flex-direction:column;gap:.7rem}
+.scenario-card{background:var(--bg-card);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:1rem 1.1rem;cursor:grab;transition:all .25s;position:relative;user-select:none}
+.scenario-card:hover{border-color:var(--orange);box-shadow:var(--shadow-sm);transform:translateY(-1px)}
+.scenario-card.dragging{opacity:.4}
+.scenario-card.placed{opacity:.35;cursor:not-allowed;pointer-events:none}
+.scenario-card.placed.correct{border-color:var(--green);background:var(--green-light)}
+.scenario-card.placed.wrong{border-color:var(--red);background:var(--red-light)}
+.scenario-text{font-size:.86rem;color:var(--text-primary);line-height:1.5;font-weight:500}
+.scenario-hint{font-size:.72rem;color:var(--text-muted);margin-top:.3rem;font-style:italic}
+.bucket-stack{display:flex;flex-direction:column;gap:1rem}
+.bucket{border:2px dashed var(--border);border-radius:var(--radius-sm);padding:1rem;min-height:88px;transition:all .25s;background:rgba(255,255,255,0.5)}
+.bucket.drag-over{border-color:var(--orange);background:var(--orange-glow);border-style:solid}
+.bucket-title{font-family:'DM Serif Display',serif;font-size:1rem;color:var(--navy);margin-bottom:.25rem}
+.bucket-sub{font-size:.7rem;color:var(--text-muted);margin-bottom:.6rem;letter-spacing:.04em;text-transform:uppercase;font-weight:600}
+.bucket-drop{display:flex;flex-wrap:wrap;gap:.4rem;min-height:32px}
+.dropped-pill{background:var(--bg-card);border:1px solid var(--border);border-radius:50px;padding:.3rem .7rem;font-size:.72rem;font-weight:500;color:var(--text-primary)}
+.dropped-pill.correct{background:var(--green-light);border-color:var(--green);color:#256B29}
+.dropped-pill.wrong{background:var(--red-light);border-color:var(--red);color:#933}
+.activity-feedback{margin-top:1.2rem;padding:1rem 1.2rem;border-radius:var(--radius-sm);font-size:.85rem;line-height:1.5;display:none}
+.activity-feedback.show{display:block;animation:fadeIn .4s ease}
+.activity-feedback.success{background:var(--green-light);color:#1F5723;border-left:3px solid var(--green)}
+.activity-feedback.partial{background:#FFF4E5;color:#7A4A0A;border-left:3px solid #E89B2E}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+
+.activity-toolbar{display:flex;gap:.6rem;margin-top:1.2rem;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:.4rem;padding:.6rem 1.2rem;border-radius:8px;font-size:.82rem;font-weight:600;border:none;cursor:pointer;transition:all .2s;font-family:inherit}
+.btn-primary{background:var(--orange);color:#fff}.btn-primary:hover{background:var(--orange-dark);transform:translateY(-1px);box-shadow:0 4px 12px rgba(232,122,46,0.3)}
+.btn-ghost{background:transparent;border:1.5px solid var(--border);color:var(--text-secondary)}.btn-ghost:hover{border-color:var(--orange);color:var(--orange)}
+
+/* ── COMPARE CARDS ── */
+.compare-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:1.2rem}
+@media (max-width:760px){.compare-grid{grid-template-columns:1fr}}
+.compare-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:1.2rem;transition:all .3s}
+.compare-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-md);border-color:transparent}
+.compare-icon{width:38px;height:38px;border-radius:8px;display:flex;align-items:center;justify-content:center;margin-bottom:.7rem;font-size:1.05rem;font-weight:700;font-family:'DM Serif Display',serif;color:#fff}
+.compare-card:nth-child(1) .compare-icon{background:linear-gradient(135deg,#66BB6A,#4CAF50)}
+.compare-card:nth-child(2) .compare-icon{background:linear-gradient(135deg,var(--orange),var(--orange-light))}
+.compare-card:nth-child(3) .compare-icon{background:linear-gradient(135deg,#5B8FE0,#8E6BC0)}
+.compare-card h4{font-family:'DM Serif Display',serif;font-size:1.05rem;color:var(--navy);margin-bottom:.3rem}
+.compare-card p{font-size:.82rem;color:var(--text-secondary);line-height:1.55}
+.compare-card ul{list-style:none;padding:0;margin-top:.6rem;border-top:1px dashed var(--border);padding-top:.55rem}
+.compare-card li{font-size:.74rem;color:var(--text-secondary);padding:.15rem 0;display:flex;gap:.4rem;align-items:flex-start;line-height:1.45}
+.compare-card li::before{content:'✓';color:var(--green);font-weight:700;flex-shrink:0}
+.compare-card.warn li::before{content:'✎';color:var(--orange)}
+.compare-card.info li::before{content:'▸';color:#5B8FE0}
+
+/* ── PATTERN CARDS ── */
+.pattern-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin-top:1.2rem}
+.pattern-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:1.1rem 1.2rem;transition:all .3s}
+.pattern-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-sm)}
+.pattern-card .pc-tag{font-family:var(--mono);font-size:.62rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#fff;padding:.2rem .55rem;border-radius:4px;display:inline-block;margin-bottom:.5rem}
+.pattern-card h5{font-family:'DM Serif Display',serif;font-size:1.02rem;color:var(--navy);margin-bottom:.3rem}
+.pattern-card p{font-size:.78rem;color:var(--text-secondary);line-height:1.55}
+
+/* ── ACTIVITY 2: PROMPT BUILDER ── */
+.prompt-pool{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1rem}
+.frag-chip{background:var(--bg-card);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:.65rem .9rem;font-size:.8rem;line-height:1.45;cursor:pointer;transition:all .2s;max-width:340px;user-select:none;font-weight:500}
+.frag-chip:hover{border-color:var(--orange);box-shadow:var(--shadow-sm);transform:translateY(-1px)}
+.frag-chip.used{opacity:0;pointer-events:none;position:absolute;visibility:hidden}
+.frag-chip.shake{animation:shake .35s ease;border-color:var(--red);background:var(--red-light)}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.prompt-slots{margin-top:1.4rem;border:2px dashed var(--border);border-radius:var(--radius-sm);padding:1rem;min-height:90px;background:rgba(255,255,255,0.5)}
+.slot-line{display:flex;align-items:flex-start;gap:.6rem;padding:.45rem .2rem;font-size:.83rem;line-height:1.5;animation:fadeIn .35s ease}
+.slot-tag{font-family:var(--mono);font-size:.62rem;font-weight:600;letter-spacing:.05em;color:#fff;background:var(--navy);padding:.18rem .5rem;border-radius:4px;flex-shrink:0;margin-top:.1rem;text-transform:uppercase}
+.slot-line.t-aud .slot-tag{background:#5B8FE0}
+.slot-line.t-goal .slot-tag{background:var(--orange)}
+.slot-line.t-tone .slot-tag{background:#66BB6A}
+.slot-line.t-out .slot-tag{background:#8E6BC0}
+.prompt-hint{margin-top:.8rem;padding:.7rem .9rem;background:var(--red-light);border-left:3px solid var(--red);border-radius:4px;font-size:.78rem;color:#7A2A1E;line-height:1.55;display:none}
+.prompt-hint.show{display:block;animation:fadeIn .3s ease}
+.prompt-preview{margin-top:1.2rem;background:#1A1B2E;border-radius:var(--radius-sm);padding:1.2rem 1.4rem;font-family:var(--mono);font-size:.78rem;line-height:1.75;color:#E8E8EC;display:none;border:1px solid var(--navy)}
+.prompt-preview.show{display:block;animation:fadeIn .4s ease}
+.prompt-preview .pp-label{color:var(--orange-light);font-weight:600;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;display:block;margin-bottom:.6rem}
+.structure-bar{display:flex;gap:.4rem;margin-top:1rem;flex-wrap:wrap}
+.structure-step{font-size:.68rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:.3rem .7rem;border-radius:50px;color:#fff}
+.structure-step:nth-child(1){background:#5B8FE0}.structure-step:nth-child(3){background:var(--orange)}
+.structure-step:nth-child(5){background:#66BB6A}.structure-step:nth-child(7){background:#8E6BC0}
+.structure-arrow{color:var(--text-muted);font-weight:700;align-self:center;font-size:.75rem}
+
+/* ── DOC/CODE STRIP ── */
+.doc-strip{margin-top:1.2rem;background:#1A1B2E;border-radius:var(--radius-sm);padding:1rem 1.2rem;font-family:var(--mono);font-size:.8rem;line-height:1.7;color:#E8E8EC;border:1px solid var(--navy);overflow-x:auto}
+.doc-strip .fn{color:var(--orange-light);font-weight:600}
+.doc-strip .cm{color:#7E8AA0;display:block;font-size:.72rem;margin-top:.35rem}
+
+/* ── ACTIVITY 3: FACT CHECK CLINIC ── */
+.validate-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:1rem}
+@media (max-width:760px){.validate-grid{grid-template-columns:1fr}}
+.product-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:1.4rem;box-shadow:var(--shadow-sm)}
+.product-card h4{font-family:'DM Serif Display',serif;font-size:1.15rem;color:var(--navy);margin-bottom:.2rem}
+.product-tag{font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--orange);margin-bottom:.8rem;display:block}
+.draft-quote{font-size:.82rem;color:var(--text-primary);line-height:1.6;background:var(--bg-light);border-left:3px solid var(--border);border-radius:6px;padding:.7rem .85rem;margin-bottom:.7rem;font-style:italic}
+.check-block{margin-top:1rem;padding-top:.9rem;border-top:2px solid var(--border)}
+.check-block h5{font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-muted);margin-bottom:.6rem}
+.err-opt{display:block;width:100%;text-align:left;background:var(--bg-light);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:.6rem .8rem;font-size:.8rem;line-height:1.45;cursor:pointer;transition:all .2s;font-family:inherit;color:var(--text-primary);margin-bottom:.45rem}
+.err-opt:hover:not(:disabled){border-color:var(--orange);transform:translateX(2px)}
+.err-opt:disabled{cursor:default}
+.err-opt.right{background:var(--green-light);border-color:var(--green);color:#1F5723;font-weight:600}
+.err-opt.wrong{background:var(--red-light);border-color:var(--red);color:#7A2A1E}
+.err-note{font-size:.74rem;color:var(--text-secondary);margin-top:.5rem;line-height:1.55;padding:.55rem .7rem;background:var(--bg-light);border-radius:6px;border-left:3px solid var(--orange);display:none}
+.err-note.show{display:block;animation:fadeIn .3s ease}
+
+/* ── ACTIVITY 4: QUIZ ── */
+.quiz-q{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:1.3rem 1.4rem;margin-top:1rem}
+.quiz-q-num{font-family:var(--mono);font-size:.68rem;font-weight:600;color:var(--orange);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.4rem}
+.quiz-q-text{font-size:.92rem;font-weight:600;color:var(--navy);line-height:1.55;margin-bottom:.9rem}
+.quiz-opts{display:grid;gap:.5rem}
+.quiz-opt{text-align:left;background:var(--bg-light);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:.7rem .9rem;font-size:.83rem;line-height:1.5;cursor:pointer;transition:all .2s;font-family:inherit;color:var(--text-primary)}
+.quiz-opt:hover:not(:disabled){border-color:var(--orange);transform:translateX(2px)}
+.quiz-opt:disabled{cursor:default;opacity:.75}
+.quiz-opt.right{background:var(--green-light);border-color:var(--green);color:#1F5723;opacity:1;font-weight:600}
+.quiz-opt.wrong{background:var(--red-light);border-color:var(--red);color:#7A2A1E;opacity:1}
+.quiz-explain{margin-top:.7rem;padding:.7rem .9rem;border-radius:6px;font-size:.78rem;line-height:1.6;display:none}
+.quiz-explain.show{display:block;animation:fadeIn .3s ease}
+.quiz-explain.ok{background:var(--green-light);color:#1F5723;border-left:3px solid var(--green)}
+.quiz-explain.no{background:#FFF4E5;color:#7A4A0A;border-left:3px solid #E89B2E}
+
+/* ── REFLECTION ── */
+.reflect-prompt{display:grid;grid-template-columns:1fr;gap:.8rem;margin-top:1rem}
+.reflect-q{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:1rem 1.2rem}
+.reflect-q-text{font-size:.88rem;font-weight:600;color:var(--navy);margin-bottom:.5rem}
+.reflect-q textarea{width:100%;border:1px solid var(--border);border-radius:6px;padding:.6rem .8rem;font-family:inherit;font-size:.85rem;color:var(--text-primary);background:var(--bg-light);resize:vertical;min-height:60px}
+.reflect-q textarea:focus{outline:none;border-color:var(--orange)}
+
+/* ── FOOTER NEXT ── */
+.next-up{background:linear-gradient(135deg,var(--navy-dark),var(--navy));border-radius:var(--radius);padding:2.4rem;color:#fff;margin-top:2rem;text-align:center;position:relative;overflow:hidden}
+.next-up::before{content:'';position:absolute;top:-50px;right:-50px;width:180px;height:180px;border-radius:50%;background:rgba(232,122,46,0.12)}
+.next-up h3{font-family:'DM Serif Display',serif;font-size:1.5rem;margin-bottom:.5rem;position:relative}
+.next-up p{font-size:.92rem;color:rgba(255,255,255,0.75);margin-bottom:1.2rem;position:relative}
+.next-up .btn-primary{position:relative}
+
+@media (max-width:760px){
+  .nav{padding:0 1rem}
+  .nav-logo-tag{display:none}
+  .hero{padding:2.5rem 1.2rem 2rem}
+  section.lesson{padding:2rem 1.2rem}
+  .lesson-card{padding:1.4rem}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-left">
+    <span class="lesson-badge">Lesson 2 of 4</span>
+  </div>
+  <a href="https://mokshpath.org/" class="nav-logo">
+    <img class="nav-logo-icon" src="hero.svg" alt="MokshPath logo">
+    <div class="nav-logo-text">
+      <span class="nav-logo-name">Moksh<span>Path</span></span>
+      <span class="nav-logo-tag">Guided Path to True Learning</span>
+    </div>
+  </a>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-eyebrow"><span class="dot"></span> Week 2 · AI Office</div>
+  <h1>AI in Word — <em>describe the document, let AI draft it</em></h1>
+  <p class="hero-sub">Four hands-on activities. Walk the draft loop, assemble a document prompt from its four parts, play editor on an AI draft riddled with invented facts, and drill the one discipline that keeps your name off a bad memo — because a draft that reads well is not the same as a draft that's true.</p>
+  <div class="progress-rail">
+    <span class="progress-label">Progress</span>
+    <div class="progress-dot" id="prog1"></div>
+    <div class="progress-dot" id="prog2"></div>
+    <div class="progress-dot" id="prog3"></div>
+    <div class="progress-dot" id="prog4"></div>
+  </div>
+</header>
+
+<!-- ── ACTIVITY 1: MATCH THE JOB TO THE PATTERN ── -->
+<section class="lesson" id="activity-1">
+  <div class="container">
+    <span class="lesson-num">1</span>
+    <h2 class="lesson-title">Plain English in, a draft out — and the loop that follows</h2>
+    <p class="lesson-intro">In Word, AI (Copilot, or any assistant you paste into) turns a sentence of intent into a full first draft. But the magic isn't the first draft — it's the <em>loop</em> you run on it. You <strong>Ask</strong>, you <strong>Read</strong> critically, you <strong>Refine</strong> with a follow-up, and you <strong>Verify</strong> every fact before it leaves your hands.</p>
+
+    <div class="loop-strip">
+      <div class="loop-step"><div class="ls-num">Step 1</div><h5>Ask</h5><p>Describe the document in plain English — who it's for and what it must do.</p></div>
+      <span class="loop-arrow">→</span>
+      <div class="loop-step"><div class="ls-num">Step 2</div><h5>Read</h5><p>Read the draft like an editor, not a fan. Where is it vague, generic, or possibly made up?</p></div>
+      <span class="loop-arrow">→</span>
+      <div class="loop-step"><div class="ls-num">Step 3</div><h5>Refine</h5><p>Send a follow-up: shorter, warmer, add a section, cut the fluff. It rewrites in place.</p></div>
+      <span class="loop-arrow">→</span>
+      <div class="loop-step"><div class="ls-num">Step 4</div><h5>Verify</h5><p>Check every name, number, date, and citation against a real source before you send.</p></div>
+    </div>
+
+    <p class="lesson-intro" style="margin-top:2rem">There are a handful of jobs AI does well in a document. Study the three families, then drag each real task into the pattern that fits it. Guess freely — wrong answers explain themselves on hover.</p>
+
+    <div class="compare-grid">
+      <div class="compare-card">
+        <div class="compare-icon">C</div>
+        <h4>Create from scratch</h4>
+        <p>"I have nothing yet — give me a first draft I can shape." Beats the blank page.</p>
+        <ul>
+          <li>Draft an email, memo, or announcement</li>
+          <li>Generate an outline before you write</li>
+          <li>Build a reusable template or table</li>
+        </ul>
+      </div>
+      <div class="compare-card warn">
+        <div class="compare-icon">T</div>
+        <h4>Transform what exists</h4>
+        <p>"I have text — change its shape, tone, or length." Editing at the speed of thought.</p>
+        <ul>
+          <li>Rewrite in a warmer / more formal tone</li>
+          <li>Shorten to half, or expand a bullet</li>
+          <li>Fix grammar, flow, and clarity</li>
+        </ul>
+      </div>
+      <div class="compare-card info">
+        <div class="compare-icon">D</div>
+        <h4>Digest a long doc</h4>
+        <p>"There's too much to read — pull out what matters." Turns 20 pages into 5 bullets.</p>
+        <ul>
+          <li>Summarize a report or contract</li>
+          <li>Extract action items or key dates</li>
+          <li>Reference your own files for context</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="lesson-card" style="margin-top:1.5rem">
+      <div class="classify-grid">
+        <div class="classify-scenarios" id="scenarioList"></div>
+        <div class="bucket-stack">
+          <div class="bucket" data-bucket="create">
+            <div class="bucket-title">Create from scratch</div>
+            <div class="bucket-sub">Draft · Outline · Template</div>
+            <div class="bucket-drop" data-drop="create"></div>
+          </div>
+          <div class="bucket" data-bucket="transform">
+            <div class="bucket-title">Transform what exists</div>
+            <div class="bucket-sub">Re-tone · Shorten · Rewrite</div>
+            <div class="bucket-drop" data-drop="transform"></div>
+          </div>
+          <div class="bucket" data-bucket="digest">
+            <div class="bucket-title">Digest a long doc</div>
+            <div class="bucket-sub">Summarize · Extract · Reference files</div>
+            <div class="bucket-drop" data-drop="digest"></div>
+          </div>
+        </div>
+      </div>
+      <div class="activity-feedback" id="feedback1"></div>
+      <div class="activity-toolbar">
+        <button class="btn btn-ghost" onclick="resetActivity1()">↻ Try again</button>
+        <button class="btn btn-primary" onclick="showAnswers1()">Show me the answers</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 2: BUILD-A-DOCUMENT-PROMPT ── -->
+<section class="lesson" id="activity-2" style="background:var(--bg-light)">
+  <div class="container">
+    <span class="lesson-num" style="background:#5B8FE0">2</span>
+    <h2 class="lesson-title">Build the document prompt — one part at a time</h2>
+    <p class="lesson-intro">"Write me an email about the delay" gets you a generic, could-be-anyone paragraph. A prompt that yields the <em>right</em> document names four things: <strong>AUDIENCE → GOAL → TONE &amp; LENGTH → OUTPUT &amp; SOURCE</strong>. The eight blocks of a professional document prompt are scrambled below — click them in the order they should appear. A wrong click tells you why it doesn't fit yet.</p>
+
+    <div class="structure-bar">
+      <span class="structure-step">1 · Audience</span><span class="structure-arrow">→</span>
+      <span class="structure-step">2 · Goal</span><span class="structure-arrow">→</span>
+      <span class="structure-step">3 · Tone &amp; length</span><span class="structure-arrow">→</span>
+      <span class="structure-step">4 · Output &amp; source</span>
+    </div>
+
+    <div class="lesson-card">
+      <h4 style="font-family:'DM Serif Display',serif;font-size:1.05rem;color:var(--navy)">Click the next block of the prompt</h4>
+      <div class="prompt-pool" id="fragPool"></div>
+      <div class="prompt-hint" id="promptHint"></div>
+      <div class="prompt-slots" id="promptSlots">
+        <div style="font-size:.75rem;color:var(--text-muted);font-style:italic" id="slotPlaceholder">Your assembled prompt will build up here, block by block…</div>
+      </div>
+      <div class="prompt-preview" id="promptPreview"></div>
+      <div class="activity-feedback" id="feedback2"></div>
+      <div class="activity-toolbar">
+        <button class="btn btn-ghost" onclick="resetActivity2()">↻ Start over</button>
+      </div>
+    </div>
+
+    <p class="lesson-intro" style="margin:2rem 0 0">Once you have a draft, transforming it is a single follow-up sentence. These are the moves you'll reach for most:</p>
+    <div class="pattern-grid">
+      <div class="pattern-card"><span class="pc-tag" style="background:#66BB6A">Re-tone</span><h5>Change the voice</h5><p>"Make this warmer and less corporate" or "rewrite in a formal, executive tone." Same facts, new register.</p></div>
+      <div class="pattern-card"><span class="pc-tag" style="background:var(--orange)">Re-length</span><h5>Shorten or expand</h5><p>"Cut this to 120 words" or "expand each bullet into a short paragraph." Say the target, not just "shorter."</p></div>
+      <div class="pattern-card"><span class="pc-tag" style="background:#8E6BC0">Restructure</span><h5>Change the shape</h5><p>"Turn these paragraphs into a bulleted summary with a heading" or "make a 3-column table from this."</p></div>
+      <div class="pattern-card"><span class="pc-tag" style="background:#5B8FE0">Reference</span><h5>Point at your files</h5><p>"Using the attached report, draft a one-page summary." Grounds the draft in your real content, not guesses.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 3: FACT-CHECK CLINIC ── -->
+<section class="lesson" id="activity-3">
+  <div class="container">
+    <span class="lesson-num" style="background:#4CAF50">3</span>
+    <h2 class="lesson-title">Spot the invented fact — three drafts, three traps</h2>
+    <p class="lesson-intro">AI writes fluently and confidently, which is exactly the danger: a <em>hallucination</em> reads as smoothly as a fact. Each draft below came back polished and professional — and each contains one thing you must never trust on sight. Read like the person whose name goes on it. Pick what to flag. Every choice explains itself, so wrong guesses teach too.</p>
+
+    <div class="lesson-card">
+      <div class="validate-grid">
+        <div class="product-card" id="cardA">
+          <span class="product-tag">Draft A · Client email</span>
+          <h4>The confident statistic</h4>
+          <div class="draft-quote">"As you know, <strong>73% of enterprises in your sector adopted this exact solution in 2024</strong>, so the market has clearly moved. We'd be glad to walk you through the rollout."</div>
+          <div class="check-block">
+            <h5>What must you verify before sending?</h5>
+            <div id="checksA"></div>
+          </div>
+          <div class="err-note" id="noteA"></div>
+        </div>
+        <div class="product-card" id="cardB">
+          <span class="product-tag">Draft B · Research brief</span>
+          <h4>The citation that looks real</h4>
+          <div class="draft-quote">"This aligns with findings from <strong>Henderson &amp; Vale (2021), <em>Journal of Applied Operations</em>, pp. 44–61</strong>, who reported a 2.3× efficiency gain."</div>
+          <div class="check-block">
+            <h5>What must you verify before sending?</h5>
+            <div id="checksB"></div>
+          </div>
+          <div class="err-note" id="noteB"></div>
+        </div>
+        <div class="product-card" id="cardC" style="grid-column:1/-1">
+          <span class="product-tag">Draft C · Company announcement</span>
+          <h4>The plausible-but-invented detail</h4>
+          <div class="draft-quote">"We're proud to share that the new policy takes effect <strong>on Monday, March 3rd</strong>, and was approved unanimously by <strong>the seven-member steering committee</strong>. Please direct questions to your team lead."</div>
+          <div class="check-block">
+            <h5>What must you verify before sending?</h5>
+            <div id="checksC"></div>
+          </div>
+          <div class="err-note" id="noteC"></div>
+        </div>
+      </div>
+      <div class="activity-feedback" id="feedback3"></div>
+      <div class="activity-toolbar">
+        <button class="btn btn-ghost" onclick="resetActivity3()">↻ Reset clinic</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 4: VERIFY-BEFORE-YOU-SEND QUIZ ── -->
+<section class="lesson" id="activity-4" style="background:var(--bg-light)">
+  <div class="container">
+    <span class="lesson-num" style="background:#8E6BC0">4</span>
+    <h2 class="lesson-title">The verify-before-you-send quiz — your name, your risk</h2>
+    <p class="lesson-intro">AI writes drafts that <em>read</em> well. Reading well is not the same as being true, on-message, or yours. This quiz drills the discipline that keeps a good tool from becoming a liability: <strong>read as an editor, verify every claim, and make the voice your own before you hit send</strong>. Five situations, one honest answer each — the misconceptions are where the real learning is.</p>
+
+    <div id="quizWrap"></div>
+    <div class="activity-feedback" id="feedback4"></div>
+    <div class="activity-toolbar">
+      <button class="btn btn-ghost" onclick="resetQuiz()">↻ Retake quiz</button>
+    </div>
+  </div>
+</section>
+
+<!-- ── REFLECT ── -->
+<section class="lesson" style="padding-bottom:1.5rem">
+  <div class="container">
+    <h2 class="lesson-title" style="font-size:1.5rem">Quick reflect — make it stick</h2>
+    <p class="lesson-intro" style="margin-bottom:1rem">A sentence each is enough. Writing it in your own words is what moves it into memory. (Nothing is saved or sent.)</p>
+    <div class="reflect-prompt">
+      <div class="reflect-q">
+        <div class="reflect-q-text">You need a two-paragraph email telling a client their delivery slipped by a week. Write the one-line prompt you'd give AI — name the audience, goal, tone, and length so the draft comes back usable on the first try.</div>
+        <textarea placeholder="'Draft a short, apologetic-but-confident email to a business client explaining that their delivery has slipped one week, in two short paragraphs, offering a concrete new date...'"></textarea>
+      </div>
+      <div class="reflect-q">
+        <div class="reflect-q-text">AI hands you a crisp, professional draft that cites a statistic and a source. It reads perfectly. Describe the exact checks you'd run before your name goes on it.</div>
+        <textarea placeholder="I'd confirm the statistic against a real source, search the citation to make sure the paper/author actually exists, check every name/date/number, and read it aloud to catch generic AI voice..."></textarea>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NEXT UP -->
+<section class="lesson" style="padding-top:0">
+  <div class="container">
+    <div class="next-up">
+      <h3>Lesson 3 · AI in Outlook — Email &amp; Inbox</h3>
+      <p>You can draft and trust a document. Next: point that same skill at your inbox — let AI triage, summarize threads, and draft replies in your voice, so you spend minutes on email instead of hours.</p>
+      <a href="03-ai-outlook-email.html" class="btn btn-primary">Continue to Lesson 3 →</a>
+    </div>
+  </div>
+</section>
+
+<script>
+const $ = id => document.getElementById(id);
+
+/* ─── ACTIVITY 1: Match the Job to the Pattern ─── */
+const NEEDS = [
+  {id:'n1', text:'You have nothing yet — you need a first-draft welcome email for new hires', hint:'Blank page, no source text — you want words generated from intent.', bucket:'create', why:'Nothing exists yet, so this is create-from-scratch. Describe the audience and goal and AI produces a first draft you then shape.'},
+  {id:'n2', text:'Turn a rough set of notes into a proper one-page project proposal outline', hint:'You want structure before prose — headings, sections, order.', bucket:'create', why:'Generating structure from intent is a create job. An outline first, then flesh it out — cleaner than writing straight through.'},
+  {id:'n3', text:'Rewrite a blunt paragraph so it sounds warmer and more diplomatic', hint:'Text already exists — you\'re changing its register, not its facts.', bucket:'transform', why:'The text exists; you\'re changing tone. That\'s a transform — same content, new voice. "Make this warmer" is all it takes.'},
+  {id:'n4', text:'Cut a 500-word update down to a 150-word version for a busy exec', hint:'Same content in, less content out — you\'re reshaping length.', bucket:'transform', why:'Shortening existing text is a transform. Name the target ("150 words") so it trims to spec instead of guessing at "shorter."'},
+  {id:'n5', text:'Pull the three key decisions and all action items out of a 12-page meeting doc', hint:'Long source in, a short list of what matters out.', bucket:'digest', why:'Extracting the signal from a long document is digest. "List the decisions and action items from this doc" turns 12 pages into a checklist.'},
+  {id:'n6', text:'Summarize an attached 20-page vendor contract into five plain-English bullets', hint:'Reference an existing file and compress it to essentials.', bucket:'digest', why:'Summarizing a long file you point AI at is digest — the "reference your files" pattern. It reads the source so you don\'t have to read all 20 pages.'}
+];
+const BUCKET_NAMES = {create:'Create from scratch', transform:'Transform what exists', digest:'Digest a long doc'};
+
+let placed = {};
+function renderScenarios(){
+  const list = $('scenarioList');
+  const shuffled = [...NEEDS].sort(()=>Math.random()-0.5);
+  list.innerHTML = shuffled.map(p => `
+    <div class="scenario-card" draggable="true" data-id="${p.id}">
+      <div class="scenario-text">${p.text}</div>
+      <div class="scenario-hint">${p.hint}</div>
+    </div>`).join('');
+  list.querySelectorAll('.scenario-card').forEach(card => {
+    card.addEventListener('dragstart', e => {
+      e.dataTransfer.setData('id', card.dataset.id);
+      card.classList.add('dragging');
+    });
+    card.addEventListener('dragend', () => card.classList.remove('dragging'));
+  });
+}
+function setupBuckets(){
+  document.querySelectorAll('.bucket').forEach(b => {
+    b.addEventListener('dragover', e => { e.preventDefault(); b.classList.add('drag-over'); });
+    b.addEventListener('dragleave', () => b.classList.remove('drag-over'));
+    b.addEventListener('drop', e => {
+      e.preventDefault();
+      b.classList.remove('drag-over');
+      handleDrop(e.dataTransfer.getData('id'), b.dataset.bucket);
+    });
+  });
+}
+function handleDrop(id, bucket){
+  const need = NEEDS.find(p => p.id === id);
+  if (!need || placed[id]) return;
+  const correct = need.bucket === bucket;
+  placed[id] = {bucket, correct};
+  const card = document.querySelector(`.scenario-card[data-id="${id}"]`);
+  card.classList.add('placed', correct ? 'correct' : 'wrong');
+  const pill = document.createElement('span');
+  pill.className = 'dropped-pill ' + (correct ? 'correct' : 'wrong');
+  pill.textContent = (correct ? '✓ ' : '✗ ') + need.text.substring(0, 34) + (need.text.length > 34 ? '…' : '');
+  pill.title = correct ? need.why : `Correct pattern: ${BUCKET_NAMES[need.bucket]}. ${need.why}`;
+  document.querySelector(`[data-drop="${bucket}"]`).appendChild(pill);
+  checkActivity1Done();
+}
+function checkActivity1Done(){
+  if (Object.keys(placed).length === NEEDS.length) {
+    const right = Object.values(placed).filter(p => p.correct).length;
+    const fb = $('feedback1');
+    if (right === NEEDS.length) {
+      fb.className = 'activity-feedback show success';
+      fb.innerHTML = `<strong>All six correct — you're naming the job before you prompt.</strong> If there's no source text and you need words, it's <em>create</em>. If text already exists and you're changing its tone, length, or shape, it's <em>transform</em>. If there's a long document and you want the essence, it's <em>digest</em>. Name the pattern and your prompt writes itself.`;
+    } else {
+      fb.className = 'activity-feedback show partial';
+      fb.innerHTML = `<strong>You got ${right} of 6.</strong> Hover any red pill for the right pattern and the reasoning. The usual mix-up: "shorten this to 150 words" feels like a summary, but it's a <em>transform</em> — you're reshaping text you already have, not extracting the gist of a long source. Click <em>Try again</em> for a fresh shuffle.`;
+    }
+    $('prog1').classList.add('done');
+  }
+}
+function resetActivity1(){
+  placed = {};
+  $('feedback1').className = 'activity-feedback';
+  document.querySelectorAll('.bucket-drop').forEach(d => d.innerHTML = '');
+  renderScenarios();
+  $('prog1').classList.remove('done');
+}
+function showAnswers1(){
+  NEEDS.forEach(p => { if (!placed[p.id]) handleDrop(p.id, p.bucket); });
+}
+
+/* ─── ACTIVITY 2: Build-a-Document-Prompt ─── */
+const FRAGMENTS = [
+  {order:1, tag:'aud',  text:'Write to a long-standing business client — professional, but we have a warm relationship.'},
+  {order:2, tag:'aud',  text:'They are not technical, so avoid jargon and keep it human.'},
+  {order:3, tag:'goal', text:'The goal: tell them their delivery has slipped by one week, and reassure them we have a firm new date.'},
+  {order:4, tag:'goal', text:'Be honest about the delay, take ownership, and offer the concrete new date of the 18th.'},
+  {order:5, tag:'tone', text:'Tone: apologetic but confident — not grovelling, not defensive.'},
+  {order:6, tag:'tone', text:'Keep it to two short paragraphs, around 120 words.'},
+  {order:7, tag:'out',  text:'Output as a ready-to-send email with a subject line and a clear sign-off.'},
+  {order:8, tag:'out',  text:'Use the details in the attached project timeline — do not invent any dates I have not given you.'}
+];
+const STAGE_HINTS = {
+  aud:'Start with the AUDIENCE — AI can\'t see who you\'re writing to. Say who they are and how you relate to them before anything else.',
+  goal:'The GOAL comes after the audience: what must this document actually accomplish, and what\'s the honest core message?',
+  tone:'TONE & LENGTH come after the goal — the register (apologetic, formal, warm) and a concrete length so the draft comes back the right size.',
+  out:'OUTPUT & SOURCE come last — the exact format you want, and which of your files to ground the draft in (so it doesn\'t invent details).'
+};
+let promptStep = 0, promptMistakes = 0;
+function renderFragments(){
+  const shuffled = [...FRAGMENTS].sort(()=>Math.random()-0.5);
+  $('fragPool').innerHTML = shuffled.map(f =>
+    `<div class="frag-chip" data-order="${f.order}" onclick="pickFragment(${f.order}, this)">${f.text}</div>`
+  ).join('');
+}
+function pickFragment(order, chip){
+  const hint = $('promptHint');
+  if (order !== promptStep + 1) {
+    promptMistakes++;
+    chip.classList.remove('shake'); void chip.offsetWidth;
+    chip.classList.add('shake');
+    const expected = FRAGMENTS.find(f => f.order === promptStep + 1);
+    const label = {aud:'AUDIENCE', goal:'GOAL', tone:'TONE & LENGTH', out:'OUTPUT & SOURCE'}[expected.tag];
+    hint.innerHTML = `<strong>Not yet.</strong> ${STAGE_HINTS[expected.tag]} (Block ${promptStep + 1} of 8 — you're building the <strong>${label}</strong> section.)`;
+    hint.classList.add('show');
+    return;
+  }
+  hint.classList.remove('show');
+  promptStep++;
+  chip.classList.add('used');
+  const frag = FRAGMENTS.find(f => f.order === order);
+  const ph = $('slotPlaceholder');
+  if (ph) ph.remove();
+  const line = document.createElement('div');
+  line.className = 'slot-line t-' + frag.tag;
+  const tagLabel = {aud:'audience', goal:'goal', tone:'tone/length', out:'output/source'}[frag.tag];
+  line.innerHTML = `<span class="slot-tag">${tagLabel}</span><span>${frag.text}</span>`;
+  $('promptSlots').appendChild(line);
+  if (promptStep === FRAGMENTS.length) finishPrompt();
+}
+function finishPrompt(){
+  const preview = $('promptPreview');
+  preview.innerHTML = `<span class="pp-label">Your assembled prompt — copy this pattern for any document</span>` +
+    FRAGMENTS.map(f => f.text).join(' ');
+  preview.classList.add('show');
+  const fb = $('feedback2');
+  const whys = `<ul style="margin:.6rem 0 0 1.1rem;line-height:1.7">
+    <li><strong>Audience</strong> is non-negotiable — AI can't see who you're writing to. "A warm long-standing client, non-technical" produces a completely different draft than "a formal regulator."</li>
+    <li><strong>Goal</strong> stated as an outcome plus the honest core message ("slipped one week, firm new date") stops AI hedging or burying the point.</li>
+    <li><strong>Tone &amp; length</strong> — "apologetic but confident, ~120 words" — is the difference between a usable draft and one you rewrite from scratch. Name a number, not just "short."</li>
+    <li><strong>Output &amp; source</strong> — ask for the exact format <em>and</em> point it at your real file with "don't invent dates." That single instruction is your first line of defence against hallucination.</li></ul>`;
+  if (promptMistakes === 0) {
+    fb.className = 'activity-feedback show success';
+    fb.innerHTML = `<strong>Perfect assembly — zero wrong clicks.</strong> You've internalized AUDIENCE → GOAL → TONE &amp; LENGTH → OUTPUT &amp; SOURCE. Why each block earns its place:${whys}`;
+  } else {
+    fb.className = 'activity-feedback show partial';
+    fb.innerHTML = `<strong>Assembled — with ${promptMistakes} wrong click${promptMistakes > 1 ? 's' : ''} on the way.</strong> That's fine: the order <em>is</em> the lesson — say who it's for before what it must do, set the tone before you ask for the finished format. Why each block matters:${whys} Hit <em>Start over</em> and try for a clean run.`;
+  }
+  $('prog2').classList.add('done');
+}
+function resetActivity2(){
+  promptStep = 0; promptMistakes = 0;
+  $('promptHint').classList.remove('show');
+  $('promptPreview').className = 'prompt-preview';
+  $('feedback2').className = 'activity-feedback';
+  $('promptSlots').innerHTML = '<div style="font-size:.75rem;color:var(--text-muted);font-style:italic" id="slotPlaceholder">Your assembled prompt will build up here, block by block…</div>';
+  renderFragments();
+  $('prog2').classList.remove('done');
+}
+
+/* ─── ACTIVITY 3: Fact-Check Clinic ─── */
+const PATIENTS = {
+  A: {
+    correct: 1,
+    opts: [
+      {t:'Nothing — a specific percentage sounds researched, so it\'s safe to keep', ex:'No — the more specific a number sounds, the more it needs checking. "73% of enterprises in 2024" is precisely the kind of confident, invented statistic AI produces. Never ship a stat you can\'t trace to a named source.'},
+      {t:'The 73% statistic — trace it to a real, citable source or delete it', ex:'Correct. AI invents plausible-sounding numbers constantly. A statistic with no source is a liability, not a persuasion tool. Either find a real, dated, citable figure to back it — or cut the claim entirely. In a client email, an invented number can cost you the account.'},
+      {t:'The phrase "as you know" — it\'s too casual for a client', ex:'That\'s a tone nitpick, not the real risk. Tone you can adjust in seconds. The genuine hazard here is the unsourced 73% — a fabricated fact does damage a casual phrase never could.'}
+    ]
+  },
+  B: {
+    correct: 0,
+    opts: [
+      {t:'The citation — confirm the paper, authors, journal, and page numbers actually exist', ex:'Correct. Fabricated citations are AI\'s signature failure: a real-sounding author, a plausible journal, exact page numbers — all invented. Always search for the actual paper before citing it. A fake reference in a research brief destroys your credibility the moment someone checks.'},
+      {t:'The 2.3× figure only — the citation itself is clearly fine', ex:'No — a citation that "looks real" is exactly what you cannot trust on sight. The author, journal, year, and page range can all be fabricated together, wrapped around a made-up figure. Verify the source exists first; the figure is meaningless if the paper isn\'t real.'},
+      {t:'Nothing — a citation with page numbers is proof enough', ex:'No — page numbers are trivially easy for AI to invent and are not evidence of anything. Precise-looking detail is a hallmark of a confident hallucination, not a guarantee of truth. Search for the paper itself.'}
+    ]
+  },
+  C: {
+    correct: 2,
+    opts: [
+      {t:'The phrase "we\'re proud to share" — it\'s corporate filler', ex:'That\'s style, not substance. You can trim filler later. The real hazard is the specific factual claims — a date and a committee detail you may never have given AI, which it supplied to sound complete.'},
+      {t:'Only the date needs checking; "unanimously by the seven-member committee" is harmless framing', ex:'Not quite — "unanimously" and "seven-member" are specific factual claims AI may have invented to fill the sentence. If the vote wasn\'t unanimous, or the committee has five members, you\'ve published a falsehood in a company-wide announcement. Both the date AND those details need confirming.'},
+      {t:'Every concrete fact — the date, "unanimously," and "seven-member committee" — all against a real source', ex:'Correct. AI fills gaps with plausible specifics: a confident date, a vote result, a committee size — none of which you may have provided. In a company-wide announcement, one invented detail is a public correction and a credibility hit. Confirm every concrete fact against the actual policy document before it goes out.'}
+    ]
+  }
+};
+let clinicAnswered = {};
+function renderChecks(){
+  ['A','B','C'].forEach(p => {
+    const data = PATIENTS[p];
+    $('checks' + p).innerHTML = data.opts.map((o, i) =>
+      `<button class="err-opt" data-p="${p}" data-i="${i}" onclick="answerClinic('${p}', ${i}, this)">${o.t}</button>`
+    ).join('');
+  });
+}
+function answerClinic(p, i, btn){
+  if (clinicAnswered[p]) return;
+  clinicAnswered[p] = true;
+  const data = PATIENTS[p];
+  const wrap = $('checks' + p);
+  wrap.querySelectorAll('.err-opt').forEach((b, bi) => {
+    b.disabled = true;
+    if (bi === data.correct) b.classList.add('right');
+  });
+  if (i !== data.correct) btn.classList.add('wrong');
+  const note = $('note' + p);
+  note.innerHTML = (i === data.correct ? '<strong>Correct call.</strong> ' : '<strong>Not the main risk.</strong> ') + data.opts[i].ex;
+  note.classList.add('show');
+  checkClinicDone();
+}
+function checkClinicDone(){
+  if (Object.keys(clinicAnswered).length === 3) {
+    const right = ['A','B','C'].filter(p => {
+      const chosen = $('checks'+p).querySelector('.err-opt.wrong');
+      return !chosen;
+    }).length;
+    const fb = $('feedback3');
+    if (right === 3) {
+      fb.className = 'activity-feedback show success';
+      fb.innerHTML = `<strong>3/3 — you read AI drafts like an editor, not a fan.</strong> The pattern to keep: AI's most dangerous output is the <em>confident specific</em> — a precise statistic, a real-looking citation, a definite date or detail. Fluency is not evidence. Before anything leaves your hands, trace every number, name, date, and source to something real. The polish is free; the truth is your job.`;
+    } else {
+      fb.className = 'activity-feedback show partial';
+      fb.innerHTML = `<strong>You caught ${right} of 3.</strong> Re-read the notes on the ones you missed — each draft hides its risk behind fluent, professional prose. The trap most people fall into: assuming that specific, detailed, confident writing must be accurate. It's the opposite — the more precise an unsourced claim sounds, the more it needs checking. Hit <em>Reset clinic</em> to run the cases again.`;
+    }
+    $('prog3').classList.add('done');
+  }
+}
+function resetActivity3(){
+  clinicAnswered = {};
+  ['A','B','C'].forEach(p => $('note'+p).classList.remove('show'));
+  $('feedback3').className = 'activity-feedback';
+  renderChecks();
+  $('prog3').classList.remove('done');
+}
+
+/* ─── ACTIVITY 4: Verify-Before-You-Send Quiz ─── */
+const QUIZ = [
+  {
+    q:'AI hands you a clean, professional draft with no obvious errors. What should you do before sending it under your name?',
+    opts:[
+      {t:'Send it — a polished, error-free draft is ready to go', ok:false, ex:'"Reads well" is not "is true." A draft can be flawlessly written and still contain an invented statistic, a fake citation, or a date you never gave it. Polish is exactly what makes a hallucination dangerous — it hides in plain, professional prose.'},
+      {t:'Read it as an editor — verify every fact, and make sure the voice sounds like you', ok:true, ex:'This is the whole discipline. Trace every name, number, date, and citation to a real source, then read for that generic "AI voice" and adjust it to sound like a human — you. A first draft from AI is a starting point, not a finished document.'},
+      {t:'Ask AI "is everything in this accurate?" and trust its answer', ok:false, ex:'AI can\'t verify its own output — it will confidently say yes to facts it invented. Self-certification from the tool that wrote the draft is not a check. You need an independent look at the real sources.'}
+    ]
+  },
+  {
+    q:'You ask AI to "write an email about the project delay" and get a bland, could-be-anyone paragraph. What\'s the fix?',
+    opts:[
+      {t:'Regenerate a few times until a good one comes out by luck', ok:false, ex:'Re-rolling the dice on a vague prompt just gives you different flavours of generic. The draft is bland because the prompt was bland — the model had nothing specific to work with.'},
+      {t:'Add the missing context — audience, goal, tone, length, and the real details', ok:true, ex:'A generic draft is almost always a generic-prompt problem. Tell it who it\'s for, the exact message, the tone, a length, and the real facts to use. Specific in, specific out. That\'s the AUDIENCE → GOAL → TONE → OUTPUT pattern doing its job.'},
+      {t:'Accept it — that\'s just how AI writes', ok:false, ex:'AI writes generically when it\'s asked generically. Given a clear audience, a concrete goal, and real details, it produces sharp, specific drafts. The flatness was information the prompt didn\'t provide.'}
+    ]
+  },
+  {
+    q:'A draft cites "a recent Harvard study" showing a striking result that would strengthen your point. What\'s the right move?',
+    opts:[
+      {t:'Keep it — Harvard is credible, so the study must be real', ok:false, ex:'"A recent Harvard study" with no title, author, or date is a classic AI placeholder for a source that may not exist. A credible-sounding institution name is not a citation. Convincing is not the same as real.'},
+      {t:'Find the actual study — title, authors, year — or cut the claim entirely', ok:true, ex:'Track down the real paper and cite it properly, or remove the claim. Vague appeals to a prestigious source ("a Harvard study," "experts agree") are exactly where fabrications hide. If you can\'t point to the real thing, don\'t imply it exists.'},
+      {t:'Ask AI for the link and paste whatever URL it gives you', ok:false, ex:'AI can hallucinate URLs as easily as citations — a link that 404s, or points somewhere unrelated. Don\'t paste a source you haven\'t opened and confirmed actually says what the draft claims.'}
+    ]
+  },
+  {
+    q:'You want AI to summarize a 30-page report you actually have. What\'s the most reliable approach?',
+    opts:[
+      {t:'Describe the report from memory and let AI reconstruct a summary', ok:false, ex:'If AI can\'t see the document, it fills the gaps with plausible guesses — you\'ll get a confident summary of a report that doesn\'t quite match the real one. Memory-based prompting invites invention.'},
+      {t:'Give AI the actual file and ask it to summarize from that source', ok:true, ex:'This is the "reference your files" pattern. When AI works from the real document, its summary is grounded in your content instead of guesses. You still verify the key points, but you\'ve removed the biggest source of invention — the missing source.'},
+      {t:'Ask for a summary of "reports like this one" in general', ok:false, ex:'A generic summary of "reports like this" tells you nothing about your specific document. You need the essence of YOUR report — which means AI has to actually read YOUR report.'}
+    ]
+  },
+  {
+    q:'What\'s the single most reliable habit that separates people who use AI in Word well from people who get burned by it?',
+    opts:[
+      {t:'Writing longer, more elaborate prompts every time', ok:false, ex:'A good prompt raises your odds of a strong draft — but it never guarantees a true one. The prompt gets you a candidate; the verify-and-edit pass is what makes it safe to send. Prompt well, then check.'},
+      {t:'Treating every draft as a starting point to verify and make your own, never a finished product', ok:true, ex:'This is the throughline of the whole lesson. AI is a superb drafter and a superb editor, but it can\'t know your facts, your relationships, or your voice. So the loop is always the same: describe clearly, read critically, verify every claim, and shape the voice until it\'s yours. Then it\'s ready.'},
+      {t:'Using the most advanced AI model available', ok:false, ex:'A more capable model still can\'t see your sources or read your mind about tone — and it can still hallucinate confidently. Sophistication is not verification. The habit, not the horsepower, is what keeps you safe.'}
+    ]
+  }
+];
+let quizAnswered = 0, quizScore = 0;
+function renderQuiz(){
+  quizAnswered = 0; quizScore = 0;
+  $('quizWrap').innerHTML = QUIZ.map((q, qi) => {
+    const order = q.opts.map((_, i) => i).sort(()=>Math.random()-0.5);
+    return `<div class="quiz-q" id="q${qi}">
+      <div class="quiz-q-num">Question ${qi+1} of ${QUIZ.length}</div>
+      <div class="quiz-q-text">${q.q}</div>
+      <div class="quiz-opts">${order.map(oi =>
+        `<button class="quiz-opt" onclick="answerQuiz(${qi}, ${oi}, this)">${q.opts[oi].t}</button>`).join('')}
+      </div>
+      <div class="quiz-explain" id="qx${qi}"></div>
+    </div>`;
+  }).join('');
+  $('feedback4').className = 'activity-feedback';
+}
+function answerQuiz(qi, oi, btn){
+  const q = QUIZ[qi];
+  const box = $('q' + qi);
+  if (box.dataset.done) return;
+  box.dataset.done = '1';
+  const opt = q.opts[oi];
+  const rightText = q.opts.find(o => o.ok).t;
+  box.querySelectorAll('.quiz-opt').forEach(b => {
+    b.disabled = true;
+    if (b.textContent === rightText) b.classList.add('right');
+  });
+  if (!opt.ok) btn.classList.add('wrong');
+  const ex = $('qx' + qi);
+  ex.className = 'quiz-explain show ' + (opt.ok ? 'ok' : 'no');
+  ex.innerHTML = (opt.ok ? '<strong>Right.</strong> ' : '<strong>Not quite.</strong> ') + opt.ex;
+  quizAnswered++;
+  if (opt.ok) quizScore++;
+  if (quizAnswered === QUIZ.length) finishQuiz();
+}
+function finishQuiz(){
+  const fb = $('feedback4');
+  if (quizScore === QUIZ.length) {
+    fb.className = 'activity-feedback show success';
+    fb.innerHTML = `<strong>5/5 — you've got the one habit that matters.</strong> AI is a superb drafter and a superb editor, but it can't see your facts, your files, or your voice. So the loop is always the same: describe the audience and goal, set the tone and length, ground it in your real sources — then read as an editor, verify every claim, and make the words your own before you send. Do that and AI multiplies your writing speed without multiplying your risk.`;
+  } else {
+    fb.className = 'activity-feedback show partial';
+    fb.innerHTML = `<strong>You scored ${quizScore}/5.</strong> Re-read the explanations — the wrong options are the exact traps ("polished means true," "regenerate until it's good," "Harvard means real," "AI can verify itself"). The thread through all five: a draft that reads well is a hypothesis, not a finished document. Only your own verification and voice turn it into something safe to send. Retake for a clean 5/5.`;
+  }
+  $('prog4').classList.add('done');
+}
+function resetQuiz(){
+  renderQuiz();
+  $('prog4').classList.remove('done');
+}
+
+/* ─── INIT ─── */
+window.addEventListener('DOMContentLoaded', () => {
+  renderScenarios();
+  setupBuckets();
+  renderFragments();
+  renderChecks();
+  renderQuiz();
+});
+</script>
+</body>
+</html>
