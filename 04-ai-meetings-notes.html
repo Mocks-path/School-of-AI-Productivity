@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>AI for Meetings &amp; Notes · Lesson 04</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,0,400;9..144,0,600;9..144,0,800;9..144,1,600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+
+:root{
+  --orange:#EF7F1A; --orange-light:#FF9429; --orange-dark:#D55222;
+  --brown:#412C23; --brown-dark:#2F1D19; --tan:#A34E1C;
+  --yellow:#FECC00; --cream:#FBF6EE; --paper:#FFFCF6;
+  --ink:#1C1410; --muted:#6E5C50; --line:#E8DCC8; --accent:#008DD2;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',system-ui,sans-serif;
+  background:var(--paper); color:var(--ink); line-height:1.6; overflow-x:hidden;
+}
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:radial-gradient(circle at 1px 1px,rgba(65,44,35,0.05) 1px,transparent 0);
+  background-size:24px 24px;
+}
+.topbar{
+  position:sticky;top:0;z-index:100;
+  background:rgba(255,252,246,0.92); backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+  padding:14px 40px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.brand{font-family:'Fraunces',serif;font-weight:800;font-size:17px;letter-spacing:-0.01em;color:var(--brown-dark)}
+.brand .dot{color:var(--orange)}
+.brand .sub{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.15em;color:var(--muted);font-weight:500;text-transform:uppercase;margin-left:8px}
+.logo-slot{width:44px;height:44px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.logo-slot svg{width:100%;height:100%;display:block}
+.page{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:50px 40px 100px}
+.hero{padding:30px 0 50px;border-bottom:1px solid var(--line)}
+.eyebrow{
+  font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.18em;
+  text-transform:uppercase;color:var(--orange-dark);font-weight:600;
+  display:inline-flex;align-items:center;gap:10px;
+}
+.eyebrow::before{content:"";width:24px;height:2px;background:var(--orange)}
+h1{
+  font-family:'Fraunces',serif;font-weight:800;
+  font-size:clamp(38px,7vw,80px);line-height:0.98;letter-spacing:-0.03em;
+  margin:18px 0 20px;color:var(--brown-dark);
+}
+h1 em{font-style:italic;color:var(--orange-dark);font-weight:600}
+.lede{font-size:19px;max-width:680px;color:var(--muted)}
+section{padding:70px 0;border-bottom:1px solid var(--line)}
+section:last-of-type{border-bottom:none}
+.section-num{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--orange);font-weight:600;letter-spacing:0.08em}
+h2{
+  font-family:'Fraunces',serif;font-weight:700;
+  font-size:clamp(28px,4.5vw,48px);line-height:1.05;letter-spacing:-0.02em;
+  margin:10px 0 22px;color:var(--brown-dark);max-width:720px;
+}
+h3{font-family:'Fraunces',serif;font-weight:600;font-size:24px;color:var(--brown-dark);margin:28px 0 12px}
+p{max-width:680px;margin-bottom:14px;color:var(--ink)}
+.lead{font-size:17px;color:var(--muted);max-width:680px;margin-bottom:26px}
+code{font-family:'JetBrains Mono',monospace;font-size:0.92em;background:var(--cream);padding:2px 6px;border-radius:4px;color:var(--brown-dark)}
+.illus{
+  background:var(--cream);border:1px solid var(--line);border-radius:18px;
+  padding:32px;margin:24px 0;position:relative;overflow:hidden;
+}
+.illus-title{
+  font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);
+  letter-spacing:0.12em;text-transform:uppercase;
+  margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:10px;
+}
+.controls{display:flex;gap:8px;flex-wrap:wrap}
+.controls button{
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  background:var(--paper);border:1px solid var(--line);color:var(--brown);
+  padding:6px 12px;border-radius:6px;cursor:pointer;
+  text-transform:uppercase;letter-spacing:0.1em;transition:all .2s;
+}
+.controls button:hover{background:var(--orange);color:#fff;border-color:var(--orange)}
+.controls button.active{background:var(--brown-dark);color:#fff;border-color:var(--brown-dark)}
+.takeaway{
+  background:var(--brown-dark);color:var(--paper);
+  border-radius:18px;padding:44px;margin-top:50px;position:relative;overflow:hidden;
+}
+.takeaway::after{
+  content:"";position:absolute;top:-40px;right:-40px;width:180px;height:180px;
+  border-radius:50%;background:radial-gradient(circle,var(--orange),transparent 70%);opacity:0.4;
+}
+.takeaway h2{color:var(--paper);margin-bottom:16px}
+.takeaway p{color:#E8D9C5;font-size:16px;max-width:680px}
+.takeaway ul{list-style:none;margin-top:18px;display:grid;gap:8px}
+.takeaway li{font-family:'JetBrains Mono',monospace;font-size:13px;padding-left:22px;position:relative;color:#FBE7CB}
+.takeaway li::before{content:"→";position:absolute;left:0;color:var(--orange);font-weight:bold}
+footer{text-align:center;padding:36px;color:var(--muted);font-size:12px;font-family:'JetBrains Mono',monospace;letter-spacing:0.1em}
+@media(max-width:700px){
+  .topbar{padding:12px 18px}
+  .page{padding:30px 18px 70px}
+  .illus{padding:20px}
+  .takeaway{padding:28px}
+  .logo-slot{width:42px;height:66px}
+}
+
+/* ── page-specific: meeting pipeline ──────────────────────── */
+.pipe{display:flex;flex-direction:column;gap:0}
+.pstep{display:flex;gap:16px;align-items:flex-start;opacity:0;transform:translateX(-14px)}
+.pipe.reveal .pstep{animation:pstepIn .5s forwards}
+.pipe.reveal .pstep:nth-child(1){animation-delay:.05s}
+.pipe.reveal .pstep:nth-child(3){animation-delay:.2s}
+.pipe.reveal .pstep:nth-child(5){animation-delay:.35s}
+.pipe.reveal .pstep:nth-child(7){animation-delay:.5s}
+@keyframes pstepIn{to{opacity:1;transform:translateX(0)}}
+.pnum{
+  flex-shrink:0;width:44px;height:44px;border-radius:11px;background:var(--brown-dark);color:var(--paper);
+  display:flex;align-items:center;justify-content:center;font-size:19px;
+}
+.pstep:nth-child(1) .pnum{background:var(--orange-dark)}
+.pstep:nth-child(3) .pnum{background:var(--tan)}
+.pstep:nth-child(5) .pnum{background:var(--orange)}
+.pstep:nth-child(7) .pnum{background:var(--accent)}
+.pbody{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:14px 18px;flex:1}
+.pbody h4{font-family:'Fraunces',serif;font-size:18px;color:var(--brown-dark);margin-bottom:4px}
+.pbody p{font-size:13px;color:var(--muted);margin:0;max-width:none;line-height:1.5}
+.pbody .p-tag{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:0.08em;text-transform:uppercase;color:var(--tan);background:var(--cream);padding:2px 8px;border-radius:5px;margin-top:8px}
+.pconn{width:44px;display:flex;justify-content:center;height:22px;opacity:0}
+.pipe.reveal .pconn{animation:pstepIn .4s forwards;animation-delay:.4s}
+.pconn::before{content:"";width:2px;background:var(--line);height:100%}
+
+/* ── page-specific: operating-system diagram (before/during/after) ── */
+.os-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.os-col{background:var(--paper);border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
+.os-head{padding:12px 16px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#fff;font-weight:600}
+.os-before .os-head{background:var(--tan)}
+.os-during .os-head{background:var(--orange-dark)}
+.os-after .os-head{background:var(--accent)}
+.os-body{padding:16px;display:grid;gap:8px}
+.os-item{font-size:13px;color:var(--ink);padding-left:18px;position:relative;line-height:1.45}
+.os-item::before{content:"◆";position:absolute;left:0;font-size:8px;top:5px;color:var(--orange)}
+.os-body h5{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-top:4px}
+
+/* ── page-specific: action extractor demo ─────────────────── */
+.ext-wrap{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:stretch}
+.ext-col{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:18px 20px;display:flex;flex-direction:column}
+.ext-col .k{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--tan);margin-bottom:12px;font-weight:600}
+.transcript{background:var(--brown-dark);border-radius:12px;padding:0;overflow:hidden;flex:1;min-height:280px;display:flex;flex-direction:column}
+.transcript .th{padding:10px 14px;background:rgba(0,0,0,0.25);font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#E8D9C5;display:flex;justify-content:space-between}
+.transcript .tbody{padding:14px 16px;overflow:auto;flex:1}
+.tline{font-size:12px;line-height:1.7;color:#E8D9C5;margin-bottom:8px;transition:background .3s;border-radius:5px;padding:2px 4px}
+.tline .spk{color:var(--orange-light);font-weight:600}
+.tline.hot{background:rgba(239,127,26,0.22)}
+.action-list{display:grid;gap:10px;flex:1;align-content:start}
+.action-empty{font-size:13px;color:var(--muted);font-style:italic;padding:24px 8px;text-align:center}
+.action{background:var(--cream);border:1px solid var(--line);border-radius:10px;padding:12px 14px;border-left:3px solid var(--orange);opacity:0;transform:translateY(10px)}
+.action.show{animation:actIn .4s forwards}
+@keyframes actIn{to{opacity:1;transform:none}}
+.action .atask{font-size:13.5px;color:var(--brown-dark);font-weight:500;line-height:1.4;margin-bottom:7px}
+.action .ameta{display:flex;gap:8px;flex-wrap:wrap}
+.action .chip{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.05em;padding:3px 8px;border-radius:5px;display:inline-flex;align-items:center;gap:4px}
+.chip.owner{background:rgba(0,141,210,0.12);color:var(--accent)}
+.chip.date{background:rgba(163,78,28,0.12);color:var(--tan)}
+.chip.verify{background:rgba(213,82,34,0.12);color:var(--orange-dark)}
+.ext-note{font-size:12.5px;color:var(--muted);margin-top:14px;max-width:none;font-style:italic}
+
+/* ── page-specific: catch-up + follow-up reveal ───────────── */
+.catch-wrap{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.catch-card{background:var(--paper);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.catch-band{padding:14px 20px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#fff;font-weight:600}
+.catch-miss .catch-band{background:var(--brown)}
+.catch-follow .catch-band{background:var(--orange-dark)}
+.catch-body{padding:18px 20px}
+.catch-body h4{font-family:'Fraunces',serif;font-size:19px;color:var(--brown-dark);margin-bottom:10px}
+.miss-row{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--line)}
+.miss-row:last-child{border-bottom:none}
+.miss-q{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--tan);flex-shrink:0;width:92px;padding-top:2px}
+.miss-a{font-size:13px;color:var(--ink);line-height:1.5}
+.follow-out{background:var(--brown-dark);border-radius:12px;overflow:hidden;margin-top:6px}
+.follow-out .oh{padding:9px 14px;background:rgba(0,0,0,0.25);font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#E8D9C5;display:flex;justify-content:space-between}
+.follow-out pre{margin:0;padding:14px 16px;font-family:'Inter',sans-serif;font-size:12.5px;line-height:1.6;color:#FBE7CB;white-space:pre-wrap}
+.follow-out .lbl{color:var(--orange-light);font-weight:600}
+
+/* ── page-specific: tool comparison cards ─────────────────── */
+.tool-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+.tool-tab{
+  font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.06em;
+  background:var(--paper);border:1px solid var(--line);color:var(--brown);
+  padding:9px 16px;border-radius:999px;cursor:pointer;transition:all .2s;
+}
+.tool-tab:hover{border-color:var(--orange);color:var(--orange-dark)}
+.tool-tab.active{background:var(--orange);border-color:var(--orange);color:#fff}
+.tool-panel{background:var(--paper);border:1px solid var(--line);border-radius:14px;overflow:hidden;display:none}
+.tool-panel.shown{display:block;animation:nodeIn .4s both}
+@keyframes nodeIn{from{opacity:0;transform:translateY(14px) scale(.97)}to{opacity:1;transform:none}}
+.tool-band{padding:14px 20px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#fff;font-weight:600;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.tool-band .lvl{font-size:10px;opacity:.9;letter-spacing:0.1em}
+.tp-teams .tool-band{background:var(--accent)}
+.tp-onenote .tool-band{background:var(--tan)}
+.tp-meet .tool-band{background:var(--orange-dark)}
+.tp-otter .tool-band{background:var(--brown)}
+.tool-body{padding:20px}
+.tool-body h4{font-family:'Fraunces',serif;font-size:22px;color:var(--brown-dark);margin-bottom:8px}
+.tool-plain{font-size:14px;color:var(--ink);max-width:none;margin-bottom:16px;line-height:1.55}
+.tool-when{background:var(--cream);border-radius:10px;padding:12px 16px;margin-bottom:14px;border-left:3px solid var(--orange)}
+.tool-when .k{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--tan);display:block;margin-bottom:4px;font-weight:600}
+.tool-when p{font-size:13.5px;color:var(--ink);margin:0;max-width:none;line-height:1.5}
+.tool-pc{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.tool-pc h5{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:6px}
+.tool-pc .gp h5{color:#2E7D46} .tool-pc .gc h5{color:var(--muted)}
+.tool-pc ul{list-style:none;display:grid;gap:5px}
+.tool-pc li{font-size:12.5px;color:var(--ink);padding-left:16px;position:relative;line-height:1.45}
+.tool-pc .gp li::before{content:"+";position:absolute;left:0;color:#2E7D46;font-weight:700}
+.tool-pc .gc li::before{content:"−";position:absolute;left:0;color:var(--muted);font-weight:700}
+
+/* ── page-specific: consent checklist ─────────────────────── */
+.check-list{display:grid;gap:10px}
+.check{
+  display:flex;gap:14px;align-items:flex-start;background:var(--paper);
+  border:1px solid var(--line);border-radius:12px;padding:14px 18px;cursor:pointer;transition:all .2s;
+}
+.check:hover{border-color:var(--orange)}
+.check.on{border-color:#2E7D46;background:rgba(46,125,70,0.05)}
+.check-box{
+  flex-shrink:0;width:24px;height:24px;border-radius:7px;border:2px solid var(--line);
+  display:flex;align-items:center;justify-content:center;transition:all .2s;
+  font-family:'JetBrains Mono',monospace;font-size:14px;color:transparent;font-weight:700;
+}
+.check.on .check-box{background:#2E7D46;border-color:#2E7D46;color:#fff}
+.check-text h4{font-family:'Fraunces',serif;font-size:16.5px;color:var(--brown-dark);margin-bottom:3px}
+.check-text p{font-size:12.5px;color:var(--muted);margin:0;max-width:none;line-height:1.5}
+.check-progress{
+  margin-top:16px;background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:14px 18px;
+  display:flex;align-items:center;gap:14px;
+}
+.cp-bar{flex:1;height:8px;background:var(--cream);border-radius:4px;overflow:hidden}
+.cp-fill{height:100%;background:#2E7D46;width:0;transition:width .4s ease}
+.cp-lab{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--brown-dark);font-weight:600;white-space:nowrap}
+
+.caution{background:var(--paper);border:1px solid var(--line);border-left:4px solid var(--orange-dark);border-radius:10px;padding:16px 20px;margin:20px 0}
+.caution .k{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--orange-dark);font-weight:600;display:block;margin-bottom:6px}
+.caution p{font-size:14px;color:var(--ink);margin:0;line-height:1.55}
+
+@media(max-width:760px){
+  .ext-wrap{grid-template-columns:1fr}
+  .catch-wrap{grid-template-columns:1fr}
+  .tool-pc{grid-template-columns:1fr}
+  .os-grid{grid-template-columns:1fr}
+}
+
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="brand">MokshPath <span class="dot">·</span> <span class="sub">Lesson 04 · AI Office</span></div>
+  <div class="logo-slot" aria-label="MokshPath logo">
+    <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="22" cy="22" r="20" fill="#412C23"/>
+      <path d="M12 30V15l6 8 4-9 4 9 6-8v15" stroke="#EF7F1A" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <circle cx="22" cy="10" r="3" fill="#FECC00"/>
+    </svg>
+  </div>
+</div>
+<div class="page">
+
+<section class="hero">
+  <div class="eyebrow">Week 2 · Lesson 04 · AI Office</div>
+  <h1>The meeting <em>ends</em>. The notes write themselves.</h1>
+  <p class="lede">Most of what happens in a meeting evaporates the moment it's over — who agreed to what, by when, and what you'd have caught if you'd stayed awake through minute forty. AI recap turns the recording into a clean recap, a decision log, and a list of action items with owners and dates. Done well, it hands your afternoon back. Done carelessly, it invents a deadline nobody agreed to — so we'll also learn where to stay honest, and when recording is even allowed.</p>
+</section>
+
+<section>
+  <div class="section-num">01 / 05</div>
+  <h2>From talk to to-do: the recap pipeline</h2>
+  <p class="lead">A meeting assistant isn't one feature — it's a small assembly line that runs the instant you hit "leave." Raw audio goes in one end; a structured, skimmable summary comes out the other. Understanding the stages tells you what to trust and what to double-check.</p>
+
+  <p>First the tool <strong>records and transcribes</strong> — turning speech into timestamped text, ideally labelling who said what. Then it <strong>recaps</strong> — compressing forty minutes of rambling into a few paragraphs of what actually mattered. Next it separates <strong>decisions from action items</strong> — a decision is something the group settled; an action item is a task somebody now owns. Finally it sets up <strong>follow-up</strong> — a shareable note, an email draft, tasks pushed to your list. Watch the line run.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 1 · The record → recap → actions → follow-up pipeline</span>
+      <div class="controls">
+        <button onclick="runPipe()">▶ Run the pipeline</button>
+      </div>
+    </div>
+    <div class="pipe" id="pipe">
+      <div class="pstep">
+        <div class="pnum">🎙</div>
+        <div class="pbody"><h4>Record &amp; transcribe</h4><p>Audio is captured and converted to timestamped text, with speaker labels so "someone said" becomes "Priya said."</p><span class="p-tag">Speech → text</span></div>
+      </div>
+      <div class="pconn"></div>
+      <div class="pstep">
+        <div class="pnum">📝</div>
+        <div class="pbody"><h4>Recap the discussion</h4><p>The full transcript is compressed into a short readable summary — the arc of the conversation, minus the small talk.</p><span class="p-tag">Summarise</span></div>
+      </div>
+      <div class="pconn"></div>
+      <div class="pstep">
+        <div class="pnum">✅</div>
+        <div class="pbody"><h4>Split decisions &amp; action items</h4><p>Decisions ("we're going with vendor B") are separated from tasks ("Sam sends the contract by Friday") — each action tagged with an owner and a date.</p><span class="p-tag">Extract</span></div>
+      </div>
+      <div class="pconn"></div>
+      <div class="pstep">
+        <div class="pnum">✉</div>
+        <div class="pbody"><h4>Set up follow-up</h4><p>The recap becomes a shareable doc, a recap email to absentees, and tasks pushed to your planner — the loop closes itself.</p><span class="p-tag">Distribute</span></div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Why the stages matter for trust</h3>
+  <p>Each stage can fail differently, so knowing them tells you where to look. Transcription mangles names and numbers. Recap can flatten a heated debate into "the team discussed options." Action extraction is where the real risk lives: it will happily assign a task to the wrong person or invent a deadline that was only floated as a maybe. The recap is a draft written by a fast, tireless, slightly overconfident assistant — brilliant for the first 90%, and exactly why you read the last 10%.</p>
+</section>
+
+<section>
+  <div class="section-num">02 / 05</div>
+  <h2>A meeting is a system with three parts</h2>
+  <p class="lead">The best AI-meeting habit isn't a clever prompt — it's treating every meeting as an operating system with a <strong>before</strong>, a <strong>during</strong>, and an <strong>after</strong>. AI helps at all three, but only if you set the stage before anyone starts talking.</p>
+
+  <p>Beginners think the tool starts working when the meeting starts. In truth, the biggest wins are booked <em>before</em> — a clear agenda gives the AI structure to summarise against — and cashed <em>after</em>, when the recap turns into action. The meeting itself is just the raw material in the middle.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 2 · The meeting operating system</span>
+    </div>
+    <div class="os-grid">
+      <div class="os-col os-before">
+        <div class="os-head">Before</div>
+        <div class="os-body">
+          <h5>Set the stage</h5>
+          <div class="os-item">Write a real agenda — the AI summarises far better with structure to hang notes on</div>
+          <div class="os-item">Decide who's recording, and tell everyone it's on</div>
+          <div class="os-item">Send pre-reads so the meeting is for deciding, not briefing</div>
+        </div>
+      </div>
+      <div class="os-col os-during">
+        <div class="os-head">During</div>
+        <div class="os-body">
+          <h5>Let it capture</h5>
+          <div class="os-item">The assistant transcribes; you stay present instead of scribbling</div>
+          <div class="os-item">Say owners and dates out loud — "Sam, by Friday" — so they land in the notes</div>
+          <div class="os-item">Restate each decision clearly before moving on</div>
+        </div>
+      </div>
+      <div class="os-col os-after">
+        <div class="os-head">After</div>
+        <div class="os-body">
+          <h5>Cash the value</h5>
+          <div class="os-item">Skim the recap, fix wrong owners &amp; dates, then share within the hour</div>
+          <div class="os-item">Push action items into your task tool while they're warm</div>
+          <div class="os-item">Send a catch-up note to anyone who missed it</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h3>The unglamorous truth</h3>
+  <p>An AI that captures a rambling, agenda-less meeting just gives you a tidy summary of chaos. The tool amplifies whatever structure you bring. Say owners and dates aloud, restate decisions before you move on, and the "during" stage practically writes the "after" for you. Meetings that summarise well are meetings that were run well.</p>
+</section>
+
+<section>
+  <div class="section-num">03 / 05</div>
+  <h2>45 minutes in, a clean action list out</h2>
+  <p class="lead">This is the moment that sells the whole category. A messy transcript full of "yeah maybe," "let's circle back," and cross-talk goes in — and out comes a crisp list of tasks, each with a name attached and a due date. Press the button and watch the assistant read the transcript and pull the actions.</p>
+
+  <p>Read the transcript on the left, then extract. Notice what the AI is doing: it ignores the chatter, spots the sentences that commit somebody to something, and turns each into a task with an <em>owner</em> and a <em>date</em>. Notice too the orange "verify" flags — those are the lines where it inferred a date or a person and you should confirm.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 3 · Transcript → action items (owner + date)</span>
+      <div class="controls">
+        <button onclick="extractActions()">✨ Extract action items</button>
+        <button onclick="resetExtract()">Reset</button>
+      </div>
+    </div>
+    <div class="ext-wrap">
+      <div class="ext-col" style="padding:0;background:transparent;border:none">
+        <span class="k" style="padding:0 2px">Raw transcript · 45-min sync</span>
+        <div class="transcript">
+          <div class="th"><span>project-sync.vtt</span><span>auto-transcribed</span></div>
+          <div class="tbody" id="tbody">
+            <div class="tline" data-a="0"><span class="spk">Priya:</span> Okay so on the landing page — I think we go with vendor B, they came in cheaper.</div>
+            <div class="tline" data-a="1"><span class="spk">Sam:</span> Agreed. I'll get the contract over to them, should be able to do that by Friday.</div>
+            <div class="tline"><span class="spk">Priya:</span> Great. Yeah, let's circle back on the color scheme later, not urgent.</div>
+            <div class="tline" data-a="2"><span class="spk">Dev:</span> One thing — the API keys are still expiring. I can rotate them, um, probably early next week.</div>
+            <div class="tline"><span class="spk">Sam:</span> Cool cool. Anyone want more coffee? Ha.</div>
+            <div class="tline" data-a="3"><span class="spk">Priya:</span> Before we forget — Dev, can you also send the analytics report to marketing before the review on the 12th?</div>
+            <div class="tline"><span class="spk">Dev:</span> Yep, will do.</div>
+            <div class="tline"><span class="spk">Sam:</span> Okay I think that's us. Same time next week?</div>
+          </div>
+        </div>
+      </div>
+      <div class="ext-col">
+        <span class="k">Extracted action items</span>
+        <div class="action-list" id="actionList">
+          <div class="action-empty" id="actionEmpty">Press “Extract action items” to pull the tasks out of the transcript.</div>
+        </div>
+        <p class="ext-note">The AI kept the 4 commitments and dropped the coffee, the "circle back," and the small talk — but flagged the two dates it had to infer.</p>
+      </div>
+    </div>
+  </div>
+
+  <h3>The extractor is a first draft, not a verdict</h3>
+  <p>Look at what got flagged. "Early next week" isn't a date — the AI guessed a Monday. And the analytics report says "before the 12th," which the AI turned into a hard due date, though nobody said which month. That's the pattern: extraction is excellent at spotting <em>who committed to what</em>, shakier on <em>exactly when</em>. Confirm owners and dates before this list becomes anyone's marching orders.</p>
+</section>
+
+<section>
+  <div class="section-num">04 / 05</div>
+  <h2>"What did I miss?" — and closing the loop</h2>
+  <p class="lead">Two everyday superpowers fall out of a good recap. The first: you skipped the meeting (or zoned out) and need the gist in thirty seconds. The second: you ran the meeting and now have to tell everyone what happens next. AI does both from the same transcript.</p>
+
+  <p>The catch-up card answers the questions you'd otherwise DM three colleagues to learn: what got decided, what's on me, and did anything change. And instead of you writing the follow-up email from scratch, the recap becomes a first draft you edit in a minute rather than compose in fifteen.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 4 · Catch-up card &amp; the follow-up it writes</span>
+      <div class="controls">
+        <button onclick="genFollow()">✉ Turn recap into follow-up</button>
+      </div>
+    </div>
+    <div class="catch-wrap">
+      <div class="catch-card catch-miss">
+        <div class="catch-band">What did I miss?</div>
+        <div class="catch-body">
+          <h4>30-second catch-up</h4>
+          <div class="miss-row"><div class="miss-q">Decided</div><div class="miss-a">Going with <strong>vendor B</strong> for the landing page — they were cheaper.</div></div>
+          <div class="miss-row"><div class="miss-q">On me</div><div class="miss-a">Nothing this round — but the analytics report is due to marketing before the review.</div></div>
+          <div class="miss-row"><div class="miss-q">Changed</div><div class="miss-a">Color scheme parked — explicitly "circle back later, not urgent."</div></div>
+          <div class="miss-row"><div class="miss-q">Watch</div><div class="miss-a">API keys still expiring; Dev rotating them next week.</div></div>
+        </div>
+      </div>
+      <div class="catch-card catch-follow">
+        <div class="catch-band">Recap → follow-up</div>
+        <div class="catch-body">
+          <h4>Auto-drafted email</h4>
+          <div class="follow-out">
+            <div class="oh"><span>follow-up.eml</span><span id="followState">draft empty</span></div>
+            <pre id="followBody">Press “Turn recap into follow-up” to draft the note.</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Same source, two audiences</h3>
+  <p>Notice both outputs came from one transcript, aimed at different readers. The catch-up card is for <em>you</em> — terse, personal, "what's on me." The follow-up email is for <em>the room and the absentees</em> — decisions, owners, dates, laid out so nobody has to attend the meeting again to know what happened. Learning to ask the AI for the right shape — "give me my personal to-dos" versus "write the team recap" — is most of the skill.</p>
+</section>
+
+<section>
+  <div class="section-num">05 / 05</div>
+  <h2>Four tools — and the rules of recording</h2>
+  <p class="lead">The market is crowded, but four names cover almost everyone: Microsoft Teams intelligent recap, OneNote with Copilot, Google Meet, and dedicated bots like Otter or Fireflies. They overlap a lot; the right pick is mostly about which ecosystem you already live in. Click a tab.</p>
+
+  <p>The short version: <strong>Teams intelligent recap</strong> is the default if your org runs on Microsoft — recap, action items, and speaker timelines built into the call. <strong>OneNote + Copilot</strong> is where those notes go to live, get organised, and get queried later. <strong>Google Meet</strong> gives you "take notes for me" and transcripts inside Workspace. <strong>Otter / Fireflies</strong> are ecosystem-agnostic bots that join any call and often go deepest on transcription. Pick by where your calls and notes already happen.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 5 · The AI meeting toolkit, compared</span>
+    </div>
+    <div class="tool-tabs">
+      <button class="tool-tab active" onclick="showTool('teams',this)">Teams recap</button>
+      <button class="tool-tab" onclick="showTool('onenote',this)">OneNote Copilot</button>
+      <button class="tool-tab" onclick="showTool('meet',this)">Google Meet</button>
+      <button class="tool-tab" onclick="showTool('otter',this)">Otter / Fireflies</button>
+    </div>
+
+    <div class="tool-panel tp-teams shown" id="tool-teams">
+      <div class="tool-band"><span>Teams intelligent recap</span><span class="lvl">Microsoft 365 · Built in</span></div>
+      <div class="tool-body">
+        <h4>The recap baked into the call</h4>
+        <p class="tool-plain">If your organisation runs on Microsoft 365, this is the path of least resistance. After a recorded Teams meeting you get an AI recap, suggested action items, mentions of you, and a speaker timeline you can jump around — no extra bot to invite. It also feeds naturally into the rest of your Microsoft world.</p>
+        <div class="tool-when"><span class="k">Reach for it when</span><p>Your calls already happen in Teams and your org has the licensing — the recap is right there in the meeting after it ends.</p></div>
+        <div class="tool-pc">
+          <div class="gp"><h5>Strong points</h5><ul><li>Nothing to install — native to Teams</li><li>Action items &amp; "mentions of you" auto-surfaced</li><li>Speaker timeline to jump to key moments</li></ul></div>
+          <div class="gc"><h5>Trade-offs</h5><ul><li>Needs the right Microsoft 365 / Copilot licence</li><li>Only for meetings held in Teams</li><li>Recap quality still needs a human check</li></ul></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tool-panel tp-onenote" id="tool-onenote">
+      <div class="tool-band"><span>OneNote + Copilot</span><span class="lvl">Where notes live &amp; get queried</span></div>
+      <div class="tool-body">
+        <h4>The notebook that answers questions</h4>
+        <p class="tool-plain">OneNote is less about capturing the live call and more about what happens to the notes afterward. Drop a recap in, and Copilot can summarise the page, pull to-do lists out of your scribbles, rewrite messy notes into clean prose, and answer "what did we decide about X" across a whole notebook of past meetings.</p>
+        <div class="tool-when"><span class="k">Reach for it when</span><p>You want a durable, searchable home for meeting notes — and to ask questions across weeks of them, not just one call.</p></div>
+        <div class="tool-pc">
+          <div class="gp"><h5>Strong points</h5><ul><li>Summarises &amp; tidies pages of raw notes</li><li>Pulls action lists out of freeform text</li><li>Query across many past meetings</li></ul></div>
+          <div class="gc"><h5>Trade-offs</h5><ul><li>Doesn't record the live call itself</li><li>Copilot features need a licence</li><li>Only as good as the notes you feed it</li></ul></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tool-panel tp-meet" id="tool-meet">
+      <div class="tool-band"><span>Google Meet</span><span class="lvl">Google Workspace · Built in</span></div>
+      <div class="tool-body">
+        <h4>The Workspace-native option</h4>
+        <p class="tool-plain">If your world is Gmail, Docs, and Calendar, Google Meet's "take notes for me" captures the call and drops a summary and transcript straight into a Google Doc, saved to Drive and linked in the calendar event. Same idea as Teams recap, just inside the Google ecosystem instead of Microsoft's.</p>
+        <div class="tool-when"><span class="k">Reach for it when</span><p>Your team runs on Google Workspace — the notes land in a Doc next to everything else you already work in.</p></div>
+        <div class="tool-pc">
+          <div class="gp"><h5>Strong points</h5><ul><li>Native to Meet — no bot to add</li><li>Summary &amp; transcript saved to a Google Doc</li><li>Auto-linked to the calendar event</li></ul></div>
+          <div class="gc"><h5>Trade-offs</h5><ul><li>Needs a qualifying Workspace plan</li><li>Only for meetings held in Meet</li><li>Feature availability varies by edition</li></ul></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tool-panel tp-otter" id="tool-otter">
+      <div class="tool-band"><span>Otter / Fireflies</span><span class="lvl">Ecosystem-agnostic bots</span></div>
+      <div class="tool-body">
+        <h4>The bot that joins any call</h4>
+        <p class="tool-plain">These are dedicated assistants that dial into Teams, Meet, or Zoom as a participant, record, and often lead the pack on transcript quality, live keyword search, and CRM integrations. The trade-off: a visible bot joins your meeting, and your audio flows through a third party — which raises real consent and data questions.</p>
+        <div class="tool-when"><span class="k">Reach for it when</span><p>You bounce between platforms, want the deepest transcription and search, or need meeting data flowing into other tools like a CRM.</p></div>
+        <div class="tool-pc">
+          <div class="gp"><h5>Strong points</h5><ul><li>Works across Teams, Meet, Zoom</li><li>Often the strongest transcription &amp; search</li><li>Integrations into CRMs and task tools</li></ul></div>
+          <div class="gc"><h5>Trade-offs</h5><ul><li>A visible bot joins the call</li><li>Audio routed through a third-party service</li><li>Data-handling &amp; consent need real scrutiny</li></ul></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Recording is a legal act, not just a button</h3>
+  <p>Here's the part the product pages skip: pressing "record" can be regulated. Some places allow it if just <strong>one party</strong> (you) consents; others require <strong>all parties</strong> to agree — and your employer almost certainly has its own policy on top of the law. The safe default is boring and bulletproof: announce it, get a clear yes, and know your organisation's rules before the bot ever joins. Walk the checklist.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 6 · The consent &amp; etiquette checklist</span>
+      <div class="controls">
+        <button onclick="checkAll()">Tick all</button>
+        <button onclick="checkClear()">Reset</button>
+      </div>
+    </div>
+    <div class="check-list" id="checkList">
+      <div class="check" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div class="check-text"><h4>Announce that you're recording — out loud and up front</h4><p>Say it at the top of the call and, ideally, note it in the invite. Silent recording is where etiquette and law both go wrong.</p></div>
+      </div>
+      <div class="check" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div class="check-text"><h4>Know one-party vs all-party consent for everyone's location</h4><p>Some regions let one participant consent; others require everyone. On mixed or cross-border calls, default to all-party consent.</p></div>
+      </div>
+      <div class="check" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div class="check-text"><h4>Check your organisation's recording policy first</h4><p>Company rules sit on top of the law. Some data, clients, or channels may be off-limits to recording bots entirely.</p></div>
+      </div>
+      <div class="check" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div class="check-text"><h4>Give people a way to opt out</h4><p>Someone should be able to ask you to pause the recording or leave it off — sensitive topics and HR matters especially.</p></div>
+      </div>
+      <div class="check" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div class="check-text"><h4>Mind where the transcript is stored and who can see it</h4><p>A recap is a record. Know where it lives, who has access, and how long it's kept — especially with third-party bots.</p></div>
+      </div>
+      <div class="check" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div class="check-text"><h4>Verify owners &amp; dates before you send anything on</h4><p>AI mislabels speakers and invents deadlines. A thirty-second check turns a plausible draft into a trustworthy record.</p></div>
+      </div>
+    </div>
+    <div class="check-progress">
+      <span class="cp-lab" id="cpLab">0 / 6 confirmed</span>
+      <div class="cp-bar"><div class="cp-fill" id="cpFill"></div></div>
+    </div>
+  </div>
+
+  <div class="caution">
+    <span class="k">Honest accuracy caution</span>
+    <p>Treat every recap as a confident draft, not a court transcript. Transcription garbles names, numbers, and accents; speaker labels get swapped; and action-item extraction is where wrong owners and imaginary deadlines creep in. The failure mode is subtle — the recap reads clean and authoritative even when it's wrong. Skim it against your own memory of the meeting, fix the owners and dates, and only then let it become the shared record everyone acts on.</p>
+  </div>
+</section>
+
+<div class="takeaway">
+  <h2>What to carry forward</h2>
+  <p>AI meeting tools are an assembly line: record, recap, extract actions, follow up. They hand back the hour you'd have spent typing notes — but only if you run the meeting well and read the last 10% they get wrong. Bring an agenda, say owners and dates aloud, pick the tool that matches your ecosystem, and never let a recap go out the door before you've checked who owns what by when — or before you've made sure recording it was allowed in the first place.</p>
+  <ul>
+    <li>Pipeline: record &amp; transcribe → recap → decisions + action items → follow-up</li>
+    <li>Meetings are a system: the wins are set up <em>before</em> and cashed <em>after</em></li>
+    <li>Extraction nails <em>who committed</em>, guesses at <em>exactly when</em> — verify owners &amp; dates</li>
+    <li>One transcript, two outputs: personal catch-up card vs shared follow-up email</li>
+    <li>Teams recap · OneNote Copilot · Google Meet · Otter/Fireflies — pick by ecosystem</li>
+    <li>Recording is legal &amp; ethical: announce it, know one-party vs all-party, check org policy</li>
+  </ul>
+</div>
+
+</div>
+<footer>MokshPath · Lesson 04 of 04 · Week 2 complete — Week 3: AI for Research &amp; Learning →</footer>
+<script>
+
+/* ══ Figure 1 · meeting pipeline ══ */
+const pipeEl=document.getElementById('pipe');
+function runPipe(){
+  pipeEl.classList.remove('reveal');void pipeEl.offsetWidth;pipeEl.classList.add('reveal');
+}
+new IntersectionObserver((es,o)=>es.forEach(e=>{
+  if(e.isIntersecting){runPipe();o.unobserve(e.target)}
+}),{threshold:0.2}).observe(pipeEl);
+
+/* ══ Figure 3 · action extractor ══ */
+const ACTIONS=[
+  {task:'Send the vendor B contract',owner:'Sam',date:'Fri',verify:false},
+  {task:'Rotate the expiring API keys',owner:'Dev',date:'Mon (inferred)',verify:true},
+  {task:'Send the analytics report to marketing',owner:'Dev',date:'Before the 12th',verify:true},
+  {task:'Go with vendor B for the landing page',owner:'Team (decision)',date:'settled',verify:false}
+];
+/* map transcript line data-a index → action index it produces */
+const LINE_TO_ACTION={0:3,1:0,2:1,3:2};
+let extractRunning=false;
+function extractActions(){
+  if(extractRunning)return;
+  extractRunning=true;
+  resetExtract(true);
+  const list=document.getElementById('actionList');
+  const empty=document.getElementById('actionEmpty');
+  if(empty)empty.style.display='none';
+  const hotLines=Array.from(document.querySelectorAll('#tbody .tline[data-a]'));
+  let i=0;
+  const step=()=>{
+    if(i>=hotLines.length){extractRunning=false;return;}
+    const line=hotLines[i];
+    line.classList.add('hot');
+    const ai=LINE_TO_ACTION[line.dataset.a];
+    const a=ACTIONS[ai];
+    const el=document.createElement('div');
+    el.className='action';
+    el.innerHTML=
+      '<div class="atask">'+a.task+'</div>'+
+      '<div class="ameta">'+
+      '<span class="chip owner">👤 '+a.owner+'</span>'+
+      '<span class="chip date">📅 '+a.date+'</span>'+
+      (a.verify?'<span class="chip verify">⚑ verify</span>':'')+
+      '</div>';
+    list.appendChild(el);
+    void el.offsetWidth;el.classList.add('show');
+    setTimeout(()=>line.classList.remove('hot'),900);
+    i++;
+    setTimeout(step,750);
+  };
+  step();
+}
+function resetExtract(keepEmptyHidden){
+  extractRunning=false;
+  const list=document.getElementById('actionList');
+  list.querySelectorAll('.action').forEach(a=>a.remove());
+  document.querySelectorAll('#tbody .tline').forEach(l=>l.classList.remove('hot'));
+  const empty=document.getElementById('actionEmpty');
+  if(empty)empty.style.display=keepEmptyHidden?'none':'block';
+}
+
+/* ══ Figure 4 · recap → follow-up ══ */
+const FOLLOW=
+'<span class="lbl">Subject:</span> Project sync — recap & action items\n'+
+'<span class="lbl">To:</span> Priya, Sam, Dev (+ absentees)\n\n'+
+'Hi all — quick recap of today’s sync.\n\n'+
+'<span class="lbl">Decisions</span>\n'+
+'• Going with vendor B for the landing page (lower cost).\n'+
+'• Color scheme parked for now — not urgent.\n\n'+
+'<span class="lbl">Action items</span>\n'+
+'• Sam — send vendor B the contract by Friday.\n'+
+'• Dev — rotate the expiring API keys early next week.\n'+
+'• Dev — send analytics report to marketing before the review (12th).\n\n'+
+'<span class="lbl">Please verify:</span> the two dates marked “inferred” before you rely on them.\n\n'+
+'Thanks,\nPriya';
+function genFollow(){
+  const pre=document.getElementById('followBody');
+  const st=document.getElementById('followState');
+  pre.style.opacity='0';
+  setTimeout(()=>{
+    pre.innerHTML=FOLLOW;
+    pre.style.transition='opacity .3s';pre.style.opacity='1';
+    st.textContent='drafted · edit before send';
+  },150);
+}
+
+/* ══ Figure 5 · toolkit tabs ══ */
+function showTool(key,btn){
+  document.querySelectorAll('.tool-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.tool-panel').forEach(p=>p.classList.remove('shown'));
+  const el=document.getElementById('tool-'+key);
+  void el.offsetWidth;
+  el.classList.add('shown');
+}
+
+/* ══ Figure 6 · consent checklist ══ */
+function updateProgress(){
+  const total=document.querySelectorAll('#checkList .check').length;
+  const on=document.querySelectorAll('#checkList .check.on').length;
+  document.getElementById('cpFill').style.width=(on/total*100)+'%';
+  document.getElementById('cpLab').textContent=on+' / '+total+' confirmed';
+}
+function toggleCheck(el){el.classList.toggle('on');updateProgress()}
+function checkAll(){document.querySelectorAll('#checkList .check').forEach(c=>c.classList.add('on'));updateProgress()}
+function checkClear(){document.querySelectorAll('#checkList .check').forEach(c=>c.classList.remove('on'));updateProgress()}
+
+</script>
+</body>
+</html>
