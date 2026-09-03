@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 3 · AI Data Analysis &amp; Insights — MokshPath</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=JetBrains+Mono:wght@400;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --orange:#E87A2E;--orange-dark:#D06A20;--orange-light:#F5943E;--orange-glow:rgba(232,122,46,0.12);
+  --navy:#2B2D42;--navy-dark:#1A1B2E;
+  --bg:#F3EDE7;--bg-card:#FFFFFF;--bg-light:#F9F5F0;
+  --text-primary:#2B2D42;--text-secondary:#6B6D7B;--text-muted:#9597A6;
+  --border:#E5DDD4;--green:#4CAF50;--green-light:#E8F5E9;--red:#E04E3C;--red-light:#FDECEA;
+  --shadow-sm:0 2px 8px rgba(43,45,66,0.06);--shadow-md:0 8px 24px rgba(43,45,66,0.08);
+  --shadow-lg:0 16px 48px rgba(43,45,66,0.12);
+  --radius:14px;--radius-sm:8px;
+  --mono:'JetBrains Mono',monospace;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text-primary);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+
+/* ── NAV ── */
+.nav{position:sticky;top:0;z-index:100;background:var(--bg-card);border-bottom:1px solid var(--border);padding:0 2rem;height:64px;display:flex;align-items:center;justify-content:space-between;box-shadow:var(--shadow-sm)}
+.nav-left{display:flex;align-items:center;gap:.7rem}
+.lesson-badge{font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--orange);background:var(--orange-glow);padding:.3rem .7rem;border-radius:50px}
+.nav-logo{display:flex;align-items:center;gap:.7rem;text-decoration:none}
+.nav-logo-icon{width:auto;height:48px;display:block;object-fit:contain}
+.nav-logo-text{display:flex;flex-direction:column;line-height:1.15}
+.nav-logo-name{font-family:'DM Serif Display',serif;font-size:1.25rem;color:var(--navy)}
+.nav-logo-name span{color:var(--orange)}
+.nav-logo-tag{font-size:.62rem;color:var(--text-muted);font-weight:500;letter-spacing:.02em}
+
+/* ── HERO ── */
+.hero{padding:3.5rem 2rem 2.5rem;text-align:center;position:relative}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:.45rem;padding:.4rem 1rem;border-radius:50px;background:var(--orange-glow);color:var(--orange);font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:1.2rem}
+.hero-eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--orange);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.hero h1{font-family:'DM Serif Display',serif;font-size:clamp(2rem,4vw,3rem);line-height:1.13;color:var(--navy);margin-bottom:1rem;max-width:780px;margin-left:auto;margin-right:auto}
+.hero h1 em{font-style:normal;color:var(--orange)}
+.hero-sub{font-size:1.02rem;color:var(--text-secondary);line-height:1.7;max-width:620px;margin:0 auto}
+
+/* ── PROGRESS RAIL ── */
+.progress-rail{max-width:760px;margin:1.8rem auto 0;display:flex;align-items:center;gap:.5rem}
+.progress-dot{flex:1;height:6px;background:var(--border);border-radius:3px;transition:background .3s}
+.progress-dot.done{background:linear-gradient(90deg,var(--orange),var(--orange-light))}
+.progress-label{font-size:.7rem;color:var(--text-muted);font-weight:600;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+
+/* ── SECTIONS ── */
+section.lesson{padding:3rem 2rem}
+.container{max-width:1080px;margin:0 auto}
+.lesson-num{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;background:var(--orange);color:#fff;font-family:'DM Serif Display',serif;font-size:1.1rem;margin-bottom:.9rem}
+.lesson-title{font-family:'DM Serif Display',serif;font-size:clamp(1.6rem,2.5vw,2.1rem);color:var(--navy);margin-bottom:.55rem;line-height:1.2}
+.lesson-intro{font-size:.95rem;color:var(--text-secondary);line-height:1.7;max-width:680px;margin-bottom:2rem}
+.lesson-card{background:var(--bg-card);border-radius:var(--radius);box-shadow:var(--shadow-sm);border:1px solid var(--border);padding:2rem;margin-top:1.5rem}
+.lesson-card.alt{background:var(--bg-light)}
+
+/* ── PIPELINE STRIP ── */
+.pipeline{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1.4rem}
+.pipe-step{flex:1 1 150px;background:var(--bg-light);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:.9rem 1rem;position:relative}
+.pipe-step .pipe-n{font-family:var(--mono);font-size:.68rem;font-weight:600;color:var(--orange);letter-spacing:.06em}
+.pipe-step .pipe-t{font-family:'DM Serif Display',serif;font-size:1.05rem;color:var(--navy);margin:.2rem 0 .3rem}
+.pipe-step .pipe-d{font-size:.76rem;color:var(--text-secondary);line-height:1.5}
+.pipe-arrow{align-self:center;color:var(--orange);font-weight:700;font-size:1.1rem}
+@media (max-width:760px){.pipe-arrow{display:none}.pipe-step{flex:1 1 100%}}
+
+/* ── DRAG CARDS + FEEDBACK (shared) ── */
+.classify-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:1.5rem;margin-top:1rem}
+@media (max-width:760px){.classify-grid{grid-template-columns:1fr}}
+.classify-scenarios{display:flex;flex-direction:column;gap:.7rem}
+.scenario-card{background:var(--bg-card);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:.8rem 1rem;cursor:grab;transition:all .25s;position:relative;user-select:none}
+.scenario-card:hover{border-color:var(--orange);box-shadow:var(--shadow-sm);transform:translateY(-1px)}
+.scenario-card.dragging{opacity:.4}
+.scenario-card.placed{opacity:.35;cursor:not-allowed;pointer-events:none}
+.scenario-card.placed.correct{border-color:var(--green);background:var(--green-light)}
+.scenario-card.placed.wrong{border-color:var(--red);background:var(--red-light)}
+.scenario-text{font-size:.85rem;color:var(--text-primary);line-height:1.45;font-weight:500}
+.dropped-pill{background:var(--bg-card);border:1px solid var(--border);border-radius:50px;padding:.3rem .7rem;font-size:.72rem;font-weight:500;color:var(--text-primary);cursor:help}
+.dropped-pill.correct{background:var(--green-light);border-color:var(--green);color:#256B29}
+.dropped-pill.wrong{background:var(--red-light);border-color:var(--red);color:#933}
+.activity-feedback{margin-top:1.2rem;padding:1rem 1.2rem;border-radius:var(--radius-sm);font-size:.85rem;line-height:1.55;display:none}
+.activity-feedback.show{display:block;animation:fadeIn .4s ease}
+.activity-feedback.success{background:var(--green-light);color:#1F5723;border-left:3px solid var(--green)}
+.activity-feedback.partial{background:#FFF4E5;color:#7A4A0A;border-left:3px solid #E89B2E}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.activity-toolbar{display:flex;gap:.6rem;margin-top:1.2rem;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:.4rem;padding:.6rem 1.2rem;border-radius:8px;font-size:.82rem;font-weight:600;border:none;cursor:pointer;transition:all .2s;font-family:inherit;text-decoration:none}
+.btn-primary{background:var(--orange);color:#fff}.btn-primary:hover{background:var(--orange-dark);transform:translateY(-1px);box-shadow:0 4px 12px rgba(232,122,46,0.3)}
+.btn-ghost{background:transparent;border:1.5px solid var(--border);color:var(--text-secondary)}.btn-ghost:hover{border-color:var(--orange);color:var(--orange)}
+
+/* ── ACTIVITY: PIVOT FIELD BUILDER (wireframe-style zones) ── */
+.wireframe{border:1.5px solid var(--border);border-radius:var(--radius-sm);overflow:hidden;background:var(--bg-light)}
+.wf-chrome{display:flex;align-items:center;gap:.4rem;background:var(--navy);padding:.5rem .8rem}
+.wf-chrome span{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.35)}
+.wf-chrome .wf-url{flex:1;margin-left:.5rem;background:rgba(255,255,255,.12);border-radius:4px;color:rgba(255,255,255,.7);font-family:var(--mono);font-size:.62rem;padding:.15rem .6rem}
+.wf-zone{border:2px dashed var(--border);margin:.7rem;border-radius:var(--radius-sm);padding:.8rem .9rem;transition:all .25s;background:rgba(255,255,255,.6)}
+.wf-zone.drag-over{border-color:var(--orange);background:var(--orange-glow);border-style:solid}
+.wf-zone-title{font-family:'DM Serif Display',serif;font-size:.98rem;color:var(--navy)}
+.wf-zone-sub{font-size:.68rem;color:var(--text-muted);margin-bottom:.55rem;letter-spacing:.04em;text-transform:uppercase;font-weight:600}
+.wf-drop{display:flex;flex-wrap:wrap;gap:.4rem;min-height:34px}
+
+/* ── ACTIVITY: A/B QUESTION PAIRS ── */
+.ab-pair{margin-top:1.4rem;padding-top:1.4rem;border-top:1px solid var(--border)}
+.ab-pair:first-child{margin-top:0;padding-top:0;border-top:none}
+.ab-q{font-size:.9rem;font-weight:700;color:var(--navy);margin-bottom:.8rem}
+.ab-q .ab-tag{font-family:var(--mono);font-size:.68rem;color:var(--orange);font-weight:600;letter-spacing:.04em;display:block;margin-bottom:.2rem}
+.ab-cards{display:grid;grid-template-columns:1fr 1fr;gap:.9rem}
+@media (max-width:760px){.ab-cards{grid-template-columns:1fr}}
+.ab-card{background:var(--bg-light);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:1rem 1.1rem;cursor:pointer;transition:all .25s;position:relative}
+.ab-card:hover{border-color:var(--orange);transform:translateY(-2px);box-shadow:var(--shadow-sm)}
+.ab-card.locked{cursor:default;pointer-events:none}
+.ab-card.win{border-color:var(--green);background:var(--green-light)}
+.ab-card.lose{opacity:.55}
+.ab-card.picked-wrong{border-color:var(--red);background:var(--red-light)}
+.ab-letter{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;background:var(--navy);color:#fff;font-size:.72rem;font-weight:700;margin-bottom:.5rem}
+.ab-copy{font-size:.85rem;line-height:1.55;color:var(--text-primary)}
+.ab-verdict{margin-top:.8rem;font-size:.8rem;line-height:1.55;padding:.7rem .9rem;border-radius:6px;display:none}
+.ab-verdict.show{display:block;animation:fadeIn .35s ease}
+.ab-verdict.good{background:var(--green-light);color:#1F5723;border-left:3px solid var(--green)}
+.ab-verdict.bad{background:#FFF4E5;color:#7A4A0A;border-left:3px solid #E89B2E}
+
+/* ── ACTIVITY: CHART MATCHER (toggle rows) ── */
+.brand-block{margin-top:1.3rem;padding:1.1rem 1.2rem;background:var(--bg-light);border:1px solid var(--border);border-radius:var(--radius-sm)}
+.brand-block:first-child{margin-top:0}
+.brand-name{font-family:'DM Serif Display',serif;font-size:1.05rem;color:var(--navy);margin-bottom:.7rem}
+.brand-name .q-tag{font-family:var(--mono);font-size:.66rem;color:var(--orange);font-weight:600;letter-spacing:.04em;display:block;margin-bottom:.2rem;text-transform:none}
+.brand-row{display:grid;grid-template-columns:1fr auto;gap:.6rem;align-items:center;padding:.35rem 0}
+.brand-crit{font-size:.82rem;color:var(--text-secondary);font-weight:500}
+.tog-group{display:flex;gap:.35rem}
+.tog{padding:.32rem .85rem;border-radius:50px;border:1.5px solid var(--border);background:var(--bg-card);font-size:.74rem;font-weight:700;cursor:pointer;font-family:inherit;color:var(--text-secondary);transition:all .2s}
+.tog:hover{border-color:var(--orange);color:var(--orange)}
+.tog.on-yes{background:var(--navy);border-color:var(--navy);color:#fff}
+.tog.reveal-hit{background:var(--green-light);border-color:var(--green);color:#256B29}
+.tog.reveal-miss{background:var(--red-light);border-color:var(--red);color:#933}
+.brand-why{margin-top:.6rem;font-size:.78rem;line-height:1.55;color:var(--text-secondary);background:var(--bg-card);border-left:3px solid var(--orange);border-radius:4px;padding:.6rem .8rem;display:none}
+.brand-why.show{display:block;animation:fadeIn .35s ease}
+
+/* ── QUIZ ── */
+.quiz-q{margin-top:1.4rem;padding-top:1.4rem;border-top:1px solid var(--border)}
+.quiz-q:first-child{margin-top:0;padding-top:0;border-top:none}
+.quiz-prompt{font-size:.92rem;font-weight:700;color:var(--navy);margin-bottom:.8rem;line-height:1.5}
+.quiz-prompt .q-tag{font-family:var(--mono);font-size:.68rem;color:var(--orange);font-weight:600;letter-spacing:.04em;display:block;margin-bottom:.2rem}
+.quiz-opts{display:flex;flex-direction:column;gap:.55rem}
+.quiz-opt{background:var(--bg-light);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:.75rem 1rem;cursor:pointer;transition:all .2s;font-size:.85rem;line-height:1.45;color:var(--text-primary);display:flex;gap:.6rem;align-items:flex-start}
+.quiz-opt:hover{border-color:var(--orange)}
+.quiz-opt .opt-key{font-family:var(--mono);font-size:.72rem;font-weight:600;color:var(--orange);flex-shrink:0;margin-top:.05rem}
+.quiz-opt.locked{cursor:default;pointer-events:none}
+.quiz-opt.correct{border-color:var(--green);background:var(--green-light)}
+.quiz-opt.wrong{border-color:var(--red);background:var(--red-light)}
+.quiz-explain{margin-top:.7rem;font-size:.8rem;line-height:1.55;padding:.7rem .9rem;border-radius:6px;display:none}
+.quiz-explain.show{display:block;animation:fadeIn .35s ease}
+.quiz-explain.good{background:var(--green-light);color:#1F5723;border-left:3px solid var(--green)}
+.quiz-explain.bad{background:#FFF4E5;color:#7A4A0A;border-left:3px solid #E89B2E}
+
+/* ── VALIDATE CALLOUT ── */
+.check-list{list-style:none;margin-top:1rem;display:flex;flex-direction:column;gap:.7rem}
+.check-list li{display:flex;gap:.7rem;align-items:flex-start;background:var(--bg-light);border:1px solid var(--border);border-radius:var(--radius-sm);padding:.8rem 1rem}
+.check-ico{width:24px;height:24px;border-radius:6px;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.8rem;font-weight:700;background:linear-gradient(135deg,var(--orange-light),var(--orange))}
+.check-txt{font-size:.85rem;line-height:1.55;color:var(--text-secondary)}
+.check-txt strong{color:var(--navy)}
+
+/* ── REFLECTION ── */
+.reflect-prompt{display:grid;grid-template-columns:1fr;gap:.8rem;margin-top:1rem}
+.reflect-q{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:1rem 1.2rem}
+.reflect-q-text{font-size:.88rem;font-weight:600;color:var(--navy);margin-bottom:.5rem}
+.reflect-q textarea{width:100%;border:1px solid var(--border);border-radius:6px;padding:.6rem .8rem;font-family:inherit;font-size:.85rem;color:var(--text-primary);background:var(--bg-light);resize:vertical;min-height:60px}
+.reflect-q textarea:focus{outline:none;border-color:var(--orange)}
+
+/* ── FOOTER NEXT ── */
+.next-up{background:linear-gradient(135deg,var(--navy-dark),var(--navy));border-radius:var(--radius);padding:2.4rem;color:#fff;margin-top:2rem;text-align:center;position:relative;overflow:hidden}
+.next-up::before{content:'';position:absolute;top:-50px;right:-50px;width:180px;height:180px;border-radius:50%;background:rgba(232,122,46,0.12)}
+.next-up h3{font-family:'DM Serif Display',serif;font-size:1.5rem;margin-bottom:.5rem;position:relative}
+.next-up p{font-size:.92rem;color:rgba(255,255,255,0.75);margin-bottom:1.2rem;position:relative}
+.next-up .btn-primary{position:relative}
+
+@media (max-width:760px){
+  .nav{padding:0 1rem}
+  .nav-logo-tag{display:none}
+  .hero{padding:2.5rem 1.2rem 2rem}
+  section.lesson{padding:2rem 1.2rem}
+  .lesson-card{padding:1.4rem}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-left">
+    <span class="lesson-badge">Lesson 3 of 4</span>
+  </div>
+  <a href="https://mokshpath.org/" class="nav-logo">
+    <img class="nav-logo-icon" src="hero.svg" alt="MokshPath logo">
+    <div class="nav-logo-text">
+      <span class="nav-logo-name">Moksh<span>Path</span></span>
+      <span class="nav-logo-tag">Guided Path to True Learning</span>
+    </div>
+  </a>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-eyebrow"><span class="dot"></span> Week 1 · AI Excel</div>
+  <h1>AI Data Analysis &amp; Insights — <em>turn a spreadsheet into an answer</em></h1>
+  <p class="hero-sub">A messy grid of numbers isn't an insight — it's raw material. Four hands-on drills: run the five-step analysis pipeline, sharpen a vague question into one AI can actually answer, assign fields to build a PivotTable, match each question to the right chart, then test whether you can catch AI when it quietly misreads your data.</p>
+  <div class="progress-rail">
+    <span class="progress-label">Progress</span>
+    <div class="progress-dot" id="prog1"></div>
+    <div class="progress-dot" id="prog2"></div>
+    <div class="progress-dot" id="prog3"></div>
+    <div class="progress-dot" id="prog4"></div>
+  </div>
+</header>
+
+<!-- ── PIPELINE OVERVIEW (teaching) ── -->
+<section class="lesson" id="pipeline">
+  <div class="container">
+    <span class="lesson-num" style="background:var(--navy)">•</span>
+    <h2 class="lesson-title">The analysis pipeline — five steps, every time</h2>
+    <p class="lesson-intro">AI can crunch a spreadsheet in seconds, but "give me insights from this file" usually returns confident-sounding noise. Real analysis follows an order. Get the order right and both you <em>and</em> the AI produce answers you can trust. Skip a step — especially cleaning or validating — and you'll ship a wrong number to your boss with a straight face.</p>
+    <div class="lesson-card">
+      <div class="pipeline">
+        <div class="pipe-step"><div class="pipe-n">STEP 1</div><div class="pipe-t">Clean</div><div class="pipe-d">Fix blanks, stray text in number columns, inconsistent dates and duplicate rows. Dirty data poisons every step after it.</div></div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-step"><div class="pipe-n">STEP 2</div><div class="pipe-t">Structure as a Table</div><div class="pipe-d">Turn the range into an Excel Table (Ctrl+T). Named columns, no gaps — this is what lets AI and PivotTables read it reliably.</div></div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-step"><div class="pipe-n">STEP 3</div><div class="pipe-t">Ask</div><div class="pipe-d">Pose one specific, answerable question — not "any insights?" A sharp question is half the analysis.</div></div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-step"><div class="pipe-n">STEP 4</div><div class="pipe-t">Visualize</div><div class="pipe-d">Pick the chart that fits the question — comparison, trend, share or relationship — so the answer is readable at a glance.</div></div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-step"><div class="pipe-n">STEP 5</div><div class="pipe-t">Validate</div><div class="pipe-d">Sanity-check the numbers by hand. AI can misread a column or a date and never tell you. Trust, then verify.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 1: VAGUE → SPECIFIC QUESTION A/B ── -->
+<section class="lesson" id="activity-1" style="background:var(--bg-light)">
+  <div class="container">
+    <span class="lesson-num">1</span>
+    <h2 class="lesson-title">Vague vs specific — pick the question AI can actually answer</h2>
+    <p class="lesson-intro">The quality of your answer is capped by the quality of your question. A vague prompt makes AI guess what you meant — which column, which time frame, which metric — and it guesses wrong silently. A specific question names the metric, the grouping and the time frame, so there's only one thing it can compute. Below are three pairs. In each, one question would waste your time. Click the one you'd actually paste into Copilot or ChatGPT.</p>
+    <div class="lesson-card" id="abWrap"></div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 2: PIVOT FIELD BUILDER (drag) ── -->
+<section class="lesson" id="activity-2">
+  <div class="container">
+    <span class="lesson-num" style="background:#5B8FE0">2</span>
+    <h2 class="lesson-title">Build the PivotTable — assign each field to its shelf</h2>
+    <p class="lesson-intro">A PivotTable summarises thousands of rows into a small answer, and it has exactly four shelves. The question we're answering: <strong>"What was total revenue per Region, split by Quarter, for online orders only?"</strong> Drag each of the six fields onto the shelf where it belongs — <strong>Rows</strong> (what you list down the side), <strong>Columns</strong> (what you split across the top), <strong>Values</strong> (the number that gets summed), or <strong>Filters</strong> (what you narrow the whole table to). Wrong drops turn red — hover them to learn the fix.</p>
+
+    <div class="lesson-card">
+      <div class="classify-grid">
+        <div class="classify-scenarios" id="fieldList"></div>
+        <div class="wireframe">
+          <div class="wf-chrome"><span></span><span></span><span></span><div class="wf-url">PivotTable Fields · sales_data</div></div>
+          <div class="wf-zone" data-zone="filters">
+            <div class="wf-zone-title">Filters</div>
+            <div class="wf-zone-sub">Narrows the whole table · 1 field</div>
+            <div class="wf-drop" data-drop="filters"></div>
+          </div>
+          <div class="wf-zone" data-zone="cols">
+            <div class="wf-zone-title">Columns</div>
+            <div class="wf-zone-sub">Splits across the top · 1 field</div>
+            <div class="wf-drop" data-drop="cols"></div>
+          </div>
+          <div class="wf-zone" data-zone="rows">
+            <div class="wf-zone-title">Rows</div>
+            <div class="wf-zone-sub">Lists down the side · 1 field</div>
+            <div class="wf-drop" data-drop="rows"></div>
+          </div>
+          <div class="wf-zone" data-zone="values">
+            <div class="wf-zone-title">Values</div>
+            <div class="wf-zone-sub">The number that gets summed · 1 field</div>
+            <div class="wf-drop" data-drop="values"></div>
+          </div>
+          <div class="wf-zone" data-zone="unused">
+            <div class="wf-zone-title">Not used here</div>
+            <div class="wf-zone-sub">Irrelevant to this question · 2 fields</div>
+            <div class="wf-drop" data-drop="unused"></div>
+          </div>
+        </div>
+      </div>
+      <div class="activity-feedback" id="feedback2"></div>
+      <div class="activity-toolbar">
+        <button class="btn btn-ghost" onclick="resetActivity2()">↻ Try again</button>
+        <button class="btn btn-primary" onclick="showAnswers2()">Show me the answers</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 3: CHART MATCHER ── -->
+<section class="lesson" id="activity-3" style="background:var(--bg-light)">
+  <div class="container">
+    <span class="lesson-num" style="background:#66BB6A">3</span>
+    <h2 class="lesson-title">Match the question to the right chart</h2>
+    <p class="lesson-intro">A chart is an argument. The wrong shape hides the answer or, worse, implies one that isn't there. Four question-types map to four chart families: <strong>Trend over time → Line</strong>, <strong>Compare categories → Bar/Column</strong>, <strong>Part of a whole → Pie/Stacked (only a few slices)</strong>, <strong>Relationship between two numbers → Scatter</strong>. For each question below, mark the one chart that fits, then check yourself against the analyst's verdict.</p>
+
+    <div class="lesson-card">
+      <div id="chartWrap"></div>
+      <div class="activity-feedback" id="feedback3"></div>
+      <div class="activity-toolbar">
+        <button class="btn btn-ghost" onclick="resetChart()">↻ Reset choices</button>
+        <button class="btn btn-primary" onclick="checkChart()">Check my choices</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 4: QUIZ — VALIDATING AI + TOOL CHOICE ── -->
+<section class="lesson" id="activity-4">
+  <div class="container">
+    <span class="lesson-num" style="background:#4CAF50">4</span>
+    <h2 class="lesson-title">Trust, then verify — catch the AI before it embarrasses you</h2>
+    <p class="lesson-intro">AI reads your spreadsheet fast, but it doesn't understand it. It can sum the wrong column, treat text-formatted dates as random labels, or double-count a merged row — and it reports the result with total confidence. It also matters <em>where</em> your data goes: pasting a customer list into a public chatbot is a privacy decision, not just a convenience. Answer these four. Each locks in with the reasoning.</p>
+    <div class="lesson-card" id="quizWrap"></div>
+  </div>
+</section>
+
+<!-- ── VALIDATION CHECKLIST (teaching) ── -->
+<section class="lesson" id="validate" style="background:var(--bg-light)">
+  <div class="container">
+    <span class="lesson-num" style="background:var(--navy)">✓</span>
+    <h2 class="lesson-title">The 30-second sanity check before you send it on</h2>
+    <p class="lesson-intro">Before any AI-produced number leaves your screen, run it past these. Most AI analysis errors are caught in under a minute — if you actually look.</p>
+    <div class="lesson-card">
+      <ul class="check-list">
+        <li><div class="check-ico">Σ</div><div class="check-txt"><strong>Do the totals add up?</strong> Sum one column yourself with a quick <span style="font-family:var(--mono);font-size:.78rem">=SUM()</span>. If the AI's grand total doesn't match, it summed the wrong range or dropped rows.</div></li>
+        <li><div class="check-ico">📅</div><div class="check-txt"><strong>Did it read the dates as dates?</strong> Text like "01/02/2025" can be read as Jan 2 or Feb 1 — or as plain text that won't group by month at all. Check that a "monthly" trend has the right number of months.</div></li>
+        <li><div class="check-ico">↔</div><div class="check-txt"><strong>Did it use the column you meant?</strong> "Revenue" and "Units" sit side by side. AI can grab the neighbour. Spot-check one row against the source.</div></li>
+        <li><div class="check-ico">?</div><div class="check-txt"><strong>Does the answer pass the smell test?</strong> A region with 3% of orders can't be 60% of revenue unless something's off. If a number surprises you, that's a prompt to dig — not to forward.</div></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ── REFLECT ── -->
+<section class="lesson" style="padding-bottom:1.5rem">
+  <div class="container">
+    <h2 class="lesson-title" style="font-size:1.5rem">Quick reflect — make it stick</h2>
+    <p class="lesson-intro" style="margin-bottom:1rem">A sentence each is enough. Writing it in your own words is what makes it stay. (Nothing is saved or sent.)</p>
+    <div class="reflect-prompt">
+      <div class="reflect-q">
+        <div class="reflect-q-text">Rewrite this vague prompt into one AI could answer in a single, unambiguous way: "Tell me about our sales."</div>
+        <textarea placeholder="What was total revenue by month for 2025, and which month..."></textarea>
+      </div>
+      <div class="reflect-q">
+        <div class="reflect-q-text">Your manager asks you to analyse a spreadsheet of customer names, emails and purchase amounts. Would you upload it to a public chatbot? What would you do instead, and why?</div>
+        <textarea placeholder="No — it contains personal data. Instead I'd use an approved in-app tool like Copilot, or strip identifiers first, because..."></textarea>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NEXT UP -->
+<section class="lesson" style="padding-top:0">
+  <div class="container">
+    <div class="next-up">
+      <h3>Lesson 4 · AI Reporting &amp; Automation</h3>
+      <p>You can clean, ask, pivot and validate — now make it repeatable. Next: turning a one-off analysis into a reusable report, AI-drafted summaries a manager can read in ten seconds, and light automation so next month's numbers refresh themselves.</p>
+      <a href="04-ai-reporting-automation.html" class="btn btn-primary">Continue to Lesson 4 →</a>
+    </div>
+  </div>
+</section>
+
+<script>
+/* ─── shared helper ─── */
+function shuffle(arr){ return [...arr].sort(() => Math.random() - 0.5); }
+
+/* ─── ACTIVITY 1: Vague vs specific question A/B ─── */
+const PAIRS = [
+  {
+    tag:'Pair 1 · Sales performance',
+    losing:'Tell me about our sales.',
+    winning:'What was total revenue by month for 2025, and which month was highest?',
+    why:'"Tell me about our sales" forces the AI to guess the metric (revenue? units? profit?), the grouping and the period — so it invents a scope and answers a question you never asked. Version B names the metric (revenue), the grouping (by month), the period (2025) and the exact thing you want (the peak). There is only one correct computation, so you can actually check it.',
+    lesson:'A specific question names the metric, the grouping and the time frame. That is what makes an answer verifiable.'
+  },
+  {
+    tag:'Pair 2 · Customer analysis',
+    losing:'Which customers are the best?',
+    winning:'List the top 10 customers by total spend in 2025, with each one’s number of orders.',
+    why:'"Best" is undefined — most orders? highest spend? most recent? most profitable? The AI picks one silently and you have no idea which. Version B defines "best" as total spend, caps it at the top 10, sets the year, and asks for order count too so you can see whether a big spender is one giant order or a loyal repeat buyer.',
+    lesson:'Define your fuzzy words. "Best," "recent," "top" mean nothing to a spreadsheet until you attach a number and a metric.'
+  },
+  {
+    tag:'Pair 3 · Finding a problem',
+    losing:'Are there any issues in this data?',
+    winning:'Flag any rows where Revenue is blank, negative, or more than 3× the column average — and count them.',
+    why:'"Any issues?" invites the AI to free-associate; it may hallucinate problems or miss real ones, and you can’t reproduce its logic. Version B gives it precise, checkable rules (blank, negative, outlier) and asks for a count — so the output is an auditable list you can eyeball against the sheet, not a vibe.',
+    lesson:'Turn "check the data" into explicit rules the AI applies mechanically. Then you can verify each flagged row yourself.'
+  }
+];
+let abDone = 0;
+function renderPairs(){
+  abDone = 0;
+  const wrap = document.getElementById('abWrap');
+  wrap.innerHTML = PAIRS.map((p, i) => {
+    const winFirst = Math.random() < 0.5;
+    const cards = [
+      {label:'A', copy: winFirst ? p.winning : p.losing, win: winFirst},
+      {label:'B', copy: winFirst ? p.losing : p.winning, win: !winFirst}
+    ];
+    return `
+    <div class="ab-pair" data-pair="${i}">
+      <div class="ab-q"><span class="ab-tag">${p.tag}</span>Which question would you actually ask the AI?</div>
+      <div class="ab-cards">
+        ${cards.map(c => `
+        <div class="ab-card" data-win="${c.win ? 1 : 0}" onclick="pickAB(this, ${i})">
+          <span class="ab-letter">${c.label}</span>
+          <div class="ab-copy">${c.copy}</div>
+        </div>`).join('')}
+      </div>
+      <div class="ab-verdict" id="verdict${i}"></div>
+    </div>`;
+  }).join('') + `
+    <div class="activity-feedback" id="feedback1"></div>
+    <div class="activity-toolbar">
+      <button class="btn btn-ghost" onclick="resetActivity1()">↻ New round (sides reshuffle)</button>
+    </div>`;
+}
+function pickAB(card, i){
+  const pair = card.closest('.ab-pair');
+  if (pair.dataset.locked) return;
+  pair.dataset.locked = '1';
+  const pickedWin = card.dataset.win === '1';
+  pair.querySelectorAll('.ab-card').forEach(c => {
+    c.classList.add('locked');
+    if (c.dataset.win === '1') c.classList.add('win');
+    else c.classList.add(c === card ? 'picked-wrong' : 'lose');
+  });
+  const v = document.getElementById('verdict' + i);
+  v.className = 'ab-verdict show ' + (pickedWin ? 'good' : 'bad');
+  v.innerHTML = (pickedWin ? '<strong>Right call.</strong> ' : '<strong>The other one wins.</strong> ') + PAIRS[i].why;
+  pair.dataset.score = pickedWin ? '1' : '0';
+  abDone++;
+  if (abDone === PAIRS.length) finishAB();
+}
+function finishAB(){
+  const score = [...document.querySelectorAll('.ab-pair')].reduce((s, p) => s + (p.dataset.score === '1' ? 1 : 0), 0);
+  const fb = document.getElementById('feedback1');
+  if (score === PAIRS.length) {
+    fb.className = 'activity-feedback show success';
+    fb.innerHTML = `<strong>3 for 3 — you ask like an analyst.</strong> Every good data question names three things: the <em>metric</em> (revenue, spend, count), the <em>grouping</em> (by month, by region, by customer) and the <em>scope</em> (which year, which segment). Attach a number to every fuzzy word — "best," "recent," "issue" — and the AI has exactly one thing to compute, which means you can check it. Vague in, vague out.`;
+  } else {
+    fb.className = 'activity-feedback show partial';
+    fb.innerHTML = `<strong>You picked ${score} of 3.</strong> Re-read the verdicts — they are the whole lesson. The test for any prompt: could two people read it and compute different answers? If yes, it's too vague. Pin down the metric, the grouping and the time frame, and define every fuzzy word with a number. Reshuffle and run it again.`;
+  }
+  document.getElementById('prog1').classList.add('done');
+}
+function resetActivity1(){
+  renderPairs();
+  document.getElementById('prog1').classList.remove('done');
+}
+
+/* ─── ACTIVITY 2: Pivot field builder ─── */
+const FIELDS = [
+  {id:'f1', text:'Region  (text: North, South, East, West)', zone:'rows', hint:'We want one line per region listed down the side — that is exactly what the Rows shelf does.'},
+  {id:'f2', text:'Quarter  (Q1–Q4)', zone:'cols', hint:'The question asks to "split by quarter," i.e. spread across the top of the table — that is the Columns shelf.'},
+  {id:'f3', text:'Revenue  (number, e.g. 12,400)', zone:'values', hint:'Revenue is the number being summed for each Region × Quarter cell — it belongs on the Values shelf (as Sum).'},
+  {id:'f4', text:'Channel  (Online / In-store)', zone:'filters', hint:'"For online orders only" means we narrow the whole table to one channel — that is what the Filters shelf is for.'},
+  {id:'f5', text:'Order ID  (unique per row)', zone:'unused', hint:'A unique ID has no grouping or summing value for this question — every value is distinct, so it stays off the pivot.'},
+  {id:'f6', text:'Customer Name', zone:'unused', hint:'Customer name is irrelevant to a Region × Quarter revenue summary — putting it in Rows would explode the table into noise.'}
+];
+const ZONE_NAMES = {rows:'Rows', cols:'Columns', values:'Values', filters:'Filters', unused:'Not used here'};
+let placed2 = {};
+function renderFields(){
+  const list = document.getElementById('fieldList');
+  list.innerHTML = shuffle(FIELDS).map(e => `
+    <div class="scenario-card" draggable="true" data-id="${e.id}">
+      <div class="scenario-text">${e.text}</div>
+    </div>`).join('');
+  list.querySelectorAll('.scenario-card').forEach(card => {
+    card.addEventListener('dragstart', ev => {
+      ev.dataTransfer.setData('field', card.dataset.id);
+      card.classList.add('dragging');
+    });
+    card.addEventListener('dragend', () => card.classList.remove('dragging'));
+  });
+}
+function setupZones2(){
+  document.querySelectorAll('#activity-2 .wf-zone').forEach(z => {
+    z.addEventListener('dragover', e => { e.preventDefault(); z.classList.add('drag-over'); });
+    z.addEventListener('dragleave', () => z.classList.remove('drag-over'));
+    z.addEventListener('drop', e => {
+      e.preventDefault();
+      z.classList.remove('drag-over');
+      const id = e.dataTransfer.getData('field');
+      if (id) handleDrop2(id, z.dataset.zone);
+    });
+  });
+}
+function handleDrop2(id, zone){
+  const el = FIELDS.find(x => x.id === id);
+  if (!el || placed2[id]) return;
+  const correct = el.zone === zone;
+  placed2[id] = {zone, correct};
+  const card = document.querySelector(`#fieldList .scenario-card[data-id="${id}"]`);
+  if (card) card.classList.add('placed', correct ? 'correct' : 'wrong');
+  const drop = document.querySelector(`#activity-2 .wf-drop[data-drop="${zone}"]`);
+  const pill = document.createElement('span');
+  pill.className = 'dropped-pill ' + (correct ? 'correct' : 'wrong');
+  pill.textContent = (correct ? '✓ ' : '✗ ') + el.text.split('  ')[0];
+  pill.title = correct ? el.hint : `Belongs on the "${ZONE_NAMES[el.zone]}" shelf. ${el.hint}`;
+  drop.appendChild(pill);
+  checkDone2();
+}
+function checkDone2(){
+  if (Object.keys(placed2).length !== FIELDS.length) return;
+  const right = Object.values(placed2).filter(p => p.correct).length;
+  const fb = document.getElementById('feedback2');
+  if (right === FIELDS.length) {
+    fb.className = 'activity-feedback show success';
+    fb.innerHTML = `<strong>Perfect pivot — 6 of 6.</strong> You built the exact table the question demanded: <em>Region</em> down the side, <em>Quarter</em> across the top, <em>Sum of Revenue</em> in every cell, filtered to <em>Online</em>. Order ID and Customer Name stay out — they'd only shatter the summary. This is the whole mental model of a PivotTable: Rows = what you list, Columns = what you split, Values = what you count, Filters = what you narrow to. The AI-assisted shortcut: in Copilot you can just type "revenue by region and quarter, online only" and it drops the fields onto these same four shelves for you — but knowing the shelves is how you catch it when it puts a field in the wrong place.`;
+  } else {
+    fb.className = 'activity-feedback show partial';
+    fb.innerHTML = `<strong>You placed ${right} of 6 correctly.</strong> Hover each red pill for the fix. Map the question's words to the shelves: "per Region" (list it) → <em>Rows</em>; "split by Quarter" (spread it) → <em>Columns</em>; "total revenue" (the number) → <em>Values</em>; "online only" (narrow it) → <em>Filters</em>. Fields that neither group nor sum — a unique Order ID, a Customer Name — don't belong on this pivot at all. Try again and rebuild it.`;
+  }
+  document.getElementById('prog2').classList.add('done');
+}
+function resetActivity2(){
+  placed2 = {};
+  document.getElementById('feedback2').className = 'activity-feedback';
+  document.querySelectorAll('#activity-2 .wf-drop[data-drop]').forEach(d => d.innerHTML = '');
+  renderFields();
+  document.getElementById('prog2').classList.remove('done');
+}
+function showAnswers2(){
+  FIELDS.forEach(e => { if (!placed2[e.id]) handleDrop2(e.id, e.zone); });
+}
+
+/* ─── ACTIVITY 3: Chart matcher ─── */
+const CHART_OPTS = ['Line', 'Bar / Column', 'Pie / Stacked', 'Scatter'];
+const QUESTIONS = [
+  {name:'How did monthly revenue change across 2025?',
+   tag:'Question · trend over time',
+   answer:'Line',
+   why:'Analyst verdict: Line. Anything measured over a continuous time axis — months, days, years — is a trend, and a line chart shows the direction and shape of that change (rising, dipping, seasonal) far better than bars. A pie would be meaningless here; there is no "whole" to divide.'},
+  {name:'Which of our five regions sold the most this quarter?',
+   tag:'Question · compare categories',
+   answer:'Bar / Column',
+   why:'Analyst verdict: Bar/Column. You are ranking a handful of distinct categories against each other, and bars make length-comparisons instant and honest. A line would falsely imply the regions connect in sequence; a pie makes exact comparison hard once you have more than three slices.'},
+  {name:'What share of total revenue came from each of our 3 product lines?',
+   tag:'Question · part of a whole',
+   answer:'Pie / Stacked',
+   why:'Analyst verdict: Pie/Stacked. This is the one case a pie earns its place: a small number of parts (three) that sum to a meaningful 100% whole. Rule of thumb — if you have more than four or five slices, switch to a bar chart, because the eye can’t compare thin wedges.'},
+  {name:'Do customers who spend more also place more orders?',
+   tag:'Question · relationship between two numbers',
+   answer:'Scatter',
+   why:'Analyst verdict: Scatter. You are asking whether two numeric variables (spend and order count) move together. A scatter plots one dot per customer and reveals the relationship — positive, none, or negative — at a glance. No other chart type answers a "do these two relate?" question.'}
+];
+let chartState = [];
+function renderCharts(){
+  chartState = QUESTIONS.map(() => null);
+  const wrap = document.getElementById('chartWrap');
+  wrap.innerHTML = QUESTIONS.map((q, qi) => `
+    <div class="brand-block" data-q="${qi}">
+      <div class="brand-name"><span class="q-tag">${q.tag}</span>${q.name}</div>
+      <div class="brand-row">
+        <div class="brand-crit">Best chart for this question:</div>
+        <div class="tog-group">
+          ${CHART_OPTS.map((c, ci) => `<button class="tog" id="ctog-${qi}-${ci}" onclick="setChart(${qi},${ci})">${c}</button>`).join('')}
+        </div>
+      </div>
+      <div class="brand-why" id="cwhy${qi}">${q.why}</div>
+    </div>`).join('');
+}
+function setChart(qi, ci){
+  chartState[qi] = ci;
+  QUESTIONS[qi] && CHART_OPTS.forEach((c, i) => {
+    document.getElementById(`ctog-${qi}-${i}`).className = 'tog' + (i === ci ? ' on-yes' : '');
+  });
+}
+function checkChart(){
+  const fb = document.getElementById('feedback3');
+  const unanswered = chartState.filter(v => v === null).length;
+  if (unanswered > 0) {
+    fb.className = 'activity-feedback show partial';
+    fb.innerHTML = `<strong>${unanswered} question${unanswered > 1 ? 's' : ''} still blank.</strong> Pick a chart for every question, then check again.`;
+    return;
+  }
+  let hits = 0;
+  QUESTIONS.forEach((q, qi) => {
+    const correctIdx = CHART_OPTS.indexOf(q.answer);
+    const mine = chartState[qi];
+    const hit = mine === correctIdx;
+    if (hit) hits++;
+    document.getElementById(`ctog-${qi}-${mine}`).classList.add(hit ? 'reveal-hit' : 'reveal-miss');
+    if (!hit) document.getElementById(`ctog-${qi}-${correctIdx}`).classList.add('reveal-hit');
+    document.getElementById('cwhy' + qi).classList.add('show');
+  });
+  if (hits === QUESTIONS.length) {
+    fb.className = 'activity-feedback show success';
+    fb.innerHTML = `<strong>4 / 4 — you speak chart fluently.</strong> The mapping is worth memorising: over-time → <em>Line</em>, compare categories → <em>Bar/Column</em>, share of a small whole → <em>Pie/Stacked</em>, two numbers related → <em>Scatter</em>. When you ask AI to "chart this," it usually guesses well, but it defaults to whatever looks tidy — so tell it the chart type, or check that the shape it picked actually answers your question.`;
+  } else {
+    fb.className = 'activity-feedback show partial';
+    fb.innerHTML = `<strong>You matched ${hits} of 4.</strong> Green marks the analyst's pick wherever you differed; each explanation is now open. Anchor on the question word: "change over 2025" is a trend (Line), "which region most" is a comparison (Bar), "share of the whole" with few parts is a Pie, "do X and Y relate" is a Scatter. Reset to try for a clean sheet.`;
+  }
+  document.getElementById('prog3').classList.add('done');
+}
+function resetChart(){
+  renderCharts();
+  document.getElementById('feedback3').className = 'activity-feedback';
+  document.getElementById('prog3').classList.remove('done');
+}
+
+/* ─── ACTIVITY 4: Quiz ─── */
+const QUIZ = [
+  {
+    tag:'Q1 · Validating totals',
+    q:'Copilot reports "total 2025 revenue: 4.2 million." You quickly type =SUM() on the revenue column and get 3.1 million. What is the most likely explanation — and your next move?',
+    opts:[
+      'The AI is smarter than SUM; trust the 4.2M and send the report.',
+      'AI summed a different or wider range (maybe including a totals row or another sheet). Investigate which cells each number covers before trusting either.',
+      'Excel’s SUM is unreliable on large columns; round up and move on.',
+      'Delete the revenue column and ask the AI to regenerate it.'
+    ],
+    correct:1,
+    explain:'A gap between the AI’s total and your own =SUM() almost always means they added up different ranges — the AI may have picked up a subtotal row, a second sheet, or a mis-read column. Never assume the AI is right just because it sounds confident. The 30-second =SUM() check is exactly what catches this, and the fix is to reconcile which cells each figure covers.'
+  },
+  {
+    tag:'Q2 · Dates misread',
+    q:'You asked AI for a monthly trend and the "chart" has 47 categories instead of 12. What most likely went wrong?',
+    opts:[
+      'Your data genuinely spans 47 months.',
+      'The date column is stored as text (or mixed formats), so the AI grouped each distinct string separately instead of rolling them up by month.',
+      'AI can only chart 12 months at a time.',
+      'The chart is fine; 47 is just a rounding artefact.'
+    ],
+    correct:1,
+    explain:'47 buckets where you expected 12 is the classic tell that dates weren’t read as dates. When a date column is text ("Jan-5", "05/01/25", "5 January"), the AI treats every unique spelling as its own category and can’t group by month. Fix the column to a real date type first (Step 1: clean), then re-ask. Checking that a "monthly" view has a sane number of months is a core sanity check.'
+  },
+  {
+    tag:'Q3 · Where the data goes',
+    q:'Your manager gives you a spreadsheet of customer names, emails and order amounts to analyse. Which approach best respects privacy?',
+    opts:[
+      'Paste the whole file into a free public chatbot — it’s faster.',
+      'Use an approved in-app assistant like Copilot in Excel (data stays in your work tenant), or remove the names/emails before using any external tool.',
+      'Email the file to yourself first, then upload it anywhere.',
+      'Privacy doesn’t apply to internal company data.'
+    ],
+    correct:1,
+    explain:'Customer names and emails are personal data. Uploading them to a public chatbot may send them outside your organisation’s control and can breach privacy policy or law. The safer paths: use a tool that keeps data inside your work environment (Copilot operates within your Microsoft tenant), or strip the identifying columns and analyse only the numbers you actually need. Convenience never overrides "should this data leave the building?"'
+  },
+  {
+    tag:'Q4 · The right analyst instinct',
+    q:'The AI hands you an insight that perfectly confirms what your boss already believes. What is the professional response?',
+    opts:[
+      'Forward it immediately — it agrees with the boss, so it must be right.',
+      'Be extra sceptical: verify the numbers by hand precisely because a convenient answer is the easiest one to accept without checking.',
+      'Ask the AI to make the insight sound more impressive.',
+      'Assume the AI read your mind and skip validation.'
+    ],
+    correct:1,
+    explain:'A result that flatters the expected conclusion is the one most likely to slip through unchecked — that’s exactly when errors survive. Good analysis applies the same validation whether the answer is surprising or convenient: sanity-check the totals, confirm it used the right columns and dates, and make sure the logic is reproducible. Trust the AI to do the arithmetic fast; trust yourself to confirm it’s the right arithmetic.'
+  }
+];
+let quizDone = 0;
+function renderQuiz(){
+  quizDone = 0;
+  const wrap = document.getElementById('quizWrap');
+  wrap.innerHTML = QUIZ.map((item, qi) => `
+    <div class="quiz-q" data-quiz="${qi}">
+      <div class="quiz-prompt"><span class="q-tag">${item.tag}</span>${item.q}</div>
+      <div class="quiz-opts">
+        ${item.opts.map((o, oi) => `
+        <div class="quiz-opt" onclick="pickQuiz(${qi},${oi})" id="qopt-${qi}-${oi}">
+          <span class="opt-key">${String.fromCharCode(65 + oi)}</span><span>${o}</span>
+        </div>`).join('')}
+      </div>
+      <div class="quiz-explain" id="qexp${qi}"></div>
+    </div>`).join('') + `
+    <div class="activity-feedback" id="feedback4"></div>
+    <div class="activity-toolbar">
+      <button class="btn btn-ghost" onclick="resetQuiz()">↻ Reset quiz</button>
+    </div>`;
+}
+function pickQuiz(qi, oi){
+  const block = document.querySelector(`.quiz-q[data-quiz="${qi}"]`);
+  if (block.dataset.locked) return;
+  block.dataset.locked = '1';
+  const item = QUIZ[qi];
+  const correct = oi === item.correct;
+  block.querySelectorAll('.quiz-opt').forEach((el, i) => {
+    el.classList.add('locked');
+    if (i === item.correct) el.classList.add('correct');
+    else if (i === oi) el.classList.add('wrong');
+  });
+  const exp = document.getElementById('qexp' + qi);
+  exp.className = 'quiz-explain show ' + (correct ? 'good' : 'bad');
+  exp.innerHTML = (correct ? '<strong>Correct.</strong> ' : '<strong>Not quite.</strong> ') + item.explain;
+  block.dataset.score = correct ? '1' : '0';
+  quizDone++;
+  if (quizDone === QUIZ.length) finishQuiz();
+}
+function finishQuiz(){
+  const score = [...document.querySelectorAll('.quiz-q')].reduce((s, b) => s + (b.dataset.score === '1' ? 1 : 0), 0);
+  const fb = document.getElementById('feedback4');
+  if (score === QUIZ.length) {
+    fb.className = 'activity-feedback show success';
+    fb.innerHTML = `<strong>4 / 4 — you validate like a pro.</strong> You caught the mismatched total, the text-date trap, the privacy call, and the confirmation-bias trap. The through-line: AI does the arithmetic fast, but it doesn’t know what your columns mean, whether your dates are dates, or whether your data should leave the building. You supply the judgement. Trust, then verify — every single time.`;
+  } else {
+    fb.className = 'activity-feedback show partial';
+    fb.innerHTML = `<strong>You got ${score} of 4.</strong> Re-read the explanations — each is a real failure mode you’ll hit. Reconcile totals with your own =SUM(); expect a "monthly" view to have a sane number of months; keep personal data out of public tools; and be most sceptical when the answer is most convenient. Reset and run it again.`;
+  }
+  document.getElementById('prog4').classList.add('done');
+}
+function resetQuiz(){
+  renderQuiz();
+  document.getElementById('prog4').classList.remove('done');
+}
+
+/* ─── INIT ─── */
+window.addEventListener('DOMContentLoaded', () => {
+  renderPairs();
+  renderFields();
+  setupZones2();
+  renderCharts();
+  renderQuiz();
+});
+</script>
+</body>
+</html>
