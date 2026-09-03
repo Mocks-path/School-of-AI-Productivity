@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Synthesis &amp; Analysis · Lesson 03</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,0,400;9..144,0,600;9..144,0,800;9..144,1,600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+
+:root{
+  --orange:#EF7F1A; --orange-light:#FF9429; --orange-dark:#D55222;
+  --brown:#412C23; --brown-dark:#2F1D19; --tan:#A34E1C;
+  --yellow:#FECC00; --cream:#FBF6EE; --paper:#FFFCF6;
+  --ink:#1C1410; --muted:#6E5C50; --line:#E8DCC8; --accent:#008DD2;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',system-ui,sans-serif;
+  background:var(--paper); color:var(--ink); line-height:1.6; overflow-x:hidden;
+}
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:radial-gradient(circle at 1px 1px,rgba(65,44,35,0.05) 1px,transparent 0);
+  background-size:24px 24px;
+}
+.topbar{
+  position:sticky;top:0;z-index:100;
+  background:rgba(255,252,246,0.92); backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+  padding:14px 40px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.brand{font-family:'Fraunces',serif;font-weight:800;font-size:17px;letter-spacing:-0.01em;color:var(--brown-dark)}
+.brand .dot{color:var(--orange)}
+.brand .sub{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.15em;color:var(--muted);font-weight:500;text-transform:uppercase;margin-left:8px}
+.logo-slot{width:44px;height:44px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.logo-slot svg{width:100%;height:100%;display:block}
+.page{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:50px 40px 100px}
+.hero{padding:30px 0 50px;border-bottom:1px solid var(--line)}
+.eyebrow{
+  font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.18em;
+  text-transform:uppercase;color:var(--orange-dark);font-weight:600;
+  display:inline-flex;align-items:center;gap:10px;
+}
+.eyebrow::before{content:"";width:24px;height:2px;background:var(--orange)}
+h1{
+  font-family:'Fraunces',serif;font-weight:800;
+  font-size:clamp(38px,7vw,80px);line-height:0.98;letter-spacing:-0.03em;
+  margin:18px 0 20px;color:var(--brown-dark);
+}
+h1 em{font-style:italic;color:var(--orange-dark);font-weight:600}
+.lede{font-size:19px;max-width:680px;color:var(--muted)}
+section{padding:70px 0;border-bottom:1px solid var(--line)}
+section:last-of-type{border-bottom:none}
+.section-num{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--orange);font-weight:600;letter-spacing:0.08em}
+h2{
+  font-family:'Fraunces',serif;font-weight:700;
+  font-size:clamp(28px,4.5vw,48px);line-height:1.05;letter-spacing:-0.02em;
+  margin:10px 0 22px;color:var(--brown-dark);max-width:720px;
+}
+h3{font-family:'Fraunces',serif;font-weight:600;font-size:24px;color:var(--brown-dark);margin:28px 0 12px}
+p{max-width:680px;margin-bottom:14px;color:var(--ink)}
+.lead{font-size:17px;color:var(--muted);max-width:680px;margin-bottom:26px}
+code{font-family:'JetBrains Mono',monospace;font-size:0.92em;background:var(--cream);padding:2px 6px;border-radius:4px;color:var(--brown-dark)}
+.illus{
+  background:var(--cream);border:1px solid var(--line);border-radius:18px;
+  padding:32px;margin:24px 0;position:relative;overflow:hidden;
+}
+.illus-title{
+  font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);
+  letter-spacing:0.12em;text-transform:uppercase;
+  margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:10px;
+}
+.controls{display:flex;gap:8px;flex-wrap:wrap}
+.controls button{
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  background:var(--paper);border:1px solid var(--line);color:var(--brown);
+  padding:6px 12px;border-radius:6px;cursor:pointer;
+  text-transform:uppercase;letter-spacing:0.1em;transition:all .2s;
+}
+.controls button:hover{background:var(--orange);color:#fff;border-color:var(--orange)}
+.controls button.active{background:var(--brown-dark);color:#fff;border-color:var(--brown-dark)}
+.takeaway{
+  background:var(--brown-dark);color:var(--paper);
+  border-radius:18px;padding:44px;margin-top:50px;position:relative;overflow:hidden;
+}
+.takeaway::after{
+  content:"";position:absolute;top:-40px;right:-40px;width:180px;height:180px;
+  border-radius:50%;background:radial-gradient(circle,var(--orange),transparent 70%);opacity:0.4;
+}
+.takeaway h2{color:var(--paper);margin-bottom:16px}
+.takeaway p{color:#E8D9C5;font-size:16px;max-width:680px}
+.takeaway ul{list-style:none;margin-top:18px;display:grid;gap:8px}
+.takeaway li{font-family:'JetBrains Mono',monospace;font-size:13px;padding-left:22px;position:relative;color:#FBE7CB}
+.takeaway li::before{content:"→";position:absolute;left:0;color:var(--orange);font-weight:bold}
+footer{text-align:center;padding:36px;color:var(--muted);font-size:12px;font-family:'JetBrains Mono',monospace;letter-spacing:0.1em}
+@media(max-width:700px){
+  .topbar{padding:12px 18px}
+  .page{padding:30px 18px 70px}
+  .illus{padding:20px}
+  .takeaway{padding:28px}
+  .logo-slot{width:38px;height:38px}
+}
+
+/* ============ Figure 1 · Synthesis pipeline ============ */
+.pipe{display:flex;align-items:stretch;gap:0;flex-wrap:wrap}
+.pstep{
+  flex:1;min-width:120px;background:var(--paper);border:1px solid var(--line);
+  border-radius:14px;padding:18px 14px;text-align:center;cursor:pointer;
+  position:relative;transition:all .3s;opacity:0.55;
+}
+.pstep .arrow{
+  position:absolute;right:-16px;top:50%;transform:translateY(-50%);z-index:3;
+  color:var(--line);font-size:20px;font-weight:700;
+}
+.pstep:last-child .arrow{display:none}
+.pstep.on{opacity:1;border-color:var(--orange);box-shadow:0 10px 26px rgba(239,127,26,0.18);transform:translateY(-4px)}
+.pstep.on .arrow{color:var(--orange)}
+.pstep .p-ic{width:44px;height:44px;border-radius:12px;background:rgba(239,127,26,0.12);display:flex;align-items:center;justify-content:center;margin:0 auto 10px}
+.pstep .p-ic svg{width:24px;height:24px}
+.pstep .p-n{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;color:var(--muted);text-transform:uppercase}
+.pstep .p-t{font-family:'Fraunces',serif;font-size:16px;font-weight:700;color:var(--brown-dark);margin-top:3px;line-height:1.15}
+.pipe-panel{
+  background:var(--paper);border:1px solid var(--line);border-radius:14px;
+  padding:22px 24px;margin-top:22px;min-height:118px;
+}
+.pipe-panel.swap{animation:panelIn .4s ease}
+@keyframes panelIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.pp-tag{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:0.14em;text-transform:uppercase;color:var(--orange-dark);font-weight:600}
+.pp-title{font-family:'Fraunces',serif;font-size:21px;font-weight:700;color:var(--brown-dark);margin:5px 0 9px}
+.pp-why{font-size:14px;color:var(--ink);margin-bottom:11px;max-width:none}
+.pp-ai{
+  font-size:13px;color:var(--brown);background:var(--cream);border-left:3px solid var(--orange);
+  padding:10px 14px;border-radius:0 8px 8px 0;max-width:none;margin:0;
+}
+.pp-ai strong{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;color:var(--orange-dark)}
+
+/* ============ Figure 2 · Levels of summary ============ */
+.lvl-controls{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+.lvl-controls .chip{
+  font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:0.02em;
+  border:1px solid var(--line);background:var(--paper);color:var(--brown);
+  padding:10px 15px;border-radius:999px;cursor:pointer;transition:all .25s;user-select:none;
+}
+.lvl-controls .chip:hover{border-color:var(--orange)}
+.lvl-controls .chip.on{background:var(--brown-dark);color:#FBE7CB;border-color:var(--brown-dark)}
+.lvl-grid{display:grid;grid-template-columns:1fr 250px;gap:24px;align-items:start}
+.lvl-out{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:22px 24px;min-height:150px}
+.lvl-out.pop{animation:panelIn .35s ease}
+.lvl-tag{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:0.14em;text-transform:uppercase;color:var(--orange-dark);font-weight:600;margin-bottom:10px}
+.lvl-body{font-size:15px;color:var(--brown-dark);line-height:1.6}
+.lvl-side{background:var(--brown-dark);color:#EFDFC9;border-radius:14px;padding:20px}
+.lvl-side h4{font-family:'Fraunces',serif;font-size:17px;color:var(--paper);margin-bottom:10px}
+.lvl-meter{margin-bottom:14px}
+.lvl-meter .m-lab{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:0.1em;text-transform:uppercase;color:#C9A574;display:flex;justify-content:space-between;margin-bottom:5px}
+.lvl-meter .m-bar{height:8px;background:rgba(251,246,238,0.15);border-radius:6px;overflow:hidden}
+.lvl-meter .m-fill{height:100%;width:0;border-radius:6px;transition:width .5s cubic-bezier(.3,.8,.3,1)}
+.lvl-meter .m-fill.keep{background:linear-gradient(90deg,var(--accent),#38b6e8)}
+.lvl-meter .m-fill.lost{background:linear-gradient(90deg,var(--orange-dark),var(--orange-light))}
+.lvl-side p{color:#E8D9C5;font-size:12.5px;max-width:none;margin-top:6px}
+.lvl-lost{margin-top:10px;font-size:12.5px}
+.lvl-lost .ll-item{font-family:'JetBrains Mono',monospace;font-size:11px;color:#FBE7CB;padding-left:16px;position:relative;margin-bottom:4px;line-height:1.4}
+.lvl-lost .ll-item::before{content:"−";position:absolute;left:0;color:var(--orange-light);font-weight:bold}
+
+/* ============ Figure 3 · Synthesis / theme matrix ============ */
+.mtx-wrap{overflow-x:auto}
+.mtx-hint{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);margin-bottom:16px;letter-spacing:0.03em;max-width:none}
+table.mtx{border-collapse:collapse;width:100%;font-size:13px;min-width:520px}
+table.mtx th,table.mtx td{border:1px solid var(--line);padding:0;text-align:center}
+table.mtx thead th{background:var(--cream);font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:0.04em;color:var(--brown-dark);font-weight:600;padding:10px 12px;line-height:1.3}
+table.mtx tbody th{background:var(--paper);text-align:left;font-family:'Inter',sans-serif;font-weight:600;font-size:12.5px;color:var(--brown-dark);padding:10px 14px;min-width:150px}
+table.mtx td.cell{cursor:pointer;height:52px;transition:all .2s;background:var(--paper)}
+table.mtx td.cell:hover{background:var(--cream)}
+table.mtx td.cell.on{background:rgba(239,127,26,0.12)}
+.mtx-mark{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.04em;color:var(--muted);opacity:0.35}
+td.cell.on .mtx-mark{opacity:1;color:var(--orange-dark);font-weight:600}
+.mtx-synth{
+  margin-top:20px;background:var(--paper);border:1px solid var(--line);
+  border-left:3px solid var(--yellow);border-radius:0 12px 12px 0;padding:16px 18px;min-height:70px;
+}
+.mtx-synth.pop{animation:panelIn .35s ease}
+.mtx-synth .ms-tag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--orange-dark);font-weight:600}
+.mtx-synth .ms-body{font-size:14px;color:var(--brown-dark);margin-top:6px}
+
+/* ============ Figure 4 · Grounded answer with citations ============ */
+.nb-grid{display:grid;grid-template-columns:1fr 320px;gap:26px;align-items:start}
+.nb-answer{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:22px 24px}
+.nb-q{font-family:'Fraunces',serif;font-size:18px;font-weight:700;color:var(--brown-dark);margin-bottom:6px}
+.nb-qtag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
+.nb-text{font-size:14.5px;color:var(--ink);line-height:1.65}
+.cite{
+  font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;
+  background:rgba(0,141,210,0.14);color:var(--accent);border:1px solid rgba(0,141,210,0.3);
+  border-radius:5px;padding:1px 6px;cursor:pointer;transition:all .2s;white-space:nowrap;
+  vertical-align:super;line-height:1;margin:0 1px;
+}
+.cite:hover{background:var(--accent);color:#fff}
+.cite.on{background:var(--orange);color:#fff;border-color:var(--orange)}
+.nb-src{background:var(--brown-dark);border-radius:14px;padding:20px;position:sticky;top:90px}
+.nb-src h4{font-family:'Fraunces',serif;font-size:17px;color:var(--paper);margin-bottom:4px}
+.nb-src .ns-doc{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#C9A574;margin-bottom:14px}
+.nb-pass{
+  font-size:13px;color:#E8D9C5;line-height:1.6;background:rgba(251,246,238,0.06);
+  border:1px solid rgba(251,246,238,0.12);border-radius:10px;padding:14px 16px;transition:all .3s;
+}
+.nb-pass.pop{animation:panelIn .3s ease}
+.nb-pass mark{background:var(--orange);color:#fff;padding:1px 3px;border-radius:3px}
+.nb-src .ns-cap{font-family:'JetBrains Mono',monospace;font-size:10px;color:#C9A574;margin-top:12px;letter-spacing:0.06em}
+
+/* ============ Figure 5 · Genuine consensus vs over-smoothing ============ */
+.cons-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.cons-col{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:20px;display:flex;flex-direction:column}
+.cons-col.true{border-top:4px solid var(--accent)}
+.cons-col.false{border-top:4px solid var(--orange-dark)}
+.cons-label{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:0.14em;text-transform:uppercase;font-weight:600;margin-bottom:12px}
+.cons-col.true .cons-label{color:var(--accent)}
+.cons-col.false .cons-label{color:var(--orange-dark)}
+.cons-item{
+  font-size:13px;color:var(--ink);background:var(--cream);border:1px solid var(--line);
+  border-radius:10px;padding:11px 14px;margin-bottom:9px;cursor:pointer;transition:all .2s;
+}
+.cons-item:hover{border-color:var(--orange)}
+.cons-item.on{background:var(--brown-dark);color:#FBE7CB;border-color:var(--brown-dark)}
+.cons-out{
+  margin-top:6px;background:var(--paper);border:1px solid var(--line);
+  border-left:3px solid var(--yellow);border-radius:0 12px 12px 0;padding:16px 18px;min-height:120px;
+}
+.cons-out.pop{animation:panelIn .35s ease}
+.cons-out .co-tag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--orange-dark);font-weight:600}
+.cons-out .co-body{font-size:14px;color:var(--brown-dark);margin-top:6px}
+.cons-out .co-fix{font-size:12.5px;color:var(--muted);margin-top:10px;padding-top:10px;border-top:1px dashed var(--line)}
+.cons-out .co-fix strong{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--orange-dark)}
+
+@media(max-width:880px){
+  .lvl-grid,.nb-grid{grid-template-columns:1fr}
+  .cons-grid{grid-template-columns:1fr}
+  .nb-src{position:static}
+  .pstep{min-width:calc(50% - 8px);flex:none}
+}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="brand">MokshPath <span class="dot">·</span> <span class="sub">Lesson 03 · Synthesis &amp; Analysis</span></div>
+  <div class="logo-slot" aria-label="MokshPath logo">
+    <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="2" y="2" width="40" height="40" rx="11" fill="#412C23"/>
+      <path d="M10 31V14.5l6 8.5 6-8.5 6 8.5 6-8.5V31" stroke="#EF7F1A" stroke-width="3.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="34" cy="10.5" r="3" fill="#FECC00"/>
+    </svg>
+  </div>
+</div>
+<div class="page">
+
+<section class="hero">
+  <div class="eyebrow">Week 3 · Lesson 03 · AI Research</div>
+  <h1>From twelve sources to one honest <em>answer</em>.</h1>
+  <p class="lede">Gathering sources is the easy part — anyone can open twenty tabs. Synthesis is the hard part: reading across all of them, finding where they agree, where they clash, and what they actually add up to. In this lesson you turn a pile of sources into a grounded, cited answer through a repeatable pipeline — and learn to catch the moment AI smooths real disagreement into a comfortable, false consensus.</p>
+</section>
+
+<section>
+  <div class="section-num">01 / 05</div>
+  <h2>Synthesis is a pipeline, not a summary</h2>
+  <p class="lead">Beginners paste ten articles into a chatbot and ask "summarise this." What comes back is an average — smooth, plausible, and blind to the one source that disagreed. Real synthesis runs every set of sources through the same six steps, and AI can help at each one. Master the pipeline and "insight" stops being a lucky blend.</p>
+
+  <p>The mistake is collapsing everything into one summary in a single shot. Skip the middle and you get a confident paragraph that hides its own contradictions. The pipeline forces order: first you <strong>collect</strong> the sources, then you <strong>ground</strong> the AI in them (so it can only speak from what you gave it), then you <strong>extract</strong> the claims from each, <strong>compare</strong> them side by side, <strong>synthesize</strong> the agreements and tensions, and finally <strong>verify</strong> every line traces back to a real passage. Click through each stage below.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 1 · The sources-to-synthesis pipeline</span>
+      <div class="controls">
+        <button id="pipeBtn" onclick="tourPipe()">▶ Walk through</button>
+        <button onclick="resetPipe()">↺ Reset</button>
+      </div>
+    </div>
+    <div class="pipe" id="pipe">
+      <div class="pstep" data-step="collect" onclick="selectStep('collect')">
+        <div class="p-ic"><svg viewBox="0 0 24 24" fill="none"><path d="M4 5h10l2 3h4v11H4z" stroke="#EF7F1A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="p-n">Step 1</div><div class="p-t">Collect</div>
+        <span class="arrow">→</span>
+      </div>
+      <div class="pstep" data-step="ground" onclick="selectStep('ground')">
+        <div class="p-ic"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z" stroke="#EF7F1A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="p-n">Step 2</div><div class="p-t">Ground</div>
+        <span class="arrow">→</span>
+      </div>
+      <div class="pstep" data-step="extract" onclick="selectStep('extract')">
+        <div class="p-ic"><svg viewBox="0 0 24 24" fill="none"><path d="M6 3h9l4 4v14H6z" stroke="#EF7F1A" stroke-width="2" stroke-linejoin="round"/><path d="M9 12h6M9 16h4" stroke="#EF7F1A" stroke-width="2" stroke-linecap="round"/></svg></div>
+        <div class="p-n">Step 3</div><div class="p-t">Extract</div>
+        <span class="arrow">→</span>
+      </div>
+      <div class="pstep" data-step="compare" onclick="selectStep('compare')">
+        <div class="p-ic"><svg viewBox="0 0 24 24" fill="none"><path d="M12 4v16M6 8H3l3-4 3 4H6zM18 16h-3l3 4 3-4h-3z" stroke="#EF7F1A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="p-n">Step 4</div><div class="p-t">Compare</div>
+        <span class="arrow">→</span>
+      </div>
+      <div class="pstep" data-step="synthesize" onclick="selectStep('synthesize')">
+        <div class="p-ic"><svg viewBox="0 0 24 24" fill="none"><path d="M5 5v6a4 4 0 004 4h6M19 19v-6a4 4 0 00-4-4H9" stroke="#EF7F1A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="p-n">Step 5</div><div class="p-t">Synthesize</div>
+        <span class="arrow">→</span>
+      </div>
+      <div class="pstep" data-step="verify" onclick="selectStep('verify')">
+        <div class="p-ic"><svg viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#EF7F1A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="p-n">Step 6</div><div class="p-t">Verify</div>
+        <span class="arrow">→</span>
+      </div>
+    </div>
+    <div class="pipe-panel" id="pipePanel">
+      <div class="pp-tag" id="ppTag">Interactive pipeline</div>
+      <div class="pp-title" id="ppTitle">Click any stage above</div>
+      <p class="pp-why" id="ppWhy">Every honest synthesis travels these six steps in order. Collapsing them — pasting sources in and asking for one summary — is how you get a confident paragraph that quietly averages away the disagreement that mattered most. Click a stage, or press "Walk through", to see what happens there and where AI helps.</p>
+      <p class="pp-ai" id="ppAi"><strong>Tip —</strong> grounding comes before extracting for a reason. An ungrounded model fills gaps with its training data; a grounded one can only speak from your sources.</p>
+    </div>
+  </div>
+
+  <h3>Why order matters</h3>
+  <p>Each stage protects the next. Grounding protects extraction; extraction protects the comparison; the comparison protects the synthesis. Break the chain — synthesize before you've extracted each source's actual claims — and the AI invents a tidy consensus that no single source ever made. The smoother the summary, the more it may have paved over.</p>
+</section>
+
+<section>
+  <div class="section-num">02 / 05</div>
+  <h2>Every level of summary keeps something and drops something</h2>
+  <p class="lead">A summary is a trade. Compress a 2,000-word report into one line and you gain speed but lose every caveat, condition, and number that made it true. There's no "correct" length — only the right level for the decision you're making. The skill is knowing what each level throws away.</p>
+
+  <p>Watch the same source shrink across three levels. The <strong>full passage</strong> keeps everything — the finding, the sample size, the caveat, the exception. <strong>Key points</strong> keeps the claims but starts shedding conditions. The <strong>one-liner</strong> keeps only the headline — fast to quote, dangerous to trust, because the "but only when…" is gone. Toggle each level and read the meter: how much fidelity survives, and exactly what got dropped.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 2 · Levels of summary — what survives compression</span>
+      <div class="controls">
+        <button onclick="resetLvl()">↺ Reset</button>
+      </div>
+    </div>
+    <div class="lvl-controls" id="lvlControls">
+      <span class="chip on" id="lvl-full" onclick="pickLvl('full')">Full passage</span>
+      <span class="chip" id="lvl-key" onclick="pickLvl('key')">Key points</span>
+      <span class="chip" id="lvl-one" onclick="pickLvl('one')">One line</span>
+    </div>
+    <div class="lvl-grid">
+      <div class="lvl-out" id="lvlOut">
+        <div class="lvl-tag" id="lvlTag">Full passage · 100% kept</div>
+        <div class="lvl-body" id="lvlBody"></div>
+      </div>
+      <div class="lvl-side">
+        <h4>Fidelity meter</h4>
+        <div class="lvl-meter">
+          <div class="m-lab"><span>Detail kept</span><span id="keepPct">100%</span></div>
+          <div class="m-bar"><div class="m-fill keep" id="keepFill"></div></div>
+        </div>
+        <div class="lvl-meter">
+          <div class="m-lab"><span>Nuance lost</span><span id="lostPct">0%</span></div>
+          <div class="m-bar"><div class="m-fill lost" id="lostFill"></div></div>
+        </div>
+        <div class="lvl-lost" id="lvlLost"></div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Match the level to the stakes</h3>
+  <p>For a headline in a slide, the one-liner is fine. For a decision that costs money or credibility, drop back to key points — or the full passage — and read the caveat you were about to summarise away. When you ask AI to compress, ask it in the same breath: "what did you leave out, and would any of it change the conclusion?"</p>
+</section>
+
+<section>
+  <div class="section-num">03 / 05</div>
+  <h2>A synthesis matrix makes agreement and conflict visible</h2>
+  <p class="lead">The moment you have more than three sources, you can't hold them in your head. A synthesis matrix — sources down the side, themes across the top — turns "I read a lot" into a map you can actually reason about. Where a column fills up, you've found consensus; where it's sparse or split, you've found the real story.</p>
+
+  <p>Here's the whole idea: each <strong>row</strong> is a source, each <strong>column</strong> is a theme or claim, and each <strong>cell</strong> records what that source says about that theme — agrees, disagrees, or silent. Fill the grid and patterns leap out: a theme every source hits is settled; a theme where one source breaks ranks is where you should dig. Click cells to log each source's position, then read the synthesis it builds below.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 3 · Build the synthesis matrix — click cells to log positions</span>
+      <div class="controls">
+        <button onclick="fillMatrix()">▶ Auto-fill example</button>
+        <button onclick="resetMatrix()">↺ Reset</button>
+      </div>
+    </div>
+    <div class="mtx-wrap">
+      <p class="mtx-hint" id="mtxHint">Click a cell to cycle its state: blank → agrees (✓) → disagrees (✕) → blank. Watch the synthesis rebuild.</p>
+      <table class="mtx" id="mtxTable"></table>
+    </div>
+    <div class="mtx-synth" id="mtxSynth">
+      <div class="ms-tag">Synthesis so far</div>
+      <div class="ms-body" id="mtxBody">Log at least one position to start building a synthesis. As columns fill in, you'll see which themes are settled consensus and which are genuinely contested.</div>
+    </div>
+  </div>
+
+  <h3>The empty and split cells are the point</h3>
+  <p>Beginners chase the full columns — the things everyone agrees on — because they feel safe. But a theme where four sources agree and one sharply disagrees is far more interesting than one where all five nod along. The matrix earns its keep by making the outlier impossible to overlook, instead of letting AI quietly average it into the consensus.</p>
+</section>
+
+<section>
+  <div class="section-num">04 / 05</div>
+  <h2>A grounded answer shows its work</h2>
+  <p class="lead">The single biggest upgrade in AI research is grounding: tools like NotebookLM answer <em>only</em> from the sources you upload, and attach a citation to every claim that jumps you straight back to the exact passage. No citation means no evidence — and that's a feature, not a limitation.</p>
+
+  <p>An ungrounded chatbot blends your sources with everything it ever read and gives you a fluent answer you can't check. A grounded notebook does the opposite: it quotes your material, footnotes each sentence, and lets you click a citation to see the sentence it came from — in context, highlighted. If a claim has no citation, treat it as the model guessing. Click each citation below to reveal the passage it's standing on.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 4 · Grounded answer — click a citation to see its source</span>
+      <div class="controls">
+        <button onclick="resetNb()">↺ Reset</button>
+      </div>
+    </div>
+    <div class="nb-grid">
+      <div class="nb-answer">
+        <div class="nb-qtag">Grounded question</div>
+        <div class="nb-q">"Does remote work raise or lower team productivity?"</div>
+        <div class="nb-text">
+          Across the uploaded studies, remote work tends to <strong>raise</strong> output for focused, independent tasks<span class="cite" data-c="1" onclick="showCite('1',this)">1</span>, with one large field experiment reporting a 13% productivity gain.<span class="cite" data-c="2" onclick="showCite('2',this)">2</span> The effect reverses for work that depends on rapid, informal coordination, where fully remote teams saw measurable slowdowns.<span class="cite" data-c="3" onclick="showCite('3',this)">3</span> The sources converge on a conditional answer: the benefit holds <em>when the task is well-defined and communication is low-bandwidth</em>, and erodes when it isn't.<span class="cite" data-c="4" onclick="showCite('4',this)">4</span>
+        </div>
+      </div>
+      <div class="nb-src">
+        <h4 id="nbTitle">Source passage</h4>
+        <div class="ns-doc" id="nbDoc">Click a citation to open it</div>
+        <div class="nb-pass" id="nbPass">Every sentence in the answer carries a footnote back to a real passage in your uploaded sources. Click any <span style="color:var(--orange-light);font-weight:600">numbered citation</span> in the answer to see the exact text it's grounded in — highlighted, in context.</div>
+        <div class="ns-cap" id="nbCap"></div>
+      </div>
+    </div>
+  </div>
+
+  <h3>No citation, no claim</h3>
+  <p>Grounding turns "trust me" into "check me." Make it a rule: any sentence in an AI synthesis that doesn't trace to a source is a hypothesis, not a finding. NotebookLM enforces this by design; when you use an ungrounded tool, enforce it yourself by asking "which source says that, and quote the line."</p>
+</section>
+
+<section>
+  <div class="section-num">05 / 05</div>
+  <h2>Genuine consensus vs. AI's false consensus</h2>
+  <p class="lead">AI is built to be agreeable and fluent — which makes it dangerously good at manufacturing consensus that isn't there. It rounds off the sharp disagreement, drops the lone dissenting study, and hands you a smooth "experts agree" paragraph. Real synthesis has to tell the difference between sources that <em>actually</em> agree and an AI that's just smoothing.</p>
+
+  <p><strong>Genuine consensus</strong> is when independent sources, using different methods, land in the same place — that's signal worth trusting. <strong>False consensus</strong> is when the AI's summary reads as agreement but the underlying sources were mixed, and the disagreement got averaged out of existence. The tell is always in the sources, not the summary. Click each scenario to see which one it is — and how to preserve the nuance the AI wanted to erase.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 5 · Real consensus or over-smoothing? Pick a scenario</span>
+      <div class="controls">
+        <button onclick="resetCons()">↺ Reset</button>
+      </div>
+    </div>
+    <div class="cons-grid">
+      <div class="cons-col true">
+        <div class="cons-label">Click a scenario to judge it</div>
+        <div class="cons-item" onclick="pickCons('a',this)">"All 5 studies, using different methods, report the vaccine cut infection risk 40–60%."</div>
+        <div class="cons-item" onclick="pickCons('b',this)">"Experts agree the policy worked." (4 sources cited, 1 quietly dropped.)</div>
+        <div class="cons-item" onclick="pickCons('c',this)">"The literature is settled." (AI never mentions the sample sizes differed 10×.)</div>
+        <div class="cons-item" onclick="pickCons('d',this)">"Two meta-analyses and a replication all converge on the same effect size."</div>
+      </div>
+      <div class="cons-col false">
+        <div class="cons-label">Verdict</div>
+        <div class="cons-out" id="consOut">
+          <div class="co-tag">Signal or smoothing?</div>
+          <div class="co-body" id="consBody">Click a scenario on the left. We'll show whether it's genuine consensus worth trusting, or AI over-smoothing that erased real disagreement — and how to preserve the nuance either way.</div>
+          <div class="co-fix" id="consFix" style="display:none"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Force the disagreement back into view</h3>
+  <p>The fix is a prompt habit: never ask only "what do the sources say?" Ask "where do these sources <em>disagree</em>, and which one is the outlier?" A grounded tool will surface the split; an over-smoothing one will suddenly get vaguer — and that vagueness is your signal that the tidy consensus was manufactured. Keep the dissent; it's usually where the truth is hiding.</p>
+</section>
+
+<div class="takeaway">
+  <h2>What to carry forward</h2>
+  <p>You now know that synthesis is manufactured, not summarised. A pile of sources becomes a trustworthy answer only when it's collected, grounded, extracted, compared, synthesised, and verified back to real passages. AI accelerates every step — and quietly smooths away disagreement at every step too, which is why the human owns the tension the machine wants to erase.</p>
+  <ul>
+    <li>Run every source set through the pipeline: collect → ground → extract → compare → synthesize → verify</li>
+    <li>Ground the model first — an ungrounded AI fills gaps with training data, not your sources</li>
+    <li>Every level of summary trades speed for fidelity; ask what each one dropped</li>
+    <li>A synthesis matrix makes agreement and — more importantly — the outliers visible</li>
+    <li>No citation, no claim: any ungrounded sentence is a hypothesis, not a finding</li>
+    <li>Distrust smooth consensus — ask where the sources disagree and which one is the outlier</li>
+  </ul>
+</div>
+
+</div>
+<footer>MokshPath · Lesson 03 of 04 · Next up: Citing &amp; Fact-Checking →</footer>
+<script>
+
+/* ============ Figure 1 · Synthesis pipeline ============ */
+const STEPS={
+  collect:{t:"Collect the sources",
+    why:"Gather everything relevant into one place — papers, articles, reports, transcripts. Breadth matters here: one more source that disagrees is worth ten that repeat each other. Don't filter for agreement yet; you want the full spread of positions before you start reasoning.",
+    ai:"AI can help you cast a wide net — suggesting adjacent search terms, surfacing sources you'd miss, and flagging when your collection leans all one way. But you decide what makes the pile; relevance is a human judgement."},
+  ground:{t:"Ground the AI in them",
+    why:"Upload your sources into a grounded tool (NotebookLM, or a chat where you paste the material) so the model answers only from what you gave it. Grounding is the wall between synthesis and hallucination — without it, the AI blends your sources with its training data and you can't tell which is which.",
+    ai:"NotebookLM is built for exactly this: it confines every answer to your uploaded corpus and refuses to speak beyond it. That refusal — \"the sources don't say\" — is the most valuable thing a research AI can tell you."},
+  extract:{t:"Extract each source's claims",
+    why:"Before comparing, pull the actual claims out of each source one at a time: what does this one assert, with what evidence, and what caveat? Extracting per-source keeps each voice distinct — so when you compare, you're comparing real positions, not a pre-blended mush.",
+    ai:"Ask the AI to list, per source, \"the main claim, the evidence, and any stated limitation.\" Structured extraction forces the model to keep sources separate instead of averaging them together too early."},
+  compare:{t:"Compare them side by side",
+    why:"Lay the extracted claims against each other and look for three things: where sources agree, where they conflict, and where they're silent. This is the step that produces a synthesis matrix — the map of who says what — and it's where the real findings (and the outliers) become visible.",
+    ai:"AI is good at building the comparison grid — \"make a table of each source's position on each theme.\" But push it: ask specifically where the sources disagree, or it will happily emphasise the agreement and bury the conflict."},
+  synthesize:{t:"Synthesize the tensions",
+    why:"Now write the answer — but a good synthesis isn't an average. It names the consensus, then names the disagreement and explains it: which conditions make sources diverge, which source is the outlier and why. The tension is the insight; smoothing it away throws the insight out.",
+    ai:"AI drafts fluent synthesis fast — and that fluency is the danger. It will round off disagreement into a comfortable \"experts broadly agree.\" Your job is to force the conflict back in: \"where do these sources actually diverge?\""},
+  verify:{t:"Verify every line to a source",
+    why:"The final, non-negotiable step: check that each sentence of the synthesis traces to a real passage. Grounded tools give you citations — click them. A claim with no source is the model guessing, no matter how confident it sounds. Never publish an unverified synthesis.",
+    ai:"A grounded AI footnotes each claim back to the passage; verify by clicking through, not by trusting the footnote exists. On ungrounded tools, ask \"quote the exact line that supports this\" — if it can't, the claim isn't real."}
+};
+const stepOrder=["collect","ground","extract","compare","synthesize","verify"];
+let pipeTimer=null,pipeIdx=0;
+function selectStep(k){
+  document.querySelectorAll('#pipe .pstep').forEach(el=>el.classList.remove('on'));
+  const el=document.querySelector('#pipe [data-step="'+k+'"]');
+  if(el)el.classList.add('on');
+  const d=STEPS[k],panel=document.getElementById('pipePanel');
+  document.getElementById('ppTag').textContent='Stage '+(stepOrder.indexOf(k)+1)+' of 6';
+  document.getElementById('ppTitle').textContent=d.t;
+  document.getElementById('ppWhy').textContent=d.why;
+  document.getElementById('ppAi').innerHTML='<strong>AI assist —</strong> '+d.ai;
+  panel.classList.remove('swap');void panel.offsetWidth;panel.classList.add('swap');
+}
+function tourPipe(){
+  stopPipe();
+  document.getElementById('pipeBtn').classList.add('active');
+  pipeIdx=0;selectStep(stepOrder[0]);
+  pipeTimer=setInterval(()=>{
+    pipeIdx++;
+    if(pipeIdx>=stepOrder.length){stopPipe();return}
+    selectStep(stepOrder[pipeIdx]);
+  },3200);
+}
+function stopPipe(){
+  if(pipeTimer){clearInterval(pipeTimer);pipeTimer=null}
+  document.getElementById('pipeBtn').classList.remove('active');
+}
+function resetPipe(){
+  stopPipe();
+  document.querySelectorAll('#pipe .pstep').forEach(el=>el.classList.remove('on'));
+  document.getElementById('ppTag').textContent='Interactive pipeline';
+  document.getElementById('ppTitle').textContent='Click any stage above';
+  document.getElementById('ppWhy').textContent='Every honest synthesis travels these six steps in order. Collapsing them — pasting sources in and asking for one summary — is how you get a confident paragraph that quietly averages away the disagreement that mattered most. Click a stage, or press "Walk through", to see what happens there and where AI helps.';
+  document.getElementById('ppAi').innerHTML='<strong>Tip —</strong> grounding comes before extracting for a reason. An ungrounded model fills gaps with its training data; a grounded one can only speak from your sources.';
+}
+new IntersectionObserver((es,o)=>es.forEach(e=>{if(e.isIntersecting){tourPipe();o.unobserve(e.target)}}),{threshold:0.4}).observe(document.getElementById('pipe'));
+
+/* ============ Figure 2 · Levels of summary ============ */
+const LEVELS={
+  full:{tag:"Full passage · 100% kept",keep:100,lost:0,
+    body:"\"In a 2021 field experiment of 1,600 call-centre staff, remote workers were 13% more productive than office-based peers. However, the gain came almost entirely from more calls per minute and fewer breaks — not from higher-quality work — and it held only for this well-scripted, independent task. Promotion rates for remote staff fell by roughly half, suggesting the arrangement traded short-term output for long-term career growth.\"",
+    lost:[]},
+  key:{tag:"Key points · ~55% kept",keep:55,lost:45,
+    body:"• Remote workers were 13% more productive in a 2021 field experiment.\n• The gain came from volume (more calls, fewer breaks), not quality.\n• Promotion rates for remote staff roughly halved.",
+    lost:["The sample: 1,600 call-centre staff","\"only for this well-scripted task\"","The long-term career trade-off framing"]},
+  one:{tag:"One line · ~20% kept",keep:20,lost:80,
+    body:"\"Remote work makes people 13% more productive.\"",
+    lost:["It was one specific, scripted task","The gain was volume, not quality","Promotions for remote staff halved","The whole \"but only when…\" condition"]}
+};
+function pickLvl(k){
+  document.querySelectorAll('#lvlControls .chip').forEach(c=>c.classList.remove('on'));
+  document.getElementById('lvl-'+k).classList.add('on');
+  const d=LEVELS[k];
+  document.getElementById('lvlTag').textContent=d.tag;
+  document.getElementById('lvlBody').textContent=d.body;
+  document.getElementById('lvlBody').style.whiteSpace=(k==='key')?'pre-line':'normal';
+  document.getElementById('keepFill').style.width=d.keep+'%';
+  document.getElementById('lostFill').style.width=d.lost+'%';
+  document.getElementById('keepPct').textContent=d.keep+'%';
+  document.getElementById('lostPct').textContent=d.lost+'%';
+  const lost=document.getElementById('lvlLost');
+  if(d.lost.length===0){lost.innerHTML='<p style="margin-top:0">Everything is here — the finding, the number, the sample, the caveat, the exception. Nothing has been dropped yet.</p>';}
+  else{lost.innerHTML='<p style="margin-top:0;color:#C9A574;font-family:JetBrains Mono,monospace;font-size:9.5px;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px">Dropped at this level</p>'+d.lost.map(x=>'<div class="ll-item">'+x+'</div>').join('');}
+  const out=document.getElementById('lvlOut');
+  out.classList.remove('pop');void out.offsetWidth;out.classList.add('pop');
+}
+function resetLvl(){pickLvl('full')}
+
+/* ============ Figure 3 · Synthesis matrix ============ */
+const SOURCES=["Study A (field trial)","Study B (meta-analysis)","Report C (industry)","Paper D (replication)"];
+const THEMES=["Boosts focused output","Hurts coordination","Effect depends on task"];
+// preset example fill: 0 blank, 1 agree, 2 disagree
+const PRESET=[
+  [1,2,1],
+  [1,1,1],
+  [1,2,2],
+  [1,1,1]
+];
+let mstate=SOURCES.map(()=>THEMES.map(()=>0));
+function buildMatrix(){
+  let html='<thead><tr><th style="text-align:left">Source \\ Theme</th>';
+  THEMES.forEach(t=>html+='<th>'+t+'</th>');
+  html+='</tr></thead><tbody>';
+  SOURCES.forEach((s,r)=>{
+    html+='<tr><th>'+s+'</th>';
+    THEMES.forEach((t,c)=>{
+      html+='<td class="cell" data-r="'+r+'" data-c="'+c+'" onclick="cycleCell('+r+','+c+')"><span class="mtx-mark">·</span></td>';
+    });
+    html+='</tr>';
+  });
+  html+='</tbody>';
+  document.getElementById('mtxTable').innerHTML=html;
+  paintMatrix();
+}
+function paintMatrix(){
+  document.querySelectorAll('#mtxTable td.cell').forEach(td=>{
+    const r=+td.dataset.r,c=+td.dataset.c,v=mstate[r][c];
+    td.classList.toggle('on',v!==0);
+    const mark=td.querySelector('.mtx-mark');
+    mark.textContent=v===0?'·':(v===1?'✓ agrees':'✕ differs');
+    mark.style.color=v===2?'var(--orange-dark)':(v===1?'var(--accent)':'');
+  });
+}
+function cycleCell(r,c){
+  mstate[r][c]=(mstate[r][c]+1)%3;
+  paintMatrix();renderSynth();
+}
+function renderSynth(){
+  const body=document.getElementById('mtxBody');
+  let any=false;
+  const lines=[];
+  THEMES.forEach((t,c)=>{
+    let agree=0,disagree=0,logged=0;
+    SOURCES.forEach((s,r)=>{const v=mstate[r][c];if(v!==0)logged++;if(v===1)agree++;if(v===2)disagree++;});
+    if(logged===0)return;
+    any=true;
+    if(disagree===0){lines.push('<strong style="color:var(--accent)">'+t+'</strong> — genuine consensus: '+agree+' of '+SOURCES.length+' sources agree, none dissent.');}
+    else if(agree===0){lines.push('<strong style="color:var(--orange-dark)">'+t+'</strong> — sources reject this ('+disagree+' differ).');}
+    else{lines.push('<strong style="color:var(--orange-dark)">'+t+'</strong> — <em>contested</em>: '+agree+' agree but '+disagree+' break ranks. This split is where the real story is — do not let AI average it away.');}
+  });
+  if(!any){
+    body.innerHTML='Log at least one position to start building a synthesis. As columns fill in, you\'ll see which themes are settled consensus and which are genuinely contested.';
+  }else{
+    body.innerHTML=lines.map(l=>'• '+l).join('<br><br>');
+  }
+  const box=document.getElementById('mtxSynth');
+  box.classList.remove('pop');void box.offsetWidth;box.classList.add('pop');
+}
+function fillMatrix(){
+  mstate=PRESET.map(row=>row.slice());
+  paintMatrix();renderSynth();
+}
+function resetMatrix(){
+  mstate=SOURCES.map(()=>THEMES.map(()=>0));
+  paintMatrix();renderSynth();
+}
+buildMatrix();
+new IntersectionObserver((es,o)=>es.forEach(e=>{if(e.isIntersecting){fillMatrix();o.unobserve(e.target)}}),{threshold:0.3}).observe(document.getElementById('mtxTable'));
+
+/* ============ Figure 4 · Grounded citations ============ */
+const CITES={
+  '1':{title:"Source passage · [1]",doc:"Bloom et al. — remote work field study",
+    pass:"\"For tasks that are <mark>focused and independent</mark>, and where a worker's output can be measured directly, home-based staff completed more units per hour than their office counterparts.\"",
+    cap:"Grounds: \"raise output for focused, independent tasks\""},
+  '2':{title:"Source passage · [2]",doc:"Bloom et al. — field study, results table",
+    pass:"\"Overall, we find a <mark>13% increase in performance</mark> from working at home, of which about 9% came from working more minutes per shift and 4% from higher output per minute.\"",
+    cap:"Grounds: \"a 13% productivity gain\""},
+  '3':{title:"Source passage · [3]",doc:"Report C — distributed teams review",
+    pass:"\"Where work required <mark>rapid, informal coordination</mark>, fully remote teams reported measurable slowdowns in decision cycles and more frequent misalignment.\"",
+    cap:"Grounds: \"the effect reverses for coordination-heavy work\""},
+  '4':{title:"Source passage · [4]",doc:"Paper D — replication & synthesis",
+    pass:"\"The productivity benefit is <mark>conditional</mark>: it holds when the task is well-defined and communication demands are low, and it erodes as interdependence rises.\"",
+    cap:"Grounds: \"a conditional answer — benefit holds when…\""}
+};
+function showCite(k,el){
+  document.querySelectorAll('.cite').forEach(c=>c.classList.remove('on'));
+  el.classList.add('on');
+  const d=CITES[k];
+  document.getElementById('nbTitle').textContent=d.title;
+  document.getElementById('nbDoc').textContent=d.doc;
+  const pass=document.getElementById('nbPass');
+  pass.innerHTML=d.pass;
+  document.getElementById('nbCap').textContent=d.cap;
+  pass.classList.remove('pop');void pass.offsetWidth;pass.classList.add('pop');
+}
+function resetNb(){
+  document.querySelectorAll('.cite').forEach(c=>c.classList.remove('on'));
+  document.getElementById('nbTitle').textContent='Source passage';
+  document.getElementById('nbDoc').textContent='Click a citation to open it';
+  document.getElementById('nbPass').innerHTML='Every sentence in the answer carries a footnote back to a real passage in your uploaded sources. Click any <span style="color:var(--orange-light);font-weight:600">numbered citation</span> in the answer to see the exact text it\'s grounded in — highlighted, in context.';
+  document.getElementById('nbCap').textContent='';
+}
+
+/* ============ Figure 5 · Consensus vs over-smoothing ============ */
+const CONS={
+  a:{tag:"Genuine consensus ✓",verdict:true,
+    body:"Real signal. Five independent sources, using <strong>different methods</strong>, land in the same 40–60% range. Convergence across methods is the strongest evidence there is — the agreement wasn't manufactured by one shared assumption.",
+    fix:"Preserve it by keeping the range (40–60%), not collapsing to a single average number. The spread itself tells the reader how firm the finding is."},
+  b:{tag:"False consensus ✕",verdict:false,
+    body:"Over-smoothing. \"Experts agree\" is doing a lot of work while <strong>one source was quietly dropped</strong>. The AI reached agreement by narrowing the evidence, not by weighing it. The dissenting source may be the most important one.",
+    fix:"Ask: \"list every source, including any that disagreed, and why.\" Never accept \"experts agree\" without seeing the full set — including the ones that didn't."},
+  c:{tag:"False consensus ✕",verdict:false,
+    body:"Over-smoothing. Calling the literature \"settled\" while hiding that <strong>sample sizes differed tenfold</strong> buries the fact that not all studies carry equal weight. A tiny study and a huge one are not two equal votes.",
+    fix:"Ask for the caveats: \"what are the sample sizes and limitations of each source?\" A synthesis that hides the conditions is hiding how fragile it is."},
+  d:{tag:"Genuine consensus ✓",verdict:true,
+    body:"Real signal. Two meta-analyses <em>plus</em> an independent replication converging on the same effect size is about as strong as research evidence gets — different teams, different data, same result.",
+    fix:"Preserve it by naming the sources explicitly (\"two meta-analyses and a replication\") rather than the vaguer \"studies show.\" Specificity is what makes trustworthy consensus checkable."}
+};
+function pickCons(k,el){
+  document.querySelectorAll('.cons-item').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');
+  const d=CONS[k];
+  document.querySelector('#consOut .co-tag').textContent=d.tag;
+  document.querySelector('#consOut .co-tag').style.color=d.verdict?'var(--accent)':'var(--orange-dark)';
+  document.getElementById('consBody').innerHTML=d.body;
+  const fix=document.getElementById('consFix');
+  fix.style.display='block';
+  fix.innerHTML='<strong>Preserve the nuance —</strong> '+d.fix;
+  const out=document.getElementById('consOut');
+  out.classList.remove('pop');void out.offsetWidth;out.classList.add('pop');
+}
+function resetCons(){
+  document.querySelectorAll('.cons-item').forEach(b=>b.classList.remove('on'));
+  const tag=document.querySelector('#consOut .co-tag');
+  tag.textContent='Signal or smoothing?';tag.style.color='var(--orange-dark)';
+  document.getElementById('consBody').textContent="Click a scenario on the left. We'll show whether it's genuine consensus worth trusting, or AI over-smoothing that erased real disagreement — and how to preserve the nuance either way.";
+  document.getElementById('consFix').style.display='none';
+}
+
+/* init figure 2 */
+pickLvl('full');
+
+</script>
+</body>
+</html>
