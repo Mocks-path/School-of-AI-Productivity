@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 4 · AI for Meetings &amp; Notes — MokshPath</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=JetBrains+Mono:wght@400;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --orange:#E87A2E;--orange-dark:#D06A20;--orange-light:#F5943E;--orange-glow:rgba(232,122,46,0.12);
+  --navy:#2B2D42;--navy-dark:#1A1B2E;
+  --bg:#F3EDE7;--bg-card:#FFFFFF;--bg-light:#F9F5F0;
+  --text-primary:#2B2D42;--text-secondary:#6B6D7B;--text-muted:#9597A6;
+  --border:#E5DDD4;--green:#4CAF50;--green-light:#E8F5E9;--red:#E04E3C;--red-light:#FDECEA;
+  --shadow-sm:0 2px 8px rgba(43,45,66,0.06);--shadow-md:0 8px 24px rgba(43,45,66,0.08);
+  --shadow-lg:0 16px 48px rgba(43,45,66,0.12);
+  --radius:14px;--radius-sm:8px;
+  --mono:'JetBrains Mono',monospace;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text-primary);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+
+/* ── NAV ── */
+.nav{position:sticky;top:0;z-index:100;background:var(--bg-card);border-bottom:1px solid var(--border);padding:0 2rem;height:64px;display:flex;align-items:center;justify-content:space-between;box-shadow:var(--shadow-sm)}
+.nav-left{display:flex;align-items:center;gap:.7rem}
+.lesson-badge{font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--orange);background:var(--orange-glow);padding:.3rem .7rem;border-radius:50px}
+.nav-logo{display:flex;align-items:center;gap:.7rem;text-decoration:none}
+.nav-logo-icon{width:auto;height:48px;display:block;object-fit:contain}
+.nav-logo-text{display:flex;flex-direction:column;line-height:1.15}
+.nav-logo-name{font-family:'DM Serif Display',serif;font-size:1.25rem;color:var(--navy)}
+.nav-logo-name span{color:var(--orange)}
+.nav-logo-tag{font-size:.62rem;color:var(--text-muted);font-weight:500;letter-spacing:.02em}
+
+/* ── HERO ── */
+.hero{padding:3.5rem 2rem 2.5rem;text-align:center;position:relative}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:.45rem;padding:.4rem 1rem;border-radius:50px;background:var(--orange-glow);color:var(--orange);font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:1.2rem}
+.hero-eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--orange);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.hero h1{font-family:'DM Serif Display',serif;font-size:clamp(2rem,4vw,3rem);line-height:1.13;color:var(--navy);margin-bottom:1rem;max-width:780px;margin-left:auto;margin-right:auto}
+.hero h1 em{font-style:normal;color:var(--orange)}
+.hero-sub{font-size:1.02rem;color:var(--text-secondary);line-height:1.7;max-width:620px;margin:0 auto}
+
+/* ── PROGRESS RAIL ── */
+.progress-rail{max-width:760px;margin:1.8rem auto 0;display:flex;align-items:center;gap:.5rem}
+.progress-dot{flex:1;height:6px;background:var(--border);border-radius:3px;transition:background .3s}
+.progress-dot.done{background:linear-gradient(90deg,var(--orange),var(--orange-light))}
+.progress-label{font-size:.7rem;color:var(--text-muted);font-weight:600;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+
+/* ── SECTIONS ── */
+section.lesson{padding:3rem 2rem}
+.container{max-width:1080px;margin:0 auto}
+.lesson-num{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;background:var(--orange);color:#fff;font-family:'DM Serif Display',serif;font-size:1.1rem;margin-bottom:.9rem}
+.lesson-title{font-family:'DM Serif Display',serif;font-size:clamp(1.6rem,2.5vw,2.1rem);color:var(--navy);margin-bottom:.55rem;line-height:1.2}
+.lesson-intro{font-size:.95rem;color:var(--text-secondary);line-height:1.7;max-width:680px;margin-bottom:2rem}
+.lesson-card{background:var(--bg-card);border-radius:var(--radius);box-shadow:var(--shadow-sm);border:1px solid var(--border);padding:2rem;margin-top:1.5rem}
+
+.activity-feedback{margin-top:1.2rem;padding:1rem 1.2rem;border-radius:var(--radius-sm);font-size:.85rem;line-height:1.55;display:none}
+.activity-feedback.show{display:block;animation:fadeIn .4s ease}
+.activity-feedback.success{background:var(--green-light);color:#1F5723;border-left:3px solid var(--green)}
+.activity-feedback.partial{background:#FFF4E5;color:#7A4A0A;border-left:3px solid #E89B2E}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.activity-toolbar{display:flex;gap:.6rem;margin-top:1.2rem;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:.4rem;padding:.6rem 1.2rem;border-radius:8px;font-size:.82rem;font-weight:600;border:none;cursor:pointer;transition:all .2s;font-family:inherit}
+.btn-primary{background:var(--orange);color:#fff}.btn-primary:hover{background:var(--orange-dark);transform:translateY(-1px);box-shadow:0 4px 12px rgba(232,122,46,0.3)}
+.btn-ghost{background:transparent;border:1.5px solid var(--border);color:var(--text-secondary)}.btn-ghost:hover{border-color:var(--orange);color:var(--orange)}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+
+/* ── ACTIVITY 1: TOOL MATCH ── */
+.aud-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+@media (max-width:760px){.aud-grid{grid-template-columns:1fr}}
+.aud-card{background:var(--bg-card);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:1rem 1.1rem;transition:border-color .25s}
+.aud-card.correct{border-color:var(--green);background:var(--green-light)}
+.aud-card.wrong{border-color:var(--red);background:var(--red-light)}
+.aud-name{font-family:'DM Serif Display',serif;font-size:1rem;color:var(--navy)}
+.aud-pain{font-size:.74rem;color:var(--text-muted);margin:.2rem 0 .6rem;font-style:italic}
+.aud-select{width:100%;padding:.55rem .7rem;border:1.5px solid var(--border);border-radius:6px;font-family:inherit;font-size:.8rem;color:var(--text-primary);background:var(--bg-light);cursor:pointer}
+.aud-select:focus{outline:none;border-color:var(--orange)}
+.aud-why{font-size:.74rem;line-height:1.5;margin-top:.55rem;display:none}
+.aud-why.show{display:block}
+.aud-why.good{color:#1F5723}.aud-why.bad{color:#8B2E22}
+
+/* ── ACTIVITY 2: SEQUENCE BUILDER ── */
+.seq-wrap{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+@media (max-width:760px){.seq-wrap{grid-template-columns:1fr}}
+.seq-pool{display:flex;flex-direction:column;gap:.6rem}
+.seq-block{background:var(--bg-card);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:.8rem 1rem;cursor:pointer;transition:all .2s;user-select:none}
+.seq-block:hover{border-color:var(--orange);transform:translateX(3px)}
+.seq-block.used{opacity:.3;pointer-events:none}
+.seq-block.shake{animation:shake .35s ease;border-color:var(--red);background:var(--red-light)}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.seq-block-text{font-size:.84rem;font-weight:500;line-height:1.45}
+.seq-slots{display:flex;flex-direction:column;gap:.5rem}
+.seq-slot{border:2px dashed var(--border);border-radius:var(--radius-sm);padding:.7rem .9rem;min-height:52px;font-size:.8rem;color:var(--text-muted);transition:all .3s;background:rgba(255,255,255,.5)}
+.seq-slot.filled{border-style:solid;border-color:var(--green);background:var(--green-light);color:var(--text-primary)}
+.seq-tag{display:inline-block;font-family:var(--mono);font-size:.64rem;font-weight:600;letter-spacing:.06em;color:var(--orange);background:var(--orange-glow);padding:.1rem .45rem;border-radius:4px;margin-bottom:.3rem}
+.seq-hint{margin-top:.8rem;padding:.7rem .9rem;background:#FFF4E5;border-left:3px solid #E89B2E;border-radius:4px;font-size:.78rem;color:#7A4A0A;line-height:1.5;display:none}
+.seq-hint.show{display:block;animation:fadeIn .3s ease}
+.phone{max-width:340px;margin:1.4rem auto 0;background:var(--navy-dark);border-radius:14px;padding:1.1rem .9rem;border:5px solid var(--navy);box-shadow:var(--shadow-lg);display:none}
+.phone.show{display:block;animation:fadeIn .5s ease}
+.phone-notch{width:80px;height:5px;background:rgba(255,255,255,.25);border-radius:3px;margin:0 auto .8rem}
+.phone-line{margin-bottom:.6rem;padding:.55rem .7rem;background:rgba(255,255,255,.07);border-radius:8px}
+.phone-line .seq-tag{background:rgba(232,122,46,.22)}
+.phone-line p{font-size:.76rem;color:#E8E8EC;line-height:1.5;font-family:var(--mono)}
+
+/* ── ACTIVITY 3: CONSENT SCENARIOS (scorer) ── */
+.kos-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+@media (max-width:760px){.kos-grid{grid-template-columns:1fr}}
+.kos-card{background:var(--bg-card);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:1.1rem 1.2rem}
+.kos-title{font-family:'DM Serif Display',serif;font-size:.98rem;color:var(--navy);margin-bottom:.6rem}
+.kos-metrics{display:grid;grid-template-columns:1fr;gap:.35rem .8rem;margin-bottom:.8rem}
+.kos-metric{font-size:.74rem;color:var(--text-secondary)}
+.kos-metric b{font-family:var(--mono);color:var(--navy);font-weight:600}
+.kos-btns{display:flex;gap:.45rem;flex-wrap:wrap}
+.kos-btn{flex:1;padding:.5rem .4rem;border-radius:6px;border:1.5px solid var(--border);background:var(--bg-light);font-family:inherit;font-size:.74rem;font-weight:700;cursor:pointer;transition:all .2s;color:var(--text-secondary)}
+.kos-btn:hover{border-color:var(--orange);color:var(--orange)}
+.kos-btn.picked-right{background:var(--green-light);border-color:var(--green);color:#1F5723}
+.kos-btn.picked-wrong{background:var(--red-light);border-color:var(--red);color:#8B2E22}
+.kos-btn.reveal-right{border-color:var(--green);color:#1F5723}
+.kos-btn:disabled{cursor:not-allowed;opacity:.75}
+.kos-verdict{font-size:.74rem;line-height:1.55;margin-top:.7rem;padding:.6rem .75rem;border-radius:6px;display:none}
+.kos-verdict.show{display:block;animation:fadeIn .3s ease}
+.kos-verdict.good{background:var(--green-light);color:#1F5723}
+.kos-verdict.bad{background:#FFF4E5;color:#7A4A0A}
+
+/* ── ACTIVITY 4: ACTION-ITEM EXTRACTOR ── */
+.transcript{background:var(--navy-dark);border-radius:var(--radius-sm);padding:1.1rem 1.2rem;margin-bottom:1.3rem;font-family:var(--mono);font-size:.78rem;line-height:1.7;color:#E8E8EC}
+.transcript .spk{color:var(--orange-light);font-weight:600}
+.ai-row{display:grid;grid-template-columns:1.4fr 1fr auto;gap:.7rem;align-items:start;margin-bottom:.7rem}
+@media (max-width:760px){.ai-row{grid-template-columns:1fr}}
+.ai-task{font-size:.82rem;font-weight:600;color:var(--navy);line-height:1.45;padding-top:.55rem}
+.ai-input{width:100%;padding:.5rem .65rem;border:1.5px solid var(--border);border-radius:6px;font-family:inherit;font-size:.78rem;color:var(--text-primary);background:var(--bg-light)}
+.ai-input:focus{outline:none;border-color:var(--orange)}
+.ai-input.ok{border-color:var(--green);background:var(--green-light)}
+.ai-input.no{border-color:var(--red);background:var(--red-light)}
+.ai-mini{display:flex;gap:.4rem}
+.ai-mini .ai-input{flex:1}
+.ai-lbl{font-size:.62rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--text-muted);margin-bottom:.2rem}
+
+/* ── ACTIVITY 5: QUIZ ── */
+.quiz-q{background:var(--bg-card);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:1.1rem 1.3rem;margin-bottom:.9rem;transition:border-color .3s}
+.quiz-q.right{border-color:var(--green)}
+.quiz-q.miss{border-color:var(--red)}
+.quiz-q-head{display:flex;gap:.7rem;align-items:baseline;margin-bottom:.7rem}
+.quiz-q-num{font-family:var(--mono);font-size:.7rem;font-weight:600;color:var(--orange);background:var(--orange-glow);padding:.15rem .5rem;border-radius:4px;flex-shrink:0}
+.quiz-q-text{font-size:.9rem;font-weight:600;color:var(--navy);line-height:1.5}
+.quiz-opt{display:flex;align-items:flex-start;gap:.55rem;padding:.5rem .6rem;border-radius:6px;cursor:pointer;font-size:.83rem;color:var(--text-secondary);line-height:1.45;transition:background .15s}
+.quiz-opt:hover{background:var(--bg-light)}
+.quiz-opt input{margin-top:.25rem;accent-color:var(--orange);cursor:pointer}
+.quiz-review{font-size:.76rem;line-height:1.55;margin-top:.6rem;padding:.6rem .8rem;border-radius:6px;display:none}
+.quiz-review.show{display:block;animation:fadeIn .3s ease}
+.quiz-review.good{background:var(--green-light);color:#1F5723}
+.quiz-review.bad{background:#FFF4E5;color:#7A4A0A}
+.quiz-lesson{display:inline-block;font-family:var(--mono);font-size:.64rem;color:var(--text-muted);margin-left:.4rem}
+
+/* ── CHECKLIST ── */
+.check-list{list-style:none;margin-top:1rem}
+.check-item{display:flex;gap:.8rem;align-items:flex-start;padding:.85rem 1rem;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);margin-bottom:.6rem;cursor:pointer;transition:all .2s}
+.check-item:hover{border-color:var(--orange)}
+.check-item.on{border-color:var(--green);background:var(--green-light)}
+.check-box{flex-shrink:0;width:22px;height:22px;border-radius:6px;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.8rem;color:#fff;transition:all .2s;margin-top:.1rem}
+.check-item.on .check-box{background:var(--green);border-color:var(--green)}
+.check-text{font-size:.85rem;line-height:1.5;color:var(--text-secondary)}
+.check-text b{color:var(--navy)}
+.check-count{margin-top:1rem;font-size:.8rem;font-weight:700;color:var(--orange);font-family:var(--mono)}
+
+/* ── REFLECT / FOOTER ── */
+.reflect-prompt{display:grid;grid-template-columns:1fr;gap:.8rem;margin-top:1rem}
+.reflect-q{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:1rem 1.2rem}
+.reflect-q-text{font-size:.88rem;font-weight:600;color:var(--navy);margin-bottom:.5rem}
+.reflect-q textarea{width:100%;border:1px solid var(--border);border-radius:6px;padding:.6rem .8rem;font-family:inherit;font-size:.85rem;color:var(--text-primary);background:var(--bg-light);resize:vertical;min-height:60px}
+.reflect-q textarea:focus{outline:none;border-color:var(--orange)}
+.next-up{background:linear-gradient(135deg,var(--navy-dark),var(--navy));border-radius:var(--radius);padding:2.4rem;color:#fff;margin-top:2rem;text-align:center;position:relative;overflow:hidden}
+.next-up::before{content:'';position:absolute;top:-50px;right:-50px;width:180px;height:180px;border-radius:50%;background:rgba(232,122,46,0.12)}
+.next-up h3{font-family:'DM Serif Display',serif;font-size:1.5rem;margin-bottom:.5rem;position:relative}
+.next-up p{font-size:.92rem;color:rgba(255,255,255,0.75);margin-bottom:1.2rem;position:relative}
+.next-up .btn-primary{position:relative}
+
+@media (max-width:760px){
+  .nav{padding:0 1rem}
+  .nav-logo-tag{display:none}
+  .hero{padding:2.5rem 1.2rem 2rem}
+  section.lesson{padding:2rem 1.2rem}
+  .lesson-card{padding:1.4rem}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-left">
+    <span class="lesson-badge">Lesson 4 of 4</span>
+  </div>
+  <a href="https://mokshpath.org/" class="nav-logo">
+    <img class="nav-logo-icon" src="hero.svg" alt="MokshPath logo">
+    <div class="nav-logo-text">
+      <span class="nav-logo-name">Moksh<span>Path</span></span>
+      <span class="nav-logo-tag">Guided Path to True Learning</span>
+    </div>
+  </a>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-eyebrow"><span class="dot"></span> Week 2 · AI Office</div>
+  <h1>AI for Meetings &amp; Notes — <em>show up, stay present, let the recap write itself</em></h1>
+  <p class="hero-sub">The meeting is over the moment it ends — but the value is in what happens next: the recap, the decisions, and the action items with real owners and dates. AI can transcribe, summarise, and draft the follow-up, so you stop scribbling and start listening. Today you'll match tools to meeting jobs, order a safe-meeting workflow, judge consent scenarios honestly, pull owners and dates out of a real transcript, lock in an etiquette checklist, and close Week 2 with an 8-question knowledge check.</p>
+  <div class="progress-rail">
+    <span class="progress-label">Progress</span>
+    <div class="progress-dot" id="prog1"></div>
+    <div class="progress-dot" id="prog2"></div>
+    <div class="progress-dot" id="prog3"></div>
+    <div class="progress-dot" id="prog4"></div>
+    <div class="progress-dot" id="prog5"></div>
+  </div>
+</header>
+
+<!-- ── ACTIVITY 1: MATCH THE TOOL TO THE JOB ── -->
+<section class="lesson" id="activity-1">
+  <div class="container">
+    <span class="lesson-num">1</span>
+    <h2 class="lesson-title">Match the meeting tool to the job</h2>
+    <p class="lesson-intro">The meeting pipeline is always the same — <strong>record/transcribe → recap → decisions + action items → follow-up</strong> — but different tools own different links in that chain. Below are five real meeting jobs. Assign the tool that fits each one, then check. The notes explain the plain-English logic, and honestly flag where a tool needs a paid licence or the right platform to work.</p>
+
+    <div class="lesson-card">
+      <div class="aud-grid" id="audGrid"></div>
+      <div class="activity-feedback" id="feedback1"></div>
+      <div class="activity-toolbar">
+        <button class="btn btn-primary" onclick="checkTools()">Check my matches</button>
+        <button class="btn btn-ghost" onclick="resetTools()">↻ Reset</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 2: SAFE-MEETING WORKFLOW ── -->
+<section class="lesson" id="activity-2" style="background:var(--bg-light)">
+  <div class="container">
+    <span class="lesson-num" style="background:#66BB6A">2</span>
+    <h2 class="lesson-title">Order a safe, respectful AI-meeting workflow</h2>
+    <p class="lesson-intro">Turning on a meeting AI is easy — doing it well, and legally, is a sequence. There's a right order that keeps people informed, captures what matters, and turns the recap into action instead of a transcript nobody reads. Click the five steps in the order that works. A wrong click gets you a nudge. Scenario: your weekly project sync in Microsoft Teams.</p>
+
+    <div class="lesson-card">
+      <div class="seq-wrap">
+        <div>
+          <h4 style="font-family:'DM Serif Display',serif;font-size:1.05rem;color:var(--navy);margin-bottom:.6rem">Workflow steps (shuffled)</h4>
+          <div class="seq-pool" id="seqPool"></div>
+          <div class="seq-hint" id="seqHint"></div>
+        </div>
+        <div>
+          <h4 style="font-family:'DM Serif Display',serif;font-size:1.05rem;color:var(--navy);margin-bottom:.6rem">Your workflow, in order</h4>
+          <div class="seq-slots" id="seqSlots"></div>
+        </div>
+      </div>
+      <div class="phone" id="phonePreview"><div class="phone-notch"></div><div id="phoneLines"></div></div>
+      <div class="activity-feedback" id="feedback2"></div>
+      <div class="activity-toolbar">
+        <button class="btn btn-ghost" onclick="resetSeq()">↻ Start over</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 3: CONSENT-COMPLIANT? ── -->
+<section class="lesson" id="activity-3">
+  <div class="container">
+    <span class="lesson-num" style="background:#5B8FE0">3</span>
+    <h2 class="lesson-title">Is this recording consent-compliant?</h2>
+    <p class="lesson-intro">Recording a meeting isn't just a button — it's a legal and trust question. Rules vary: some places allow <strong>one-party consent</strong> (one person on the call agreeing is enough), others require <strong>all-party consent</strong> (everyone must agree), and your <strong>employer's policy</strong> can be stricter than the law. This isn't legal advice — but you can reason about each scenario. Make the judgement call on all four, then check the plain-English verdict.</p>
+
+    <div class="lesson-card">
+      <div class="kos-grid" id="kosGrid"></div>
+      <div class="activity-feedback" id="feedback3"></div>
+      <div class="activity-toolbar">
+        <button class="btn btn-ghost" onclick="resetKos()">↻ Reset all four</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 4: EXTRACT THE ACTION ITEMS ── -->
+<section class="lesson" id="activity-4" style="background:var(--bg-light)">
+  <div class="container">
+    <span class="lesson-num" style="background:#4CAF50">4</span>
+    <h2 class="lesson-title">Extract the action items — owner + date</h2>
+    <p class="lesson-intro">A recap is only useful if it names <strong>who</strong> does <strong>what</strong> by <strong>when</strong>. AI drafts this well, but you must verify it against what was actually said — AI sometimes assigns the wrong owner or invents a date. Read the transcript snippet below (from a sync on <strong>Monday, June 1</strong>), then fill in the owner and due date for each action item exactly as the transcript states them.</p>
+
+    <div class="lesson-card">
+      <div class="transcript" id="transcript"></div>
+      <div id="aiRows"></div>
+      <div class="activity-feedback" id="feedback4"></div>
+      <div class="activity-toolbar">
+        <button class="btn btn-primary" onclick="checkActions()">Check my extraction</button>
+        <button class="btn btn-ghost" onclick="resetActions()">↻ Reset</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ETIQUETTE CHECKLIST ── -->
+<section class="lesson" id="checklist">
+  <div class="container">
+    <span class="lesson-num" style="background:#E04E3C">✓</span>
+    <h2 class="lesson-title">The meeting-AI etiquette &amp; safety checklist</h2>
+    <p class="lesson-intro">Meeting AI touches something sensitive — other people's words, recorded and processed. Get the etiquette wrong and you erode trust or break policy; get it right and everyone benefits from a clean, shared record. Tick each one as you internalise it. The goal is that this list runs in your head before you ever hit "Start recording".</p>
+    <div class="lesson-card">
+      <ul class="check-list" id="checkList"></ul>
+      <div class="check-count" id="checkCount">0 of 6 locked in</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 5: WEEK 2 KNOWLEDGE CHECK ── -->
+<section class="lesson" id="activity-5" style="background:var(--bg-light)">
+  <div class="container">
+    <span class="lesson-num" style="background:var(--navy)">5</span>
+    <h2 class="lesson-title">Week 2 knowledge check — 8 questions, whole week</h2>
+    <p class="lesson-intro">The final gate of Week 2, spanning all four AI Office lessons: writing and drafting with AI, email and inbox with AI, documents and slides with AI, and today's meetings &amp; notes. Answer all eight, then submit for a per-question review — and if you miss any, you'll see exactly which lesson to revisit.</p>
+
+    <div class="lesson-card">
+      <div id="quizWrap"></div>
+      <div class="activity-feedback" id="feedback5"></div>
+      <div class="activity-toolbar">
+        <button class="btn btn-primary" onclick="submitQuiz()">Submit answers</button>
+        <button class="btn btn-ghost" onclick="resetQuiz()">↻ Reset quiz</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── REFLECT ── -->
+<section class="lesson" style="padding-bottom:1.5rem">
+  <div class="container">
+    <h2 class="lesson-title" style="font-size:1.5rem">Quick reflect — make it stick</h2>
+    <p class="lesson-intro" style="margin-bottom:1rem">A sentence each is enough. Writing it in your own words moves it from "seen" to "known". (Nothing is saved or sent.)</p>
+    <div class="reflect-prompt">
+      <div class="reflect-q">
+        <div class="reflect-q-text">Think of one recurring meeting in your real week. Where in the pipeline (transcribe / recap / action items / follow-up) does AI give you the biggest win, and which tool would you use?</div>
+        <textarea placeholder="My Monday project sync — AI's biggest win is pulling out action items with owners, because I always miss one; I'd use Teams intelligent recap since we already..."></textarea>
+      </div>
+      <div class="reflect-q">
+        <div class="reflect-q-text">Before recording a meeting for the first time, what's the one consent/etiquette step you'll always do — and why does it protect you as much as everyone else?</div>
+        <textarea placeholder="I'll announce it and check the recording indicator is visible, because informed consent is both respectful and the thing that keeps me out of trouble if..."></textarea>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NEXT UP -->
+<section class="lesson" style="padding-top:0">
+  <div class="container">
+    <div class="next-up">
+      <h3>Week 2 complete — your project: the self-running meeting record</h3>
+      <p>You can now draft with AI, tame the inbox, build documents and slides, and turn any meeting into a recap with owners, dates, and a ready-to-send follow-up. Put it together in the Week 2 wrap-up project: take one real recurring meeting and build its end-to-end record — consent handled, recap cleaned, action items verified, and a follow-up email drafted — the workflow that makes you the person who never drops a decision.</p>
+      <a href="#" class="btn btn-primary">Start the Week 2 project →</a>
+    </div>
+  </div>
+</section>
+
+<script>
+/* ═══ ACTIVITY 1: Tool ↔ Job match ═══ */
+const AUDIENCES = [
+  {id:'a1', name:'Auto-recap a Teams call: notes, decisions, action items', pain:'Your team already lives in Microsoft Teams and you want AI to summarise the call and pull tasks with owners.'},
+  {id:'a2', name:'Catch up on a Teams meeting you missed entirely', pain:'You skipped an hour-long call and need the gist, the decisions, and "what did they say about me" in five minutes.'},
+  {id:'a3', name:'Turn your own rough OneNote meeting notes into a clean summary', pain:'You typed messy bullets during the call and want them rewritten into a shareable recap with action items.'},
+  {id:'a4', name:'Transcribe & summarise a Google Meet call', pain:'Your org runs on Google Workspace, and you want the built-in transcript and Gemini recap for a Meet call.'},
+  {id:'a5', name:'Record & get AI notes across whatever platform the client uses', pain:'You hop between Zoom, Meet, and Teams for external calls and want one dedicated notetaker bot that joins them all.'}
+];
+const HOOKS = [
+  {id:'h1', text:'Teams intelligent recap', aud:'a1', signal:'Teams intelligent recap (part of Copilot / Teams Premium) auto-generates notes, decisions, tasks with owners, and chapter markers right inside the meeting. If your team is already on Teams, this is the native, no-extra-tool choice — just note it needs the right paid licence.'},
+  {id:'h2', text:'Teams intelligent recap', aud:'a2', signal:'Same tool, second job: intelligent recap is built for catching up. It gives you a timeline, "speaker highlights", and even "mentions of you", so you can scrub a missed hour down to the parts that matter without watching the whole recording.'},
+  {id:'h3', text:'OneNote Copilot', aud:'a3', signal:'Copilot inside OneNote works on notes you already have — it summarises pages, rewrites messy bullets into a clean recap, and pulls out to-dos. It\'s the right tool when the raw material is your own typed notes, not a live transcript.'},
+  {id:'h4', text:'Google Meet (Gemini)', aud:'a4', signal:'Google Meet has built-in transcription and "take notes for me" powered by Gemini for eligible Workspace plans. If you\'re a Google shop, use the native Meet features rather than bolting on a third-party bot.'},
+  {id:'h5', text:'Otter / Fireflies', aud:'a5', signal:'Standalone notetakers like Otter.ai and Fireflies.ai join meetings across Zoom, Meet, and Teams as a bot, transcribe, and produce searchable summaries. They shine for cross-platform and external calls — just be extra careful about consent, since a visible bot is recording everyone.'}
+];
+const AUD_BY_ID = Object.fromEntries(AUDIENCES.map(a=>[a.id,a]));
+function shuffle(arr){return [...arr].sort(()=>Math.random()-0.5);}
+
+function renderTools(){
+  const toolNames = [...new Set(HOOKS.map(h=>h.text))];
+  const shuffled = shuffle(toolNames);
+  document.getElementById('audGrid').innerHTML = AUDIENCES.map(a=>`
+    <div class="aud-card" data-aud="${a.id}">
+      <div class="aud-name">${a.name}</div>
+      <div class="aud-pain">${a.pain}</div>
+      <select class="aud-select" data-aud="${a.id}">
+        <option value="">— choose the best tool for this job —</option>
+        ${shuffled.map(t=>`<option value="${t}">${t}</option>`).join('')}
+      </select>
+      <div class="aud-why" data-why="${a.id}"></div>
+    </div>`).join('');
+}
+function checkTools(){
+  let right = 0, unanswered = 0;
+  AUDIENCES.forEach(a=>{
+    const sel = document.querySelector(`.aud-select[data-aud="${a.id}"]`);
+    const card = document.querySelector(`.aud-card[data-aud="${a.id}"]`);
+    const why = document.querySelector(`.aud-why[data-why="${a.id}"]`);
+    card.classList.remove('correct','wrong');
+    why.className = 'aud-why';
+    if(!sel.value){ unanswered++; return; }
+    const wanted = HOOKS.find(h=>h.aud===a.id);
+    if(sel.value===wanted.text){
+      right++;
+      card.classList.add('correct');
+      why.className='aud-why show good';
+      why.textContent='✓ Right — '+wanted.signal;
+    } else {
+      card.classList.add('wrong');
+      why.className='aud-why show bad';
+      why.textContent=`✗ The best fit here is ${wanted.text}. ${wanted.signal}`;
+    }
+  });
+  const fb = document.getElementById('feedback1');
+  if(unanswered>0){
+    fb.className='activity-feedback show partial';
+    fb.innerHTML=`<strong>${unanswered} job${unanswered>1?'s':''} still without a tool.</strong> Pick a tool for every card, then check again.`;
+    return;
+  }
+  if(right===5){
+    fb.className='activity-feedback show success';
+    fb.innerHTML='<strong>5 of 5 — you match the tool to the meeting every time.</strong> The plain-English map: <strong>Teams intelligent recap</strong> for native recap and catch-up if you live in Teams; <strong>OneNote Copilot</strong> for cleaning up notes you already typed; <strong>Google Meet + Gemini</strong> if you\'re a Google Workspace shop; <strong>Otter / Fireflies</strong> as a cross-platform bot for external, mixed-platform calls. The honest caveat on all of them: the good AI features usually need a paid licence, and any bot that records people needs clear consent.';
+  } else {
+    fb.className='activity-feedback show partial';
+    fb.innerHTML=`<strong>You matched ${right} of 5.</strong> Read the red notes — each is a rule you'll reuse. The clean split: <em>native recap in your platform first</em> (Teams recap / Meet+Gemini), <em>OneNote Copilot for your own notes</em>, <em>a standalone notetaker (Otter/Fireflies) only when you cross platforms</em>. Fix the reds and check again.`;
+  }
+  document.getElementById('prog1').classList.add('done');
+}
+function resetTools(){
+  renderTools();
+  document.getElementById('feedback1').className='activity-feedback';
+  document.getElementById('prog1').classList.remove('done');
+}
+
+/* ═══ ACTIVITY 2: Safe-meeting workflow sequence ═══ */
+const SCRIPT = [
+  {tag:'BEFORE · CONSENT', text:'Tell attendees the meeting will be recorded & transcribed, confirm it\'s allowed, and turn on the recording indicator.', note:'Consent first, always. Announce it, honour anyone who objects, and let the platform show the "recording" badge.', hint:'This comes FIRST. Before you capture a single word, tell people it\'s being recorded and confirm consent. Nothing else happens until this step.'},
+  {tag:'DURING · CAPTURE', text:'Start the AI recap / transcription and then actually listen — let the tool take the notes so you can be present.', note:'With consent handled, let AI capture while you engage. The whole point is to stop scribbling and pay attention.', hint:'Once consent is handled, START the capture — turn on transcription/recap and then be present. This is the "during" step, and it can\'t come before consent.'},
+  {tag:'AFTER · RECAP', text:'Read the AI-generated recap and correct it — fix wrong names, mis-heard terms, and any hallucinated points.', note:'AI transcripts have errors. Skim the recap against your memory before you trust or share it.', hint:'After the meeting ends, first REVIEW the AI recap and fix its mistakes — names, jargon, hallucinations. Verify before you extract tasks from it.'},
+  {tag:'AFTER · ACTIONS', text:'Pull out decisions and action items, and verify each owner and due date against what was actually said.', note:'Owners and dates are where AI slips most. Confirm every "who" and "when" is real.', hint:'With a corrected recap, EXTRACT the decisions and action items — and check each owner and date. This comes after you\'ve cleaned the recap, not before.'},
+  {tag:'FOLLOW-UP', text:'Turn the verified recap into a short follow-up email or doc and send it to attendees so everyone shares one record.', note:'Close the loop. A recap nobody sees changes nothing — send owners, dates, and next steps.', hint:'Finish by turning the verified recap into a FOLLOW-UP email/doc and sending it. This is last — you can only send what you\'ve already captured, cleaned, and verified.'}
+];
+let seqNext = 0;
+function renderSeq(){
+  seqNext = 0;
+  const order = shuffle(SCRIPT.map((_,i)=>i));
+  document.getElementById('seqPool').innerHTML = order.map(i=>`
+    <div class="seq-block" data-idx="${i}" onclick="pickBlock(${i},this)">
+      <div class="seq-block-text">${SCRIPT[i].text}</div>
+    </div>`).join('');
+  document.getElementById('seqSlots').innerHTML = SCRIPT.map((s,i)=>`
+    <div class="seq-slot" id="slot${i}">Step ${i+1} — waiting…</div>`).join('');
+  document.getElementById('seqHint').className='seq-hint';
+  document.getElementById('phonePreview').className='phone';
+  document.getElementById('feedback2').className='activity-feedback';
+}
+function pickBlock(idx, el){
+  const hint = document.getElementById('seqHint');
+  if(idx!==seqNext){
+    el.classList.add('shake');
+    setTimeout(()=>el.classList.remove('shake'),380);
+    hint.className='seq-hint show';
+    hint.textContent='Not that one yet. '+SCRIPT[seqNext].hint;
+    return;
+  }
+  el.classList.add('used');
+  hint.className='seq-hint';
+  const slot = document.getElementById('slot'+idx);
+  slot.classList.add('filled');
+  slot.innerHTML = `<span class="seq-tag">${SCRIPT[idx].tag}</span><div>${SCRIPT[idx].text}</div><div style="font-size:.7rem;color:var(--text-muted);margin-top:.25rem;font-style:italic">${SCRIPT[idx].note}</div>`;
+  seqNext++;
+  if(seqNext===SCRIPT.length) finishSeq();
+}
+function finishSeq(){
+  document.getElementById('phoneLines').innerHTML = SCRIPT.map(s=>`
+    <div class="phone-line"><span class="seq-tag">${s.tag}</span><p>${s.text}</p></div>`).join('');
+  document.getElementById('phonePreview').className='phone show';
+  const fb=document.getElementById('feedback2');
+  fb.className='activity-feedback show success';
+  fb.innerHTML='<strong>Workflow assembled — CONSENT → CAPTURE → REVIEW RECAP → EXTRACT ACTIONS → FOLLOW-UP.</strong> Why this order: consent is a gate, not a footnote — you handle it before anything is recorded. Then you let AI capture so you can actually be present instead of typing. Afterwards you <em>correct</em> the recap before you trust it, because transcripts mis-hear names and jargon and can invent points. Only from a clean recap do you extract decisions and action items, verifying every owner and due date. Finally you close the loop with a short follow-up so everyone shares one record. That last step is what turns a transcript nobody reads into a meeting that actually moved.';
+  document.getElementById('prog2').classList.add('done');
+}
+function resetSeq(){
+  renderSeq();
+  document.getElementById('prog2').classList.remove('done');
+}
+
+/* ═══ ACTIVITY 3: Is this recording consent-compliant? ═══ */
+const KOS = [
+  {title:'Scenario A — the surprise bot', metrics:['A third-party notetaker bot joins your external client call','No one announced it; the client notices it mid-call','You are in an all-party-consent region'], answer:'no',
+   why:'<strong>Not compliant.</strong> In an all-party-consent setting, <em>everyone</em> must agree before recording — a bot that silently joins and starts capturing has no consent from the client, and the surprise itself destroys trust. Even where the law is looser, an unannounced recording is an etiquette failure. The fix is trivial: announce it at the top and let people object.'},
+  {title:'Scenario B — announced & indicated', metrics:['You say "I\'m recording this for notes — any objections?" at the start','The platform\'s recording indicator is visible to all','No one objects; you\'re on an internal team call'], answer:'yes',
+   why:'<strong>Compliant and respectful.</strong> You announced it, gave people a real chance to object, and the visible indicator keeps everyone informed for the whole call. This is the gold standard regardless of whether your region is one-party or all-party — informed consent plus a visible signal covers you both legally and ethically.'},
+  {title:'Scenario C — policy beats the law', metrics:['Your region allows one-party consent (just you agreeing is legal)','But your employer\'s policy bans recording customer calls','You record anyway because "the law allows it"'], answer:'no',
+   why:'<strong>Not compliant.</strong> The law is the floor, not the ceiling — your organisation\'s policy can be stricter, and here it explicitly forbids this recording. "It\'s legal" doesn\'t override "it\'s against policy". Always check org policy <em>on top of</em> the law; breaking policy can cost you your job even where the recording is technically lawful.'},
+  {title:'Scenario D — one-party, internal, announced', metrics:['One-party-consent region; you\'re on the call','Internal brainstorm; you announce you\'ll transcribe for notes','Your org policy permits internal recordings'], answer:'yes',
+   why:'<strong>Compliant.</strong> You\'re a party to the call in a one-party region, org policy allows it, and you still announced it as a courtesy. This is the clean case — but note that the announcement is what makes it <em>respectful</em>, not just legal. Making "I\'ll transcribe this for notes" a habit means you\'re never caught out when the region or policy is stricter than you assumed.'}
+];
+let kosAnswered = {};
+const KOS_LABELS = {yes:'Compliant', no:'Not compliant'};
+function renderKos(){
+  kosAnswered = {};
+  document.getElementById('kosGrid').innerHTML = KOS.map((k,i)=>`
+    <div class="kos-card" data-kos="${i}">
+      <div class="kos-title">${k.title}</div>
+      <div class="kos-metrics">${k.metrics.map(m=>`<div class="kos-metric">• ${m}</div>`).join('')}</div>
+      <div class="kos-btns">
+        <button class="kos-btn" onclick="answerKos(${i},'yes',this)">Compliant</button>
+        <button class="kos-btn" onclick="answerKos(${i},'no',this)">Not compliant</button>
+      </div>
+      <div class="kos-verdict" id="kosV${i}"></div>
+    </div>`).join('');
+  document.getElementById('feedback3').className='activity-feedback';
+}
+function answerKos(i, choice, btn){
+  if(kosAnswered[i]!==undefined) return;
+  const k = KOS[i];
+  const correct = choice===k.answer;
+  kosAnswered[i]=correct;
+  const card = document.querySelector(`.kos-card[data-kos="${i}"]`);
+  card.querySelectorAll('.kos-btn').forEach(b=>{
+    b.disabled=true;
+    if(b===btn) b.classList.add(correct?'picked-right':'picked-wrong');
+    else if(!correct && b.textContent.trim()===KOS_LABELS[k.answer]) b.classList.add('reveal-right');
+  });
+  const v = document.getElementById('kosV'+i);
+  v.className='kos-verdict show '+(correct?'good':'bad');
+  v.innerHTML=(correct?'✓ Right call. ':'✗ The right call is <em>'+KOS_LABELS[k.answer]+'</em>. ')+k.why;
+  if(Object.keys(kosAnswered).length===KOS.length){
+    const score = Object.values(kosAnswered).filter(Boolean).length;
+    const fb=document.getElementById('feedback3');
+    if(score===4){
+      fb.className='activity-feedback show success';
+      fb.innerHTML='<strong>4 of 4 — you reason about consent like a pro.</strong> The three-layer test: (1) what does the <em>law</em> require — one-party or all-party consent? (2) what does your <em>employer\'s policy</em> say — it can be stricter than the law and it wins. (3) regardless of both, did you <em>announce</em> it so people can object? When in doubt, announce, make the recording indicator visible, and respect anyone who says no. That habit keeps you compliant everywhere and trusted by everyone. (This is guidance, not legal advice — check your local rules for anything high-stakes.)';
+    } else {
+      fb.className='activity-feedback show partial';
+      fb.innerHTML=`<strong>You got ${score} of 4.</strong> Re-read the ones you missed — each is a reusable rule: <em>a surprise bot in an all-party region is never OK</em> (A), <em>announced + visible indicator + no objections is the gold standard</em> (B), <em>org policy can forbid what the law allows — and policy wins</em> (C), <em>even a clean legal case deserves an announcement</em> (D). Reset and reason through the law → policy → announce test.`;
+    }
+    document.getElementById('prog3').classList.add('done');
+  }
+}
+function resetKos(){
+  renderKos();
+  document.getElementById('prog3').classList.remove('done');
+}
+
+/* ═══ ACTIVITY 4: Extract owner + date from transcript ═══ */
+const TRANSCRIPT_HTML = `
+<span class="spk">Priya:</span> Alright, quick sync. The client wants the updated pricing deck before the review.<br>
+<span class="spk">Marco:</span> I can own the pricing deck. When do you need it?<br>
+<span class="spk">Priya:</span> The review is Friday, so let's have it done by Thursday, June 4.<br>
+<span class="spk">Marco:</span> Thursday works. I'll send it round Thursday.<br>
+<span class="spk">Priya:</span> Great. We also still owe the client the revised contract.<br>
+<span class="spk">Sofia:</span> That's mine — I'll get the revised contract to legal by Wednesday, June 3.<br>
+<span class="spk">Priya:</span> Perfect. And someone needs to book the meeting room for the review.<br>
+<span class="spk">Marco:</span> Sofia's swamped — Dev, can you book the room?<br>
+<span class="spk">Dev:</span> Yep, I'll book it today, Monday June 1.<br>
+<span class="spk">Priya:</span> Thanks all. I'll pull the recap together after this.`;
+const ACTIONS = [
+  {task:'Deliver the updated pricing deck', owner:['marco'], date:['thursday','june 4','jun 4','6/4','thu']},
+  {task:'Send the revised contract to legal', owner:['sofia'], date:['wednesday','june 3','jun 3','6/3','wed']},
+  {task:'Book the meeting room for the review', owner:['dev'], date:['today','monday','june 1','jun 1','6/1','mon']}
+];
+function renderActions(){
+  document.getElementById('transcript').innerHTML = TRANSCRIPT_HTML;
+  document.getElementById('aiRows').innerHTML = ACTIONS.map((a,i)=>`
+    <div class="ai-row">
+      <div class="ai-task">${i+1}. ${a.task}</div>
+      <div><div class="ai-lbl">Owner</div><input class="ai-input" id="owner${i}" placeholder="who?"></div>
+      <div><div class="ai-lbl">Due date</div><input class="ai-input" id="date${i}" placeholder="when?" style="min-width:120px"></div>
+    </div>`).join('');
+  document.getElementById('feedback4').className='activity-feedback';
+}
+function normalize(s){return (s||'').toLowerCase().trim();}
+function matchAny(val, list){const v=normalize(val);return v.length>0 && list.some(k=>v.includes(k));}
+function checkActions(){
+  let right=0, blank=0;
+  ACTIONS.forEach((a,i)=>{
+    const oIn=document.getElementById('owner'+i), dIn=document.getElementById('date'+i);
+    oIn.classList.remove('ok','no'); dIn.classList.remove('ok','no');
+    if(!normalize(oIn.value) || !normalize(dIn.value)) blank++;
+    const oOk=matchAny(oIn.value,a.owner);
+    const dOk=matchAny(dIn.value,a.date);
+    oIn.classList.add(oOk?'ok':'no');
+    dIn.classList.add(dOk?'ok':'no');
+    if(oOk && dOk) right++;
+  });
+  const fb=document.getElementById('feedback4');
+  if(blank>0){
+    fb.className='activity-feedback show partial';
+    fb.innerHTML=`<strong>Some owner/date fields are empty.</strong> Fill in every "who" and "when" from the transcript, then check again.`;
+    return;
+  }
+  if(right===3){
+    fb.className='activity-feedback show success';
+    fb.innerHTML='<strong>3 of 3 — every action item has the right owner and date.</strong> Pricing deck → <strong>Marco</strong>, Thursday June 4. Revised contract → <strong>Sofia</strong>, Wednesday June 3. Book the room → <strong>Dev</strong>, today Monday June 1. Notice the traps AI falls into: the room task was first offered to Sofia before landing on <em>Dev</em>, and "today" only means June 1 because you know the meeting date. This is exactly why you verify — AI often grabs the first name mentioned or leaves a relative date like "today" unresolved. Your job is to make every owner and date concrete before the recap goes out.';
+  } else {
+    fb.className='activity-feedback show partial';
+    fb.innerHTML=`<strong>You nailed ${right} of 3 completely.</strong> Green fields are right; red ones need another look. Watch the two traps: the room booking was reassigned from Sofia to <em>Dev</em> mid-conversation (grab the <em>final</em> owner, not the first name said), and "today" resolves to <em>Monday, June 1</em> — always turn relative dates into real ones. Fix the red fields and check again.`;
+  }
+  document.getElementById('prog4').classList.add('done');
+}
+function resetActions(){
+  renderActions();
+  document.getElementById('prog4').classList.remove('done');
+}
+
+/* ═══ ETIQUETTE CHECKLIST ═══ */
+const CHECKS = [
+  {t:'<b>Announce recording before you start — every time.</b> Say it out loud, put it in the invite, and make sure the platform\'s recording indicator is visible. Consent isn\'t consent if people don\'t know.'},
+  {t:'<b>Know your consent rules AND your org policy.</b> One-party vs all-party consent varies by region, and your employer\'s policy can be stricter than the law — and it wins. Check both before recording customer or external calls.'},
+  {t:'<b>Verify owners and due dates against what was said.</b> AI often assigns the first name mentioned, not the final owner, and leaves relative dates like "today" or "next week" unresolved. Make every "who" and "when" concrete.'},
+  {t:'<b>Correct the transcript before you trust or share it.</b> Meeting AI mis-hears names and jargon and can invent points that were never said. Skim the recap against your memory and fix errors before it goes anywhere.'},
+  {t:'<b>Mind where the recording lives and who can see it.</b> Transcripts contain sensitive words. Store them where policy allows, share only with the right people, and don\'t paste confidential meeting content into public AI tools.'},
+  {t:'<b>Close the loop with a short follow-up.</b> A recap nobody reads changes nothing. Turn it into a brief email or doc with decisions, owners, and dates so everyone shares one clear record.'}
+];
+let checkOn = new Set();
+function renderChecks(){
+  checkOn = new Set();
+  document.getElementById('checkList').innerHTML = CHECKS.map((c,i)=>`
+    <li class="check-item" data-c="${i}" onclick="toggleCheck(${i})">
+      <div class="check-box">✓</div>
+      <div class="check-text">${c.t}</div>
+    </li>`).join('');
+  updateCheckCount();
+}
+function toggleCheck(i){
+  const item=document.querySelector(`.check-item[data-c="${i}"]`);
+  if(checkOn.has(i)){checkOn.delete(i);item.classList.remove('on');}
+  else{checkOn.add(i);item.classList.add('on');}
+  updateCheckCount();
+}
+function updateCheckCount(){
+  document.getElementById('checkCount').textContent=`${checkOn.size} of ${CHECKS.length} locked in`;
+}
+
+/* ═══ ACTIVITY 5: Week 2 knowledge check ═══ */
+const QUIZ = [
+  {lesson:'Lesson 1 · Writing & Drafting with AI', q:'What makes an AI draft actually useful rather than generic?',
+   opts:['Asking it to "write something good"','Giving it the audience, purpose, key points, and tone you want','Always accepting the first version','Making it as long as possible'], ans:1,
+   why:'AI drafts from context. Tell it who it\'s for, what it needs to achieve, the points to include, and the tone — and you get a usable draft instead of bland filler. Then you edit; the first version is a starting point, not the finish line.'},
+  {lesson:'Lesson 1 · Writing & Drafting with AI', q:'Why should you always review and edit what AI writes for you?',
+   opts:['It\'s a legal requirement','AI can sound confident while being wrong, off-tone, or inventing facts — you own what you send','Editing makes it longer','Only spelling matters'], ans:1,
+   why:'AI can be fluently, confidently wrong and can invent details. Whatever goes out under your name is your responsibility, so read it, fix the tone, and check any facts before you hit send.'},
+  {lesson:'Lesson 2 · Email & Inbox with AI', q:'What is a safe, high-value way to use AI in your inbox?',
+   opts:['Let it auto-send replies with no review','Draft replies and summarise long threads for you to review before sending','Delete every email it flags','Forward everything to AI including passwords'], ans:1,
+   why:'AI is great at drafting replies and summarising long threads so you decide faster — but you keep a human in the loop before anything sends. Never let it fire off replies unreviewed, and never feed it secrets it doesn\'t need.'},
+  {lesson:'Lesson 2 · Email & Inbox with AI', q:'You get a long email thread you need to act on. What\'s the smart first move?',
+   opts:['Read all 40 messages start to finish','Ask AI to summarise the thread and list any decisions or asks directed at you','Reply "unsubscribe"','Ignore it and hope'], ans:1,
+   why:'A thread summary that surfaces decisions and the asks aimed at you turns 40 messages into a 30-second read. You still verify the key points, but you start from clarity instead of scrolling.'},
+  {lesson:'Lesson 3 · Documents & Slides with AI', q:'What is the best way to use AI when building a document or slide deck?',
+   opts:['Ask for a finished deck and present it unread','Have it draft structure and content, then you refine, verify facts, and fix the flow','Only use it for clip art','Never outline first'], ans:1,
+   why:'AI is excellent at drafting an outline and first-pass content fast. You then shape the structure, verify any facts or figures, and fix the narrative — because a deck you present is one you must be able to stand behind.'},
+  {lesson:'Lesson 3 · Documents & Slides with AI', q:'AI generated a slide with a confident-looking statistic. What should you do?',
+   opts:['Trust it — AI is usually right','Verify the number against a real source before you present it','Make the font bigger','Add more stats to balance it'], ans:1,
+   why:'AI can fabricate plausible-looking numbers. Any figure you\'d put on a slide and defend must be checked against a real source first — a wrong stat in a deck is your mistake, not the AI\'s.'},
+  {lesson:'Lesson 4 · AI for Meetings & Notes', q:'Before recording a meeting with an AI notetaker, what should you always do?',
+   opts:['Nothing — just hit record','Announce it, confirm consent rules and org policy, and make the recording indicator visible','Record secretly to keep it natural','Only tell your manager'], ans:1,
+   why:'Consent is the gate. Announce the recording, check both the legal rule (one-party vs all-party) and your employer\'s policy, and keep the recording indicator visible. It\'s both the respectful and the safe thing to do.'},
+  {lesson:'Lesson 4 · AI for Meetings & Notes', q:'AI generated a recap with action items. What is the single most important verification step?',
+   opts:['Send it immediately to save time','Check each action item\'s owner and due date against what was actually said','Delete the action items — they\'re unreliable','Trust the owners but not the dates'], ans:1,
+   why:'Owners and dates are where meeting AI slips most — it grabs the first name mentioned instead of the final owner, and leaves relative dates like "today" unresolved. Verify every "who" and "when" against the transcript before the recap goes out.'}
+];
+function renderQuiz(){
+  document.getElementById('quizWrap').innerHTML = QUIZ.map((item,i)=>`
+    <div class="quiz-q" id="qq${i}">
+      <div class="quiz-q-head"><span class="quiz-q-num">Q${i+1}</span><span class="quiz-q-text">${item.q}<span class="quiz-lesson">${item.lesson}</span></span></div>
+      ${item.opts.map((o,j)=>`
+        <label class="quiz-opt"><input type="radio" name="quiz${i}" value="${j}"><span>${o}</span></label>`).join('')}
+      <div class="quiz-review" id="qr${i}"></div>
+    </div>`).join('');
+}
+function submitQuiz(){
+  const fb=document.getElementById('feedback5');
+  const answers = QUIZ.map((_,i)=>{
+    const sel=document.querySelector(`input[name="quiz${i}"]:checked`);
+    return sel? +sel.value : null;
+  });
+  const blank = answers.filter(a=>a===null).length;
+  if(blank>0){
+    fb.className='activity-feedback show partial';
+    fb.innerHTML=`<strong>${blank} question${blank>1?'s':''} unanswered.</strong> Guessing is allowed, blank is not — answer everything and submit again.`;
+    return;
+  }
+  let score=0; const missedLessons=[];
+  QUIZ.forEach((item,i)=>{
+    const card=document.getElementById('qq'+i);
+    const rev=document.getElementById('qr'+i);
+    card.classList.remove('right','miss');
+    const correct = answers[i]===item.ans;
+    if(correct){
+      score++;
+      card.classList.add('right');
+      rev.className='quiz-review show good';
+      rev.innerHTML='✓ Correct. '+item.why;
+    } else {
+      card.classList.add('miss');
+      missedLessons.push(`Q${i+1} → ${item.lesson}`);
+      rev.className='quiz-review show bad';
+      rev.innerHTML=`✗ The answer is "<strong>${item.opts[item.ans]}</strong>". ${item.why}`;
+    }
+  });
+  if(score===8){
+    fb.className='activity-feedback show success';
+    fb.innerHTML='<strong>8 of 8 — Week 2 mastery.</strong> You hold the full AI Office chain: drafting and writing with AI, taming the inbox, building documents and slides, and turning meetings into verified recaps with owners and dates. Every one rests on the same two habits — give AI good context, and verify what it gives back. Take that into the Week 2 project.';
+  } else if(score>=6){
+    fb.className='activity-feedback show success';
+    fb.innerHTML=`<strong>${score} of 8 — solid grasp of the week.</strong> The misses are patchable in minutes — read the review notes on: <em>${missedLessons.join(' · ')}</em>, then reset and aim for 8. The questions people miss are usually the "review before you send" and "verify the fact/owner/date" habits — the ones that save you from a public mistake later.`;
+  } else {
+    fb.className='activity-feedback show partial';
+    fb.innerHTML=`<strong>${score} of 8 — worth a revisit before the project.</strong> No judgment — this week packed four lessons of AI-in-the-office into your head. Your misses map to: <em>${missedLessons.join(' · ')}</em>. Reopen those lessons, skim their activities, then reset this quiz. Ten minutes of review now saves real confusion in the project.`;
+  }
+  document.getElementById('prog5').classList.add('done');
+}
+function resetQuiz(){
+  renderQuiz();
+  document.getElementById('feedback5').className='activity-feedback';
+  document.getElementById('prog5').classList.remove('done');
+}
+
+/* ═══ INIT ═══ */
+window.addEventListener('DOMContentLoaded',()=>{
+  renderTools();
+  renderSeq();
+  renderKos();
+  renderActions();
+  renderChecks();
+  renderQuiz();
+});
+</script>
+</body>
+</html>
