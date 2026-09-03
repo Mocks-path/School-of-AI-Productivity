@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 3 · AI in Outlook — Email &amp; Calendar — MokshPath</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=JetBrains+Mono:wght@400;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --orange:#E87A2E;--orange-dark:#D06A20;--orange-light:#F5943E;--orange-glow:rgba(232,122,46,0.12);
+  --navy:#2B2D42;--navy-dark:#1A1B2E;
+  --bg:#F3EDE7;--bg-card:#FFFFFF;--bg-light:#F9F5F0;
+  --text-primary:#2B2D42;--text-secondary:#6B6D7B;--text-muted:#9597A6;
+  --border:#E5DDD4;--green:#4CAF50;--green-light:#E8F5E9;--red:#E04E3C;--red-light:#FDECEA;
+  --shadow-sm:0 2px 8px rgba(43,45,66,0.06);--shadow-md:0 8px 24px rgba(43,45,66,0.08);
+  --shadow-lg:0 16px 48px rgba(43,45,66,0.12);
+  --radius:14px;--radius-sm:8px;
+  --mono:'JetBrains Mono',monospace;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text-primary);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+
+/* ── NAV ── */
+.nav{position:sticky;top:0;z-index:100;background:var(--bg-card);border-bottom:1px solid var(--border);padding:0 2rem;height:64px;display:flex;align-items:center;justify-content:space-between;box-shadow:var(--shadow-sm)}
+.nav-left{display:flex;align-items:center;gap:.7rem}
+.lesson-badge{font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--orange);background:var(--orange-glow);padding:.3rem .7rem;border-radius:50px}
+.nav-logo{display:flex;align-items:center;gap:.7rem;text-decoration:none}
+.nav-logo-icon{width:auto;height:48px;display:block;object-fit:contain}
+.nav-logo-text{display:flex;flex-direction:column;line-height:1.15}
+.nav-logo-name{font-family:'DM Serif Display',serif;font-size:1.25rem;color:var(--navy)}
+.nav-logo-name span{color:var(--orange)}
+.nav-logo-tag{font-size:.62rem;color:var(--text-muted);font-weight:500;letter-spacing:.02em}
+
+/* ── HERO ── */
+.hero{padding:3.5rem 2rem 2.5rem;text-align:center;position:relative}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:.45rem;padding:.4rem 1rem;border-radius:50px;background:var(--orange-glow);color:var(--orange);font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:1.2rem}
+.hero-eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--orange);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.hero h1{font-family:'DM Serif Display',serif;font-size:clamp(2rem,4vw,3rem);line-height:1.13;color:var(--navy);margin-bottom:1rem;max-width:780px;margin-left:auto;margin-right:auto}
+.hero h1 em{font-style:normal;color:var(--orange)}
+.hero-sub{font-size:1.02rem;color:var(--text-secondary);line-height:1.7;max-width:620px;margin:0 auto}
+
+/* ── PROGRESS RAIL ── */
+.progress-rail{max-width:760px;margin:1.8rem auto 0;display:flex;align-items:center;gap:.5rem}
+.progress-dot{flex:1;height:6px;background:var(--border);border-radius:3px;transition:background .3s}
+.progress-dot.done{background:linear-gradient(90deg,var(--orange),var(--orange-light))}
+.progress-label{font-size:.7rem;color:var(--text-muted);font-weight:600;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+
+/* ── SECTIONS ── */
+section.lesson{padding:3rem 2rem}
+.container{max-width:1080px;margin:0 auto}
+.lesson-num{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;background:var(--orange);color:#fff;font-family:'DM Serif Display',serif;font-size:1.1rem;margin-bottom:.9rem}
+.lesson-title{font-family:'DM Serif Display',serif;font-size:clamp(1.6rem,2.5vw,2.1rem);color:var(--navy);margin-bottom:.55rem;line-height:1.2}
+.lesson-intro{font-size:.95rem;color:var(--text-secondary);line-height:1.7;max-width:680px;margin-bottom:2rem}
+.lesson-card{background:var(--bg-card);border-radius:var(--radius);box-shadow:var(--shadow-sm);border:1px solid var(--border);padding:2rem;margin-top:1.5rem}
+.lesson-card.alt{background:var(--bg-light)}
+
+/* ── PIPELINE STRIP ── */
+.pipeline{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1.4rem}
+.pipe-step{flex:1 1 150px;background:var(--bg-light);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:.9rem 1rem;position:relative}
+.pipe-step .pipe-n{font-family:var(--mono);font-size:.68rem;font-weight:600;color:var(--orange);letter-spacing:.06em}
+.pipe-step .pipe-t{font-family:'DM Serif Display',serif;font-size:1.05rem;color:var(--navy);margin:.2rem 0 .3rem}
+.pipe-step .pipe-d{font-size:.76rem;color:var(--text-secondary);line-height:1.5}
+.pipe-arrow{align-self:center;color:var(--orange);font-weight:700;font-size:1.1rem}
+@media (max-width:760px){.pipe-arrow{display:none}.pipe-step{flex:1 1 100%}}
+
+/* ── DRAG CARDS + FEEDBACK (shared) ── */
+.classify-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:1.5rem;margin-top:1rem}
+@media (max-width:760px){.classify-grid{grid-template-columns:1fr}}
+.classify-scenarios{display:flex;flex-direction:column;gap:.7rem}
+.scenario-card{background:var(--bg-card);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:.8rem 1rem;cursor:grab;transition:all .25s;position:relative;user-select:none}
+.scenario-card:hover{border-color:var(--orange);box-shadow:var(--shadow-sm);transform:translateY(-1px)}
+.scenario-card.dragging{opacity:.4}
+.scenario-card.placed{opacity:.35;cursor:not-allowed;pointer-events:none}
+.scenario-card.placed.correct{border-color:var(--green);background:var(--green-light)}
+.scenario-card.placed.wrong{border-color:var(--red);background:var(--red-light)}
+.scenario-text{font-size:.85rem;color:var(--text-primary);line-height:1.45;font-weight:500}
+.dropped-pill{background:var(--bg-card);border:1px solid var(--border);border-radius:50px;padding:.3rem .7rem;font-size:.72rem;font-weight:500;color:var(--text-primary);cursor:help}
+.dropped-pill.correct{background:var(--green-light);border-color:var(--green);color:#256B29}
+.dropped-pill.wrong{background:var(--red-light);border-color:var(--red);color:#933}
+.activity-feedback{margin-top:1.2rem;padding:1rem 1.2rem;border-radius:var(--radius-sm);font-size:.85rem;line-height:1.55;display:none}
+.activity-feedback.show{display:block;animation:fadeIn .4s ease}
+.activity-feedback.success{background:var(--green-light);color:#1F5723;border-left:3px solid var(--green)}
+.activity-feedback.partial{background:#FFF4E5;color:#7A4A0A;border-left:3px solid #E89B2E}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.activity-toolbar{display:flex;gap:.6rem;margin-top:1.2rem;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:.4rem;padding:.6rem 1.2rem;border-radius:8px;font-size:.82rem;font-weight:600;border:none;cursor:pointer;transition:all .2s;font-family:inherit;text-decoration:none}
+.btn-primary{background:var(--orange);color:#fff}.btn-primary:hover{background:var(--orange-dark);transform:translateY(-1px);box-shadow:0 4px 12px rgba(232,122,46,0.3)}
+.btn-ghost{background:transparent;border:1.5px solid var(--border);color:var(--text-secondary)}.btn-ghost:hover{border-color:var(--orange);color:var(--orange)}
+
+/* ── ACTIVITY: TRIAGE WIREFRAME (drop zones) ── */
+.wireframe{border:1.5px solid var(--border);border-radius:var(--radius-sm);overflow:hidden;background:var(--bg-light)}
+.wf-chrome{display:flex;align-items:center;gap:.4rem;background:var(--navy);padding:.5rem .8rem}
+.wf-chrome span{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.35)}
+.wf-chrome .wf-url{flex:1;margin-left:.5rem;background:rgba(255,255,255,.12);border-radius:4px;color:rgba(255,255,255,.7);font-family:var(--mono);font-size:.62rem;padding:.15rem .6rem}
+.wf-zone{border:2px dashed var(--border);margin:.7rem;border-radius:var(--radius-sm);padding:.8rem .9rem;transition:all .25s;background:rgba(255,255,255,.6)}
+.wf-zone.drag-over{border-color:var(--orange);background:var(--orange-glow);border-style:solid}
+.wf-zone-title{font-family:'DM Serif Display',serif;font-size:.98rem;color:var(--navy)}
+.wf-zone-sub{font-size:.68rem;color:var(--text-muted);margin-bottom:.55rem;letter-spacing:.04em;text-transform:uppercase;font-weight:600}
+.wf-drop{display:flex;flex-wrap:wrap;gap:.4rem;min-height:34px}
+
+/* ── ACTIVITY: A/B REPLY PAIRS ── */
+.ab-pair{margin-top:1.4rem;padding-top:1.4rem;border-top:1px solid var(--border)}
+.ab-pair:first-child{margin-top:0;padding-top:0;border-top:none}
+.ab-q{font-size:.9rem;font-weight:700;color:var(--navy);margin-bottom:.8rem}
+.ab-q .ab-tag{font-family:var(--mono);font-size:.68rem;color:var(--orange);font-weight:600;letter-spacing:.04em;display:block;margin-bottom:.2rem}
+.ab-cards{display:grid;grid-template-columns:1fr 1fr;gap:.9rem}
+@media (max-width:760px){.ab-cards{grid-template-columns:1fr}}
+.ab-card{background:var(--bg-light);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:1rem 1.1rem;cursor:pointer;transition:all .25s;position:relative}
+.ab-card:hover{border-color:var(--orange);transform:translateY(-2px);box-shadow:var(--shadow-sm)}
+.ab-card.locked{cursor:default;pointer-events:none}
+.ab-card.win{border-color:var(--green);background:var(--green-light)}
+.ab-card.lose{opacity:.55}
+.ab-card.picked-wrong{border-color:var(--red);background:var(--red-light)}
+.ab-letter{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;background:var(--navy);color:#fff;font-size:.72rem;font-weight:700;margin-bottom:.5rem}
+.ab-copy{font-size:.85rem;line-height:1.55;color:var(--text-primary)}
+.ab-verdict{margin-top:.8rem;font-size:.8rem;line-height:1.55;padding:.7rem .9rem;border-radius:6px;display:none}
+.ab-verdict.show{display:block;animation:fadeIn .35s ease}
+.ab-verdict.good{background:var(--green-light);color:#1F5723;border-left:3px solid var(--green)}
+.ab-verdict.bad{background:#FFF4E5;color:#7A4A0A;border-left:3px solid #E89B2E}
+
+/* ── ACTIVITY: CATCH-THE-ERROR (toggle rows) ── */
+.brand-block{margin-top:1.3rem;padding:1.1rem 1.2rem;background:var(--bg-light);border:1px solid var(--border);border-radius:var(--radius-sm)}
+.brand-block:first-child{margin-top:0}
+.brand-name{font-family:'DM Serif Display',serif;font-size:1.05rem;color:var(--navy);margin-bottom:.7rem}
+.brand-name .q-tag{font-family:var(--mono);font-size:.66rem;color:var(--orange);font-weight:600;letter-spacing:.04em;display:block;margin-bottom:.2rem;text-transform:none}
+.brand-row{display:grid;grid-template-columns:1fr auto;gap:.6rem;align-items:center;padding:.35rem 0}
+.brand-crit{font-size:.82rem;color:var(--text-secondary);font-weight:500}
+.tog-group{display:flex;gap:.35rem}
+.tog{padding:.32rem .85rem;border-radius:50px;border:1.5px solid var(--border);background:var(--bg-card);font-size:.74rem;font-weight:700;cursor:pointer;font-family:inherit;color:var(--text-secondary);transition:all .2s}
+.tog:hover{border-color:var(--orange);color:var(--orange)}
+.tog.on-yes{background:var(--navy);border-color:var(--navy);color:#fff}
+.tog.reveal-hit{background:var(--green-light);border-color:var(--green);color:#256B29}
+.tog.reveal-miss{background:var(--red-light);border-color:var(--red);color:#933}
+.brand-why{margin-top:.6rem;font-size:.78rem;line-height:1.55;color:var(--text-secondary);background:var(--bg-card);border-left:3px solid var(--orange);border-radius:4px;padding:.6rem .8rem;display:none}
+.brand-why.show{display:block;animation:fadeIn .35s ease}
+
+/* ── QUIZ ── */
+.quiz-q{margin-top:1.4rem;padding-top:1.4rem;border-top:1px solid var(--border)}
+.quiz-q:first-child{margin-top:0;padding-top:0;border-top:none}
+.quiz-prompt{font-size:.92rem;font-weight:700;color:var(--navy);margin-bottom:.8rem;line-height:1.5}
+.quiz-prompt .q-tag{font-family:var(--mono);font-size:.68rem;color:var(--orange);font-weight:600;letter-spacing:.04em;display:block;margin-bottom:.2rem}
+.quiz-opts{display:flex;flex-direction:column;gap:.55rem}
+.quiz-opt{background:var(--bg-light);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:.75rem 1rem;cursor:pointer;transition:all .2s;font-size:.85rem;line-height:1.45;color:var(--text-primary);display:flex;gap:.6rem;align-items:flex-start}
+.quiz-opt:hover{border-color:var(--orange)}
+.quiz-opt .opt-key{font-family:var(--mono);font-size:.72rem;font-weight:600;color:var(--orange);flex-shrink:0;margin-top:.05rem}
+.quiz-opt.locked{cursor:default;pointer-events:none}
+.quiz-opt.correct{border-color:var(--green);background:var(--green-light)}
+.quiz-opt.wrong{border-color:var(--red);background:var(--red-light)}
+.quiz-explain{margin-top:.7rem;font-size:.8rem;line-height:1.55;padding:.7rem .9rem;border-radius:6px;display:none}
+.quiz-explain.show{display:block;animation:fadeIn .35s ease}
+.quiz-explain.good{background:var(--green-light);color:#1F5723;border-left:3px solid var(--green)}
+.quiz-explain.bad{background:#FFF4E5;color:#7A4A0A;border-left:3px solid #E89B2E}
+
+/* ── VALIDATE CALLOUT ── */
+.check-list{list-style:none;margin-top:1rem;display:flex;flex-direction:column;gap:.7rem}
+.check-list li{display:flex;gap:.7rem;align-items:flex-start;background:var(--bg-light);border:1px solid var(--border);border-radius:var(--radius-sm);padding:.8rem 1rem}
+.check-ico{width:24px;height:24px;border-radius:6px;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.8rem;font-weight:700;background:linear-gradient(135deg,var(--orange-light),var(--orange))}
+.check-txt{font-size:.85rem;line-height:1.55;color:var(--text-secondary)}
+.check-txt strong{color:var(--navy)}
+
+/* ── REFLECTION ── */
+.reflect-prompt{display:grid;grid-template-columns:1fr;gap:.8rem;margin-top:1rem}
+.reflect-q{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:1rem 1.2rem}
+.reflect-q-text{font-size:.88rem;font-weight:600;color:var(--navy);margin-bottom:.5rem}
+.reflect-q textarea{width:100%;border:1px solid var(--border);border-radius:6px;padding:.6rem .8rem;font-family:inherit;font-size:.85rem;color:var(--text-primary);background:var(--bg-light);resize:vertical;min-height:60px}
+.reflect-q textarea:focus{outline:none;border-color:var(--orange)}
+
+/* ── FOOTER NEXT ── */
+.next-up{background:linear-gradient(135deg,var(--navy-dark),var(--navy));border-radius:var(--radius);padding:2.4rem;color:#fff;margin-top:2rem;text-align:center;position:relative;overflow:hidden}
+.next-up::before{content:'';position:absolute;top:-50px;right:-50px;width:180px;height:180px;border-radius:50%;background:rgba(232,122,46,0.12)}
+.next-up h3{font-family:'DM Serif Display',serif;font-size:1.5rem;margin-bottom:.5rem;position:relative}
+.next-up p{font-size:.92rem;color:rgba(255,255,255,0.75);margin-bottom:1.2rem;position:relative}
+.next-up .btn-primary{position:relative}
+
+@media (max-width:760px){
+  .nav{padding:0 1rem}
+  .nav-logo-tag{display:none}
+  .hero{padding:2.5rem 1.2rem 2rem}
+  section.lesson{padding:2rem 1.2rem}
+  .lesson-card{padding:1.4rem}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-left">
+    <span class="lesson-badge">Lesson 3 of 4</span>
+  </div>
+  <a href="https://mokshpath.org/" class="nav-logo">
+    <img class="nav-logo-icon" src="hero.svg" alt="MokshPath logo">
+    <div class="nav-logo-text">
+      <span class="nav-logo-name">Moksh<span>Path</span></span>
+      <span class="nav-logo-tag">Guided Path to True Learning</span>
+    </div>
+  </a>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-eyebrow"><span class="dot"></span> Week 2 · AI Office</div>
+  <h1>AI in Outlook — <em>from a full inbox to a clear next action</em></h1>
+  <p class="hero-sub">Email eats hours because most of it is reading, deciding and re-typing. AI in Outlook can summarise a 40-message thread, draft the reply, and turn "let's meet" into a calendar hold — but only if you drive it. Four hands-on drills: run the email workflow, pick the reply that actually fits the moment, triage a live inbox, and catch AI when it invents a commitment or picks the wrong recipient.</p>
+  <div class="progress-rail">
+    <span class="progress-label">Progress</span>
+    <div class="progress-dot" id="prog1"></div>
+    <div class="progress-dot" id="prog2"></div>
+    <div class="progress-dot" id="prog3"></div>
+    <div class="progress-dot" id="prog4"></div>
+  </div>
+</header>
+
+<!-- ── WORKFLOW OVERVIEW (teaching) ── -->
+<section class="lesson" id="pipeline">
+  <div class="container">
+    <span class="lesson-num" style="background:var(--navy)">•</span>
+    <h2 class="lesson-title">The email workflow — five moves, every message</h2>
+    <p class="lesson-intro">Copilot in Outlook can "Summarise" a thread and "Draft with Copilot" a reply in seconds. That speed is a trap if you skip straight to Send. A message you're accountable for follows an order: understand what's being asked, decide your answer, let AI draft it, <em>read every line</em>, then send. The AI writes fast; the judgement and the accountability stay yours. Skip the review step and you'll agree to a deadline you never meant to commit to.</p>
+    <div class="lesson-card">
+      <div class="pipeline">
+        <div class="pipe-step"><div class="pipe-n">STEP 1</div><div class="pipe-t">Summarise</div><div class="pipe-d">Have Copilot condense the thread into what's being asked, who's involved and what's still open. A long thread hides the actual question.</div></div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-step"><div class="pipe-n">STEP 2</div><div class="pipe-t">Decide</div><div class="pipe-d">You choose the answer — yes, no, "not yet," a date, a hand-off. This is your call, not the AI's. It can't decide what you're willing to commit to.</div></div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-step"><div class="pipe-n">STEP 3</div><div class="pipe-t">Draft</div><div class="pipe-d">Tell Copilot your decision plus the tone and length you want. "Draft a short, warm reply declining, offering next month." Give it the point to make.</div></div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-step"><div class="pipe-n">STEP 4</div><div class="pipe-t">Review</div><div class="pipe-d">Read the whole draft. Check every fact, name, date and promise. AI invents details that "sound right." This is the step people skip and regret.</div></div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-step"><div class="pipe-n">STEP 5</div><div class="pipe-t">Send</div><div class="pipe-d">Confirm the recipients (To vs Reply-All), then send — or turn it into a task or meeting instead. Once it's out, it's out.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 1: WEAK vs STRONG REPLY A/B ── -->
+<section class="lesson" id="activity-1" style="background:var(--bg-light)">
+  <div class="container">
+    <span class="lesson-num">1</span>
+    <h2 class="lesson-title">Pick the reply that fits the moment</h2>
+    <p class="lesson-intro">A good reply matches the <strong>situation</strong>, not just the words. The right tone for a nervous client is wrong for a busy colleague; the right length for a quick yes is wrong for a difficult no. AI will happily draft either — so the skill is choosing what you actually want before you accept its text. Below are three situations. In each, one draft would land badly. Click the reply you'd actually send.</p>
+    <div class="lesson-card" id="abWrap"></div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 2: INBOX TRIAGE (drag) ── -->
+<section class="lesson" id="activity-2">
+  <div class="container">
+    <span class="lesson-num" style="background:#5B8FE0">2</span>
+    <h2 class="lesson-title">Triage the inbox — sort each message to its action</h2>
+    <p class="lesson-intro">Triage is deciding, fast, what each email <em>is</em> before you touch it. Copilot can summarise and even suggest a category, but you own the sort. Every message resolves to one of four actions: <strong>Reply now</strong> (needs a real answer from you), <strong>Turn into a task</strong> (an action for later, no reply needed yet), <strong>Turn into a meeting</strong> (it can't be settled in writing), or <strong>Archive / ignore</strong> (FYI, newsletter, nothing owed). Drag each of the six messages to where it belongs. Wrong drops turn red — hover them to learn the fix.</p>
+
+    <div class="lesson-card">
+      <div class="classify-grid">
+        <div class="classify-scenarios" id="fieldList"></div>
+        <div class="wireframe">
+          <div class="wf-chrome"><span></span><span></span><span></span><div class="wf-url">Outlook · Inbox (6 unread)</div></div>
+          <div class="wf-zone" data-zone="reply">
+            <div class="wf-zone-title">Reply now</div>
+            <div class="wf-zone-sub">Needs a real answer from you · 2 messages</div>
+            <div class="wf-drop" data-drop="reply"></div>
+          </div>
+          <div class="wf-zone" data-zone="task">
+            <div class="wf-zone-title">Turn into a task</div>
+            <div class="wf-zone-sub">Action for later, no reply owed · 1 message</div>
+            <div class="wf-drop" data-drop="task"></div>
+          </div>
+          <div class="wf-zone" data-zone="meeting">
+            <div class="wf-zone-title">Turn into a meeting</div>
+            <div class="wf-zone-sub">Can't be settled in writing · 1 message</div>
+            <div class="wf-drop" data-drop="meeting"></div>
+          </div>
+          <div class="wf-zone" data-zone="archive">
+            <div class="wf-zone-title">Archive / ignore</div>
+            <div class="wf-zone-sub">FYI or noise, nothing owed · 2 messages</div>
+            <div class="wf-drop" data-drop="archive"></div>
+          </div>
+        </div>
+      </div>
+      <div class="activity-feedback" id="feedback2"></div>
+      <div class="activity-toolbar">
+        <button class="btn btn-ghost" onclick="resetActivity2()">↻ Try again</button>
+        <button class="btn btn-primary" onclick="showAnswers2()">Show me the answers</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 3: CATCH THE ERROR IN THE DRAFT ── -->
+<section class="lesson" id="activity-3" style="background:var(--bg-light)">
+  <div class="container">
+    <span class="lesson-num" style="background:#66BB6A">3</span>
+    <h2 class="lesson-title">Review before send — catch what the AI got wrong</h2>
+    <p class="lesson-intro">"Draft with Copilot" produces confident, fluent email — and fluent is not the same as correct. It can invent a commitment nobody made, attach the wrong deadline, name a person who was never on the thread, or set Reply-All when you meant one person. Below are four AI drafts. For each, decide: <strong>safe to send as-is, or does it need a fix?</strong> Mark it, then check yourself against the reviewer's verdict.</p>
+
+    <div class="lesson-card">
+      <div id="chartWrap"></div>
+      <div class="activity-feedback" id="feedback3"></div>
+      <div class="activity-toolbar">
+        <button class="btn btn-ghost" onclick="resetChart()">↻ Reset choices</button>
+        <button class="btn btn-primary" onclick="checkChart()">Check my choices</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 4: QUIZ — WORKFLOW, SCHEDULING, PRIVACY, TOOLS ── -->
+<section class="lesson" id="activity-4">
+  <div class="container">
+    <span class="lesson-num" style="background:#4CAF50">4</span>
+    <h2 class="lesson-title">Judgement checks — scheduling, privacy and the right tool</h2>
+    <p class="lesson-intro">AI in Outlook can summarise, draft, schedule and brief you before a meeting — but each of those touches something it can't decide for you: what you'll commit to, whose data is in the message, and whether the tool you're using is even allowed on this account. Answer these four. Each locks in with the reasoning.</p>
+    <div class="lesson-card" id="quizWrap"></div>
+  </div>
+</section>
+
+<!-- ── REVIEW CHECKLIST (teaching) ── -->
+<section class="lesson" id="validate" style="background:var(--bg-light)">
+  <div class="container">
+    <span class="lesson-num" style="background:var(--navy)">✓</span>
+    <h2 class="lesson-title">The 20-second check before you hit Send</h2>
+    <p class="lesson-intro">Before any AI-drafted email leaves your outbox, run it past these four. Most embarrassing email mistakes are caught in under a minute — if you actually read the draft instead of trusting it.</p>
+    <div class="lesson-card">
+      <ul class="check-list">
+        <li><div class="check-ico">👤</div><div class="check-txt"><strong>Right recipients?</strong> Check <em>To</em>, <em>Cc</em> and especially <em>Reply-All</em>. AI drops your draft into the thread as-is — it won't notice you're about to send a private "no" to forty people.</div></li>
+        <li><div class="check-ico">📌</div><div class="check-txt"><strong>Did you actually commit to that?</strong> AI loves to add "I'll have it to you by Friday." Read every promise, date and number. If you didn't decide it, delete it.</div></li>
+        <li><div class="check-ico">✎</div><div class="check-txt"><strong>Are the facts real?</strong> Names, figures, order numbers and "as we discussed" claims can be hallucinated. If the draft states something you can't personally confirm, cut it or verify it.</div></li>
+        <li><div class="check-ico">♨</div><div class="check-txt"><strong>Does the tone fit?</strong> AI defaults to breezy and long. For a complaint, a boss, or bad news, reread it as the recipient. Warm where it needs warmth, short where they're busy.</div></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ── REFLECT ── -->
+<section class="lesson" style="padding-bottom:1.5rem">
+  <div class="container">
+    <h2 class="lesson-title" style="font-size:1.5rem">Quick reflect — make it stick</h2>
+    <p class="lesson-intro" style="margin-bottom:1rem">A sentence each is enough. Writing it in your own words is what makes it stay. (Nothing is saved or sent.)</p>
+    <div class="reflect-prompt">
+      <div class="reflect-q">
+        <div class="reflect-q-text">Write the one-line instruction you'd give Copilot to draft a reply declining a meeting invite politely while offering an alternative next week. Name the tone and length you want.</div>
+        <textarea placeholder="Draft a short, warm reply declining Thursday's review; say I'm double-booked and offer any morning next week..."></textarea>
+      </div>
+      <div class="reflect-q">
+        <div class="reflect-q-text">A recruiter emails your work address a spreadsheet of candidate names, phone numbers and salaries and asks you to summarise it. Would you paste it into a free public chatbot? What would you do instead, and why?</div>
+        <textarea placeholder="No — it's personal data on my company's account. I'd use Copilot inside Outlook (data stays in our tenant) or strip identifiers first, because..."></textarea>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NEXT UP -->
+<section class="lesson" style="padding-top:0">
+  <div class="container">
+    <div class="next-up">
+      <h3>Lesson 4 · AI Meetings &amp; Notes</h3>
+      <p>You can triage, draft and schedule — now handle what happens inside the meeting itself. Next: AI-generated meeting recaps, pulling action items and owners out of a transcript, and the discipline of checking what the AI heard before you send those notes to the room.</p>
+      <a href="04-ai-meetings-notes.html" class="btn btn-primary">Continue to Lesson 4 →</a>
+    </div>
+  </div>
+</section>
+
+<script>
+/* ─── shared helper ─── */
+function shuffle(arr){ return [...arr].sort(() => Math.random() - 0.5); }
+
+/* ─── ACTIVITY 1: Weak vs strong reply A/B ─── */
+const PAIRS = [
+  {
+    tag:'Situation 1 · Anxious client, delayed order',
+    losing:'Your order is delayed. It will ship when it ships. Thanks.',
+    winning:'Thanks for flagging this, and I’m sorry for the wait. Your order is delayed at our warehouse; I’ve escalated it and expect it to ship by Thursday. I’ll email you the moment it’s on its way — and you have my direct line if anything else comes up.',
+    why:'The client is worried, so the reply needs warmth, an apology, a concrete next step and a named date. Version B acknowledges the feeling, owns the problem, gives a real commitment ("ship by Thursday") and a way to reach you. The curt version is technically accurate but reads as cold and dismissive to someone who’s already anxious — exactly the moment tone matters most.',
+    lesson:'Match tone to the person’s emotional state. For a worried client: acknowledge, apologise, commit to a concrete next step, and offer a line of contact.'
+  },
+  {
+    tag:'Situation 2 · Busy colleague asks a yes/no',
+    losing:'Hi Priya, I hope this message finds you well and that your week has been going smoothly. I wanted to take a moment to thank you for reaching out regarding the report timeline. After giving it careful consideration and reviewing my schedule at length, I am pleased to confirm that yes, Friday works for me. Warmest regards.',
+    winning:'Yes, Friday works — I’ll send it by end of day. Thanks, Priya.',
+    why:'A colleague asking a quick yes/no wants the answer, not a speech. Version B gives the decision, the commitment and a thank-you in one line. The long version buries a one-word answer under filler that wastes the reader’s time — the classic tell of an AI draft nobody trimmed. Length should match the weight of the message, and this one is light.',
+    lesson:'For a quick internal yes/no, be brief. AI defaults to padding; cut it down so the answer is the first thing they read.'
+  },
+  {
+    tag:'Situation 3 · Declining your manager’s request',
+    losing:'No, I can’t take on the audit. I already have too much on my plate.',
+    winning:'I’d like to help with the audit, but I’m at capacity this sprint with the launch and the Q3 report — taking it on would put both at risk. Could we either push the audit to next week, or hand it to Sam? Happy to brief whoever picks it up.',
+    why:'Declining upward needs to protect the relationship and show judgement, not just refuse. Version B explains the trade-off, names what would slip, and offers two workable alternatives plus a hand-off — that’s a professional "no." The blunt version reads as unwilling rather than overloaded and gives your manager nothing to work with. A good decline still moves the problem forward.',
+    lesson:'When you say no upward, give the reason, the trade-off and an alternative. A "no" with a path forward reads as judgement, not refusal.'
+  }
+];
+let abDone = 0;
+function renderPairs(){
+  abDone = 0;
+  const wrap = document.getElementById('abWrap');
+  wrap.innerHTML = PAIRS.map((p, i) => {
+    const winFirst = Math.random() < 0.5;
+    const cards = [
+      {label:'A', copy: winFirst ? p.winning : p.losing, win: winFirst},
+      {label:'B', copy: winFirst ? p.losing : p.winning, win: !winFirst}
+    ];
+    return `
+    <div class="ab-pair" data-pair="${i}">
+      <div class="ab-q"><span class="ab-tag">${p.tag}</span>Which reply would you actually send?</div>
+      <div class="ab-cards">
+        ${cards.map(c => `
+        <div class="ab-card" data-win="${c.win ? 1 : 0}" onclick="pickAB(this, ${i})">
+          <span class="ab-letter">${c.label}</span>
+          <div class="ab-copy">${c.copy}</div>
+        </div>`).join('')}
+      </div>
+      <div class="ab-verdict" id="verdict${i}"></div>
+    </div>`;
+  }).join('') + `
+    <div class="activity-feedback" id="feedback1"></div>
+    <div class="activity-toolbar">
+      <button class="btn btn-ghost" onclick="resetActivity1()">↻ New round (sides reshuffle)</button>
+    </div>`;
+}
+function pickAB(card, i){
+  const pair = card.closest('.ab-pair');
+  if (pair.dataset.locked) return;
+  pair.dataset.locked = '1';
+  const pickedWin = card.dataset.win === '1';
+  pair.querySelectorAll('.ab-card').forEach(c => {
+    c.classList.add('locked');
+    if (c.dataset.win === '1') c.classList.add('win');
+    else c.classList.add(c === card ? 'picked-wrong' : 'lose');
+  });
+  const v = document.getElementById('verdict' + i);
+  v.className = 'ab-verdict show ' + (pickedWin ? 'good' : 'bad');
+  v.innerHTML = (pickedWin ? '<strong>Right call.</strong> ' : '<strong>The other one lands better.</strong> ') + PAIRS[i].why;
+  pair.dataset.score = pickedWin ? '1' : '0';
+  abDone++;
+  if (abDone === PAIRS.length) finishAB();
+}
+function finishAB(){
+  const score = [...document.querySelectorAll('.ab-pair')].reduce((s, p) => s + (p.dataset.score === '1' ? 1 : 0), 0);
+  const fb = document.getElementById('feedback1');
+  if (score === PAIRS.length) {
+    fb.className = 'activity-feedback show success';
+    fb.innerHTML = `<strong>3 for 3 — you write for the reader, not the AI.</strong> Every good reply answers two questions before the first word: <em>what does this person need to feel</em> (reassured, respected, unblocked) and <em>how much do they want to read</em>. Warm and specific for a worried client; short for a busy yes/no; reasoned with an alternative when you decline. AI can produce any of these — your job is to name the tone and length so it hands you the right one.`;
+  } else {
+    fb.className = 'activity-feedback show partial';
+    fb.innerHTML = `<strong>You picked ${score} of 3.</strong> Re-read the verdicts — they’re the whole lesson. The test for any reply: read it as the recipient in their situation. Does a worried client feel reassured? Does a busy colleague get the answer in the first line? Does your manager get a path forward, not just a wall? Tell Copilot the tone and length up front, then trim what it over-writes. Reshuffle and run it again.`;
+  }
+  document.getElementById('prog1').classList.add('done');
+}
+function resetActivity1(){
+  renderPairs();
+  document.getElementById('prog1').classList.remove('done');
+}
+
+/* ─── ACTIVITY 2: Inbox triage (drag) ─── */
+const FIELDS = [
+  {id:'f1', text:'Client: "Can you confirm the final price before I sign today?"', zone:'reply', hint:'A direct question with a deadline that only you can answer — that’s a Reply now. Delaying it costs a signature.'},
+  {id:'f2', text:'Boss: "Thoughts on the two vendor bids? Need your call by 5pm."', zone:'reply', hint:'Your manager is waiting on a decision from you with a same-day deadline — Reply now, don’t let it sit.'},
+  {id:'f3', text:'"Reminder: submit your Q3 expense report by the 30th." (auto-mailer)', zone:'task', hint:'No reply is owed — it’s an action for you to do later. Turn it into a task with a due date so it doesn’t get lost.'},
+  {id:'f4', text:'Colleague: "We keep going in circles on the roadmap over email — can we hash this out?"', zone:'meeting', hint:'It explicitly can’t be settled in writing. Turn it into a meeting; a live conversation will resolve it faster than ten more emails.'},
+  {id:'f5', text:'Company all-staff: "Office will close early this Friday for maintenance."', zone:'archive', hint:'Pure FYI — nothing is asked of you and no action is needed. Note it and archive; it doesn’t belong in your reply queue.'},
+  {id:'f6', text:'"This week in Marketing — your weekly newsletter digest."', zone:'archive', hint:'A newsletter owes you nothing. Read later or archive; keeping it in the inbox just adds noise to real work.'}
+];
+const ZONE_NAMES = {reply:'Reply now', task:'Turn into a task', meeting:'Turn into a meeting', archive:'Archive / ignore'};
+let placed2 = {};
+function renderFields(){
+  const list = document.getElementById('fieldList');
+  list.innerHTML = shuffle(FIELDS).map(e => `
+    <div class="scenario-card" draggable="true" data-id="${e.id}">
+      <div class="scenario-text">${e.text}</div>
+    </div>`).join('');
+  list.querySelectorAll('.scenario-card').forEach(card => {
+    card.addEventListener('dragstart', ev => {
+      ev.dataTransfer.setData('field', card.dataset.id);
+      card.classList.add('dragging');
+    });
+    card.addEventListener('dragend', () => card.classList.remove('dragging'));
+  });
+}
+function setupZones2(){
+  document.querySelectorAll('#activity-2 .wf-zone').forEach(z => {
+    z.addEventListener('dragover', e => { e.preventDefault(); z.classList.add('drag-over'); });
+    z.addEventListener('dragleave', () => z.classList.remove('drag-over'));
+    z.addEventListener('drop', e => {
+      e.preventDefault();
+      z.classList.remove('drag-over');
+      const id = e.dataTransfer.getData('field');
+      if (id) handleDrop2(id, z.dataset.zone);
+    });
+  });
+}
+function handleDrop2(id, zone){
+  const el = FIELDS.find(x => x.id === id);
+  if (!el || placed2[id]) return;
+  const correct = el.zone === zone;
+  placed2[id] = {zone, correct};
+  const card = document.querySelector(`#fieldList .scenario-card[data-id="${id}"]`);
+  if (card) card.classList.add('placed', correct ? 'correct' : 'wrong');
+  const drop = document.querySelector(`#activity-2 .wf-drop[data-drop="${zone}"]`);
+  const pill = document.createElement('span');
+  pill.className = 'dropped-pill ' + (correct ? 'correct' : 'wrong');
+  const label = el.text.replace(/^([^:]+:).*/, '$1').replace(/["]/g,'').slice(0,22) || el.text.slice(0,22);
+  pill.textContent = (correct ? '✓ ' : '✗ ') + label;
+  pill.title = correct ? el.hint : `Belongs in "${ZONE_NAMES[el.zone]}". ${el.hint}`;
+  drop.appendChild(pill);
+  checkDone2();
+}
+function checkDone2(){
+  if (Object.keys(placed2).length !== FIELDS.length) return;
+  const right = Object.values(placed2).filter(p => p.correct).length;
+  const fb = document.getElementById('feedback2');
+  if (right === FIELDS.length) {
+    fb.className = 'activity-feedback show success';
+    fb.innerHTML = `<strong>Clean inbox — 6 of 6.</strong> You sorted by what each message <em>needs</em>, not by how loud it looks. The client and the boss both need a decision only you can make → <em>Reply now</em>. The expense reminder is a to-do with no reply → <em>Task</em>. The roadmap deadlock can’t be typed to a resolution → <em>Meeting</em>. The closure notice and the newsletter owe you nothing → <em>Archive</em>. Copilot can suggest this sort and even draft the replies, but the accountability for "does this actually need me?" stays with you.`;
+  } else {
+    fb.className = 'activity-feedback show partial';
+    fb.innerHTML = `<strong>You placed ${right} of 6 correctly.</strong> Hover each red pill for the fix. Ask one question per message: does it need a decision only I can give? → <em>Reply</em>. Is it an action with no reply owed? → <em>Task</em>. Is it stuck in writing? → <em>Meeting</em>. Is nothing asked of me? → <em>Archive</em>. Urgency and importance aren’t the same thing — a newsletter can feel busy but owes you nothing. Try again.`;
+  }
+  document.getElementById('prog2').classList.add('done');
+}
+function resetActivity2(){
+  placed2 = {};
+  document.getElementById('feedback2').className = 'activity-feedback';
+  document.querySelectorAll('#activity-2 .wf-drop[data-drop]').forEach(d => d.innerHTML = '');
+  renderFields();
+  document.getElementById('prog2').classList.remove('done');
+}
+function showAnswers2(){
+  FIELDS.forEach(e => { if (!placed2[e.id]) handleDrop2(e.id, e.zone); });
+}
+
+/* ─── ACTIVITY 3: Catch the error in the AI draft ─── */
+const CHART_OPTS = ['Safe to send', 'Needs a fix'];
+const QUESTIONS = [
+  {name:'Thread: a client asked "roughly when might this be ready?" AI draft replies: "Absolutely — we will deliver the finished project by Friday, September 12th, guaranteed."',
+   tag:'Draft 1 · invented commitment',
+   answer:'Needs a fix',
+   why:'Reviewer verdict: Needs a fix. Nobody in the thread committed to "Friday, September 12th, guaranteed" — the AI turned a vague "roughly when?" into a hard, dated promise you’re now on the hook for. This is the most common and most dangerous email hallucination: a manufactured commitment. Cut the invented date, or replace it with one you’ve actually decided you can meet.'},
+  {name:'Thread from Anaya about the budget. AI draft opens: "Hi Anaya, thanks for the numbers — as we discussed on our call Tuesday, I’ve applied the 8% uplift you approved." (There was no call, and no uplift was approved.)',
+   tag:'Draft 2 · fabricated facts',
+   answer:'Needs a fix',
+   why:'Reviewer verdict: Needs a fix. "As we discussed on our call Tuesday" and "the 8% uplift you approved" are both invented — the AI fabricated a call and an approval that never happened to make the email sound grounded. Sending it would put false claims in writing under your name. Delete anything you can’t personally confirm; never let AI assert a fact you didn’t give it.'},
+  {name:'A colleague sent you a private, slightly critical note about a teammate. AI drafted your reply and set it to Reply All (the whole 30-person project list), including your candid response.',
+   tag:'Draft 3 · wrong recipients',
+   answer:'Needs a fix',
+   why:'Reviewer verdict: Needs a fix. The draft text may be fine — the recipient field is the disaster. A private, candid reply about a teammate is set to go to all 30 people. AI drops your draft into the thread as-is and won’t question the audience. Always check To / Cc / Reply-All before sending; change it to reply only to the one colleague.'},
+  {name:'A vendor confirmed Thursday 3pm works. AI draft: "Great, Thursday at 3pm works for me too — I’ll send a calendar invite shortly. Thanks!" (Your calendar is genuinely free Thursday at 3pm.)',
+   tag:'Draft 4 · actually fine',
+   answer:'Safe to send',
+   why:'Reviewer verdict: Safe to send. This one is clean: it confirms a time that matches what the vendor proposed, matches your real availability, promises only something you intend to do (send the invite), and names the right single recipient. Not every AI draft is wrong — the discipline is checking, and when it checks out, send it. The skill is telling this apart from the three above.'}
+];
+let chartState = [];
+function renderCharts(){
+  chartState = QUESTIONS.map(() => null);
+  const wrap = document.getElementById('chartWrap');
+  wrap.innerHTML = QUESTIONS.map((q, qi) => `
+    <div class="brand-block" data-q="${qi}">
+      <div class="brand-name"><span class="q-tag">${q.tag}</span>${q.name}</div>
+      <div class="brand-row">
+        <div class="brand-crit">Your verdict on this draft:</div>
+        <div class="tog-group">
+          ${CHART_OPTS.map((c, ci) => `<button class="tog" id="ctog-${qi}-${ci}" onclick="setChart(${qi},${ci})">${c}</button>`).join('')}
+        </div>
+      </div>
+      <div class="brand-why" id="cwhy${qi}">${q.why}</div>
+    </div>`).join('');
+}
+function setChart(qi, ci){
+  chartState[qi] = ci;
+  QUESTIONS[qi] && CHART_OPTS.forEach((c, i) => {
+    document.getElementById(`ctog-${qi}-${i}`).className = 'tog' + (i === ci ? ' on-yes' : '');
+  });
+}
+function checkChart(){
+  const fb = document.getElementById('feedback3');
+  const unanswered = chartState.filter(v => v === null).length;
+  if (unanswered > 0) {
+    fb.className = 'activity-feedback show partial';
+    fb.innerHTML = `<strong>${unanswered} draft${unanswered > 1 ? 's' : ''} still unmarked.</strong> Give every draft a verdict, then check again.`;
+    return;
+  }
+  let hits = 0;
+  QUESTIONS.forEach((q, qi) => {
+    const correctIdx = CHART_OPTS.indexOf(q.answer);
+    const mine = chartState[qi];
+    const hit = mine === correctIdx;
+    if (hit) hits++;
+    document.getElementById(`ctog-${qi}-${mine}`).classList.add(hit ? 'reveal-hit' : 'reveal-miss');
+    if (!hit) document.getElementById(`ctog-${qi}-${correctIdx}`).classList.add('reveal-hit');
+    document.getElementById('cwhy' + qi).classList.add('show');
+  });
+  if (hits === QUESTIONS.length) {
+    fb.className = 'activity-feedback show success';
+    fb.innerHTML = `<strong>4 / 4 — you read like a reviewer.</strong> You caught the invented deadline, the fabricated call, the Reply-All landmine, and you didn’t flinch on the one that was actually fine. The pattern: AI drafts hide their errors in fluent, confident sentences. Before every send, ask three things — did I commit to that, are these facts real, and is this going to exactly the right people? Fluent is not the same as correct.`;
+  } else {
+    fb.className = 'activity-feedback show partial';
+    fb.innerHTML = `<strong>You caught ${hits} of 4.</strong> Green marks the reviewer’s verdict wherever you differed; each explanation is now open. The three things AI most often gets wrong: a commitment you never made, a fact it invented ("as we discussed"), and the recipient list (Reply-All). And beware over-flagging — sometimes the draft really is fine, and the skill is knowing when. Reset and try for a clean sheet.`;
+  }
+  document.getElementById('prog3').classList.add('done');
+}
+function resetChart(){
+  renderCharts();
+  document.getElementById('feedback3').className = 'activity-feedback';
+  document.getElementById('prog3').classList.remove('done');
+}
+
+/* ─── ACTIVITY 4: Quiz ─── */
+const QUIZ = [
+  {
+    tag:'Q1 · Summarise → decide',
+    q:'You return to a 42-message thread and ask Copilot to summarise it. It gives you a tidy recap ending with "Recommended reply: agree to the Monday launch." What’s the right next move?',
+    opts:[
+      'Accept the recommendation and send — Copilot read the whole thread, so it knows best.',
+      'Use the summary to understand what’s being asked, then decide yourself whether Monday actually works before drafting anything.',
+      'Ask Copilot to also decide who should be blamed if Monday slips.',
+      'Ignore the summary and reread all 42 messages manually every time.'
+    ],
+    correct:1,
+    explain:'A summary is an input to your decision, not the decision itself. Copilot can compress the thread and even suggest a reply, but it doesn’t know your capacity, your priorities, or what you’re willing to commit to — "agree to Monday" might be impossible for you. Use the summary to grasp the ask quickly, then make the call yourself, then let AI draft the reply that carries your decision. Summarise to understand; decide with judgement.'
+  },
+  {
+    tag:'Q2 · Email → meeting',
+    q:'A thread has bounced eight times trying to nail down a project scope and it’s getting tense. What’s the best use of AI here?',
+    opts:[
+      'Have AI write a longer, more detailed email — the ninth one will surely land.',
+      'Recognise the thread can’t be settled in writing: use Outlook to turn it into a meeting, and have Copilot draft a short agenda from the thread so the call is focused.',
+      'Reply-All "let’s just meet" with no time and let everyone sort it out.',
+      'Forward the whole thread to your manager and let them decide.'
+    ],
+    correct:1,
+    explain:'Some things don’t resolve in writing — a tense, circular scope debate is one of them. The professional move is to convert it to a meeting. AI helps by drafting a tight agenda and a proposed time from the thread’s content, and Outlook can find a slot that works for the attendees. That’s AI doing the logistics and the first draft, while you make the judgement call that a conversation is now needed. More email would only add to the pile.'
+  },
+  {
+    tag:'Q3 · Privacy of company email',
+    q:'Your work inbox has a supplier contract with pricing, signatures and personal contact details. You want it summarised fast. Which approach best respects privacy?',
+    opts:[
+      'Copy the contract into a free public chatbot — it’s quicker than reading it.',
+      'Use Copilot inside Outlook, where the content stays within your organisation’s Microsoft tenant under its data-protection terms.',
+      'Forward the contract to your personal email first, then upload it anywhere convenient.',
+      'Privacy rules don’t apply to email you were legitimately sent.'
+    ],
+    correct:1,
+    explain:'Company email routinely contains confidential and personal data — contracts, contacts, signatures — that shouldn’t leave your organisation’s control. Pasting it into a free public chatbot may send it outside your company’s governance and can breach policy or contract terms. Copilot for Microsoft 365 processes the content inside your work tenant under enterprise data-protection commitments, which is exactly why it’s the sanctioned tool. Convenience never overrides "should this data leave the building?"'
+  },
+  {
+    tag:'Q4 · Copilot vs Gmail + Gemini',
+    q:'A teammate says "just use the AI in Outlook like I use Gemini in my Gmail." What’s the accurate, honest picture?',
+    opts:[
+      'They’re identical — any AI works in any inbox for free, no setup needed.',
+      'Copilot in Outlook (Microsoft 365) and Gemini in Gmail (Google Workspace) are different products tied to different accounts, and each generally needs its licence/plan enabled — you use whichever matches your organisation’s email.',
+      'Outlook has no AI features at all; you must copy every email into a separate app.',
+      'You should install Gemini into Outlook to get the best of both.'
+    ],
+    correct:1,
+    explain:'Copilot is Microsoft’s assistant, built into Outlook and the rest of Microsoft 365; Gemini is Google’s, built into Gmail and Workspace. They’re separate ecosystems tied to separate accounts, and the in-app AI generally requires the right licence or subscription to be switched on by your organisation — it isn’t automatically free or interchangeable. The honest answer: use the assistant that belongs to your email platform, and check that your workplace has actually enabled it. You don’t mix Gemini into Outlook.'
+  }
+];
+let quizDone = 0;
+function renderQuiz(){
+  quizDone = 0;
+  const wrap = document.getElementById('quizWrap');
+  wrap.innerHTML = QUIZ.map((item, qi) => `
+    <div class="quiz-q" data-quiz="${qi}">
+      <div class="quiz-prompt"><span class="q-tag">${item.tag}</span>${item.q}</div>
+      <div class="quiz-opts">
+        ${item.opts.map((o, oi) => `
+        <div class="quiz-opt" onclick="pickQuiz(${qi},${oi})" id="qopt-${qi}-${oi}">
+          <span class="opt-key">${String.fromCharCode(65 + oi)}</span><span>${o}</span>
+        </div>`).join('')}
+      </div>
+      <div class="quiz-explain" id="qexp${qi}"></div>
+    </div>`).join('') + `
+    <div class="activity-feedback" id="feedback4"></div>
+    <div class="activity-toolbar">
+      <button class="btn btn-ghost" onclick="resetQuiz()">↻ Reset quiz</button>
+    </div>`;
+}
+function pickQuiz(qi, oi){
+  const block = document.querySelector(`.quiz-q[data-quiz="${qi}"]`);
+  if (block.dataset.locked) return;
+  block.dataset.locked = '1';
+  const item = QUIZ[qi];
+  const correct = oi === item.correct;
+  block.querySelectorAll('.quiz-opt').forEach((el, i) => {
+    el.classList.add('locked');
+    if (i === item.correct) el.classList.add('correct');
+    else if (i === oi) el.classList.add('wrong');
+  });
+  const exp = document.getElementById('qexp' + qi);
+  exp.className = 'quiz-explain show ' + (correct ? 'good' : 'bad');
+  exp.innerHTML = (correct ? '<strong>Correct.</strong> ' : '<strong>Not quite.</strong> ') + item.explain;
+  block.dataset.score = correct ? '1' : '0';
+  quizDone++;
+  if (quizDone === QUIZ.length) finishQuiz();
+}
+function finishQuiz(){
+  const score = [...document.querySelectorAll('.quiz-q')].reduce((s, b) => s + (b.dataset.score === '1' ? 1 : 0), 0);
+  const fb = document.getElementById('feedback4');
+  if (score === QUIZ.length) {
+    fb.className = 'activity-feedback show success';
+    fb.innerHTML = `<strong>4 / 4 — you drive the AI, it doesn’t drive you.</strong> You kept the decision, converted a stuck thread to a meeting, protected confidential email, and gave the honest account of Copilot vs Gemini. The through-line for AI in Outlook: it summarises, drafts and schedules brilliantly, but it can’t decide what you’ll commit to, doesn’t know whose data is in the message, and only runs where your organisation has licensed it. You supply the judgement; it supplies the speed.`;
+  } else {
+    fb.className = 'activity-feedback show partial';
+    fb.innerHTML = `<strong>You got ${score} of 4.</strong> Re-read the explanations — each is a real situation you’ll meet. Summaries inform your decision, they don’t replace it; some threads need a meeting, not another email; company email carries data that mustn’t leave your tenant; and Copilot and Gemini are separate, licensed tools tied to your email platform. Reset and run it again.`;
+  }
+  document.getElementById('prog4').classList.add('done');
+}
+function resetQuiz(){
+  renderQuiz();
+  document.getElementById('prog4').classList.remove('done');
+}
+
+/* ─── INIT ─── */
+window.addEventListener('DOMContentLoaded', () => {
+  renderPairs();
+  renderFields();
+  setupZones2();
+  renderCharts();
+  renderQuiz();
+});
+</script>
+</body>
+</html>
