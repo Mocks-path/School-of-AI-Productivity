@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 4 · AI Automation &amp; Reporting — MokshPath</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=JetBrains+Mono:wght@400;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --orange:#E87A2E;--orange-dark:#D06A20;--orange-light:#F5943E;--orange-glow:rgba(232,122,46,0.12);
+  --navy:#2B2D42;--navy-dark:#1A1B2E;
+  --bg:#F3EDE7;--bg-card:#FFFFFF;--bg-light:#F9F5F0;
+  --text-primary:#2B2D42;--text-secondary:#6B6D7B;--text-muted:#9597A6;
+  --border:#E5DDD4;--green:#4CAF50;--green-light:#E8F5E9;--red:#E04E3C;--red-light:#FDECEA;
+  --shadow-sm:0 2px 8px rgba(43,45,66,0.06);--shadow-md:0 8px 24px rgba(43,45,66,0.08);
+  --shadow-lg:0 16px 48px rgba(43,45,66,0.12);
+  --radius:14px;--radius-sm:8px;
+  --mono:'JetBrains Mono',monospace;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text-primary);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+
+/* ── NAV ── */
+.nav{position:sticky;top:0;z-index:100;background:var(--bg-card);border-bottom:1px solid var(--border);padding:0 2rem;height:64px;display:flex;align-items:center;justify-content:space-between;box-shadow:var(--shadow-sm)}
+.nav-left{display:flex;align-items:center;gap:.7rem}
+.lesson-badge{font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--orange);background:var(--orange-glow);padding:.3rem .7rem;border-radius:50px}
+.nav-logo{display:flex;align-items:center;gap:.7rem;text-decoration:none}
+.nav-logo-icon{width:auto;height:48px;display:block;object-fit:contain}
+.nav-logo-text{display:flex;flex-direction:column;line-height:1.15}
+.nav-logo-name{font-family:'DM Serif Display',serif;font-size:1.25rem;color:var(--navy)}
+.nav-logo-name span{color:var(--orange)}
+.nav-logo-tag{font-size:.62rem;color:var(--text-muted);font-weight:500;letter-spacing:.02em}
+
+/* ── HERO ── */
+.hero{padding:3.5rem 2rem 2.5rem;text-align:center;position:relative}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:.45rem;padding:.4rem 1rem;border-radius:50px;background:var(--orange-glow);color:var(--orange);font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:1.2rem}
+.hero-eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--orange);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.hero h1{font-family:'DM Serif Display',serif;font-size:clamp(2rem,4vw,3rem);line-height:1.13;color:var(--navy);margin-bottom:1rem;max-width:780px;margin-left:auto;margin-right:auto}
+.hero h1 em{font-style:normal;color:var(--orange)}
+.hero-sub{font-size:1.02rem;color:var(--text-secondary);line-height:1.7;max-width:620px;margin:0 auto}
+
+/* ── PROGRESS RAIL ── */
+.progress-rail{max-width:760px;margin:1.8rem auto 0;display:flex;align-items:center;gap:.5rem}
+.progress-dot{flex:1;height:6px;background:var(--border);border-radius:3px;transition:background .3s}
+.progress-dot.done{background:linear-gradient(90deg,var(--orange),var(--orange-light))}
+.progress-label{font-size:.7rem;color:var(--text-muted);font-weight:600;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+
+/* ── SECTIONS ── */
+section.lesson{padding:3rem 2rem}
+.container{max-width:1080px;margin:0 auto}
+.lesson-num{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;background:var(--orange);color:#fff;font-family:'DM Serif Display',serif;font-size:1.1rem;margin-bottom:.9rem}
+.lesson-title{font-family:'DM Serif Display',serif;font-size:clamp(1.6rem,2.5vw,2.1rem);color:var(--navy);margin-bottom:.55rem;line-height:1.2}
+.lesson-intro{font-size:.95rem;color:var(--text-secondary);line-height:1.7;max-width:680px;margin-bottom:2rem}
+.lesson-card{background:var(--bg-card);border-radius:var(--radius);box-shadow:var(--shadow-sm);border:1px solid var(--border);padding:2rem;margin-top:1.5rem}
+
+.activity-feedback{margin-top:1.2rem;padding:1rem 1.2rem;border-radius:var(--radius-sm);font-size:.85rem;line-height:1.55;display:none}
+.activity-feedback.show{display:block;animation:fadeIn .4s ease}
+.activity-feedback.success{background:var(--green-light);color:#1F5723;border-left:3px solid var(--green)}
+.activity-feedback.partial{background:#FFF4E5;color:#7A4A0A;border-left:3px solid #E89B2E}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.activity-toolbar{display:flex;gap:.6rem;margin-top:1.2rem;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:.4rem;padding:.6rem 1.2rem;border-radius:8px;font-size:.82rem;font-weight:600;border:none;cursor:pointer;transition:all .2s;font-family:inherit}
+.btn-primary{background:var(--orange);color:#fff}.btn-primary:hover{background:var(--orange-dark);transform:translateY(-1px);box-shadow:0 4px 12px rgba(232,122,46,0.3)}
+.btn-ghost{background:transparent;border:1.5px solid var(--border);color:var(--text-secondary)}.btn-ghost:hover{border-color:var(--orange);color:var(--orange)}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+
+/* ── ACTIVITY 1: TOOL MATCH ── */
+.aud-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+@media (max-width:760px){.aud-grid{grid-template-columns:1fr}}
+.aud-card{background:var(--bg-card);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:1rem 1.1rem;transition:border-color .25s}
+.aud-card.correct{border-color:var(--green);background:var(--green-light)}
+.aud-card.wrong{border-color:var(--red);background:var(--red-light)}
+.aud-name{font-family:'DM Serif Display',serif;font-size:1rem;color:var(--navy)}
+.aud-pain{font-size:.74rem;color:var(--text-muted);margin:.2rem 0 .6rem;font-style:italic}
+.aud-select{width:100%;padding:.55rem .7rem;border:1.5px solid var(--border);border-radius:6px;font-family:inherit;font-size:.8rem;color:var(--text-primary);background:var(--bg-light);cursor:pointer}
+.aud-select:focus{outline:none;border-color:var(--orange)}
+.aud-why{font-size:.74rem;line-height:1.5;margin-top:.55rem;display:none}
+.aud-why.show{display:block}
+.aud-why.good{color:#1F5723}.aud-why.bad{color:#8B2E22}
+
+/* ── ACTIVITY 2: SCRIPT BUILDER ── */
+.seq-wrap{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+@media (max-width:760px){.seq-wrap{grid-template-columns:1fr}}
+.seq-pool{display:flex;flex-direction:column;gap:.6rem}
+.seq-block{background:var(--bg-card);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:.8rem 1rem;cursor:pointer;transition:all .2s;user-select:none}
+.seq-block:hover{border-color:var(--orange);transform:translateX(3px)}
+.seq-block.used{opacity:.3;pointer-events:none}
+.seq-block.shake{animation:shake .35s ease;border-color:var(--red);background:var(--red-light)}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.seq-block-text{font-size:.84rem;font-weight:500;line-height:1.45}
+.seq-slots{display:flex;flex-direction:column;gap:.5rem}
+.seq-slot{border:2px dashed var(--border);border-radius:var(--radius-sm);padding:.7rem .9rem;min-height:52px;font-size:.8rem;color:var(--text-muted);transition:all .3s;background:rgba(255,255,255,.5)}
+.seq-slot.filled{border-style:solid;border-color:var(--green);background:var(--green-light);color:var(--text-primary)}
+.seq-tag{display:inline-block;font-family:var(--mono);font-size:.64rem;font-weight:600;letter-spacing:.06em;color:var(--orange);background:var(--orange-glow);padding:.1rem .45rem;border-radius:4px;margin-bottom:.3rem}
+.seq-hint{margin-top:.8rem;padding:.7rem .9rem;background:#FFF4E5;border-left:3px solid #E89B2E;border-radius:4px;font-size:.78rem;color:#7A4A0A;line-height:1.5;display:none}
+.seq-hint.show{display:block;animation:fadeIn .3s ease}
+.phone{max-width:340px;margin:1.4rem auto 0;background:var(--navy-dark);border-radius:14px;padding:1.1rem .9rem;border:5px solid var(--navy);box-shadow:var(--shadow-lg);display:none}
+.phone.show{display:block;animation:fadeIn .5s ease}
+.phone-notch{width:80px;height:5px;background:rgba(255,255,255,.25);border-radius:3px;margin:0 auto .8rem}
+.phone-line{margin-bottom:.6rem;padding:.55rem .7rem;background:rgba(255,255,255,.07);border-radius:8px}
+.phone-line .seq-tag{background:rgba(232,122,46,.22)}
+.phone-line p{font-size:.76rem;color:#E8E8EC;line-height:1.5;font-family:var(--mono)}
+
+/* ── ACTIVITY 3: SHOULD YOU AUTOMATE (scorer) ── */
+.kos-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+@media (max-width:760px){.kos-grid{grid-template-columns:1fr}}
+.kos-card{background:var(--bg-card);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:1.1rem 1.2rem}
+.kos-title{font-family:'DM Serif Display',serif;font-size:.98rem;color:var(--navy);margin-bottom:.6rem}
+.kos-metrics{display:grid;grid-template-columns:1fr 1fr;gap:.35rem .8rem;margin-bottom:.8rem}
+.kos-metric{font-size:.74rem;color:var(--text-secondary)}
+.kos-metric b{font-family:var(--mono);color:var(--navy);font-weight:600}
+.kos-btns{display:flex;gap:.45rem;flex-wrap:wrap}
+.kos-btn{flex:1;padding:.5rem .4rem;border-radius:6px;border:1.5px solid var(--border);background:var(--bg-light);font-family:inherit;font-size:.74rem;font-weight:700;cursor:pointer;transition:all .2s;color:var(--text-secondary)}
+.kos-btn:hover{border-color:var(--orange);color:var(--orange)}
+.kos-btn.picked-right{background:var(--green-light);border-color:var(--green);color:#1F5723}
+.kos-btn.picked-wrong{background:var(--red-light);border-color:var(--red);color:#8B2E22}
+.kos-btn.reveal-right{border-color:var(--green);color:#1F5723}
+.kos-btn:disabled{cursor:not-allowed;opacity:.75}
+.kos-verdict{font-size:.74rem;line-height:1.55;margin-top:.7rem;padding:.6rem .75rem;border-radius:6px;display:none}
+.kos-verdict.show{display:block;animation:fadeIn .3s ease}
+.kos-verdict.good{background:var(--green-light);color:#1F5723}
+.kos-verdict.bad{background:#FFF4E5;color:#7A4A0A}
+
+/* ── ACTIVITY 4: TIME-SAVINGS SLIDERS ── */
+.budget-row{display:grid;grid-template-columns:1fr auto;gap:1rem;align-items:center;margin-bottom:.3rem;margin-top:1.1rem}
+.budget-name{font-size:.86rem;font-weight:700;color:var(--navy)}
+.budget-desc{font-size:.74rem;color:var(--text-muted);margin-top:.1rem}
+.budget-val{font-family:var(--mono);font-size:1.05rem;color:var(--orange);font-weight:600;min-width:64px;text-align:right}
+input[type="range"].budget-slider{-webkit-appearance:none;appearance:none;width:100%;height:6px;border-radius:3px;background:linear-gradient(90deg,var(--border),var(--orange-light));outline:none;cursor:pointer;margin-top:.35rem}
+input[type="range"].budget-slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:20px;height:20px;border-radius:50%;background:#fff;border:3px solid var(--orange);cursor:grab;box-shadow:0 2px 6px rgba(0,0,0,.15)}
+input[type="range"].budget-slider::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:#fff;border:3px solid var(--orange);cursor:grab}
+.budget-total{margin-top:1.4rem;padding:.9rem 1.1rem;border-radius:var(--radius-sm);background:var(--bg-light);border:1.5px solid var(--border);display:flex;justify-content:space-between;align-items:center;font-size:.9rem;font-weight:700;color:var(--navy)}
+.budget-total .tv{font-family:var(--mono);font-size:1.15rem}
+.budget-total.ok{border-color:var(--green);background:var(--green-light)}
+.budget-total.over{border-color:var(--red);background:var(--red-light)}
+.budget-note{font-size:.74rem;color:var(--text-muted);margin-top:.4rem}
+
+/* ── ACTIVITY 5: QUIZ ── */
+.quiz-q{background:var(--bg-card);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:1.1rem 1.3rem;margin-bottom:.9rem;transition:border-color .3s}
+.quiz-q.right{border-color:var(--green)}
+.quiz-q.miss{border-color:var(--red)}
+.quiz-q-head{display:flex;gap:.7rem;align-items:baseline;margin-bottom:.7rem}
+.quiz-q-num{font-family:var(--mono);font-size:.7rem;font-weight:600;color:var(--orange);background:var(--orange-glow);padding:.15rem .5rem;border-radius:4px;flex-shrink:0}
+.quiz-q-text{font-size:.9rem;font-weight:600;color:var(--navy);line-height:1.5}
+.quiz-opt{display:flex;align-items:flex-start;gap:.55rem;padding:.5rem .6rem;border-radius:6px;cursor:pointer;font-size:.83rem;color:var(--text-secondary);line-height:1.45;transition:background .15s}
+.quiz-opt:hover{background:var(--bg-light)}
+.quiz-opt input{margin-top:.25rem;accent-color:var(--orange);cursor:pointer}
+.quiz-review{font-size:.76rem;line-height:1.55;margin-top:.6rem;padding:.6rem .8rem;border-radius:6px;display:none}
+.quiz-review.show{display:block;animation:fadeIn .3s ease}
+.quiz-review.good{background:var(--green-light);color:#1F5723}
+.quiz-review.bad{background:#FFF4E5;color:#7A4A0A}
+.quiz-lesson{display:inline-block;font-family:var(--mono);font-size:.64rem;color:var(--text-muted);margin-left:.4rem}
+
+/* ── CHECKLIST ── */
+.check-list{list-style:none;margin-top:1rem}
+.check-item{display:flex;gap:.8rem;align-items:flex-start;padding:.85rem 1rem;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);margin-bottom:.6rem;cursor:pointer;transition:all .2s}
+.check-item:hover{border-color:var(--orange)}
+.check-item.on{border-color:var(--green);background:var(--green-light)}
+.check-box{flex-shrink:0;width:22px;height:22px;border-radius:6px;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.8rem;color:#fff;transition:all .2s;margin-top:.1rem}
+.check-item.on .check-box{background:var(--green);border-color:var(--green)}
+.check-text{font-size:.85rem;line-height:1.5;color:var(--text-secondary)}
+.check-text b{color:var(--navy)}
+.check-count{margin-top:1rem;font-size:.8rem;font-weight:700;color:var(--orange);font-family:var(--mono)}
+
+/* ── REFLECT / FOOTER ── */
+.reflect-prompt{display:grid;grid-template-columns:1fr;gap:.8rem;margin-top:1rem}
+.reflect-q{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:1rem 1.2rem}
+.reflect-q-text{font-size:.88rem;font-weight:600;color:var(--navy);margin-bottom:.5rem}
+.reflect-q textarea{width:100%;border:1px solid var(--border);border-radius:6px;padding:.6rem .8rem;font-family:inherit;font-size:.85rem;color:var(--text-primary);background:var(--bg-light);resize:vertical;min-height:60px}
+.reflect-q textarea:focus{outline:none;border-color:var(--orange)}
+.next-up{background:linear-gradient(135deg,var(--navy-dark),var(--navy));border-radius:var(--radius);padding:2.4rem;color:#fff;margin-top:2rem;text-align:center;position:relative;overflow:hidden}
+.next-up::before{content:'';position:absolute;top:-50px;right:-50px;width:180px;height:180px;border-radius:50%;background:rgba(232,122,46,0.12)}
+.next-up h3{font-family:'DM Serif Display',serif;font-size:1.5rem;margin-bottom:.5rem;position:relative}
+.next-up p{font-size:.92rem;color:rgba(255,255,255,0.75);margin-bottom:1.2rem;position:relative}
+.next-up .btn-primary{position:relative}
+
+@media (max-width:760px){
+  .nav{padding:0 1rem}
+  .nav-logo-tag{display:none}
+  .hero{padding:2.5rem 1.2rem 2rem}
+  section.lesson{padding:2rem 1.2rem}
+  .lesson-card{padding:1.4rem}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-left">
+    <span class="lesson-badge">Lesson 4 of 4</span>
+  </div>
+  <a href="https://mokshpath.org/" class="nav-logo">
+    <img class="nav-logo-icon" src="hero.svg" alt="MokshPath logo">
+    <div class="nav-logo-text">
+      <span class="nav-logo-name">Moksh<span>Path</span></span>
+      <span class="nav-logo-tag">Guided Path to True Learning</span>
+    </div>
+  </a>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-eyebrow"><span class="dot"></span> Week 1 · AI Excel</div>
+  <h1>AI Automation &amp; Reporting — <em>do the boring task once, let the machine do it forever</em></h1>
+  <p class="hero-sub">You can already clean data and write formulas with AI. The last skill of the week is knowing when a task is worth automating, which of Excel's four automation tools fits the job, and how to have AI write the script for you — safely. Score real tasks, match tools to jobs, order a safe rollout, lock in a checklist, then prove the whole week with an 8-question knowledge check.</p>
+  <div class="progress-rail">
+    <span class="progress-label">Progress</span>
+    <div class="progress-dot" id="prog1"></div>
+    <div class="progress-dot" id="prog2"></div>
+    <div class="progress-dot" id="prog3"></div>
+    <div class="progress-dot" id="prog4"></div>
+    <div class="progress-dot" id="prog5"></div>
+  </div>
+</header>
+
+<!-- ── ACTIVITY 1: MATCH THE TOOL TO THE JOB ── -->
+<section class="lesson" id="activity-1">
+  <div class="container">
+    <span class="lesson-num">1</span>
+    <h2 class="lesson-title">Match the tool to the job</h2>
+    <p class="lesson-intro">Excel gives you four ways to automate, and they are not interchangeable. Pick the wrong one and you fight the tool for hours; pick the right one and the task disappears. Below are five real jobs and the four tools (one tool fits two jobs). Assign the best tool to each job, then check — the notes explain the logic in plain English.</p>
+
+    <div class="lesson-card">
+      <div class="aud-grid" id="audGrid"></div>
+      <div class="activity-feedback" id="feedback1"></div>
+      <div class="activity-toolbar">
+        <button class="btn btn-primary" onclick="checkTools()">Check my matches</button>
+        <button class="btn btn-ghost" onclick="resetTools()">↻ Reset</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 2: AI SCRIPT PROMPT BUILDER ── -->
+<section class="lesson" id="activity-2" style="background:var(--bg-light)">
+  <div class="container">
+    <span class="lesson-num" style="background:#66BB6A">2</span>
+    <h2 class="lesson-title">Ask AI to write an Office Script — in the order that works</h2>
+    <p class="lesson-intro">You don't need to know how to code to get a working Office Script or macro. You need to <strong>describe the task well</strong>. A good automation prompt has a clear structure — click the five blocks in the order that gets AI to write reliable, safe code on the first try. A wrong click gets you a nudge. Task: a weekly sales report cleanup.</p>
+
+    <div class="lesson-card">
+      <div class="seq-wrap">
+        <div>
+          <h4 style="font-family:'DM Serif Display',serif;font-size:1.05rem;color:var(--navy);margin-bottom:.6rem">Prompt blocks (shuffled)</h4>
+          <div class="seq-pool" id="seqPool"></div>
+          <div class="seq-hint" id="seqHint"></div>
+        </div>
+        <div>
+          <h4 style="font-family:'DM Serif Display',serif;font-size:1.05rem;color:var(--navy);margin-bottom:.6rem">Your prompt, in order</h4>
+          <div class="seq-slots" id="seqSlots"></div>
+        </div>
+      </div>
+      <div class="phone" id="phonePreview"><div class="phone-notch"></div><div id="phoneLines"></div></div>
+      <div class="activity-feedback" id="feedback2"></div>
+      <div class="activity-toolbar">
+        <button class="btn btn-ghost" onclick="resetSeq()">↻ Start over</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 3: SHOULD YOU AUTOMATE THIS? ── -->
+<section class="lesson" id="activity-3">
+  <div class="container">
+    <span class="lesson-num" style="background:#5B8FE0">3</span>
+    <h2 class="lesson-title">Should you automate this — or just do it?</h2>
+    <p class="lesson-intro">Automation is not free: it takes time to build and time to maintain. The honest test has three levers — <strong>frequency</strong> (how often), <strong>pain</strong> (how tedious/error-prone), and <strong>stability</strong> (does the layout stay the same). High on all three = automate. Low on any = do it by hand and move on. Make the expert call on each real task.</p>
+
+    <div class="lesson-card">
+      <div class="kos-grid" id="kosGrid"></div>
+      <div class="activity-feedback" id="feedback3"></div>
+      <div class="activity-toolbar">
+        <button class="btn btn-ghost" onclick="resetKos()">↻ Reset all four</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 4: DASHBOARD TIME BUDGET ── -->
+<section class="lesson" id="activity-4" style="background:var(--bg-light)">
+  <div class="container">
+    <span class="lesson-num" style="background:#4CAF50">4</span>
+    <h2 class="lesson-title">Budget the build of a recurring dashboard</h2>
+    <p class="lesson-intro">You've decided to automate a weekly sales dashboard. You have <strong>100% of a one-time build</strong> to spend across three stages. Where the hours go decides whether the dashboard runs for a year untouched — or breaks the third time someone renames a column. Set the sliders to total exactly 100%, then check your split against how experienced builders sequence it.</p>
+
+    <div class="lesson-card">
+      <div class="budget-row">
+        <div><div class="budget-name">Power Query — clean &amp; reshape the raw data</div><div class="budget-desc">Import the messy export and transform it into a tidy table. This is the foundation: get it right and everything downstream just works.</div></div>
+        <div class="budget-val" id="valA">40%</div>
+      </div>
+      <input type="range" class="budget-slider" id="sliderA" min="0" max="100" step="5" value="40">
+      <div class="budget-row">
+        <div><div class="budget-name">Charts &amp; layout — the visible dashboard</div><div class="budget-desc">PivotTables, charts, and formatting on top of the clean table. The part your boss actually sees.</div></div>
+        <div class="budget-val" id="valB">40%</div>
+      </div>
+      <input type="range" class="budget-slider" id="sliderB" min="0" max="100" step="5" value="40">
+      <div class="budget-row">
+        <div><div class="budget-name">Test on a copy &amp; document the refresh</div><div class="budget-desc">Run it on a duplicate file, break it on purpose, and write down the one-click refresh steps for next week.</div></div>
+        <div class="budget-val" id="valC">20%</div>
+      </div>
+      <input type="range" class="budget-slider" id="sliderC" min="0" max="100" step="5" value="20">
+
+      <div class="budget-total" id="budgetTotal"><span>Total build effort (must equal 100%)</span><span class="tv" id="totalVal">100%</span></div>
+      <div class="budget-note">Honest note: the build takes real hours <em>once</em>. The payoff is every future week the refresh is one click instead of an hour of copy-paste. If the data source is unstable, that payoff shrinks fast — which is why testing is not optional.</div>
+
+      <div class="activity-feedback" id="feedback4"></div>
+      <div class="activity-toolbar">
+        <button class="btn btn-primary" id="checkBudgetBtn" onclick="checkBudget()">Check my split</button>
+        <button class="btn btn-ghost" onclick="resetBudget()">↻ Reset sliders</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SAFE-AUTOMATION CHECKLIST ── -->
+<section class="lesson" id="checklist">
+  <div class="container">
+    <span class="lesson-num" style="background:#E04E3C">✓</span>
+    <h2 class="lesson-title">The safe-automation checklist</h2>
+    <p class="lesson-intro">Automation that runs unattended can also fail unattended — silently overwriting good data for weeks before anyone notices. These are the non-negotiables. Tick each one as you internalise it; the goal is that this list runs in your head before you ever hit "Run".</p>
+    <div class="lesson-card">
+      <ul class="check-list" id="checkList"></ul>
+      <div class="check-count" id="checkCount">0 of 6 locked in</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 5: WEEK 1 KNOWLEDGE CHECK ── -->
+<section class="lesson" id="activity-5" style="background:var(--bg-light)">
+  <div class="container">
+    <span class="lesson-num" style="background:var(--navy)">5</span>
+    <h2 class="lesson-title">Week 1 knowledge check — 8 questions, whole week</h2>
+    <p class="lesson-intro">The final gate of Week 1, spanning all four lessons: getting started with AI in Excel, cleaning messy data, AI-assisted formulas, and today's automation &amp; reporting. Answer all eight, then submit for a per-question review — and if you miss any, you'll see exactly which lesson to revisit.</p>
+
+    <div class="lesson-card">
+      <div id="quizWrap"></div>
+      <div class="activity-feedback" id="feedback5"></div>
+      <div class="activity-toolbar">
+        <button class="btn btn-primary" onclick="submitQuiz()">Submit answers</button>
+        <button class="btn btn-ghost" onclick="resetQuiz()">↻ Reset quiz</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── REFLECT ── -->
+<section class="lesson" style="padding-bottom:1.5rem">
+  <div class="container">
+    <h2 class="lesson-title" style="font-size:1.5rem">Quick reflect — make it stick</h2>
+    <p class="lesson-intro" style="margin-bottom:1rem">A sentence each is enough. Writing it in your own words moves it from "seen" to "known". (Nothing is saved or sent.)</p>
+    <div class="reflect-prompt">
+      <div class="reflect-q">
+        <div class="reflect-q-text">Name one task in your actual week that scores high on frequency, pain, AND stability. What tool would you reach for, and why?</div>
+        <textarea placeholder="Every Monday I reformat the sales export by hand — it's frequent, tedious, and the layout never changes, so Power Query / an Office Script..."></textarea>
+      </div>
+      <div class="reflect-q">
+        <div class="reflect-q-text">An automation you built quietly broke because someone renamed a column. What one habit from the checklist would have caught it fastest?</div>
+        <textarea placeholder="Testing on a copy plus adding a check that the expected column exists before running, so it fails loudly instead of..."></textarea>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NEXT UP -->
+<section class="lesson" style="padding-top:0">
+  <div class="container">
+    <div class="next-up">
+      <h3>Week 1 complete — your project: the one-click weekly report</h3>
+      <p>You can now use AI in Excel, clean any messy export, write formulas by describing them, and automate the repetitive parts safely. Put it together in the Week 1 wrap-up project: take one real recurring task and turn it into a documented, tested, one-click report — the exact skill that makes you the person the team relies on.</p>
+      <a href="#" class="btn btn-primary">Start the Week 1 project →</a>
+    </div>
+  </div>
+</section>
+
+<script>
+/* ═══ ACTIVITY 1: Tool ↔ Job match ═══ */
+const AUDIENCES = [
+  {id:'a1', name:'Clean the same messy export every Monday', pain:'A 12-step import-and-reshape ritual, identical each week, same file layout.'},
+  {id:'a2', name:'Email a report to 3 managers every Friday at 9am', pain:'The report is ready — you just need it to send itself on a schedule, no laptop open.'},
+  {id:'a3', name:'Reformat a pasted table (headers, colors) on demand', pain:'A quick one-off tidy-up you run in your own workbook whenever a table lands.'},
+  {id:'a4', name:'Combine 20 regional CSVs into one master table monthly', pain:'Merging and de-duplicating files — repetitive, refreshable, source shape is stable.'},
+  {id:'a5', name:'A cleanup script your teammates run in Excel on the web', pain:'Needs to work in browser Excel, be shareable, and survive a corporate IT lockdown.'}
+];
+const HOOKS = [
+  {id:'h1', text:'Power Query', aud:'a1', signal:'Power Query is Excel\'s built-in clean-and-reshape engine — record the steps once, and every future refresh replays them. No code, and it handles repeatable import rituals beautifully.'},
+  {id:'h2', text:'Power Automate', aud:'a2', signal:'Power Automate runs flows in the cloud on a schedule or trigger — including "every Friday 9am, send this file". It runs even when your laptop is closed, which macros cannot.'},
+  {id:'h3', text:'Macro / VBA', aud:'a3', signal:'A macro (recorded, or VBA) is perfect for a quick, personal, in-workbook automation on desktop Excel. Fast to record, but it only runs in desktop Excel and can\'t be scheduled in the cloud.'},
+  {id:'h4', text:'Power Query', aud:'a4', signal:'Combining many same-shaped files is Power Query\'s signature move — "From Folder" ingests them all, and a one-click refresh re-merges next month. Same engine, second job.'},
+  {id:'h5', text:'Office Scripts', aud:'a5', signal:'Office Scripts are the modern, cloud-friendly automation for Excel on the web — shareable with teammates and pairable with Power Automate. They run where old VBA macros cannot.'}
+];
+const AUD_BY_ID = Object.fromEntries(AUDIENCES.map(a=>[a.id,a]));
+function shuffle(arr){return [...arr].sort(()=>Math.random()-0.5);}
+
+function renderTools(){
+  const shuffledHooks = shuffle(HOOKS.filter((h,i)=>HOOKS.findIndex(x=>x.text===h.text)===i || h.aud==='a4'));
+  // build unique option list of tool names
+  const toolNames = [...new Set(HOOKS.map(h=>h.text))];
+  const shuffled = shuffle(toolNames);
+  document.getElementById('audGrid').innerHTML = AUDIENCES.map(a=>`
+    <div class="aud-card" data-aud="${a.id}">
+      <div class="aud-name">${a.name}</div>
+      <div class="aud-pain">${a.pain}</div>
+      <select class="aud-select" data-aud="${a.id}">
+        <option value="">— choose the best tool for this job —</option>
+        ${shuffled.map(t=>`<option value="${t}">${t}</option>`).join('')}
+      </select>
+      <div class="aud-why" data-why="${a.id}"></div>
+    </div>`).join('');
+}
+function checkTools(){
+  let right = 0, unanswered = 0;
+  AUDIENCES.forEach(a=>{
+    const sel = document.querySelector(`.aud-select[data-aud="${a.id}"]`);
+    const card = document.querySelector(`.aud-card[data-aud="${a.id}"]`);
+    const why = document.querySelector(`.aud-why[data-why="${a.id}"]`);
+    card.classList.remove('correct','wrong');
+    why.className = 'aud-why';
+    if(!sel.value){ unanswered++; return; }
+    const wanted = HOOKS.find(h=>h.aud===a.id);
+    if(sel.value===wanted.text){
+      right++;
+      card.classList.add('correct');
+      why.className='aud-why show good';
+      why.textContent='✓ Right — '+wanted.signal;
+    } else {
+      card.classList.add('wrong');
+      why.className='aud-why show bad';
+      why.textContent=`✗ The best fit here is ${wanted.text}. ${wanted.signal}`;
+    }
+  });
+  const fb = document.getElementById('feedback1');
+  if(unanswered>0){
+    fb.className='activity-feedback show partial';
+    fb.innerHTML=`<strong>${unanswered} job${unanswered>1?'s':''} still without a tool.</strong> Pick a tool for every card, then check again.`;
+    return;
+  }
+  if(right===5){
+    fb.className='activity-feedback show success';
+    fb.innerHTML='<strong>5 of 5 — you can pick the right lever every time.</strong> The plain-English map: <strong>Power Query</strong> for cleaning &amp; combining data on a refresh; <strong>Office Scripts</strong> for shareable, cloud/web automation; <strong>macros/VBA</strong> for quick personal desktop-only jobs; <strong>Power Automate</strong> for scheduling and cross-app triggers. When in doubt, ask "is this reshaping data (→ Query), running unattended on a schedule (→ Automate), or a one-off in my own file (→ macro)?"';
+  } else {
+    fb.className='activity-feedback show partial';
+    fb.innerHTML=`<strong>You matched ${right} of 5.</strong> Read the red notes — each is a rule you'll reuse. The clean split: <em>reshaping data on a refresh → Power Query</em>, <em>runs on a schedule / talks to other apps → Power Automate</em>, <em>shareable &amp; works in web Excel → Office Scripts</em>, <em>quick personal desktop job → macro/VBA</em>. Fix the reds and check again.`;
+  }
+  document.getElementById('prog1').classList.add('done');
+}
+function resetTools(){
+  renderTools();
+  document.getElementById('feedback1').className='activity-feedback';
+  document.getElementById('prog1').classList.remove('done');
+}
+
+/* ═══ ACTIVITY 2: AI script prompt sequence builder ═══ */
+const SCRIPT = [
+  {tag:'ROLE + GOAL', text:'"Write an Office Script for Excel that cleans up my weekly sales export."', note:'Say what you want built and in what tool — first, so AI aims at the right target.', hint:'A good automation prompt opens by naming the TOOL and the GOAL — "write an Office Script that does X". Start with the block that tells AI what to build.'},
+  {tag:'DESCRIBE THE DATA', text:'"The data is in a sheet named \'Raw\', columns A–F: Date, Rep, Region, Product, Units, Revenue. Row 1 is headers."', note:'AI can\'t see your file. Describe the exact shape it should expect.', hint:'AI cannot see your workbook. Next, DESCRIBE THE DATA — sheet name, columns, where the headers are — so the script targets the right cells.'},
+  {tag:'LIST THE STEPS', text:'"Steps: trim whitespace in Rep, delete blank rows, format Revenue as currency, and sort by Revenue descending."', note:'Plain-English steps become the logic. Be specific and ordered.', hint:'Now spell out LIST THE STEPS in plain English. This is the actual work you want done, in order — vague steps produce vague code.'},
+  {tag:'SET GUARDRAILS', text:'"Don\'t touch any other sheet. If \'Raw\' or its headers are missing, stop and show a message instead of changing anything."', note:'Tell it how to fail safely — this is what keeps automation from silently corrupting data.', hint:'Before the format, add GUARDRAILS — what NOT to touch, and how to fail safely if the layout is unexpected. This is the block that makes automation safe.'},
+  {tag:'ASK TO EXPLAIN', text:'"Add a comment on each step explaining what it does, and tell me how to run it on a copy first."', note:'You should be able to read what you\'re running. Ask AI to teach you the code.', hint:'Finish by asking AI to EXPLAIN — comment the code and tell you how to test on a copy. Never run code you can\'t read. This block comes last.'}
+];
+let seqNext = 0;
+function renderSeq(){
+  seqNext = 0;
+  const order = shuffle(SCRIPT.map((_,i)=>i));
+  document.getElementById('seqPool').innerHTML = order.map(i=>`
+    <div class="seq-block" data-idx="${i}" onclick="pickBlock(${i},this)">
+      <div class="seq-block-text">${SCRIPT[i].text}</div>
+    </div>`).join('');
+  document.getElementById('seqSlots').innerHTML = SCRIPT.map((s,i)=>`
+    <div class="seq-slot" id="slot${i}">Step ${i+1} — waiting…</div>`).join('');
+  document.getElementById('seqHint').className='seq-hint';
+  document.getElementById('phonePreview').className='phone';
+  document.getElementById('feedback2').className='activity-feedback';
+}
+function pickBlock(idx, el){
+  const hint = document.getElementById('seqHint');
+  if(idx!==seqNext){
+    el.classList.add('shake');
+    setTimeout(()=>el.classList.remove('shake'),380);
+    hint.className='seq-hint show';
+    hint.textContent='Not that one yet. '+SCRIPT[seqNext].hint;
+    return;
+  }
+  el.classList.add('used');
+  hint.className='seq-hint';
+  const slot = document.getElementById('slot'+idx);
+  slot.classList.add('filled');
+  slot.innerHTML = `<span class="seq-tag">${SCRIPT[idx].tag}</span><div>${SCRIPT[idx].text}</div><div style="font-size:.7rem;color:var(--text-muted);margin-top:.25rem;font-style:italic">${SCRIPT[idx].note}</div>`;
+  seqNext++;
+  if(seqNext===SCRIPT.length) finishSeq();
+}
+function finishSeq(){
+  document.getElementById('phoneLines').innerHTML = SCRIPT.map(s=>`
+    <div class="phone-line"><span class="seq-tag">${s.tag}</span><p>${s.text}</p></div>`).join('');
+  document.getElementById('phonePreview').className='phone show';
+  const fb=document.getElementById('feedback2');
+  fb.className='activity-feedback show success';
+  fb.innerHTML='<strong>Prompt assembled — ROLE+GOAL → DESCRIBE DATA → LIST STEPS → GUARDRAILS → EXPLAIN.</strong> Why this order: AI writes code from your description, so the description <em>is</em> the program. Naming the tool and goal aims it; describing the data (sheet, columns, headers) stops it from guessing; the ordered steps become the logic; the guardrails ("don\'t touch other sheets, stop if the layout is missing") are what turn a risky script into a safe one; and asking it to explain and test-on-a-copy keeps <em>you</em> in control of code you didn\'t write. Paste this into Copilot or ChatGPT, drop the result into Excel\'s Automate tab, and run it on a duplicate first — every time.';
+  document.getElementById('prog2').classList.add('done');
+}
+function resetSeq(){
+  renderSeq();
+  document.getElementById('prog2').classList.remove('done');
+}
+
+/* ═══ ACTIVITY 3: Should you automate this? ═══ */
+const KOS = [
+  {title:'Task A — the Monday report ritual', metrics:['Frequency: <b>Weekly</b>','Pain: <b>High (12 steps)</b>','Stability: <b>Layout fixed</b>','Time each: <b>~45 min</b>'], answer:'automate',
+   why:'<strong>Automate it.</strong> Every lever points the same way: it happens often (weekly), it\'s tedious and error-prone (12 manual steps), and the source layout never changes. This is the textbook automation candidate — spend two hours building once, save 45 minutes every week forever. Frequency × pain × stability all high = green light.'},
+  {title:'Task B — the one-off board deck cleanup', metrics:['Frequency: <b>Once (this year)</b>','Pain: <b>Medium</b>','Stability: <b>N/A</b>','Time: <b>~30 min</b>'], answer:'manual',
+   why:'<strong>Do it by hand.</strong> It only happens once, so there is no future payoff to bank — the time you\'d spend building and debugging an automation is time you never get back. Automation earns its cost through <em>repetition</em>. A 30-minute one-off is just a 30-minute one-off. Save automation energy for the tasks you\'ll face again.'},
+  {title:'Task C — daily import from a changing source', metrics:['Frequency: <b>Daily</b>','Pain: <b>High</b>','Stability: <b>Columns shift weekly</b>','Time each: <b>~20 min</b>'], answer:'careful',
+   why:'<strong>Automate — but carefully.</strong> Frequency and pain scream "automate", yet the source changes shape constantly, so a naive script will break daily and silently produce wrong output. Build it with guardrails: check the columns exist before running, fail loudly if they don\'t, and fix the source if you can. High frequency justifies the effort; low stability demands the guardrails. Never let this one run unattended without checks.'},
+  {title:'Task D — occasional custom analysis', metrics:['Frequency: <b>Rare / varies</b>','Pain: <b>Medium</b>','Stability: <b>Different every time</b>','Time: <b>~1 hr</b>'], answer:'manual',
+   why:'<strong>Do it by hand.</strong> The task is different every time, so there is nothing repeatable to capture — an automation would need rebuilding for each new question, which is slower than just doing the analysis. Automate the <em>stable, repeated</em> parts of your work; keep the judgment-heavy, one-shot thinking human. AI can still help you <em>do</em> it faster — just don\'t bother scripting it.'}
+];
+let kosAnswered = {};
+const KOS_LABELS = {automate:'Automate', careful:'Automate carefully', manual:'Do it by hand'};
+function renderKos(){
+  kosAnswered = {};
+  document.getElementById('kosGrid').innerHTML = KOS.map((k,i)=>`
+    <div class="kos-card" data-kos="${i}">
+      <div class="kos-title">${k.title}</div>
+      <div class="kos-metrics">${k.metrics.map(m=>`<div class="kos-metric">${m}</div>`).join('')}</div>
+      <div class="kos-btns">
+        <button class="kos-btn" onclick="answerKos(${i},'automate',this)">Automate</button>
+        <button class="kos-btn" onclick="answerKos(${i},'careful',this)">Automate carefully</button>
+        <button class="kos-btn" onclick="answerKos(${i},'manual',this)">Do by hand</button>
+      </div>
+      <div class="kos-verdict" id="kosV${i}"></div>
+    </div>`).join('');
+  document.getElementById('feedback3').className='activity-feedback';
+}
+function answerKos(i, choice, btn){
+  if(kosAnswered[i]!==undefined) return;
+  const k = KOS[i];
+  const correct = choice===k.answer;
+  kosAnswered[i]=correct;
+  const card = document.querySelector(`.kos-card[data-kos="${i}"]`);
+  card.querySelectorAll('.kos-btn').forEach(b=>{
+    b.disabled=true;
+    if(b===btn) b.classList.add(correct?'picked-right':'picked-wrong');
+    else if(!correct && b.textContent.trim()===KOS_LABELS[k.answer]) b.classList.add('reveal-right');
+  });
+  const v = document.getElementById('kosV'+i);
+  v.className='kos-verdict show '+(correct?'good':'bad');
+  v.innerHTML=(correct?'✓ Expert call. ':'✗ The expert call is <em>'+KOS_LABELS[k.answer]+'</em>. ')+k.why;
+  if(Object.keys(kosAnswered).length===KOS.length){
+    const score = Object.values(kosAnswered).filter(Boolean).length;
+    const fb=document.getElementById('feedback3');
+    if(score===4){
+      fb.className='activity-feedback show success';
+      fb.innerHTML='<strong>4 of 4 — you weigh automation like an engineer, not an enthusiast.</strong> The pattern: <em>frequency × pain × stability</em>. All three high → automate freely. High frequency but low stability → automate <em>with guardrails</em> and never unattended. Low frequency or one-shot → just do it. The trap beginners fall into is automating for the joy of it, spending three hours to save thirty minutes on a task they\'ll never repeat. Let repetition, not novelty, earn the build.';
+    } else {
+      fb.className='activity-feedback show partial';
+      fb.innerHTML=`<strong>You got ${score} of 4.</strong> Re-read the ones you missed — each is a reusable rule: <em>frequent + painful + stable → automate</em> (A), <em>one-off → do it by hand</em> (B), <em>frequent but unstable → automate carefully with guardrails</em> (C), <em>different every time → keep it human</em> (D). Reset and run all four from the frequency × pain × stability test.`;
+    }
+    document.getElementById('prog3').classList.add('done');
+  }
+}
+function resetKos(){
+  renderKos();
+  document.getElementById('prog3').classList.remove('done');
+}
+
+/* ═══ ACTIVITY 4: Dashboard build budget ═══ */
+function updateBudget(){
+  const a=+document.getElementById('sliderA').value;
+  const b=+document.getElementById('sliderB').value;
+  const c=+document.getElementById('sliderC').value;
+  document.getElementById('valA').textContent=a+'%';
+  document.getElementById('valB').textContent=b+'%';
+  document.getElementById('valC').textContent=c+'%';
+  const total=a+b+c;
+  document.getElementById('totalVal').textContent=total+'%';
+  const box=document.getElementById('budgetTotal');
+  box.className='budget-total'+(total===100?' ok':(total>100?' over':''));
+  document.getElementById('checkBudgetBtn').disabled = total!==100;
+  return {a,b,c,total};
+}
+function checkBudget(){
+  const {a,b,c,total}=updateBudget();
+  const fb=document.getElementById('feedback4');
+  if(total!==100){
+    fb.className='activity-feedback show partial';
+    fb.innerHTML='<strong>Your split totals '+total+'%.</strong> Adjust until the sliders sum to exactly 100%, then check again.';
+    return;
+  }
+  if(a>=40 && c>=15){
+    fb.className='activity-feedback show success';
+    fb.innerHTML=`<strong>That's how a builder sequences it (${a}% / ${b}% / ${c}%).</strong> Power Query gets the biggest share because <em>the clean data layer is the foundation</em> — a beautiful chart on messy data is a beautiful lie, and reshaping is where most of the fragile logic lives. Charts &amp; layout matter but sit on top of solid data, so they go faster once the table is right. And testing (≥15%) is <em>not</em> the part to cut: running on a copy, breaking it on purpose, and documenting the one-click refresh is what lets this dashboard survive real weeks. Skip testing and you\'ve built something that works once, in your demo, then quietly rots.`;
+  } else {
+    fb.className='activity-feedback show partial';
+    let notes=[];
+    if(a<40) notes.push(`<strong>Power Query at ${a}% is underfunded.</strong> The clean-data layer is the foundation — most of the fragile, reused logic lives here. Experienced builders put ~40%+ into getting the reshape right, because everything downstream inherits its quality. Skimp here and your charts sit on sand.`);
+    if(c<15) notes.push(`<strong>Testing at ${c}% is the classic corner to cut — and the classic regret.</strong> Running on a copy, deliberately breaking it, and documenting the refresh is what makes automation <em>safe to leave alone</em>. Give it at least 15%. Untested automation doesn\'t save time; it defers a bigger problem.`);
+    if(b>45) notes.push(`<strong>${b}% on charts &amp; layout is top-heavy.</strong> Polish is tempting because it\'s visible, but a gorgeous dashboard built on rushed data and zero testing breaks the moment real data arrives. Move some hours down into the data layer and into testing.`);
+    if(notes.length===0) notes.push('You are close — shift a little more into Power Query and make sure testing stays at 15% or above.');
+    fb.innerHTML='<strong>Not the builder\'s split yet ('+a+'% / '+b+'% / '+c+'%).</strong><br><br>'+notes.join('<br><br>')+'<br><br>Target shape: Power Query ≥ 40% (the foundation), testing ≥ 15% (never skip it), charts the rest. Adjust and re-check.';
+  }
+  document.getElementById('prog4').classList.add('done');
+}
+function resetBudget(){
+  document.getElementById('sliderA').value=40;
+  document.getElementById('sliderB').value=40;
+  document.getElementById('sliderC').value=20;
+  updateBudget();
+  document.getElementById('feedback4').className='activity-feedback';
+  document.getElementById('prog4').classList.remove('done');
+}
+['sliderA','sliderB','sliderC'].forEach(id=>document.getElementById(id).addEventListener('input',updateBudget));
+
+/* ═══ SAFE-AUTOMATION CHECKLIST ═══ */
+const CHECKS = [
+  {t:'<b>Always test on a copy first.</b> Duplicate the file, run the automation there, and confirm the output before you ever point it at real data. Automation makes mistakes fast and at scale.'},
+  {t:'<b>Assume it breaks when the layout changes.</b> A renamed column, an extra header row, or a moved sheet will silently produce wrong results. Build a check: stop and warn if the expected structure is missing.'},
+  {t:'<b>Read the code before you run it.</b> AI-written scripts are drafts, not gospel. Ask AI to comment each step; if you can\'t follow what a line does, don\'t run it on data that matters.'},
+  {t:'<b>Make it fail loudly, not silently.</b> A script that stops with a clear message is safe. One that quietly does the wrong thing for six weeks is a disaster you find at quarter-end.'},
+  {t:'<b>Keep a manual fallback and a backup.</b> Know how to do the task by hand, and keep the last good file. When (not if) the automation breaks on a busy day, you\'re not stuck.'},
+  {t:'<b>Document the one-click refresh.</b> Write the exact steps to run and re-run it. Future-you — or a teammate — should be able to operate it without reverse-engineering your work.'}
+];
+let checkOn = new Set();
+function renderChecks(){
+  checkOn = new Set();
+  document.getElementById('checkList').innerHTML = CHECKS.map((c,i)=>`
+    <li class="check-item" data-c="${i}" onclick="toggleCheck(${i})">
+      <div class="check-box">✓</div>
+      <div class="check-text">${c.t}</div>
+    </li>`).join('');
+  updateCheckCount();
+}
+function toggleCheck(i){
+  const item=document.querySelector(`.check-item[data-c="${i}"]`);
+  if(checkOn.has(i)){checkOn.delete(i);item.classList.remove('on');}
+  else{checkOn.add(i);item.classList.add('on');}
+  updateCheckCount();
+}
+function updateCheckCount(){
+  document.getElementById('checkCount').textContent=`${checkOn.size} of ${CHECKS.length} locked in`;
+}
+
+/* ═══ ACTIVITY 5: Week 1 knowledge check ═══ */
+const QUIZ = [
+  {lesson:'Lesson 1 · Getting Started with AI in Excel', q:'What is the most reliable way to get useful help from an AI assistant in Excel?',
+   opts:['Ask "make my spreadsheet better" and hope','Describe the data, the goal, and the exact output you want','Only use it for charts, never for formulas','Paste your whole file and give no instructions'], ans:1,
+   why:'AI works from your description. The clearer you are about what the data looks like, what you want done, and the shape of the output, the more usable the result. Vague prompts get vague answers.'},
+  {lesson:'Lesson 1 · Getting Started with AI in Excel', q:'Why must you always verify what an AI gives you in Excel?',
+   opts:['It is illegal to use AI output unchecked','AI can produce confident but wrong formulas and results — you own the output','Excel deletes AI content after a day','Verification is only needed for large files'], ans:1,
+   why:'AI can be confidently wrong — a plausible-looking formula that gives the wrong number. Whatever ships is your responsibility, so spot-check results against a value you can compute by hand.'},
+  {lesson:'Lesson 2 · Cleaning Messy Data', q:'You have to clean the same messy export the same way every week. Which tool is built for this?',
+   opts:['Retype it by hand each time','Power Query — record the steps once, refresh forever','A different formula each week','Delete rows manually and hope'], ans:1,
+   why:'Power Query records your clean-and-reshape steps and replays them on every refresh. Repeatable cleaning of a stable-shaped source is exactly what it is for — no code required.'},
+  {lesson:'Lesson 2 · Cleaning Messy Data', q:'Before running any cleanup on important data, what should you do first?',
+   opts:['Nothing — just run it','Work on a copy so a mistake can\'t destroy the original','Email the file to yourself','Turn off AutoSave permanently'], ans:1,
+   why:'Cleaning operations can\'t always be undone, and automation makes mistakes fast. Working on a copy means a wrong step costs you nothing but a re-copy.'},
+  {lesson:'Lesson 3 · AI-Assisted Formulas', q:'What is the best way to trust an AI-written formula you don\'t fully understand?',
+   opts:['Assume it\'s right because AI is smart','Ask AI to explain it in plain English, then test it on rows you can check','Hide the column so nobody sees it','Never use formulas from AI'], ans:1,
+   why:'Ask the AI to walk through the formula step by step, then test it against a few rows where you already know the answer. Understanding plus a spot-check turns a black box into a tool you control.'},
+  {lesson:'Lesson 3 · AI-Assisted Formulas', q:'AI suggests a long, nested formula. What is the smart move?',
+   opts:['Paste it and never look again','Ask if there\'s a simpler or more robust approach, and confirm it handles edge cases','Always prefer the longest formula','Break it only if it errors'], ans:1,
+   why:'The first formula isn\'t always the best. Asking AI for a simpler or more robust version — and checking blanks, text, and error cases — gives you something maintainable, not just something that works on today\'s data.'},
+  {lesson:'Lesson 4 · AI Automation & Reporting', q:'Which task is the strongest candidate for automation?',
+   opts:['A one-time report you\'ll never make again','A frequent, tedious task on a source whose layout never changes','A creative analysis that\'s different every time','Anything, as long as it\'s fun to build'], ans:1,
+   why:'Automation pays off through repetition. High frequency, high pain (tedious/error-prone), and high stability (fixed layout) together make the ideal candidate — you build once and save time forever.'},
+  {lesson:'Lesson 4 · AI Automation & Reporting', q:'You asked AI to write an Office Script. What is the single most important thing to do before running it on real data?',
+   opts:['Run it immediately to save time','Test it on a copy and read what each step does','Delete the comments to make it faster','Schedule it before ever testing it'], ans:1,
+   why:'AI-written code is a draft. Testing on a copy means a mistake can\'t corrupt the real file, and reading the commented steps means you understand — and can trust — what you\'re about to run unattended.'}
+];
+function renderQuiz(){
+  document.getElementById('quizWrap').innerHTML = QUIZ.map((item,i)=>`
+    <div class="quiz-q" id="qq${i}">
+      <div class="quiz-q-head"><span class="quiz-q-num">Q${i+1}</span><span class="quiz-q-text">${item.q}<span class="quiz-lesson">${item.lesson}</span></span></div>
+      ${item.opts.map((o,j)=>`
+        <label class="quiz-opt"><input type="radio" name="quiz${i}" value="${j}"><span>${o}</span></label>`).join('')}
+      <div class="quiz-review" id="qr${i}"></div>
+    </div>`).join('');
+}
+function submitQuiz(){
+  const fb=document.getElementById('feedback5');
+  const answers = QUIZ.map((_,i)=>{
+    const sel=document.querySelector(`input[name="quiz${i}"]:checked`);
+    return sel? +sel.value : null;
+  });
+  const blank = answers.filter(a=>a===null).length;
+  if(blank>0){
+    fb.className='activity-feedback show partial';
+    fb.innerHTML=`<strong>${blank} question${blank>1?'s':''} unanswered.</strong> Guessing is allowed, blank is not — answer everything and submit again.`;
+    return;
+  }
+  let score=0; const missedLessons=[];
+  QUIZ.forEach((item,i)=>{
+    const card=document.getElementById('qq'+i);
+    const rev=document.getElementById('qr'+i);
+    card.classList.remove('right','miss');
+    const correct = answers[i]===item.ans;
+    if(correct){
+      score++;
+      card.classList.add('right');
+      rev.className='quiz-review show good';
+      rev.innerHTML='✓ Correct. '+item.why;
+    } else {
+      card.classList.add('miss');
+      missedLessons.push(`Q${i+1} → ${item.lesson}`);
+      rev.className='quiz-review show bad';
+      rev.innerHTML=`✗ The answer is "<strong>${item.opts[item.ans]}</strong>". ${item.why}`;
+    }
+  });
+  if(score===8){
+    fb.className='activity-feedback show success';
+    fb.innerHTML='<strong>8 of 8 — Week 1 mastery.</strong> You hold the full chain: getting real help from AI in Excel, cleaning any messy export, writing formulas by describing them, and automating the repetitive parts safely. Every one of these rests on the same two habits — describe the task clearly, and verify the result. Take that into the Week 1 project.';
+  } else if(score>=6){
+    fb.className='activity-feedback show success';
+    fb.innerHTML=`<strong>${score} of 8 — solid grasp of the week.</strong> The misses are patchable in minutes — read the review notes on: <em>${missedLessons.join(' · ')}</em>, then reset and aim for 8. The questions you missed are usually the "verify it" and "test on a copy" habits — the ones that save you from a quiet disaster later.`;
+  } else {
+    fb.className='activity-feedback show partial';
+    fb.innerHTML=`<strong>${score} of 8 — worth a revisit before the project.</strong> No judgment — this week packed four lessons of Excel-with-AI into your head. Your misses map to: <em>${missedLessons.join(' · ')}</em>. Reopen those lessons, skim their activities, then reset this quiz. Ten minutes of review now saves real confusion in the project.`;
+  }
+  document.getElementById('prog5').classList.add('done');
+}
+function resetQuiz(){
+  renderQuiz();
+  document.getElementById('feedback5').className='activity-feedback';
+  document.getElementById('prog5').classList.remove('done');
+}
+
+/* ═══ INIT ═══ */
+window.addEventListener('DOMContentLoaded',()=>{
+  renderTools();
+  renderSeq();
+  renderKos();
+  updateBudget();
+  renderChecks();
+  renderQuiz();
+});
+</script>
+</body>
+</html>
