@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>AI in Outlook — Email &amp; Calendar · Lesson 03</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,0,400;9..144,0,600;9..144,0,800;9..144,1,600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+
+:root{
+  --orange:#EF7F1A; --orange-light:#FF9429; --orange-dark:#D55222;
+  --brown:#412C23; --brown-dark:#2F1D19; --tan:#A34E1C;
+  --yellow:#FECC00; --cream:#FBF6EE; --paper:#FFFCF6;
+  --ink:#1C1410; --muted:#6E5C50; --line:#E8DCC8; --accent:#008DD2;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',system-ui,sans-serif;
+  background:var(--paper); color:var(--ink); line-height:1.6; overflow-x:hidden;
+}
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:radial-gradient(circle at 1px 1px,rgba(65,44,35,0.05) 1px,transparent 0);
+  background-size:24px 24px;
+}
+.topbar{
+  position:sticky;top:0;z-index:100;
+  background:rgba(255,252,246,0.92); backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+  padding:14px 40px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.brand{font-family:'Fraunces',serif;font-weight:800;font-size:17px;letter-spacing:-0.01em;color:var(--brown-dark)}
+.brand .dot{color:var(--orange)}
+.brand .sub{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.15em;color:var(--muted);font-weight:500;text-transform:uppercase;margin-left:8px}
+.logo-slot{width:44px;height:44px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.logo-slot svg{width:100%;height:100%;display:block}
+.page{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:50px 40px 100px}
+.hero{padding:30px 0 50px;border-bottom:1px solid var(--line)}
+.eyebrow{
+  font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.18em;
+  text-transform:uppercase;color:var(--orange-dark);font-weight:600;
+  display:inline-flex;align-items:center;gap:10px;
+}
+.eyebrow::before{content:"";width:24px;height:2px;background:var(--orange)}
+h1{
+  font-family:'Fraunces',serif;font-weight:800;
+  font-size:clamp(38px,7vw,80px);line-height:0.98;letter-spacing:-0.03em;
+  margin:18px 0 20px;color:var(--brown-dark);
+}
+h1 em{font-style:italic;color:var(--orange-dark);font-weight:600}
+.lede{font-size:19px;max-width:680px;color:var(--muted)}
+section{padding:70px 0;border-bottom:1px solid var(--line)}
+section:last-of-type{border-bottom:none}
+.section-num{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--orange);font-weight:600;letter-spacing:0.08em}
+h2{
+  font-family:'Fraunces',serif;font-weight:700;
+  font-size:clamp(28px,4.5vw,48px);line-height:1.05;letter-spacing:-0.02em;
+  margin:10px 0 22px;color:var(--brown-dark);max-width:720px;
+}
+h3{font-family:'Fraunces',serif;font-weight:600;font-size:24px;color:var(--brown-dark);margin:28px 0 12px}
+p{max-width:680px;margin-bottom:14px;color:var(--ink)}
+.lead{font-size:17px;color:var(--muted);max-width:680px;margin-bottom:26px}
+code{font-family:'JetBrains Mono',monospace;font-size:0.92em;background:var(--cream);padding:2px 6px;border-radius:4px;color:var(--brown-dark)}
+.illus{
+  background:var(--cream);border:1px solid var(--line);border-radius:18px;
+  padding:32px;margin:24px 0;position:relative;overflow:hidden;
+}
+.illus-title{
+  font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);
+  letter-spacing:0.12em;text-transform:uppercase;
+  margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:10px;
+}
+.controls{display:flex;gap:8px;flex-wrap:wrap}
+.controls button{
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  background:var(--paper);border:1px solid var(--line);color:var(--brown);
+  padding:6px 12px;border-radius:6px;cursor:pointer;
+  text-transform:uppercase;letter-spacing:0.1em;transition:all .2s;
+}
+.controls button:hover{background:var(--orange);color:#fff;border-color:var(--orange)}
+.controls button.active{background:var(--brown-dark);color:#fff;border-color:var(--brown-dark)}
+.takeaway{
+  background:var(--brown-dark);color:var(--paper);
+  border-radius:18px;padding:44px;margin-top:50px;position:relative;overflow:hidden;
+}
+.takeaway::after{
+  content:"";position:absolute;top:-40px;right:-40px;width:180px;height:180px;
+  border-radius:50%;background:radial-gradient(circle,var(--orange),transparent 70%);opacity:0.4;
+}
+.takeaway h2{color:var(--paper);margin-bottom:16px}
+.takeaway p{color:#E8D9C5;font-size:16px;max-width:680px}
+.takeaway ul{list-style:none;margin-top:18px;display:grid;gap:8px}
+.takeaway li{font-family:'JetBrains Mono',monospace;font-size:13px;padding-left:22px;position:relative;color:#FBE7CB}
+.takeaway li::before{content:"→";position:absolute;left:0;color:var(--orange);font-weight:bold}
+footer{text-align:center;padding:36px;color:var(--muted);font-size:12px;font-family:'JetBrains Mono',monospace;letter-spacing:0.1em}
+@media(max-width:700px){
+  .topbar{padding:12px 18px}
+  .page{padding:30px 18px 70px}
+  .illus{padding:20px}
+  .takeaway{padding:28px}
+  .logo-slot{width:38px;height:38px}
+}
+
+/* ============ Figure 1 · Triage pipeline ============ */
+.pipe{display:flex;align-items:stretch;gap:0;flex-wrap:wrap}
+.pstep{
+  flex:1;min-width:120px;background:var(--paper);border:1px solid var(--line);
+  border-radius:14px;padding:18px 14px;text-align:center;cursor:pointer;
+  position:relative;transition:all .3s;opacity:0.55;
+}
+.pstep .arrow{
+  position:absolute;right:-16px;top:50%;transform:translateY(-50%);z-index:3;
+  color:var(--line);font-size:20px;font-weight:700;
+}
+.pstep:last-child .arrow{display:none}
+.pstep.on{opacity:1;border-color:var(--orange);box-shadow:0 10px 26px rgba(239,127,26,0.18);transform:translateY(-4px)}
+.pstep.on .arrow{color:var(--orange)}
+.pstep .p-ic{width:44px;height:44px;border-radius:12px;background:rgba(239,127,26,0.12);display:flex;align-items:center;justify-content:center;margin:0 auto 10px}
+.pstep .p-ic svg{width:24px;height:24px}
+.pstep .p-n{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;color:var(--muted);text-transform:uppercase}
+.pstep .p-t{font-family:'Fraunces',serif;font-size:16px;font-weight:700;color:var(--brown-dark);margin-top:3px;line-height:1.15}
+.pipe-panel{
+  background:var(--paper);border:1px solid var(--line);border-radius:14px;
+  padding:22px 24px;margin-top:22px;min-height:118px;
+}
+.pipe-panel.swap{animation:panelIn .4s ease}
+@keyframes panelIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.pp-tag{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:0.14em;text-transform:uppercase;color:var(--orange-dark);font-weight:600}
+.pp-title{font-family:'Fraunces',serif;font-size:21px;font-weight:700;color:var(--brown-dark);margin:5px 0 9px}
+.pp-why{font-size:14px;color:var(--ink);margin-bottom:11px;max-width:none}
+.pp-ai{
+  font-size:13px;color:var(--brown);background:var(--cream);border-left:3px solid var(--orange);
+  padding:10px 14px;border-radius:0 8px 8px 0;max-width:none;margin:0;
+}
+.pp-ai strong{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;color:var(--orange-dark)}
+
+/* ============ Figure 2 · Reply builder (tone/length) ============ */
+.reply-grid{display:grid;grid-template-columns:250px 1fr;gap:24px;align-items:start}
+.zone{margin-bottom:16px}
+.zone-label{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.field{display:flex;flex-wrap:wrap;gap:7px}
+.field button{
+  font-family:'JetBrains Mono',monospace;font-size:11px;background:var(--paper);
+  border:1px solid var(--line);color:var(--brown);padding:8px 12px;border-radius:8px;
+  cursor:pointer;transition:all .2s;letter-spacing:0.02em;
+}
+.field button:hover{border-color:var(--orange)}
+.field button.on{background:var(--orange);color:#fff;border-color:var(--orange)}
+.field button.len-on{background:var(--brown-dark);color:#fff;border-color:var(--brown-dark)}
+.reply-out{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:20px;box-shadow:0 8px 22px rgba(65,44,35,0.06)}
+.reply-hint{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);margin-bottom:14px;letter-spacing:0.03em;max-width:none}
+.reply-body{font-size:14px;color:var(--brown-dark);white-space:pre-line;line-height:1.7;min-height:120px}
+.reply-body.pop{animation:panelIn .35s ease}
+.reply-meta{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--orange-dark);font-weight:600;margin-top:14px;border-top:1px solid var(--line);padding-top:10px}
+
+/* ============ Figure 3 · Long-thread summarizer ============ */
+.sum-wrap{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.sum-col{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:20px;display:flex;flex-direction:column}
+.sum-col.raw{border-top:4px solid var(--muted)}
+.sum-col.dist{border-top:4px solid var(--orange)}
+.sum-label{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:0.14em;text-transform:uppercase;font-weight:600;margin-bottom:12px}
+.sum-col.raw .sum-label{color:var(--muted)}
+.sum-col.dist .sum-label{color:var(--orange-dark)}
+.thread-scroll{max-height:230px;overflow-y:auto;display:grid;gap:6px;padding-right:4px}
+.msg{font-size:12.5px;color:var(--muted);background:var(--cream);border:1px solid var(--line);border-radius:8px;padding:8px 11px;line-height:1.4}
+.msg b{color:var(--brown-dark);font-weight:600}
+.dist-item{font-size:13.5px;color:var(--brown-dark);background:var(--cream);border-left:3px solid var(--orange);border-radius:0 8px 8px 0;padding:10px 13px;margin-bottom:8px;opacity:0;transform:translateY(6px);transition:all .4s}
+.dist-item.show{opacity:1;transform:translateY(0)}
+.dist-item .di-tag{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:0.1em;text-transform:uppercase;color:var(--orange-dark);font-weight:600;display:block;margin-bottom:3px}
+.dist-item .owner{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--tan)}
+.sum-empty{font-size:13px;color:var(--muted)}
+
+/* ============ Figure 4 · Email into task/meeting + prep brief ============ */
+.act-grid{display:grid;grid-template-columns:1fr 250px;gap:30px;align-items:start}
+.chips{display:flex;flex-wrap:wrap;gap:10px}
+.chip{
+  font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:0.02em;
+  border:1px solid var(--line);background:var(--paper);color:var(--brown);
+  padding:10px 15px;border-radius:999px;cursor:pointer;transition:all .25s;user-select:none;
+}
+.chip:hover{border-color:var(--orange)}
+.chip.on{background:var(--brown-dark);color:#FBE7CB;border-color:var(--brown-dark)}
+.act-verdict{
+  margin-top:16px;font-size:14px;color:var(--brown-dark);background:var(--paper);
+  border:1px solid var(--line);border-left:3px solid var(--yellow);
+  padding:14px 16px;border-radius:0 10px 10px 0;min-height:60px;max-width:none;
+}
+.act-verdict.pop{animation:panelIn .35s ease}
+.act-verdict strong{color:var(--orange-dark)}
+.act-hintrow{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);margin-top:16px;letter-spacing:0.03em;max-width:none}
+.card-stage{text-align:center}
+.card-viz{
+  min-height:200px;background:var(--paper);border:1px solid var(--line);border-radius:14px;
+  padding:16px;display:flex;align-items:center;justify-content:center;
+}
+.card-viz svg{width:100%;height:100%;max-height:180px}
+.card-name{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--orange-dark);font-weight:600;margin-top:12px}
+
+/* ============ Figure 5 · Review-before-send checklist ============ */
+.val-wrap{display:grid;grid-template-columns:1fr 300px;gap:26px;align-items:start}
+.claim-list{display:grid;gap:10px}
+.claim{
+  background:var(--paper);border:1px solid var(--line);border-radius:12px;
+  padding:14px 16px;cursor:pointer;transition:all .25s;
+}
+.claim:hover{border-color:var(--orange)}
+.claim.checked{border-color:var(--brown-dark)}
+.claim .c-head{font-size:14px;color:var(--brown-dark);font-weight:600;display:flex;align-items:center;gap:9px}
+.claim .c-badge{
+  font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.08em;text-transform:uppercase;
+  padding:2px 8px;border-radius:5px;flex-shrink:0;
+}
+.claim.unchecked-state .c-badge{background:var(--cream);color:var(--muted);border:1px solid var(--line)}
+.claim.ok .c-badge{background:rgba(0,141,210,0.14);color:var(--accent)}
+.claim.bad .c-badge{background:rgba(213,82,34,0.14);color:var(--orange-dark)}
+.claim .c-detail{font-size:13px;color:var(--muted);margin-top:8px;display:none;line-height:1.5}
+.claim.checked .c-detail{display:block;animation:panelIn .3s ease}
+.val-side{
+  background:var(--brown-dark);color:#EFDFC9;border-radius:14px;padding:22px;position:sticky;top:90px;
+}
+.val-side h4{font-family:'Fraunces',serif;font-size:19px;color:var(--paper);margin-bottom:10px}
+.val-side .vs-num{font-family:'Fraunces',serif;font-size:52px;font-weight:800;color:var(--orange-light);line-height:1}
+.val-side .vs-cap{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#C9A574;margin-top:2px}
+.val-side p{color:#E8D9C5;font-size:13px;max-width:none;margin-top:14px}
+.val-side .vs-bar{height:8px;background:rgba(251,246,238,0.15);border-radius:6px;margin-top:14px;overflow:hidden}
+.val-side .vs-fill{height:100%;width:0;background:linear-gradient(90deg,var(--orange),var(--yellow));transition:width .5s cubic-bezier(.3,.8,.3,1)}
+
+@media(max-width:880px){
+  .reply-grid,.act-grid,.val-wrap{grid-template-columns:1fr}
+  .sum-wrap{grid-template-columns:1fr}
+  .val-side{position:static}
+  .pstep{min-width:calc(50% - 8px);flex:none}
+}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="brand">MokshPath <span class="dot">·</span> <span class="sub">Lesson 03 · AI in Outlook</span></div>
+  <div class="logo-slot" aria-label="MokshPath logo">
+    <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="2" y="2" width="40" height="40" rx="11" fill="#412C23"/>
+      <path d="M10 31V14.5l6 8.5 6-8.5 6 8.5 6-8.5V31" stroke="#EF7F1A" stroke-width="3.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="34" cy="10.5" r="3" fill="#FECC00"/>
+    </svg>
+  </div>
+</div>
+<div class="page">
+
+<section class="hero">
+  <div class="eyebrow">Week 2 · Lesson 03 · AI Office</div>
+  <h1>Your inbox is a queue. AI is the <em>triage nurse</em>.</h1>
+  <p class="lede">A full inbox isn't a to-do list — it's a pile of decisions waiting to be made. In this lesson you turn that pile into a repeatable flow: let AI summarize the thread, you decide what it deserves, AI drafts the reply in the right tone, you review for wrong recipients and invented commitments, and only then does it send. Same discipline for the calendar — meetings, tasks, and prep briefs, all one prompt away.</p>
+</section>
+
+<section>
+  <div class="section-num">01 / 05</div>
+  <h2>Triage is a pipeline, not a scroll</h2>
+  <p class="lead">Beginners open the inbox and scroll, re-reading the same threads three times before acting on any of them. The pros run every message through the same five steps — and Copilot in Outlook can help at each one. Master the loop and "inbox zero" stops being a fantasy.</p>
+
+  <p>The mistake is treating AI as an autopilot that reads and replies for you. It isn't. It's an assistant that does the reading and the drafting so <em>you</em> can do the deciding. The loop is fixed: first AI <strong>summarizes</strong> the thread so you grasp it in one glance, then <strong>you decide</strong> what it needs — reply, delegate, schedule, or ignore — then AI <strong>drafts</strong> the reply, then <strong>you review</strong> it for tone, recipients, and invented facts, and only then do you <strong>send</strong>. Click through each stage below.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 1 · The inbox-triage pipeline</span>
+      <div class="controls">
+        <button id="pipeBtn" onclick="tourPipe()">▶ Walk through</button>
+        <button onclick="resetPipe()">↺ Reset</button>
+      </div>
+    </div>
+    <div class="pipe" id="pipe">
+      <div class="pstep" data-step="summarize" onclick="selectStep('summarize')">
+        <div class="p-ic"><svg viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 11h16M4 16h9" stroke="#EF7F1A" stroke-width="2" stroke-linecap="round"/></svg></div>
+        <div class="p-n">Step 1</div><div class="p-t">Summarize</div>
+        <span class="arrow">→</span>
+      </div>
+      <div class="pstep" data-step="decide" onclick="selectStep('decide')">
+        <div class="p-ic"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3v6m0 0l-4 4m4-4l4 4M6 21h12" stroke="#EF7F1A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="p-n">Step 2</div><div class="p-t">Decide</div>
+        <span class="arrow">→</span>
+      </div>
+      <div class="pstep" data-step="draft" onclick="selectStep('draft')">
+        <div class="p-ic"><svg viewBox="0 0 24 24" fill="none"><path d="M4 20l4-1L19 8a2 2 0 000-3l-.7-.7a2 2 0 00-3 0L4 15.5 4 20z" stroke="#EF7F1A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="p-n">Step 3</div><div class="p-t">Draft</div>
+        <span class="arrow">→</span>
+      </div>
+      <div class="pstep" data-step="review" onclick="selectStep('review')">
+        <div class="p-ic"><svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="#EF7F1A" stroke-width="2"/><path d="M16.5 16.5L21 21" stroke="#EF7F1A" stroke-width="2" stroke-linecap="round"/></svg></div>
+        <div class="p-n">Step 4</div><div class="p-t">Review</div>
+        <span class="arrow">→</span>
+      </div>
+      <div class="pstep" data-step="send" onclick="selectStep('send')">
+        <div class="p-ic"><svg viewBox="0 0 24 24" fill="none"><path d="M21 3L10 14M21 3l-7 18-4-7-7-4 18-7z" stroke="#EF7F1A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="p-n">Step 5</div><div class="p-t">Send</div>
+        <span class="arrow">→</span>
+      </div>
+    </div>
+    <div class="pipe-panel" id="pipePanel">
+      <div class="pp-tag" id="ppTag">Interactive pipeline</div>
+      <div class="pp-title" id="ppTitle">Click any stage above</div>
+      <p class="pp-why" id="ppWhy">Every message you actually act on travels these five steps. The two steps AI can't own are "Decide" and "Review" — those stay human, because you're the one who's accountable for what leaves your outbox. Click a stage, or press "Walk through", to see what happens there and where AI helps.</p>
+      <p class="pp-ai" id="ppAi"><strong>Tip —</strong> AI drafts, you decide and review. Never let a message send itself.</p>
+    </div>
+  </div>
+
+  <h3>Why two steps stay human</h3>
+  <p>AI can read faster than you and write more politely than you, but it can't be <em>accountable</em>. Deciding whether a thread deserves a reply, a delegation, or the archive is a judgement call about your priorities. And reviewing the draft — did it promise something you can't deliver, is it going to the right person — is the one gate that keeps a confident, well-written mistake from reaching a client. Skip either, and AI just helps you make errors faster.</p>
+</section>
+
+<section>
+  <div class="section-num">02 / 05</div>
+  <h2>Draft the right reply, not just a reply</h2>
+  <p class="lead">A good reply isn't only correct — it's the right <strong>tone</strong> for the relationship and the right <strong>length</strong> for the situation. "Draft a reply" gets you generic mush. "Draft a firm but polite reply declining the deadline, short" gets you something you can almost send as-is. You steer; AI types.</p>
+
+  <p>The same underlying message reads completely differently depending on two dials. <strong>Tone</strong> — formal for a client you've never met, friendly for a teammate, firm when you need to hold a line without being rude. <strong>Length</strong> — short when a yes/no will do, detailed when you owe context and next steps. Set both below and watch the same reply re-cast itself. The reply here declines a request to move a launch date.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 2 · The reply builder — set tone &amp; length</span>
+      <div class="controls">
+        <button onclick="replyDemo()">▶ Show example</button>
+        <button onclick="resetReply()">↺ Reset</button>
+      </div>
+    </div>
+    <div class="reply-grid">
+      <div>
+        <div class="zone">
+          <div class="zone-label">Tone</div>
+          <div class="field">
+            <button id="t-formal" onclick="setTone('formal')">Formal</button>
+            <button id="t-friendly" onclick="setTone('friendly')">Friendly</button>
+            <button id="t-firm" onclick="setTone('firm')">Firm</button>
+          </div>
+        </div>
+        <div class="zone">
+          <div class="zone-label">Length</div>
+          <div class="field">
+            <button id="l-short" onclick="setLen('short')">Short</button>
+            <button id="l-detailed" onclick="setLen('detailed')">Detailed</button>
+          </div>
+        </div>
+        <div class="zone">
+          <div class="zone-label">The situation</div>
+          <p class="reply-hint" style="margin-top:2px">A client asked to move the launch from the 20th to the 14th. You cannot — QA finishes on the 18th. You must decline without losing the account.</p>
+        </div>
+      </div>
+      <div class="reply-out">
+        <p class="reply-hint" id="replyHint">Pick a tone and a length to draft the reply.</p>
+        <div class="reply-body" id="replyBody">Set the two dials on the left. The same "sorry, we can't move the date" message will re-cast itself into the register you choose — because the message is fixed, but the delivery is a choice.</div>
+        <div class="reply-meta" id="replyMeta"></div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Always give the AI the constraint, not just the topic</h3>
+  <p>The difference between a useless draft and a great one is the constraint you hand over. Don't say "reply to this." Say "reply declining, keep our relationship warm, mention the QA date as the reason, and offer the 22nd as an alternative." The AI can write in any voice — your job is to tell it which voice, and what non-negotiable facts must appear. Then read it once as if you were the recipient.</p>
+</section>
+
+<section>
+  <div class="section-num">03 / 05</div>
+  <h2>Collapse the 20-message thread to what matters</h2>
+  <p class="lead">The worst thing about a long thread isn't its length — it's that the decisions are buried inside pleasantries, reversals, and "per my last email." You don't need the whole conversation. You need three things: what was decided, who owns what, and what's still open.</p>
+
+  <p>A twenty-message thread almost always distils to a handful of lines. AI is genuinely excellent at this — "summarize this thread into decisions, owners, and open questions" turns forty minutes of scrolling into a ten-second read. The one rule: the summary is a <em>map</em>, not the territory. If a decision affects money or a deadline, click into the original message to confirm the AI didn't smooth over a caveat. Press play to collapse the thread on the left into the brief on the right.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 3 · Summarize a long thread into a brief</span>
+      <div class="controls">
+        <button id="sumBtn" onclick="runSummary()">▶ Summarize</button>
+        <button onclick="resetSummary()">↺ Reset</button>
+      </div>
+    </div>
+    <div class="sum-wrap">
+      <div class="sum-col raw">
+        <div class="sum-label">✗ The raw thread — 20 messages</div>
+        <div class="thread-scroll" id="threadScroll"></div>
+      </div>
+      <div class="sum-col dist">
+        <div class="sum-label">✓ The brief — decisions, owners, open</div>
+        <div id="distOut"><p class="sum-empty" id="sumEmpty">Press "Summarize" to collapse the thread on the left into the decisions that were actually made, who owns each one, and what's still unresolved.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Ask for the shape you need</h3>
+  <p>"Summarize this" gives you a paragraph you still have to parse. Ask for a <em>shape</em> instead: "list the decisions as bullets, then a table of action items with owners and due dates, then open questions." The more structure you request, the more useful — and the more obviously verifiable — the summary becomes. A summary you can scan in ten seconds is worth re-checking; a wall of prose isn't.</p>
+</section>
+
+<section>
+  <div class="section-num">04 / 05</div>
+  <h2>An email is often a task or a meeting in disguise</h2>
+  <p class="lead">Half the messages in your inbox aren't really asking for a reply — they're asking for an action. "Can we sync on the budget this week?" is a meeting. "Please send the revised deck by Friday" is a task with a due date. AI in Outlook can turn either into the right artifact in one click.</p>
+
+  <p>Instead of letting a message rot in the inbox as a reminder-that-isn't, convert it. <strong>Turn it into a task</strong> in To Do with the deadline captured. <strong>Turn it into a meeting</strong> — Copilot reads everyone's free/busy and proposes times so you skip the "does Tuesday work?" ping-pong. <strong>Get a prep brief</strong> before a meeting — a card of what it's about, who's coming, and what you last agreed. Pick an action below to see what AI produces.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 4 · Turn an email into an action</span>
+      <div class="controls">
+        <button onclick="resetAct()">↺ Reset</button>
+      </div>
+    </div>
+    <div class="act-grid" id="actWrap">
+      <div>
+        <div class="chips">
+          <span class="chip on" id="a-task" onclick="pickAct('task')">Make it a task</span>
+          <span class="chip" id="a-meeting" onclick="pickAct('meeting')">Schedule a meeting</span>
+          <span class="chip" id="a-prep" onclick="pickAct('prep')">Meeting-prep brief</span>
+        </div>
+        <div class="act-verdict" id="actVerdict"></div>
+        <p class="act-hintrow">AI proposes the artifact; you confirm the details. It can read calendars, but it can't know that Thursday is your kid's recital.</p>
+      </div>
+      <div class="card-stage">
+        <div class="card-viz" id="actViz"></div>
+        <div class="card-name" id="actName">Task card</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Let AI do the scheduling ping-pong</h3>
+  <p>The single most tedious thing email does is negotiate a meeting time across four calendars. Copilot in Outlook reads the free/busy of everyone invited and proposes slots that actually work — no more "how's Wednesday? no, Thursday? actually…". You still own the final call: glance at the proposed time against the things your calendar <em>doesn't</em> know about, then hit send on the invite.</p>
+</section>
+
+<section>
+  <div class="section-num">05 / 05</div>
+  <h2>Never send an AI draft you haven't reviewed</h2>
+  <p class="lead">An AI draft is confident, fluent, and occasionally makes promises you never intended — or is quietly addressed to the wrong Sarah. The output looks ready to send either way. The final, non-negotiable step is the review: catch the hallucinated commitment and the wrong recipient <em>before</em> you hit send, not after.</p>
+
+  <p>There's a real privacy dimension here too. <strong>Copilot in Outlook</strong> runs on your company's Microsoft 365 tenant under its data protections — your email stays inside your organisation's boundary. <strong>Pasting a work email into public ChatGPT or Claude</strong> is powerful, but you're sending company content to an outside service — check your employer's policy first, and strip names and confidential details. The no-Copilot-license alternative for personal use is <strong>Gmail with Gemini</strong>, which does much the same on a consumer account. Whichever tool, every draft is a draft until you've reviewed it. Click each item to run the pre-send check on this AI-drafted reply.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 5 · Review before send — catch the errors</span>
+      <div class="controls">
+        <button onclick="checkAll()">▶ Check all</button>
+        <button onclick="resetVal()">↺ Reset</button>
+      </div>
+    </div>
+    <div class="val-wrap" id="valWrap">
+      <div class="claim-list" id="claimList">
+        <div class="claim unchecked-state" data-claim="recipient" onclick="toggleClaim(this)">
+          <div class="c-head"><span class="c-badge">Not checked</span> To: "Sarah Menon" — is this the right Sarah?</div>
+          <div class="c-detail"></div>
+        </div>
+        <div class="claim unchecked-state" data-claim="commit" onclick="toggleClaim(this)">
+          <div class="c-head"><span class="c-badge">Not checked</span> "We'll ship the full report by Monday."</div>
+          <div class="c-detail"></div>
+        </div>
+        <div class="claim unchecked-state" data-claim="tone" onclick="toggleClaim(this)">
+          <div class="c-head"><span class="c-badge">Not checked</span> Tone: warm, professional, declines clearly.</div>
+          <div class="c-detail"></div>
+        </div>
+        <div class="claim unchecked-state" data-claim="attach" onclick="toggleClaim(this)">
+          <div class="c-head"><span class="c-badge">Not checked</span> "Please find the deck attached." — is it?</div>
+          <div class="c-detail"></div>
+        </div>
+      </div>
+      <div class="val-side">
+        <h4>Pre-send score</h4>
+        <div class="vs-num" id="vsNum">0<span style="font-size:24px">/4</span></div>
+        <div class="vs-cap">Items reviewed</div>
+        <div class="vs-bar"><div class="vs-fill" id="vsFill"></div></div>
+        <p id="vsMsg">Click each item to check it against reality — the recipient list, what you actually agreed, whether the file is really attached. Two of these four items are quietly wrong.</p>
+      </div>
+    </div>
+  </div>
+
+  <h3>The three-second pre-send check</h3>
+  <p>You don't need to re-read the whole thread — you need three glances. <strong>Recipients:</strong> is every name the one you meant, and is anyone on Cc who shouldn't see this? <strong>Commitments:</strong> did the draft promise a date, a deliverable, or a number you didn't authorise? <strong>Attachments:</strong> if the email says "attached," is the file actually there? If any glance fails, the AI over-helped. Trust the fluent draft least — with AI, review first, send second.</p>
+</section>
+
+<div class="takeaway">
+  <h2>What to carry forward</h2>
+  <p>You now know that a managed inbox is manufactured, not willpowered. AI reads, drafts, summarizes, and schedules — but you decide and you review, because you're the one whose name is on the "From" line. The tool accelerates every step, and quietly introduces a wrong recipient or an invented promise at every step too, which is why the human owns the send button.</p>
+  <ul>
+    <li>Run every message through the loop: summarize → decide → draft → review → send</li>
+    <li>Decide and review stay human — AI can't be accountable for what leaves your outbox</li>
+    <li>Great drafts come from giving the AI the constraint: tone, length, and the fixed facts</li>
+    <li>Ask a long thread for a shape — decisions, owners, open questions — not a paragraph</li>
+    <li>An email is often a task or a meeting; let Copilot convert it and propose times</li>
+    <li>Copilot keeps mail in your tenant; pasting into public AI sends it out — Gmail+Gemini is the personal alternative</li>
+    <li>Before send, glance three times: right recipients, no invented commitments, attachment present</li>
+  </ul>
+</div>
+
+</div>
+<footer>MokshPath · Lesson 03 of 04 · Next up: AI in Teams &amp; Meetings →</footer>
+<script>
+
+/* ============ Figure 1 · Triage pipeline ============ */
+const STEPS={
+  summarize:{t:"Summarize the thread",
+    why:"Before you decide anything, get the gist. A long thread or a dense message becomes a one-line grasp: what's being asked, who's involved, and what's actually new. You stop re-reading the same thread three times just to remember where it left off.",
+    ai:"Copilot's \"Summarize\" button collapses a thread into decisions, owners, and open questions in seconds. Ask it: \"summarize this thread and tell me what's being asked of me\" — the noise disappears."},
+  decide:{t:"Decide what it deserves — you",
+    why:"This step is yours and stays yours. Every message is one of four things: reply now, delegate, schedule, or archive. Deciding which is a judgement about your priorities — the one thing an assistant genuinely cannot do for you, because it doesn't know what matters this week.",
+    ai:"AI can suggest a category (\"this looks like an FYI, no reply needed\"), but the call is yours. Treat its suggestion as a nudge, not an instruction — you're the one accountable for the outcome."},
+  draft:{t:"Draft the reply",
+    why:"Once you've decided to reply, AI writes the first version. Hand it the tone, the length, and the non-negotiable facts, and it produces something 80% of the way there — far faster than staring at a blank compose window.",
+    ai:"\"Draft a firm but polite reply declining the deadline, short, mention the QA date.\" The more constraint you give, the closer the draft lands. AI types; you steer the register and the facts."},
+  review:{t:"Review before it leaves — you",
+    why:"The gate that stays human. Read the draft as if you were the recipient. Did it promise something you can't deliver? Is it going to the right person? Is the tone right for this relationship? A fluent, confident draft is exactly where a mistake hides best.",
+    ai:"AI won't catch that it addressed the wrong Sarah or invented a Monday deadline — those are your call. Check recipients, commitments, and attachments every single time before you trust the words."},
+  send:{t:"Send — and move on",
+    why:"Only after summarize, decide, draft, and review does the message leave. The point of the whole loop is that by the time you hit send, you've spent your attention on the two steps that matter — deciding and reviewing — and let AI absorb the reading and typing.",
+    ai:"With the loop internalised, a triaged inbox is minutes, not hours. AI carried the boring load; you kept the two decisions that carry your name. That's the whole game."}
+};
+const stepOrder=["summarize","decide","draft","review","send"];
+let pipeTimer=null,pipeIdx=0;
+function selectStep(k){
+  document.querySelectorAll('#pipe .pstep').forEach(el=>el.classList.remove('on'));
+  const el=document.querySelector('#pipe [data-step="'+k+'"]');
+  if(el)el.classList.add('on');
+  const d=STEPS[k],panel=document.getElementById('pipePanel');
+  document.getElementById('ppTag').textContent='Stage '+(stepOrder.indexOf(k)+1)+' of 5';
+  document.getElementById('ppTitle').textContent=d.t;
+  document.getElementById('ppWhy').textContent=d.why;
+  document.getElementById('ppAi').innerHTML='<strong>AI assist —</strong> '+d.ai;
+  panel.classList.remove('swap');void panel.offsetWidth;panel.classList.add('swap');
+}
+function tourPipe(){
+  stopPipe();
+  document.getElementById('pipeBtn').classList.add('active');
+  pipeIdx=0;selectStep(stepOrder[0]);
+  pipeTimer=setInterval(()=>{
+    pipeIdx++;
+    if(pipeIdx>=stepOrder.length){stopPipe();return}
+    selectStep(stepOrder[pipeIdx]);
+  },3200);
+}
+function stopPipe(){
+  if(pipeTimer){clearInterval(pipeTimer);pipeTimer=null}
+  document.getElementById('pipeBtn').classList.remove('active');
+}
+function resetPipe(){
+  stopPipe();
+  document.querySelectorAll('#pipe .pstep').forEach(el=>el.classList.remove('on'));
+  document.getElementById('ppTag').textContent='Interactive pipeline';
+  document.getElementById('ppTitle').textContent='Click any stage above';
+  document.getElementById('ppWhy').textContent='Every message you actually act on travels these five steps. The two steps AI can\'t own are "Decide" and "Review" — those stay human, because you\'re the one who\'s accountable for what leaves your outbox. Click a stage, or press "Walk through", to see what happens there and where AI helps.';
+  document.getElementById('ppAi').innerHTML='<strong>Tip —</strong> AI drafts, you decide and review. Never let a message send itself.';
+}
+new IntersectionObserver((es,o)=>es.forEach(e=>{if(e.isIntersecting){tourPipe();o.unobserve(e.target)}}),{threshold:0.4}).observe(document.getElementById('pipe'));
+
+/* ============ Figure 2 · Reply builder ============ */
+const REPLIES={
+  formal:{
+    short:"Dear Mr. Rao,\n\nThank you for the request. Regrettably, we are unable to advance the launch to the 14th, as quality assurance concludes on the 18th. We remain committed to the 20th.\n\nKind regards,\nPriya",
+    detailed:"Dear Mr. Rao,\n\nThank you for your note regarding the launch date. I have reviewed the schedule carefully. Regrettably, moving to the 14th is not feasible: our quality-assurance cycle concludes on the 18th, and releasing prior to its completion would place the product at unacceptable risk.\n\nWe remain fully committed to the agreed date of the 20th. Should the timeline be a concern, I would be glad to discuss a phased release.\n\nKind regards,\nPriya"},
+  friendly:{
+    short:"Hi Anil,\n\nWish I could pull the launch to the 14th! Sadly QA doesn't wrap till the 18th, so the 20th is the earliest we can safely ship. Still on track for that though — thanks for understanding!\n\nCheers,\nPriya",
+    detailed:"Hi Anil,\n\nGreat to hear the excitement to go live sooner! I really wish I could make the 14th work — but QA doesn't finish until the 18th, and shipping before it's fully tested would be a risk I don't want to take with your launch.\n\nThe good news: we're solidly on track for the 20th. If you'd like, we could do a soft launch to a small group first — happy to walk through options on a quick call.\n\nCheers,\nPriya"},
+  firm:{
+    short:"Hi Anil,\n\nWe can't move the launch to the 14th — QA finishes on the 18th, and shipping untested isn't something we'll do. The date stays the 20th.\n\nBest,\nPriya",
+    detailed:"Hi Anil,\n\nI want to be direct: the 14th isn't possible. Our QA cycle finishes on the 18th, and releasing before it completes would expose your launch to bugs we haven't caught yet — that's a line we won't cross.\n\nThe launch stays on the 20th as agreed. I'm confident in that date and will keep you posted on progress. If there's external pressure driving the earlier ask, let's talk it through — but the date itself isn't negotiable.\n\nBest,\nPriya"}
+};
+let tone=null,len=null;
+function setTone(t){tone=t;document.querySelectorAll('#t-formal,#t-friendly,#t-firm').forEach(b=>b.classList.remove('on'));document.getElementById('t-'+t).classList.add('on');renderReply();}
+function setLen(l){len=l;document.querySelectorAll('#l-short,#l-detailed').forEach(b=>b.classList.remove('len-on'));document.getElementById('l-'+l).classList.add('len-on');renderReply();}
+function renderReply(){
+  const hint=document.getElementById('replyHint'),body=document.getElementById('replyBody'),meta=document.getElementById('replyMeta');
+  if(!tone||!len){hint.textContent='Pick a tone and a length to draft the reply.';meta.textContent='';return}
+  const txt=REPLIES[tone][len];
+  hint.textContent='Prompt: "Draft a reply declining the earlier date — '+tone+', '+len+', keep the QA reason."';
+  body.textContent=txt;
+  body.classList.remove('pop');void body.offsetWidth;body.classList.add('pop');
+  const words=txt.split(/\s+/).length;
+  meta.textContent=tone+' · '+len+' · ~'+words+' words · read it as the recipient before sending';
+}
+function replyDemo(){setTone('firm');setLen('short');}
+function resetReply(){
+  tone=null;len=null;
+  document.querySelectorAll('#t-formal,#t-friendly,#t-firm').forEach(b=>b.classList.remove('on'));
+  document.querySelectorAll('#l-short,#l-detailed').forEach(b=>b.classList.remove('len-on'));
+  document.getElementById('replyHint').textContent='Pick a tone and a length to draft the reply.';
+  document.getElementById('replyBody').textContent="Set the two dials on the left. The same \"sorry, we can't move the date\" message will re-cast itself into the register you choose — because the message is fixed, but the delivery is a choice.";
+  document.getElementById('replyMeta').textContent='';
+}
+new IntersectionObserver((es,o)=>es.forEach(e=>{if(e.isIntersecting){replyDemo();o.unobserve(e.target)}}),{threshold:0.4}).observe(document.getElementById('replyBody'));
+
+/* ============ Figure 3 · Long-thread summarizer ============ */
+const THREAD=[
+  ["Anil","Kicking off the Q3 launch thread — target date?"],
+  ["Priya","Proposing the 20th. QA needs the full window."],
+  ["Ravi","Can marketing get assets a week before? So the 13th."],
+  ["Anil","Works. Ravi owns the launch assets, due 13th."],
+  ["Meera","Legal review of the landing copy — I'll need 3 days."],
+  ["Priya","Then copy to legal by the 10th. Meera owns sign-off."],
+  ["Ravi","Do we have budget for the paid push?"],
+  ["Anil","Yes — ₹2L approved. Ravi to allocate."],
+  ["Meera","One caveat: the disclaimer text is mandatory, no edits."],
+  ["Priya","Noted. Disclaimer stays verbatim on the page."],
+  ["Ravi","Who's confirming the vendor for the webinar?"],
+  ["Anil","Priya, can you? Vendor confirmation due 15th."],
+  ["Priya","On it. Will confirm vendor by the 15th."],
+  ["Meera","Are we translating the page? Open question."],
+  ["Anil","Parking translation — decide after launch."],
+  ["Ravi","Assets first draft ready, sending for review."],
+  ["Priya","Reviewed — small tweaks, back to you today."],
+  ["Anil","Reminder: launch stays the 20th, no changes."],
+  ["Meera","Legal sign-off done. Copy approved as-is."],
+  ["Anil","Great. Everyone clear on owners? Let's ship."]
+];
+const BRIEF=[
+  {tag:"Decision",text:"Launch date locked to the 20th — no changes.",owner:""},
+  {tag:"Owner",text:"Launch assets due the 13th.",owner:"Ravi"},
+  {tag:"Owner",text:"Legal copy sign-off — approved as-is.",owner:"Meera"},
+  {tag:"Owner",text:"Vendor confirmation due the 15th.",owner:"Priya"},
+  {tag:"Constraint",text:"Disclaimer text is mandatory, verbatim, no edits.",owner:""},
+  {tag:"Open question",text:"Page translation parked — decide after launch.",owner:""}
+];
+function fillThread(){
+  const host=document.getElementById('threadScroll');
+  host.innerHTML=THREAD.map((m,i)=>'<div class="msg"><b>'+m[0]+':</b> '+m[1]+'</div>').join('');
+}
+let sumTimer=null;
+function runSummary(){
+  clearTimeout(sumTimer);
+  document.getElementById('sumBtn').classList.add('active');
+  const host=document.getElementById('distOut');
+  host.innerHTML=BRIEF.map((b,i)=>'<div class="dist-item" id="di-'+i+'"><span class="di-tag">'+b.tag+'</span>'+b.text+(b.owner?' <span class="owner">→ '+b.owner+'</span>':'')+'</div>').join('');
+  BRIEF.forEach((b,i)=>{
+    setTimeout(()=>{const el=document.getElementById('di-'+i);if(el)el.classList.add('show');
+      if(i===BRIEF.length-1)document.getElementById('sumBtn').classList.remove('active');
+    },260*(i+1));
+  });
+}
+function resetSummary(){
+  clearTimeout(sumTimer);
+  document.getElementById('sumBtn').classList.remove('active');
+  document.getElementById('distOut').innerHTML='<p class="sum-empty" id="sumEmpty">Press "Summarize" to collapse the thread on the left into the decisions that were actually made, who owns each one, and what\'s still unresolved.</p>';
+}
+fillThread();
+new IntersectionObserver((es,o)=>es.forEach(e=>{if(e.isIntersecting){runSummary();o.unobserve(e.target)}}),{threshold:0.35}).observe(document.getElementById('threadScroll'));
+
+/* ============ Figure 4 · Email into task/meeting/prep ============ */
+const ACTS={
+  task:{name:"Task card",
+    verdict:"<strong>\"Please send the revised deck by Friday.\"</strong> That's not a reply — it's a task with a due date. AI extracts the action and the deadline into To Do, so it stops living as an unread flag you'll forget. Trap: it may guess the deadline — confirm \"Friday\" means this Friday.",
+    svg:'<svg viewBox="0 0 200 180"><rect x="16" y="16" width="168" height="148" rx="12" fill="#FFFCF6" stroke="#E8DCC8" stroke-width="2"/><rect x="16" y="16" width="168" height="30" rx="12" fill="#EF7F1A"/><rect x="16" y="34" width="168" height="12" fill="#EF7F1A"/><text x="30" y="36" font-family="monospace" font-size="11" fill="#fff" font-weight="700">TASK · TO DO</text><rect x="30" y="62" width="14" height="14" rx="3" fill="none" stroke="#A34E1C" stroke-width="2"/><text x="52" y="73" font-family="sans-serif" font-size="11" fill="#2F1D19" font-weight="600">Send revised deck</text><text x="52" y="92" font-family="monospace" font-size="9" fill="#6E5C50">DUE · FRIDAY 17:00</text><rect x="30" y="108" width="140" height="1" fill="#E8DCC8"/><text x="30" y="128" font-family="monospace" font-size="8.5" fill="#D55222">FROM EMAIL · Anil Rao</text><text x="30" y="146" font-family="monospace" font-size="8.5" fill="#6E5C50">REMINDER · Thu 16:00</text></svg>'},
+  meeting:{name:"Meeting proposal",
+    verdict:"<strong>\"Can we sync on the budget this week?\"</strong> is a meeting. Copilot reads everyone's free/busy and proposes real slots — no \"does Tuesday work?\" ping-pong. Trap: your calendar doesn't know about the school run; scan the proposed time before you send the invite.",
+    svg:'<svg viewBox="0 0 200 180"><rect x="16" y="16" width="168" height="148" rx="12" fill="#FFFCF6" stroke="#E8DCC8" stroke-width="2"/><rect x="16" y="16" width="168" height="30" rx="12" fill="#412C23"/><rect x="16" y="34" width="168" height="12" fill="#412C23"/><text x="30" y="36" font-family="monospace" font-size="11" fill="#fff" font-weight="700">PROPOSED SLOTS</text><rect x="30" y="58" width="140" height="26" rx="6" fill="rgba(239,127,26,0.14)" stroke="#EF7F1A" stroke-width="1.5"/><text x="40" y="75" font-family="monospace" font-size="10" fill="#D55222" font-weight="600">✓ Tue 11:00 — all free</text><rect x="30" y="90" width="140" height="24" rx="6" fill="#FBF6EE" stroke="#E8DCC8"/><text x="40" y="106" font-family="monospace" font-size="10" fill="#6E5C50">Wed 15:00 — 1 busy</text><rect x="30" y="120" width="140" height="24" rx="6" fill="#FBF6EE" stroke="#E8DCC8"/><text x="40" y="136" font-family="monospace" font-size="10" fill="#6E5C50">Thu 09:30 — all free</text></svg>'},
+  prep:{name:"Prep brief",
+    verdict:"<strong>Before the meeting starts,</strong> ask for a prep brief. AI pulls what it's about, who's coming, and what you last agreed with them — so you walk in ready instead of skimming the thread in the hallway. Trap: it summarizes from email only; it won't know what was said on a call.",
+    svg:'<svg viewBox="0 0 200 180"><rect x="16" y="16" width="168" height="148" rx="12" fill="#FFFCF6" stroke="#E8DCC8" stroke-width="2"/><rect x="16" y="16" width="168" height="30" rx="12" fill="#A34E1C"/><rect x="16" y="34" width="168" height="12" fill="#A34E1C"/><text x="30" y="36" font-family="monospace" font-size="11" fill="#fff" font-weight="700">PREP BRIEF</text><text x="30" y="64" font-family="monospace" font-size="8.5" fill="#D55222">ABOUT</text><text x="30" y="79" font-family="sans-serif" font-size="10" fill="#2F1D19">Q3 launch budget sign-off</text><text x="30" y="100" font-family="monospace" font-size="8.5" fill="#D55222">WHO</text><text x="30" y="115" font-family="sans-serif" font-size="10" fill="#2F1D19">Anil, Ravi, Meera</text><text x="30" y="136" font-family="monospace" font-size="8.5" fill="#D55222">LAST AGREED</text><text x="30" y="151" font-family="sans-serif" font-size="10" fill="#2F1D19">₹2L approved · date locked 20th</text></svg>'}
+};
+function pickAct(k){
+  document.querySelectorAll('.chips .chip').forEach(c=>c.classList.remove('on'));
+  document.getElementById('a-'+k).classList.add('on');
+  const d=ACTS[k];
+  document.getElementById('actViz').innerHTML=d.svg;
+  document.getElementById('actName').textContent=d.name;
+  const v=document.getElementById('actVerdict');
+  v.innerHTML=d.verdict;
+  v.classList.remove('pop');void v.offsetWidth;v.classList.add('pop');
+}
+function resetAct(){pickAct('task')}
+new IntersectionObserver((es,o)=>es.forEach(e=>{if(e.isIntersecting){pickAct('task');o.unobserve(e.target)}}),{threshold:0.4}).observe(document.getElementById('actWrap'));
+
+/* ============ Figure 5 · Review before send ============ */
+const CLAIMS={
+  recipient:{ok:false,badge:"Wrong",
+    detail:"There are two Sarahs in your directory — Sarah Menon (a vendor) and Sarah Nair (the client this thread is about). AI autocompleted the first match. This reply about the client's launch would land in the vendor's inbox. Always confirm the recipient is the person the thread is actually about."},
+  commit:{ok:false,badge:"Wrong",
+    detail:"You never agreed to a Monday delivery — the thread said the report follows QA, which ends the 18th. The AI invented a specific, earlier commitment to sound helpful. This is a hallucinated promise; delete it or you've just bound yourself to a deadline you can't meet."},
+  tone:{ok:true,badge:"Reads right",
+    detail:"Read aloud as the recipient: it declines the earlier date, gives the QA reason, and keeps the relationship warm. The tone matches the situation — a firm no wrapped in courtesy. This part is good to send."},
+  attach:{ok:true,badge:"Present",
+    detail:"The draft says \"please find the deck attached\" — and the deck is in fact attached. AI often writes \"attached\" out of habit when nothing is there; this time it's real. Whenever an email claims an attachment, glance at the paperclip before send."}
+};
+let checkedSet=new Set();
+function applyClaim(el,d){
+  el.classList.remove('unchecked-state');
+  el.classList.add('checked',d.ok?'ok':'bad');
+  el.querySelector('.c-badge').textContent=(d.ok?'✓ ':'✗ ')+d.badge;
+  el.querySelector('.c-detail').textContent=d.detail;
+}
+function toggleClaim(el){
+  const key=el.dataset.claim,d=CLAIMS[key];
+  if(el.classList.contains('checked')){
+    el.classList.remove('checked','ok','bad');el.classList.add('unchecked-state');
+    el.querySelector('.c-badge').textContent='Not checked';
+    el.querySelector('.c-detail').textContent='';
+    checkedSet.delete(key);
+  }else{
+    applyClaim(el,d);checkedSet.add(key);
+  }
+  updateVal();
+}
+function updateVal(){
+  const n=checkedSet.size;
+  document.getElementById('vsNum').innerHTML=n+'<span style="font-size:24px">/4</span>';
+  document.getElementById('vsFill').style.width=(n/4*100)+'%';
+  const msg=document.getElementById('vsMsg');
+  if(n===0)msg.textContent='Click each item to check it against reality — the recipient list, what you actually agreed, whether the file is really attached. Two of these four items are quietly wrong.';
+  else if(n<4)msg.textContent='Keep going. '+n+' of 4 reviewed. Notice how two items quietly failed — the wrong Sarah and a promise you never made. That\'s AI over-helping.';
+  else msg.textContent='All four reviewed. Two were wrong: the wrong recipient and the invented Monday deadline. This is exactly why you never send an AI draft unreviewed.';
+}
+function checkAll(){
+  document.querySelectorAll('#claimList .claim').forEach(el=>{
+    if(!el.classList.contains('checked')){applyClaim(el,CLAIMS[el.dataset.claim]);checkedSet.add(el.dataset.claim)}
+  });
+  updateVal();
+}
+function resetVal(){
+  checkedSet.clear();
+  document.querySelectorAll('#claimList .claim').forEach(el=>{
+    el.classList.remove('checked','ok','bad');el.classList.add('unchecked-state');
+    el.querySelector('.c-badge').textContent='Not checked';
+    el.querySelector('.c-detail').textContent='';
+  });
+  updateVal();
+}
+updateVal();
+
+</script>
+</body>
+</html>
