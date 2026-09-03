@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>AI in Word — Documents &amp; Writing · Lesson 02</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,0,400;9..144,0,600;9..144,0,800;9..144,1,600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+
+:root{
+  --orange:#EF7F1A; --orange-light:#FF9429; --orange-dark:#D55222;
+  --brown:#412C23; --brown-dark:#2F1D19; --tan:#A34E1C;
+  --yellow:#FECC00; --cream:#FBF6EE; --paper:#FFFCF6;
+  --ink:#1C1410; --muted:#6E5C50; --line:#E8DCC8; --accent:#008DD2;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',system-ui,sans-serif;
+  background:var(--paper); color:var(--ink); line-height:1.6; overflow-x:hidden;
+}
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:radial-gradient(circle at 1px 1px,rgba(65,44,35,0.05) 1px,transparent 0);
+  background-size:24px 24px;
+}
+.topbar{
+  position:sticky;top:0;z-index:100;
+  background:rgba(255,252,246,0.92); backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+  padding:14px 40px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.brand{font-family:'Fraunces',serif;font-weight:800;font-size:17px;letter-spacing:-0.01em;color:var(--brown-dark)}
+.brand .dot{color:var(--orange)}
+.brand .sub{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.15em;color:var(--muted);font-weight:500;text-transform:uppercase;margin-left:8px}
+.logo-slot{width:44px;height:44px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.logo-slot svg{width:100%;height:100%;display:block}
+.page{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:50px 40px 100px}
+.hero{padding:30px 0 50px;border-bottom:1px solid var(--line)}
+.eyebrow{
+  font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.18em;
+  text-transform:uppercase;color:var(--orange-dark);font-weight:600;
+  display:inline-flex;align-items:center;gap:10px;
+}
+.eyebrow::before{content:"";width:24px;height:2px;background:var(--orange)}
+h1{
+  font-family:'Fraunces',serif;font-weight:800;
+  font-size:clamp(38px,7vw,80px);line-height:0.98;letter-spacing:-0.03em;
+  margin:18px 0 20px;color:var(--brown-dark);
+}
+h1 em{font-style:italic;color:var(--orange-dark);font-weight:600}
+.lede{font-size:19px;max-width:680px;color:var(--muted)}
+section{padding:70px 0;border-bottom:1px solid var(--line)}
+section:last-of-type{border-bottom:none}
+.section-num{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--orange);font-weight:600;letter-spacing:0.08em}
+h2{
+  font-family:'Fraunces',serif;font-weight:700;
+  font-size:clamp(28px,4.5vw,48px);line-height:1.05;letter-spacing:-0.02em;
+  margin:10px 0 22px;color:var(--brown-dark);max-width:720px;
+}
+h3{font-family:'Fraunces',serif;font-weight:600;font-size:24px;color:var(--brown-dark);margin:28px 0 12px}
+p{max-width:680px;margin-bottom:14px;color:var(--ink)}
+.lead{font-size:17px;color:var(--muted);max-width:680px;margin-bottom:26px}
+code{font-family:'JetBrains Mono',monospace;font-size:0.92em;background:var(--cream);padding:2px 6px;border-radius:4px;color:var(--brown-dark)}
+.illus{
+  background:var(--cream);border:1px solid var(--line);border-radius:18px;
+  padding:32px;margin:24px 0;position:relative;overflow:hidden;
+}
+.illus-title{
+  font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);
+  letter-spacing:0.12em;text-transform:uppercase;
+  margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:10px;
+}
+.controls{display:flex;gap:8px;flex-wrap:wrap}
+.controls button{
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  background:var(--paper);border:1px solid var(--line);color:var(--brown);
+  padding:6px 12px;border-radius:6px;cursor:pointer;
+  text-transform:uppercase;letter-spacing:0.1em;transition:all .2s;
+}
+.controls button:hover{background:var(--orange);color:#fff;border-color:var(--orange)}
+.controls button.active{background:var(--brown-dark);color:#fff;border-color:var(--brown-dark)}
+.takeaway{
+  background:var(--brown-dark);color:var(--paper);
+  border-radius:18px;padding:44px;margin-top:50px;position:relative;overflow:hidden;
+}
+.takeaway::after{
+  content:"";position:absolute;top:-40px;right:-40px;width:180px;height:180px;
+  border-radius:50%;background:radial-gradient(circle,var(--orange),transparent 70%);opacity:0.4;
+}
+.takeaway h2{color:var(--paper);margin-bottom:16px}
+.takeaway p{color:#E8D9C5;font-size:16px;max-width:680px}
+.takeaway ul{list-style:none;margin-top:18px;display:grid;gap:8px}
+.takeaway li{font-family:'JetBrains Mono',monospace;font-size:13px;padding-left:22px;position:relative;color:#FBE7CB}
+.takeaway li::before{content:"→";position:absolute;left:0;color:var(--orange);font-weight:bold}
+footer{text-align:center;padding:36px;color:var(--muted);font-size:12px;font-family:'JetBrains Mono',monospace;letter-spacing:0.1em}
+@media(max-width:700px){
+  .topbar{padding:12px 18px}
+  .page{padding:30px 18px 70px}
+  .illus{padding:20px}
+  .takeaway{padding:28px}
+  .logo-slot{width:42px;height:66px}
+}
+
+/* ===== anatomy cards (section 01) ===== */
+.crit-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;margin:22px 0}
+.crit{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:18px}
+.crit .k{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;font-weight:600;color:#fff;background:var(--tan);display:inline-block;padding:3px 8px;border-radius:4px;margin-bottom:8px}
+.crit h4{font-family:'Fraunces',serif;font-size:17px;color:var(--brown-dark);margin-bottom:5px}
+.crit p{font-size:13px;color:var(--muted);margin:0;max-width:none}
+
+/* ===== transformer (figure 1) ===== */
+.tf-wrap{display:grid;grid-template-columns:1fr auto 1fr;gap:18px;align-items:stretch}
+.tf-col{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:20px;min-width:0}
+.tf-lab{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;font-weight:600;color:#fff;padding:4px 10px;border-radius:4px;display:inline-block;margin-bottom:12px}
+.tf-lab.en{background:var(--tan)}
+.tf-lab.fx{background:var(--orange-dark)}
+.tf-en{font-size:15px;color:var(--brown);line-height:1.55;min-height:88px}
+.tf-fx{font-size:13.5px;color:var(--brown-dark);background:var(--cream);border:1px solid var(--line);border-radius:8px;padding:14px;min-height:88px;line-height:1.5;opacity:0;transform:translateY(8px);transition:opacity .5s,transform .5s}
+.tf-fx.show{opacity:1;transform:translateY(0)}
+.tf-fx .doc-h{font-family:'Fraunces',serif;font-weight:600;font-size:15px;color:var(--brown-dark);display:block;margin-bottom:4px}
+.tf-note{font-size:12px;color:var(--muted);margin-top:12px;max-width:none}
+.tf-arrow{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:var(--orange)}
+.tf-arrow svg{width:44px;height:44px}
+.tf-arrow .spin{transform-origin:center;animation:tfSpin 2.6s linear infinite;animation-play-state:paused}
+.tf-wrap.working .tf-arrow .spin{animation-play-state:running}
+@keyframes tfSpin{to{transform:rotate(360deg)}}
+.tf-arrow .cap{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted)}
+@media(max-width:700px){.tf-wrap{grid-template-columns:1fr}.tf-arrow svg{transform:rotate(90deg)}}
+
+/* ===== loop diagram (figure 2) ===== */
+.loop-wrap{display:flex;flex-wrap:wrap;gap:14px;align-items:stretch;justify-content:center}
+.loop-node{flex:1;min-width:150px;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:18px;cursor:pointer;transition:all .25s;position:relative}
+.loop-node:hover{border-color:var(--orange);transform:translateY(-3px)}
+.loop-node.active{border-color:var(--orange-dark);background:var(--cream);box-shadow:0 6px 18px rgba(213,82,34,0.12)}
+.loop-step{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;font-weight:600;color:#fff;background:var(--tan);display:inline-block;padding:3px 9px;border-radius:4px;margin-bottom:10px}
+.loop-node.active .loop-step{background:var(--orange-dark)}
+.loop-node h4{font-family:'Fraunces',serif;font-size:20px;color:var(--brown-dark);margin-bottom:6px}
+.loop-node p{font-size:13px;color:var(--muted);margin:0;max-width:none}
+.loop-arrow{display:flex;align-items:center;color:var(--orange);font-size:22px;font-weight:bold}
+.loop-detail{background:var(--brown-dark);border-radius:14px;padding:24px;margin-top:18px;transition:all .3s}
+.loop-dtag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;font-weight:600;color:var(--yellow);margin-bottom:8px;display:block}
+.loop-dmsg{color:#F3E4D0;font-size:15px;max-width:none;margin:0 0 10px}
+.loop-dex{font-family:'JetBrains Mono',monospace;font-size:12px;color:#FBE7CB;background:rgba(0,0,0,0.22);border-left:3px solid var(--orange);border-radius:6px;padding:10px 12px}
+@media(max-width:700px){.loop-arrow{transform:rotate(90deg);width:100%;justify-content:center}}
+
+/* ===== pattern cards / tabs (figure 3) ===== */
+.pat-tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.pat-tab{font-family:'JetBrains Mono',monospace;font-size:11px;background:var(--paper);border:1px solid var(--line);color:var(--brown);padding:8px 14px;border-radius:8px;cursor:pointer;text-transform:uppercase;letter-spacing:0.08em;transition:all .2s}
+.pat-tab:hover{border-color:var(--orange)}
+.pat-tab.active{background:var(--brown-dark);color:#fff;border-color:var(--brown-dark)}
+.pat-body{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:24px;min-height:210px}
+.pat-body h4{font-family:'Fraunces',serif;font-size:22px;color:var(--brown-dark);margin-bottom:4px}
+.pat-use{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--orange-dark);margin-bottom:14px}
+.pat-code{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--brown-dark);background:var(--cream);border:1px solid var(--line);border-left:3px solid var(--orange);border-radius:8px;padding:14px;margin-bottom:14px;word-break:break-word}
+.pat-desc{font-size:14px;color:var(--muted);max-width:none;margin:0}
+.pat-panel{display:none;animation:patIn .35s}
+.pat-panel.on{display:block}
+@keyframes patIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* ===== tone/length rewriter (figure 4) ===== */
+.rw-controls{display:flex;flex-wrap:wrap;gap:22px;margin-bottom:18px}
+.rw-group{display:flex;flex-direction:column;gap:8px}
+.rw-glab{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;font-weight:600;color:var(--orange-dark)}
+.rw-seg{display:flex;gap:6px;flex-wrap:wrap}
+.rw-seg button{font-family:'JetBrains Mono',monospace;font-size:11px;background:var(--paper);border:1px solid var(--line);color:var(--brown);padding:7px 13px;border-radius:7px;cursor:pointer;text-transform:uppercase;letter-spacing:0.06em;transition:all .2s}
+.rw-seg button:hover{border-color:var(--orange)}
+.rw-seg button.active{background:var(--brown-dark);color:#fff;border-color:var(--brown-dark)}
+.rw-out{background:var(--paper);border:1px solid var(--line);border-left:3px solid var(--orange);border-radius:12px;padding:20px;min-height:130px;font-size:15.5px;color:var(--brown);line-height:1.6;transition:opacity .3s}
+.rw-out.flip{opacity:0}
+.rw-meta{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);margin-top:12px;display:flex;gap:18px;flex-wrap:wrap}
+.rw-meta strong{color:var(--orange-dark)}
+
+/* ===== spot-the-fabrication verify (figure 5) ===== */
+.spot-wrap{display:grid;grid-template-columns:1.15fr 1fr;gap:26px;align-items:start}
+.spot-doc{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:22px;font-size:15px;line-height:1.75;color:var(--brown)}
+.spot-doc .st{border-radius:5px;padding:1px 3px;cursor:pointer;transition:all .18s;border-bottom:2px dotted transparent}
+.spot-doc .st:hover{background:rgba(239,127,26,0.12)}
+.spot-doc .st.found{background:var(--orange);color:#fff;border-bottom-color:transparent}
+.spot-doc .st.miss{background:rgba(163,78,28,0.12);border-bottom-color:var(--tan)}
+.spot-side{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:22px;position:sticky;top:90px}
+.spot-scount{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);margin-bottom:6px}
+.spot-scount strong{font-family:'Fraunces',serif;font-size:30px;color:var(--brown-dark);display:block}
+.spot-bar{height:14px;background:var(--cream);border:1px solid var(--line);border-radius:8px;overflow:hidden;margin:6px 0 14px}
+#spotFill{height:100%;width:0%;background:linear-gradient(90deg,var(--orange),var(--orange-dark));transition:width .4s ease;border-radius:8px}
+.spot-panel{border-left:3px solid var(--line);padding-left:14px;transition:border-color .3s;min-height:70px}
+.spot-panel.hit{border-color:var(--orange)}
+.spot-ptag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;font-weight:600;color:var(--orange-dark)}
+.spot-panel p{font-size:14px;color:var(--muted);margin:6px 0 0;max-width:none}
+.spot-hint{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--orange-dark);letter-spacing:0.05em;margin-top:14px}
+
+/* ===== verify checklist (figure 6) ===== */
+.vwrap{display:grid;grid-template-columns:1.15fr 1fr;gap:26px;align-items:start}
+.vprod{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+.vprod strong{color:var(--orange-dark)}
+#vlist{display:grid;gap:8px}
+.vitem{display:flex;gap:12px;align-items:flex-start;background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:12px 14px;cursor:pointer;font-size:14px;color:var(--brown);transition:border-color .2s;opacity:0;transform:translateX(-14px)}
+.vitem:hover{border-color:var(--orange)}
+.vitem input{width:18px;height:18px;margin-top:2px;accent-color:var(--orange);cursor:pointer;flex-shrink:0}
+#vlist.go .vitem{animation:vIn .45s forwards}
+#vlist.go .vitem:nth-child(1){animation-delay:.05s}
+#vlist.go .vitem:nth-child(2){animation-delay:.13s}
+#vlist.go .vitem:nth-child(3){animation-delay:.21s}
+#vlist.go .vitem:nth-child(4){animation-delay:.29s}
+#vlist.go .vitem:nth-child(5){animation-delay:.37s}
+#vlist.go .vitem:nth-child(6){animation-delay:.45s}
+@keyframes vIn{to{opacity:1;transform:translateX(0)}}
+.vside{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:22px;position:sticky;top:90px}
+.vbar{height:16px;background:var(--cream);border:1px solid var(--line);border-radius:8px;overflow:hidden;margin:8px 0 10px}
+#vfill{height:100%;width:0%;background:linear-gradient(90deg,var(--orange),var(--orange-dark));transition:width .5s ease;border-radius:8px}
+.vscore-row{display:flex;justify-content:space-between;align-items:baseline;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted)}
+.vscore-row strong{font-family:'Fraunces',serif;font-size:34px;color:var(--brown-dark)}
+.vpanel{margin-top:16px;border-left:3px solid var(--line);padding-left:14px;transition:border-color .3s}
+.vpanel.v-bad{border-color:var(--brown-dark)}
+.vpanel.v-warn{border-color:var(--tan)}
+.vpanel.v-good{border-color:var(--orange)}
+.vpanel.v-great{border-color:var(--yellow)}
+.vtag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;font-weight:600;color:var(--brown-dark)}
+.vpanel p{font-size:14px;color:var(--muted);margin:6px 0 0;max-width:none}
+
+@media(max-width:700px){
+  .spot-wrap,.vwrap{grid-template-columns:1fr}
+  .spot-side,.vside{position:static}
+}
+
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="brand">MokshPath <span class="dot">·</span> <span class="sub">Lesson 02 · AI Word</span></div>
+  <div class="logo-slot" aria-label="MokshPath logo">
+    <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="22" cy="22" r="20" fill="#412C23"/>
+      <path d="M12 31V15l10 10 10-10v16" stroke="#EF7F1A" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="22" cy="10.5" r="3" fill="#FECC00"/>
+    </svg>
+  </div>
+</div>
+<div class="page">
+
+<section class="hero">
+  <div class="eyebrow">Week 2 · Lesson 02 · AI Office</div>
+  <h1>Describe the document. <em>Get</em> the draft.</h1>
+  <p class="lede">The blank page used to be the hardest part of writing. Now you describe what you need in plain English and AI hands you a first draft in seconds — a letter, a report, a summary, an outline. This lesson teaches the part that still belongs to you: how to ask well, run the draft loop, choose the right pattern, retune the tone and length, and catch the confident-sounding facts that aren't true.</p>
+</section>
+
+<section>
+  <div class="section-num">01 / 06</div>
+  <h2>Plain English in, a draft out</h2>
+  <p class="lead">The old skill was staring down the blank page and forcing out a first sentence. The new skill is describing what you want clearly enough that AI can produce the draft — which you then shape. The second is far easier to learn, and it removes the part of writing everyone dreads.</p>
+
+  <p>Here is the shift. You used to open Word to an empty document and grind out a rough draft word by word. Now you type a sentence — "write a polite email declining a meeting invitation" — and AI writes the paragraph. But the sentence has to carry enough information: <em>who it's for, what it needs to do, and what tone it should strike.</em> Watch a vague request and a precise one produce very different drafts below.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 1 · The prompt-to-document transformer</span>
+      <div class="controls">
+        <button id="tb0" onclick="tfSet(0)">Vague</button>
+        <button id="tb1" onclick="tfSet(1)">Better</button>
+        <button id="tb2" onclick="tfSet(2)">Precise</button>
+      </div>
+    </div>
+    <div class="tf-wrap" id="tfWrap">
+      <div class="tf-col">
+        <span class="tf-lab en">Plain English</span>
+        <div class="tf-en" id="tfEn">Pick a phrasing above to see the request.</div>
+      </div>
+      <div class="tf-arrow" aria-hidden="true">
+        <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <g class="spin"><circle cx="22" cy="22" r="16" stroke="#EF7F1A" stroke-width="3" stroke-dasharray="16 10" stroke-linecap="round"/></g>
+          <path d="M16 22h12m0 0-4-4m4 4-4 4" stroke="#D55222" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="cap">AI drafts</span>
+      </div>
+      <div class="tf-col">
+        <span class="tf-lab fx">Draft out</span>
+        <div class="tf-fx" id="tfFx"></div>
+      </div>
+    </div>
+    <p class="tf-note" id="tfNote">The more your request pins down the audience, the purpose, and the tone, the less the AI has to guess — and the less you have to rewrite afterwards.</p>
+  </div>
+
+  <p>The lesson of the transformer is simple: <strong>the vague request wasn't wrong, it was under-specified</strong>, so the AI filled the gaps with a generic, one-size-fits-nobody draft. Precision in, precision out. Which brings us to what a good document request actually contains.</p>
+</section>
+
+<section>
+  <div class="section-num">02 / 06</div>
+  <h2>The anatomy of a good document prompt</h2>
+  <p class="lead">A useful drafting request answers four questions before AI writes a word: who is this for, what should it achieve, how long and in what tone, and what real details must appear.</p>
+
+  <p>Think of it like briefing a colleague. "Write something about the project" gets you a shrug; "write a one-page status update for the client, upbeat but honest, covering the delay and the new timeline" gets you a usable draft. A document prompt works the same way. Skip these and the AI guesses — usually plausibly, sometimes off-key, and always in a voice that isn't quite yours.</p>
+
+  <div class="crit-grid">
+    <div class="crit"><span class="k">Part 1</span><h4>Audience</h4><p>Who reads this — a client, your boss, a new hire, the whole company. AI writes very differently for a nervous first-time customer than for a senior executive. Name the reader.</p></div>
+    <div class="crit"><span class="k">Part 2</span><h4>Purpose</h4><p>What the document must actually do: inform, persuade, apologise, request, summarise. "Get them to approve the budget" shapes every sentence more than "write a memo" ever could.</p></div>
+    <div class="crit"><span class="k">Part 3</span><h4>Tone &amp; length</h4><p>Formal or friendly, one paragraph or two pages, bullet points or prose. State it up front — "warm, under 150 words, no jargon" — or the AI picks a default that may not fit.</p></div>
+    <div class="crit"><span class="k">Part 4</span><h4>The facts</h4><p>The real names, dates, numbers, and details that must appear. AI cannot invent your project's true timeline — give it the facts, or it will fill the gap with plausible fiction.</p></div>
+  </div>
+
+  <p>Notice that none of these require you to be a polished writer. You supply the <em>situation, the goal, and the true details</em>; the AI supplies fluent prose. That division of labour — you own the intent and the facts, AI owns the wording — is the whole method of this lesson, and it repeats in every pattern below.</p>
+</section>
+
+<section>
+  <div class="section-num">03 / 06</div>
+  <h2>The draft loop: ask, read, refine, verify</h2>
+  <p class="lead">A good document almost never arrives on the first try — and it isn't supposed to. AI writing is a conversation, not a vending machine. The skill is running the loop until the draft is genuinely yours.</p>
+
+  <p>Beginners ask once, get a mediocre draft, and either use it as-is or give up. The people who get real value treat the first draft as clay: they read it critically, tell the AI exactly what to change, and repeat — then verify the final result against reality. Click each step of the loop below to see what actually happens at that stage.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 2 · The four-step draft loop</span>
+    </div>
+    <div class="loop-wrap" id="loopWrap">
+      <div class="loop-node active" onclick="loopSet(0)"><span class="loop-step">Step 1</span><h4>Ask</h4><p>Describe the document — audience, purpose, tone, facts.</p></div>
+      <div class="loop-arrow">→</div>
+      <div class="loop-node" onclick="loopSet(1)"><span class="loop-step">Step 2</span><h4>Read</h4><p>Read the draft critically — what's off, missing, or wrong?</p></div>
+      <div class="loop-arrow">→</div>
+      <div class="loop-node" onclick="loopSet(2)"><span class="loop-step">Step 3</span><h4>Refine</h4><p>Tell the AI the specific change you want, and re-run.</p></div>
+      <div class="loop-arrow">→</div>
+      <div class="loop-node" onclick="loopSet(3)"><span class="loop-step">Step 4</span><h4>Verify</h4><p>Check every fact, name, and claim against the truth.</p></div>
+    </div>
+    <div class="loop-detail" id="loopDetail">
+      <span class="loop-dtag" id="loopTag">Step 1 · Ask</span>
+      <p class="loop-dmsg" id="loopMsg"></p>
+      <div class="loop-dex" id="loopEx"></div>
+    </div>
+  </div>
+
+  <p>The loop's secret is that <strong>refining is where the quality lives</strong>. The first draft gets you 70% of the way in five seconds; the last 30% — the specific tone, your real details, the sentence that actually lands — comes from reading carefully and asking for precise changes. Verify last, and always: the loop ends with truth-checking, never before.</p>
+</section>
+
+<section>
+  <div class="section-num">04 / 06</div>
+  <h2>Five patterns cover almost every document</h2>
+  <p class="lead">Writing tasks look endless, but most fall into a handful of shapes. Learn to recognise the shape, and you'll know exactly what to ask AI for.</p>
+
+  <p>You don't need to be a great writer to use these — that's what AI supplies. What's worth internalising is the <em>name of the job</em>, so that when a task lands on your desk you can think "this is a rewrite" or "this is a summary" and describe it cleanly. Click through the five you'll meet again and again.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 3 · The five everyday document patterns</span>
+    </div>
+    <div class="pat-tabs" id="patTabs">
+      <button class="pat-tab active" onclick="patSet(0)">Draft from scratch</button>
+      <button class="pat-tab" onclick="patSet(1)">Rewrite &amp; re-tone</button>
+      <button class="pat-tab" onclick="patSet(2)">Summarize</button>
+      <button class="pat-tab" onclick="patSet(3)">Outline / table / template</button>
+      <button class="pat-tab" onclick="patSet(4)">Reference your files</button>
+    </div>
+    <div class="pat-body" id="patBody"></div>
+  </div>
+
+  <p>Every one of these is a sentence away. "Turn this rough email into something polite and professional" is a re-tone. "Give me the three key points from this five-page report" is a summary. "Draft this from the attached meeting notes" references your files. Name the job, describe the source and the goal — the wording is the AI's problem, not yours.</p>
+</section>
+
+<section>
+  <div class="section-num">05 / 06</div>
+  <h2>Retune tone and length on demand</h2>
+  <p class="lead">The single most useful trick in AI writing: take one draft and instantly reshape it — more formal or more friendly, shorter or longer — without rewriting a word yourself.</p>
+
+  <p>You wrote a blunt one-liner to a colleague, but now it's going to a client and needs polish. Or a paragraph is perfect but twice as long as the space allows. Instead of manually rewording, you ask AI to shift the register. Move the two dials below and watch the same underlying message change its clothes — this is exactly what "make it warmer" or "cut it in half" does in practice.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 4 · The tone &amp; length rewriter</span>
+    </div>
+    <div class="rw-controls">
+      <div class="rw-group">
+        <span class="rw-glab">Tone</span>
+        <div class="rw-seg" id="rwTone">
+          <button class="active" onclick="rwSet('tone',0)">Formal</button>
+          <button onclick="rwSet('tone',1)">Neutral</button>
+          <button onclick="rwSet('tone',2)">Friendly</button>
+        </div>
+      </div>
+      <div class="rw-group">
+        <span class="rw-glab">Length</span>
+        <div class="rw-seg" id="rwLen">
+          <button onclick="rwSet('len',0)">Shorter</button>
+          <button class="active" onclick="rwSet('len',1)">Medium</button>
+          <button onclick="rwSet('len',2)">Longer</button>
+        </div>
+      </div>
+    </div>
+    <div class="rw-out" id="rwOut"></div>
+    <div class="rw-meta">
+      <span>Underlying message: <strong>the project will ship one week late</strong></span>
+      <span id="rwWords">~0 words</span>
+    </div>
+  </div>
+
+  <p>Notice the facts never change — the deadline slip is still the deadline slip. Only the <em>register and the density</em> move. That's the whole trick: write (or draft) the true message once, then let AI dress it for whichever audience and space you need. One idea, many outfits.</p>
+</section>
+
+<section>
+  <div class="section-num">06 / 06</div>
+  <h2>The catch: it writes confidently, even when it's wrong</h2>
+  <p class="lead">AI never sounds unsure. It will state a fake statistic, invent a quote, or cite a study that doesn't exist — all in the same fluent, authoritative voice it uses for the truth. Fluency is not accuracy.</p>
+
+  <p>This is the one habit that separates safe users from embarrassed ones. AI generates text that <em>sounds</em> right; it does not check whether the facts are real. A drafted document can contain a hallucinated figure, a made-up source, or a subtly wrong date — and nothing about the writing warns you. Below is a short AI-drafted paragraph. Click the parts you believe are invented or unverifiable — then check yourself.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 5 · Spot the invented fact or citation</span>
+      <div class="controls">
+        <button onclick="spotReveal()">Reveal all</button>
+        <button onclick="spotReset()">↺ Reset</button>
+      </div>
+    </div>
+    <div class="spot-wrap">
+      <div class="spot-doc" id="spotDoc">
+        Our new onboarding flow has been a clear success. Since launch, average setup time has dropped from 40 minutes to <span class="st" data-i="0" onclick="spotClick(0)">just 6 minutes</span>, and <span class="st" data-i="1" onclick="spotClick(1)">a 2023 Stanford study</span> found that streamlined onboarding improves retention. Customer satisfaction is up, and as <span class="st" data-i="2" onclick="spotClick(2)">our CEO Maria Chen said in last week's all-hands,</span> "this is the fastest activation curve in the industry." We now onboard the majority of new users without a single support ticket, and early data suggests <span class="st" data-i="3" onclick="spotClick(3)">a 34% lift in month-two revenue</span>. The team is proud of the result.
+      </div>
+      <div class="spot-side">
+        <div class="spot-scount">Fabrications found <strong id="spotNum">0 / 4</strong></div>
+        <div class="spot-bar"><div id="spotFill"></div></div>
+        <div class="spot-panel" id="spotPanel">
+          <span class="spot-ptag" id="spotTag">Click a suspicious phrase</span>
+          <p id="spotMsg">Read the paragraph and click anything AI might have invented — a number it couldn't know, a source it can't have checked, a quote it made up.</p>
+        </div>
+        <div class="spot-hint">↑ Four items here are unverifiable or invented</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>The discipline that keeps you safe: verify before you send</h3>
+  <p>An AI draft is a strong start, not a finished document. Every real name, number, quote, and citation is a place where the model may have confidently made something up. Before this leaves your outbox, run it past a short, non-negotiable check — the same way you'd proofread a letter that carries your name.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 6 · The verify-before-you-send checklist</span>
+      <div class="controls">
+        <button onclick="vPreset()">Check a careful pass</button>
+        <button onclick="vClear()">↺ Clear</button>
+      </div>
+    </div>
+    <div class="vwrap">
+      <div>
+        <div class="vprod">Verifying: <strong>an AI-drafted client report before it goes out</strong></div>
+        <div id="vlist">
+          <label class="vitem"><input type="checkbox" onchange="vUpdate()"><span>Every fact, figure, and date checked against a real source you trust</span></label>
+          <label class="vitem"><input type="checkbox" onchange="vUpdate()"><span>No invented quotes, studies, or citations — each attributed claim is real</span></label>
+          <label class="vitem"><input type="checkbox" onchange="vUpdate()"><span>Names, titles, and details are correct and spelled right</span></label>
+          <label class="vitem"><input type="checkbox" onchange="vUpdate()"><span>The voice sounds like you (or your organisation), not generic AI filler</span></label>
+          <label class="vitem"><input type="checkbox" onchange="vUpdate()"><span>Nothing confidential or sensitive was pasted into a tool it shouldn't be in</span></label>
+          <label class="vitem"><input type="checkbox" onchange="vUpdate()"><span>Read end-to-end once as the recipient — does it actually do its job?</span></label>
+        </div>
+      </div>
+      <div class="vside">
+        <div class="vscore-row"><span>Verify score</span><strong id="vnum">0 / 6</strong></div>
+        <div class="vbar"><div id="vfill"></div></div>
+        <div class="vpanel" id="vpanel">
+          <span class="vtag" id="vtag">Verdict</span>
+          <p id="vmsg">Tick each check you actually performed — a draft that reads beautifully can still be quietly, confidently wrong.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <p>The point isn't distrust — it's that a document which <em>reads</em> well and a document which is <em>true</em> are two different things, and only your check tells them apart. AI removes the tedium of the blank page and the first draft. It does not remove your responsibility for what goes out under your name. Draft fast, verify carefully, then send.</p>
+</section>
+
+<div class="takeaway">
+  <h2>What to carry forward</h2>
+  <p>You don't fight the blank page anymore — you describe what you need and let AI supply the prose. But describing well, running the draft loop, recognising the pattern, retuning tone and length, and verifying every fact before you send are skills that stay firmly yours. That's where the value moved.</p>
+  <ul>
+    <li>Plain English in, draft out · precision in the request means precision in the result</li>
+    <li>A good prompt names the audience, the purpose, the tone and length, and the real facts</li>
+    <li>Run the loop · ask, read, refine, verify — the quality lives in the refining</li>
+    <li>Five patterns cover most work · draft, re-tone, summarize, outline/template, reference your files</li>
+    <li>AI writes confidently even when wrong · verify every fact, quote, and citation before you send</li>
+  </ul>
+</div>
+
+</div>
+<footer>MokshPath · Lesson 02 of 04 · Next up: AI in PowerPoint — Slides &amp; Decks →</footer>
+<script>
+
+/* ============ Figure 1 · Transformer ============ */
+const tfWrap=document.getElementById('tfWrap');
+const tfEn=document.getElementById('tfEn'),tfFx=document.getElementById('tfFx'),tfNote=document.getElementById('tfNote');
+const TF=[
+  {
+    en:'"Write an email about the meeting."',
+    fx:'<span class="doc-h">Subject: The Meeting</span>Hi there,<br>I wanted to reach out regarding the meeting. Please let me know your thoughts and availability. Looking forward to hearing from you.<br>Best regards.',
+    note:'Under-specified. The AI guessed everything — who it’s to, what it’s about, whether you’re accepting or declining. Generic and unusable; you’d rewrite it entirely.'
+  },
+  {
+    en:'"Write a polite email declining the Thursday budget meeting because I’ll be travelling."',
+    fx:'<span class="doc-h">Subject: Thursday Budget Meeting</span>Hi Sam,<br>Thank you for the invitation. Unfortunately I’ll be travelling on Thursday and won’t be able to join the budget meeting. Could we find another time, or I’m happy to review the notes afterwards.<br>Best, Alex',
+    note:'Clearer. Now the purpose and reason are pinned, so the draft is usable. Still guessed the names and offered no fixed alternative — but far closer.'
+  },
+  {
+    en:'"Write a warm, brief email to Sam declining Thursday’s 2pm budget meeting (I’m travelling), proposing we move it to Friday morning, and offering to send my figures ahead. Sign as Alex."',
+    fx:'<span class="doc-h">Subject: Thursday’s Budget Meeting — A Small Reschedule</span>Hi Sam,<br>I’m travelling Thursday and won’t make our 2pm budget meeting — apologies for the short notice. Could we shift it to Friday morning instead? I’ll send my figures over beforehand so we can move quickly.<br>Warmly, Alex',
+    note:'Precise. Audience, tone, the true reason, a concrete alternative, and a sign-off — the AI has almost nothing left to guess, so the draft lands right the first time.'
+  }
+];
+let tfCur=-1,tfTimer=null;
+function tfSet(i){
+  if(tfCur===i)return;
+  tfCur=i;
+  [0,1,2].forEach(j=>document.getElementById('tb'+j).classList.toggle('active',j===i));
+  tfEn.textContent=TF[i].en;
+  tfFx.classList.remove('show');
+  tfWrap.classList.add('working');
+  clearTimeout(tfTimer);
+  tfTimer=setTimeout(()=>{
+    tfFx.innerHTML=TF[i].fx;
+    tfFx.classList.add('show');
+    tfNote.textContent=TF[i].note;
+    tfWrap.classList.remove('working');
+  },820);
+}
+new IntersectionObserver((es,o)=>es.forEach(e=>{if(e.isIntersecting){tfSet(0);o.unobserve(e.target)}}),{threshold:0.4}).observe(tfWrap);
+
+/* ============ Figure 2 · Draft loop ============ */
+const LOOP=[
+  {tag:'Step 1 · Ask',msg:'You open the conversation by describing the document you need. This is the anatomy from section 2 in action — audience, purpose, tone, and the real facts. A rich first ask means a stronger first draft and fewer trips round the loop.',ex:'"Draft a one-paragraph update for our client explaining the two-day delay, reassuring but honest, and confirming the new Friday delivery date."'},
+  {tag:'Step 2 · Read',msg:'You read the draft as a critic, not a consumer. Where does it sound generic? What did it miss or invent? Is the tone off, is it too long, did it bury the important line? Naming the problem precisely is what makes the next step work.',ex:'What you notice: "Good structure, but it’s too apologetic, it never states the new date clearly, and ‘valued partnership’ is filler we’d never say."'},
+  {tag:'Step 3 · Refine',msg:'You tell the AI the specific change — not "make it better," but the exact edit. Small, targeted instructions produce far better results than starting over. Refine as many times as it takes; each pass costs seconds.',ex:'"Make it less apologetic, put the new Friday date in the first line, and cut the phrase ‘valued partnership.’ Keep it to three sentences."'},
+  {tag:'Step 4 · Verify',msg:'Before the document leaves your hands, you check it against reality — every date, number, name, and claim. This is the non-negotiable close of the loop. A draft that reads perfectly can still contain a confidently invented fact.',ex:'"Is Friday actually the new date? Is the delay truly two days? Are the client’s name and the project title spelled correctly? Only then: send."'}
+];
+let loopCur=0;
+const loopWrap=document.getElementById('loopWrap');
+function loopSet(i){
+  loopCur=i;
+  Array.prototype.forEach.call(loopWrap.querySelectorAll('.loop-node'),(n,j)=>n.classList.toggle('active',j===i));
+  document.getElementById('loopTag').textContent=LOOP[i].tag;
+  document.getElementById('loopMsg').textContent=LOOP[i].msg;
+  document.getElementById('loopEx').textContent=LOOP[i].ex;
+}
+loopSet(0);
+
+/* ============ Figure 3 · Pattern tabs ============ */
+const PAT=[
+  {name:'Draft from scratch',use:'Produce a first draft from nothing',code:'"Write a 200-word welcome letter for new hires — warm, mentions our buddy program, signed by the People team."',desc:'The job: "I have a blank page and a purpose." Give AI the audience, the purpose, the tone, the length, and any must-include facts, and it produces a complete first draft you then refine. This is where AI saves the most time — the dreaded blank page vanishes.'},
+  {name:'Rewrite & re-tone',use:'Reshape text you already have',code:'"Rewrite this blunt reply to a customer so it sounds warm and apologetic, but keep it short."',desc:'The job: "the content is right, the delivery is wrong." Paste your rough or badly-toned text and describe the register you want — more formal, friendlier, more concise, less jargon. AI keeps your meaning and changes only the clothes it wears.'},
+  {name:'Summarize',use:'Compress a long document to its core',code:'"Summarize this five-page report into three bullet points a busy executive can read in ten seconds."',desc:'The job: "there’s too much to read." Paste the long document and specify the output — a paragraph, three bullets, an executive summary. AI distils it. Always spot-check that it kept the important nuance and didn’t drop a critical caveat.'},
+  {name:'Outline / table / template',use:'Generate reusable structure',code:'"Give me an outline for a project proposal, then a reusable one-page status-report template with placeholders."',desc:'The job: "I need scaffolding, not final prose." AI is excellent at structure — section outlines, comparison tables, fill-in templates you’ll reuse every week. You get a skeleton to pour your real content into, which is often faster than drafting whole.'},
+  {name:'Reference your files',use:'Draft grounded in your own material',code:'"Using the attached meeting notes, draft the follow-up email with the agreed action items and owners."',desc:'The job: "write from my source, not from thin air." Modern AI in Word (Copilot) can read a document, notes, or data you point it at and draft from that material — dramatically reducing invented facts, because it’s working from your real content. Still verify what it kept and what it paraphrased.'}
+];
+const patBody=document.getElementById('patBody'),patTabs=document.getElementById('patTabs');
+function patSet(i){
+  Array.prototype.forEach.call(patTabs.children,(b,j)=>b.classList.toggle('active',j===i));
+  const p=PAT[i];
+  patBody.innerHTML='<div class="pat-panel on"><h4>'+p.name+'</h4><div class="pat-use">'+p.use+'</div><div class="pat-code">'+p.code+'</div><p class="pat-desc">'+p.desc+'</p></div>';
+}
+patSet(0);
+
+/* ============ Figure 4 · Tone/length rewriter ============ */
+/* tone: 0 formal, 1 neutral, 2 friendly · len: 0 short, 1 medium, 2 long */
+const RW={
+  '0-0':'Please be advised the deliverable will conclude one week beyond the scheduled date.',
+  '0-1':'I am writing to inform you that the project will be completed one week later than originally scheduled. We regret any inconvenience and remain committed to delivering to the agreed standard.',
+  '0-2':'I am writing to formally advise that the project will conclude one week beyond the originally agreed date. This adjustment ensures the deliverable meets the quality standard we are committed to. We appreciate your understanding, and I remain available to discuss the revised timeline and any implications it may carry for your planning.',
+  '1-0':'The project will ship one week late.',
+  '1-1':'A quick update: the project will ship one week later than planned. We want the final result to be right, so we’ve added a few extra days. New delivery date to follow.',
+  '1-2':'A quick update on timing: the project will now ship one week later than originally planned. We ran into a couple of details worth getting right rather than rushing, and the extra days let us finish to the standard we’d want. Nothing about the scope changes — only the finish line moves by a week. We’ll confirm the exact new date shortly.',
+  '2-0':'Heads up — we’ll need one more week on this one!',
+  '2-1':'Quick heads-up — we’re going to need one more week on the project. We’d rather take the extra few days and get it right than rush it out. Thanks so much for bearing with us; new date coming your way soon!',
+  '2-2':'Hi! Just a friendly heads-up that we’re going to need one extra week on the project — nothing dramatic, promise. A few details turned out to be worth slowing down for, and we’d much rather hand you something we’re genuinely proud of than rush to the original date. Everything else is exactly on track. Thank you so much for your patience — I’ll pop the new delivery date over to you very shortly!'
+};
+let rwT=0,rwL=1;
+const rwOut=document.getElementById('rwOut'),rwWords=document.getElementById('rwWords');
+function rwSet(kind,i){
+  if(kind==='tone'){rwT=i;Array.prototype.forEach.call(document.getElementById('rwTone').children,(b,j)=>b.classList.toggle('active',j===i));}
+  else{rwL=i;Array.prototype.forEach.call(document.getElementById('rwLen').children,(b,j)=>b.classList.toggle('active',j===i));}
+  rwRender();
+}
+function rwRender(){
+  rwOut.classList.add('flip');
+  setTimeout(()=>{
+    const txt=RW[rwT+'-'+rwL];
+    rwOut.textContent=txt;
+    rwWords.textContent='~'+txt.trim().split(/\s+/).length+' words';
+    rwOut.classList.remove('flip');
+  },200);
+}
+rwRender();
+
+/* ============ Figure 5 · Spot the fabrication ============ */
+const SPOT=[
+  {tag:'Invented precision',msg:'"Just 6 minutes" is an exact number the AI has no way to know unless you gave it. Confident-sounding metrics are a classic hallucination — if you didn’t supply this figure, treat it as fiction until measured.'},
+  {tag:'Fake citation',msg:'"A 2023 Stanford study" is the most dangerous kind of hallucination: an authoritative-sounding source that very likely doesn’t exist. AI invents citations constantly. Never cite a study the AI named without finding the real paper yourself.'},
+  {tag:'Fabricated quote',msg:'A named person saying a specific thing at a specific event — unless you fed the AI that quote, it made it up. Putting invented words in a real person’s mouth is both false and a serious credibility risk.'},
+  {tag:'Made-up statistic',msg:'"A 34% lift in month-two revenue" is a precise, impressive figure with no source. Round, confident percentages are exactly what AI fabricates to make prose sound data-driven. Verify against your actual numbers or delete it.'}
+];
+const spotState=[false,false,false,false];
+function spotClick(i){
+  if(spotState[i])return;
+  spotState[i]=true;
+  document.querySelector('.st[data-i="'+i+'"]').classList.add('found');
+  document.getElementById('spotTag').textContent=SPOT[i].tag;
+  document.getElementById('spotMsg').textContent=SPOT[i].msg;
+  document.getElementById('spotPanel').classList.add('hit');
+  spotUpdate();
+}
+function spotUpdate(){
+  const n=spotState.filter(Boolean).length;
+  document.getElementById('spotNum').textContent=n+' / 4';
+  document.getElementById('spotFill').style.width=(n/4*100)+'%';
+  if(n===4){document.getElementById('spotTag').textContent='All four found — well done';document.getElementById('spotMsg').textContent='Every one of these would sail past a casual read. That’s the danger: the writing gives you no signal. Only a deliberate fact-check catches them.';}
+}
+function spotReveal(){
+  [0,1,2,3].forEach(i=>{if(!spotState[i]){document.querySelector('.st[data-i="'+i+'"]').classList.add('miss');}});
+  spotState.forEach((v,i)=>{spotState[i]=true;document.querySelector('.st[data-i="'+i+'"]').classList.add('found');});
+  spotUpdate();
+  document.getElementById('spotPanel').classList.add('hit');
+  document.getElementById('spotTag').textContent='All four revealed';
+  document.getElementById('spotMsg').textContent='The metric, the study, the quote, and the revenue figure are all unverifiable or invented. Notice how none of them looked wrong — fluency hides fabrication.';
+}
+function spotReset(){
+  spotState.forEach((v,i)=>spotState[i]=false);
+  document.querySelectorAll('.st').forEach(s=>s.classList.remove('found','miss'));
+  document.getElementById('spotPanel').classList.remove('hit');
+  document.getElementById('spotTag').textContent='Click a suspicious phrase';
+  document.getElementById('spotMsg').textContent='Read the paragraph and click anything AI might have invented — a number it couldn’t know, a source it can’t have checked, a quote it made up.';
+  spotUpdate();
+}
+
+/* ============ Figure 6 · Verify checklist ============ */
+const vboxes=Array.prototype.slice.call(document.querySelectorAll('#vlist input'));
+function vUpdate(){
+  const n=vboxes.filter(b=>b.checked).length;
+  document.getElementById('vfill').style.width=(n/6*100)+'%';
+  document.getElementById('vnum').textContent=n+' / 6';
+  const panel=document.getElementById('vpanel'),tag=document.getElementById('vtag'),msg=document.getElementById('vmsg');
+  panel.className='vpanel';
+  if(n===0){tag.textContent='Verdict';msg.textContent='Tick each check you actually performed — a draft that reads beautifully can still be quietly, confidently wrong.';return}
+  if(n<=2){panel.classList.add('v-bad');tag.textContent='Not verified — do not send';msg.textContent='You’ve barely checked it. Sending an AI draft now is how an invented statistic or a misspelled client name ends up under your signature.'}
+  else if(n<=3){panel.classList.add('v-warn');tag.textContent='Partly checked — keep going';msg.textContent='A start, but gaps remain. The facts and the citations are exactly where AI-drafted documents quietly go wrong — finish those checks.'}
+  else if(n<=5){panel.classList.add('v-good');tag.textContent='Well verified — nearly there';msg.textContent='Solid discipline. Finish the last checks — especially the full read-through as the recipient and the confidentiality check — and you can send it.'}
+  else{panel.classList.add('v-great');tag.textContent='Fully verified — send it';msg.textContent='This is the standard. Every fact is real, the voice is yours, and you read it as the person receiving it. AI drafted it; you made it true. Send.'}
+}
+function vPreset(){
+  const run=[1,1,1,0,1,1];
+  vboxes.forEach((b,i)=>b.checked=!!run[i]);
+  vUpdate();
+}
+function vClear(){vboxes.forEach(b=>b.checked=false);vUpdate()}
+const vlist=document.getElementById('vlist');
+new IntersectionObserver((es,o)=>es.forEach(e=>{if(e.isIntersecting){vlist.classList.remove('go');void vlist.offsetWidth;vlist.classList.add('go');o.unobserve(e.target)}}),{threshold:0.25}).observe(vlist);
+
+</script>
+</body>
+</html>
