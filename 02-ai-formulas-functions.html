@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>AI Formulas &amp; Functions · Lesson 02</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,0,400;9..144,0,600;9..144,0,800;9..144,1,600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+
+:root{
+  --orange:#EF7F1A; --orange-light:#FF9429; --orange-dark:#D55222;
+  --brown:#412C23; --brown-dark:#2F1D19; --tan:#A34E1C;
+  --yellow:#FECC00; --cream:#FBF6EE; --paper:#FFFCF6;
+  --ink:#1C1410; --muted:#6E5C50; --line:#E8DCC8; --accent:#008DD2;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',system-ui,sans-serif;
+  background:var(--paper); color:var(--ink); line-height:1.6; overflow-x:hidden;
+}
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:radial-gradient(circle at 1px 1px,rgba(65,44,35,0.05) 1px,transparent 0);
+  background-size:24px 24px;
+}
+.topbar{
+  position:sticky;top:0;z-index:100;
+  background:rgba(255,252,246,0.92); backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+  padding:14px 40px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.brand{font-family:'Fraunces',serif;font-weight:800;font-size:17px;letter-spacing:-0.01em;color:var(--brown-dark)}
+.brand .dot{color:var(--orange)}
+.brand .sub{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.15em;color:var(--muted);font-weight:500;text-transform:uppercase;margin-left:8px}
+.logo-slot{width:44px;height:44px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.logo-slot svg{width:100%;height:100%;display:block}
+.page{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:50px 40px 100px}
+.hero{padding:30px 0 50px;border-bottom:1px solid var(--line)}
+.eyebrow{
+  font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.18em;
+  text-transform:uppercase;color:var(--orange-dark);font-weight:600;
+  display:inline-flex;align-items:center;gap:10px;
+}
+.eyebrow::before{content:"";width:24px;height:2px;background:var(--orange)}
+h1{
+  font-family:'Fraunces',serif;font-weight:800;
+  font-size:clamp(38px,7vw,80px);line-height:0.98;letter-spacing:-0.03em;
+  margin:18px 0 20px;color:var(--brown-dark);
+}
+h1 em{font-style:italic;color:var(--orange-dark);font-weight:600}
+.lede{font-size:19px;max-width:680px;color:var(--muted)}
+section{padding:70px 0;border-bottom:1px solid var(--line)}
+section:last-of-type{border-bottom:none}
+.section-num{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--orange);font-weight:600;letter-spacing:0.08em}
+h2{
+  font-family:'Fraunces',serif;font-weight:700;
+  font-size:clamp(28px,4.5vw,48px);line-height:1.05;letter-spacing:-0.02em;
+  margin:10px 0 22px;color:var(--brown-dark);max-width:720px;
+}
+h3{font-family:'Fraunces',serif;font-weight:600;font-size:24px;color:var(--brown-dark);margin:28px 0 12px}
+p{max-width:680px;margin-bottom:14px;color:var(--ink)}
+.lead{font-size:17px;color:var(--muted);max-width:680px;margin-bottom:26px}
+code{font-family:'JetBrains Mono',monospace;font-size:0.92em;background:var(--cream);padding:2px 6px;border-radius:4px;color:var(--brown-dark)}
+.illus{
+  background:var(--cream);border:1px solid var(--line);border-radius:18px;
+  padding:32px;margin:24px 0;position:relative;overflow:hidden;
+}
+.illus-title{
+  font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);
+  letter-spacing:0.12em;text-transform:uppercase;
+  margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:10px;
+}
+.controls{display:flex;gap:8px;flex-wrap:wrap}
+.controls button{
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  background:var(--paper);border:1px solid var(--line);color:var(--brown);
+  padding:6px 12px;border-radius:6px;cursor:pointer;
+  text-transform:uppercase;letter-spacing:0.1em;transition:all .2s;
+}
+.controls button:hover{background:var(--orange);color:#fff;border-color:var(--orange)}
+.controls button.active{background:var(--brown-dark);color:#fff;border-color:var(--brown-dark)}
+.takeaway{
+  background:var(--brown-dark);color:var(--paper);
+  border-radius:18px;padding:44px;margin-top:50px;position:relative;overflow:hidden;
+}
+.takeaway::after{
+  content:"";position:absolute;top:-40px;right:-40px;width:180px;height:180px;
+  border-radius:50%;background:radial-gradient(circle,var(--orange),transparent 70%);opacity:0.4;
+}
+.takeaway h2{color:var(--paper);margin-bottom:16px}
+.takeaway p{color:#E8D9C5;font-size:16px;max-width:680px}
+.takeaway ul{list-style:none;margin-top:18px;display:grid;gap:8px}
+.takeaway li{font-family:'JetBrains Mono',monospace;font-size:13px;padding-left:22px;position:relative;color:#FBE7CB}
+.takeaway li::before{content:"→";position:absolute;left:0;color:var(--orange);font-weight:bold}
+footer{text-align:center;padding:36px;color:var(--muted);font-size:12px;font-family:'JetBrains Mono',monospace;letter-spacing:0.1em}
+@media(max-width:700px){
+  .topbar{padding:12px 18px}
+  .page{padding:30px 18px 70px}
+  .illus{padding:20px}
+  .takeaway{padding:28px}
+  .logo-slot{width:42px;height:66px}
+}
+
+/* ===== anatomy cards (section 01) ===== */
+.crit-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;margin:22px 0}
+.crit{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:18px}
+.crit .k{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;font-weight:600;color:#fff;background:var(--tan);display:inline-block;padding:3px 8px;border-radius:4px;margin-bottom:8px}
+.crit h4{font-family:'Fraunces',serif;font-size:17px;color:var(--brown-dark);margin-bottom:5px}
+.crit p{font-size:13px;color:var(--muted);margin:0;max-width:none}
+
+/* ===== transformer (figure 1) ===== */
+.tf-wrap{display:grid;grid-template-columns:1fr auto 1fr;gap:18px;align-items:stretch}
+.tf-col{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:20px;min-width:0}
+.tf-lab{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;font-weight:600;color:#fff;padding:4px 10px;border-radius:4px;display:inline-block;margin-bottom:12px}
+.tf-lab.en{background:var(--tan)}
+.tf-lab.fx{background:var(--orange-dark)}
+.tf-en{font-size:15px;color:var(--brown);line-height:1.55;min-height:88px}
+.tf-fx{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--brown-dark);background:var(--cream);border:1px solid var(--line);border-radius:8px;padding:14px;min-height:88px;word-break:break-word;opacity:0;transform:translateY(8px);transition:opacity .5s,transform .5s}
+.tf-fx.show{opacity:1;transform:translateY(0)}
+.tf-note{font-size:12px;color:var(--muted);margin-top:12px;max-width:none}
+.tf-arrow{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:var(--orange)}
+.tf-arrow svg{width:44px;height:44px}
+.tf-arrow .spin{transform-origin:center;animation:tfSpin 2.6s linear infinite;animation-play-state:paused}
+.tf-wrap.working .tf-arrow .spin{animation-play-state:running}
+@keyframes tfSpin{to{transform:rotate(360deg)}}
+.tf-arrow .cap{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted)}
+@media(max-width:700px){.tf-wrap{grid-template-columns:1fr}.tf-arrow svg{transform:rotate(90deg)}}
+
+/* ===== pattern cards / tabs (figure 2) ===== */
+.pat-tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.pat-tab{font-family:'JetBrains Mono',monospace;font-size:11px;background:var(--paper);border:1px solid var(--line);color:var(--brown);padding:8px 14px;border-radius:8px;cursor:pointer;text-transform:uppercase;letter-spacing:0.08em;transition:all .2s}
+.pat-tab:hover{border-color:var(--orange)}
+.pat-tab.active{background:var(--brown-dark);color:#fff;border-color:var(--brown-dark)}
+.pat-body{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:24px;min-height:200px}
+.pat-body h4{font-family:'Fraunces',serif;font-size:22px;color:var(--brown-dark);margin-bottom:4px}
+.pat-use{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--orange-dark);margin-bottom:14px}
+.pat-code{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--brown-dark);background:var(--cream);border:1px solid var(--line);border-left:3px solid var(--orange);border-radius:8px;padding:14px;margin-bottom:14px;word-break:break-word}
+.pat-desc{font-size:14px;color:var(--muted);max-width:none;margin:0}
+.pat-panel{display:none;animation:patIn .35s}
+.pat-panel.on{display:block}
+@keyframes patIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* ===== explain reveal (figure 3) ===== */
+.ex-formula{font-family:'JetBrains Mono',monospace;font-size:15px;color:var(--brown-dark);background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:20px;margin-bottom:16px;line-height:2;word-break:break-word}
+.ex-tok{border-radius:5px;padding:2px 5px;cursor:pointer;transition:all .2s;border:1px solid transparent}
+.ex-tok:hover{background:rgba(239,127,26,0.14);border-color:var(--orange)}
+.ex-tok.active{background:var(--orange);color:#fff}
+.ex-panel{background:var(--brown-dark);border-radius:12px;padding:22px;min-height:96px;transition:all .3s}
+.ex-tag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;font-weight:600;color:var(--yellow);margin-bottom:8px;display:block}
+.ex-msg{color:#F3E4D0;font-size:15px;max-width:none;margin:0}
+.ex-hint{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--orange-dark);letter-spacing:0.06em;margin-top:12px}
+
+/* ===== error explainer (figure 4) ===== */
+.err-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:24px;align-items:start}
+.err-list{display:grid;gap:10px}
+.err-item{display:flex;gap:14px;align-items:center;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:14px 16px;cursor:pointer;transition:all .2s}
+.err-item:hover{border-color:var(--orange);transform:translateX(4px)}
+.err-item.active{border-color:var(--orange-dark);background:var(--cream)}
+.err-code{font-family:'JetBrains Mono',monospace;font-weight:600;font-size:15px;color:#fff;background:var(--brown-dark);padding:8px 12px;border-radius:8px;white-space:nowrap;flex-shrink:0}
+.err-item.active .err-code{background:var(--orange-dark)}
+.err-cause{font-size:13px;color:var(--muted);margin:0;max-width:none}
+.err-panel{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:24px;position:sticky;top:90px}
+.err-big{font-family:'JetBrains Mono',monospace;font-weight:600;font-size:26px;color:var(--orange-dark);margin-bottom:6px}
+.err-name{font-family:'Fraunces',serif;font-size:20px;color:var(--brown-dark);margin-bottom:14px}
+.err-row{margin-bottom:14px}
+.err-rk{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--orange-dark);font-weight:600;display:block;margin-bottom:4px}
+.err-rv{font-size:14px;color:var(--brown);max-width:none;margin:0}
+.err-prompt{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--brown-dark);background:var(--cream);border:1px solid var(--line);border-left:3px solid var(--orange);border-radius:8px;padding:12px}
+
+/* ===== verify checklist (figure 5) ===== */
+.vwrap{display:grid;grid-template-columns:1.15fr 1fr;gap:26px;align-items:start}
+.vprod{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+.vprod strong{color:var(--orange-dark)}
+#vlist{display:grid;gap:8px}
+.vitem{display:flex;gap:12px;align-items:flex-start;background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:12px 14px;cursor:pointer;font-size:14px;color:var(--brown);transition:border-color .2s;opacity:0;transform:translateX(-14px)}
+.vitem:hover{border-color:var(--orange)}
+.vitem input{width:18px;height:18px;margin-top:2px;accent-color:var(--orange);cursor:pointer;flex-shrink:0}
+#vlist.go .vitem{animation:vIn .45s forwards}
+#vlist.go .vitem:nth-child(1){animation-delay:.05s}
+#vlist.go .vitem:nth-child(2){animation-delay:.13s}
+#vlist.go .vitem:nth-child(3){animation-delay:.21s}
+#vlist.go .vitem:nth-child(4){animation-delay:.29s}
+#vlist.go .vitem:nth-child(5){animation-delay:.37s}
+#vlist.go .vitem:nth-child(6){animation-delay:.45s}
+@keyframes vIn{to{opacity:1;transform:translateX(0)}}
+.vside{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:22px;position:sticky;top:90px}
+.vbar{height:16px;background:var(--cream);border:1px solid var(--line);border-radius:8px;overflow:hidden;margin:8px 0 10px}
+#vfill{height:100%;width:0%;background:linear-gradient(90deg,var(--orange),var(--orange-dark));transition:width .5s ease;border-radius:8px}
+.vscore-row{display:flex;justify-content:space-between;align-items:baseline;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted)}
+.vscore-row strong{font-family:'Fraunces',serif;font-size:34px;color:var(--brown-dark)}
+.vpanel{margin-top:16px;border-left:3px solid var(--line);padding-left:14px;transition:border-color .3s}
+.vpanel.v-bad{border-color:var(--brown-dark)}
+.vpanel.v-warn{border-color:var(--tan)}
+.vpanel.v-good{border-color:var(--orange)}
+.vpanel.v-great{border-color:var(--yellow)}
+.vtag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;font-weight:600;color:var(--brown-dark)}
+.vpanel p{font-size:14px;color:var(--muted);margin:6px 0 0;max-width:none}
+
+@media(max-width:700px){
+  .err-grid,.vwrap{grid-template-columns:1fr}
+  .err-panel,.vside{position:static}
+}
+
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="brand">MokshPath <span class="dot">·</span> <span class="sub">Lesson 02 · AI Excel</span></div>
+  <div class="logo-slot" aria-label="MokshPath logo">
+    <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="22" cy="22" r="20" fill="#412C23"/>
+      <path d="M12 31V15l10 10 10-10v16" stroke="#EF7F1A" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="22" cy="10.5" r="3" fill="#FECC00"/>
+    </svg>
+  </div>
+</div>
+<div class="page">
+
+<section class="hero">
+  <div class="eyebrow">Week 1 · Lesson 02 · AI Excel</div>
+  <h1>Say what you want. <em>Get</em> the formula.</h1>
+  <p class="lede">You no longer need to memorise Excel's function library to use it. Describe the result in plain English, and AI drafts the formula. This lesson teaches the part that still matters: how to describe the problem well, recognise the common patterns, read a formula you inherited, fix its errors — and never trust a formula you haven't tested.</p>
+</section>
+
+<section>
+  <div class="section-num">01 / 05</div>
+  <h2>Plain English in, a formula out</h2>
+  <p class="lead">The old skill was recalling syntax. The new skill is describing a problem precisely enough that a machine can turn it into syntax. The second is far more learnable — and far more useful.</p>
+
+  <p>Here is the shift. You used to type <code>=XLOOKUP(...)</code> from memory, comma by comma, and hope the arguments were in the right order. Now you type a sentence — "look up the price for the item in A2 from the products sheet" — and AI writes the function. But the sentence has to carry enough information: <em>where the data is, what you want back, and what to do when there's no match.</em> Watch a vague request and a precise one produce very different formulas below.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 1 · The plain-English transformer</span>
+      <div class="controls">
+        <button id="tb0" onclick="tfSet(0)">Vague</button>
+        <button id="tb1" onclick="tfSet(1)">Better</button>
+        <button id="tb2" onclick="tfSet(2)">Precise</button>
+      </div>
+    </div>
+    <div class="tf-wrap" id="tfWrap">
+      <div class="tf-col">
+        <span class="tf-lab en">Plain English</span>
+        <div class="tf-en" id="tfEn">Pick a phrasing above to see the request.</div>
+      </div>
+      <div class="tf-arrow" aria-hidden="true">
+        <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <g class="spin"><circle cx="22" cy="22" r="16" stroke="#EF7F1A" stroke-width="3" stroke-dasharray="16 10" stroke-linecap="round"/></g>
+          <path d="M16 22h12m0 0-4-4m4 4-4 4" stroke="#D55222" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="cap">AI drafts</span>
+      </div>
+      <div class="tf-col">
+        <span class="tf-lab fx">Formula out</span>
+        <div class="tf-fx" id="tfFx">=</div>
+      </div>
+    </div>
+    <p class="tf-note" id="tfNote">The more your sentence pins down the data and the edge cases, the less the AI has to guess — and the less you have to fix afterwards.</p>
+  </div>
+
+  <p>The lesson of the transformer is simple: <strong>the vague request wasn't wrong, it was under-specified</strong>, so the AI filled the gaps with assumptions — an exact match here, no error handling there. Precision in, precision out. Which brings us to what "precise" actually means.</p>
+</section>
+
+<section>
+  <div class="section-num">02 / 05</div>
+  <h2>The anatomy of a good formula prompt</h2>
+  <p class="lead">A useful formula request answers three questions before AI ever runs: what does the data look like, what do you want out, and what happens at the edges.</p>
+
+  <p>Think of it as giving directions. "Take me downtown" gets you a shrug; "take me to 4th and Main, avoid the highway, drop me at the north entrance" gets you there. A formula prompt works the same way. Skip these and the AI guesses — usually reasonably, sometimes disastrously, and always in a way you'll have to double-check anyway.</p>
+
+  <div class="crit-grid">
+    <div class="crit"><span class="k">Part 1</span><h4>Data shape</h4><p>Where the data lives and how it's laid out: which columns, whether there are headers, is it one sheet or two, are amounts text or numbers. AI can't see your workbook — describe it.</p></div>
+    <div class="crit"><span class="k">Part 2</span><h4>The goal</h4><p>The exact result you want in the cell, in outcome terms: "the total sales for the East region in Q3," not "do a SUMIFS." Say the what; let AI pick the how.</p></div>
+    <div class="crit"><span class="k">Part 3</span><h4>Edge cases</h4><p>What should happen when there's no match, a blank cell, a divide-by-zero, or a duplicate. State it — "show 0 if not found" — or the AI decides for you.</p></div>
+    <div class="crit"><span class="k">Part 4</span><h4>The example</h4><p>One concrete row beats a paragraph of description. "For A2 = 'Bolt', it should return 4.50 from the Prices sheet" removes almost all ambiguity at once.</p></div>
+  </div>
+
+  <p>Notice that none of these require you to know a single function name. You describe the <em>situation and the outcome</em>; the AI supplies the syntax. That division of labour — you own the intent, AI owns the recall — is the whole method of this lesson, and it repeats in every pattern below.</p>
+</section>
+
+<section>
+  <div class="section-num">03 / 05</div>
+  <h2>Five patterns cover almost everything</h2>
+  <p class="lead">Spreadsheet work looks endless, but most real formulas fall into a handful of shapes. Learn to recognise the shape, and you'll know what to ask AI for.</p>
+
+  <p>You don't need to memorise the syntax on these cards — that's exactly what AI is for. What's worth internalising is the <em>name of the job</em>, so that when a task lands on your desk you can think "ah, this is a lookup" or "this is a conditional sum" and describe it cleanly. Click through the five patterns you'll meet again and again.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 2 · The five everyday patterns</span>
+    </div>
+    <div class="pat-tabs" id="patTabs">
+      <button class="pat-tab active" onclick="patSet(0)">Lookups</button>
+      <button class="pat-tab" onclick="patSet(1)">Conditional sums</button>
+      <button class="pat-tab" onclick="patSet(2)">Text cleanup</button>
+      <button class="pat-tab" onclick="patSet(3)">IF logic</button>
+      <button class="pat-tab" onclick="patSet(4)">Dynamic arrays</button>
+    </div>
+    <div class="pat-body" id="patBody"></div>
+  </div>
+
+  <p>Every one of these is a sentence away. "Pull the price for each item from the other sheet, show 0 if it's missing" is a lookup. "Add up sales where region is East and month is March" is a conditional sum. Name the job, describe the data, mention the edge case — the syntax is the AI's problem, not yours.</p>
+</section>
+
+<section>
+  <div class="section-num">04 / 05</div>
+  <h2>Reading formulas you didn't write</h2>
+  <p class="lead">Half of real spreadsheet life is inheriting someone else's file. AI is at its best here — turning a wall of nested parentheses into a plain-English explanation, one piece at a time.</p>
+
+  <p>You open a shared workbook and find a formula like the one below: dense, nested, uncommented. Before AI, decoding it meant tracing every argument by hand. Now you paste it in and ask "explain this formula in plain English, part by part," and it narrates each piece. Click the coloured tokens below to see that explanation — this is exactly what AI gives you for any formula you inherit.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 3 · Explain an inherited formula</span>
+    </div>
+    <div class="ex-formula" id="exFormula">
+      =<span class="ex-tok" data-i="0">IFERROR</span>(<span class="ex-tok" data-i="1">XLOOKUP</span>(<span class="ex-tok" data-i="2">B2</span>,<span class="ex-tok" data-i="3">Products[SKU]</span>,<span class="ex-tok" data-i="4">Products[Price]</span>),<span class="ex-tok" data-i="5">0</span>)
+    </div>
+    <div class="ex-panel" id="exPanel">
+      <span class="ex-tag" id="exTag">Tap a highlighted piece</span>
+      <p class="ex-msg" id="exMsg">Click any coloured token in the formula above to hear what that part does in plain English — the same way AI walks you through an inherited formula.</p>
+    </div>
+    <div class="ex-hint">↑ Click each token to decode the formula piece by piece</div>
+  </div>
+
+  <p>Reading the whole formula in one sentence: <em>"look up the SKU in B2 against the Products table, return its price, and if there's no match show 0 instead of an error."</em> That summary is what AI hands you for free — and it's also a template for how to <strong>write</strong> requests, because it's exactly the plain-English description that would have produced this formula in the first place.</p>
+</section>
+
+<section>
+  <div class="section-num">05 / 05</div>
+  <h2>Errors are messages, not dead ends</h2>
+  <p class="lead">When a cell shows <code>#N/A</code> or <code>#REF!</code>, Excel isn't broken — it's telling you exactly what went wrong, in a code. AI translates the code and, better, suggests the fix.</p>
+
+  <p>Beginners see an error and panic or delete the formula. Each error code has a precise meaning and a small set of usual causes. Paste the formula and the error into AI — "this returns <code>#VALUE!</code>, why, and how do I fix it?" — and you'll get the cause plus a corrected version. Click each error below to see what it means and the prompt that resolves it.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 4 · The error explainer</span>
+    </div>
+    <div class="err-grid">
+      <div class="err-list" id="errList">
+        <div class="err-item active" onclick="errSet(0)"><span class="err-code">#N/A</span><p class="err-cause">A lookup found nothing — the value you searched for isn't in the range.</p></div>
+        <div class="err-item" onclick="errSet(1)"><span class="err-code">#REF!</span><p class="err-cause">A reference points at cells that no longer exist — often a deleted row or column.</p></div>
+        <div class="err-item" onclick="errSet(2)"><span class="err-code">#VALUE!</span><p class="err-cause">Wrong type of input — text where a number was expected, usually.</p></div>
+        <div class="err-item" onclick="errSet(3)"><span class="err-code">#DIV/0!</span><p class="err-cause">A division by zero or by an empty cell.</p></div>
+        <div class="err-item" onclick="errSet(4)"><span class="err-code">#SPILL!</span><p class="err-cause">A dynamic array wants room to expand, but something is blocking the cells below.</p></div>
+      </div>
+      <div class="err-panel" id="errPanel">
+        <div class="err-big" id="errBig">#N/A</div>
+        <div class="err-name" id="errName">Not available</div>
+        <div class="err-row"><span class="err-rk">Usual cause</span><p class="err-rv" id="errCause"></p></div>
+        <div class="err-row"><span class="err-rk">Common fix</span><p class="err-rv" id="errFix"></p></div>
+        <div class="err-row"><span class="err-rk">Ask AI</span><div class="err-prompt" id="errPrompt"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <h3>The discipline that keeps you safe: verify on a test range</h3>
+  <p>AI-drafted formulas are usually right, but "usually" is not "always" — and a wrong formula copied down 10,000 rows is a wrong report sent to your boss. Never accept a formula on faith. Before you trust it across the whole sheet, prove it on a small slice where you already know the answer. Run this six-point check on every formula AI hands you.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 5 · The verify-before-you-trust checklist</span>
+      <div class="controls">
+        <button onclick="vPreset()">Check a careful run</button>
+        <button onclick="vClear()">↺ Clear</button>
+      </div>
+    </div>
+    <div class="vwrap">
+      <div>
+        <div class="vprod">Verifying: <strong>an AI-drafted XLOOKUP before rolling it out</strong></div>
+        <div id="vlist">
+          <label class="vitem"><input type="checkbox" onchange="vUpdate()"><span>Tested on 3–5 rows where you already know the correct answer by hand</span></label>
+          <label class="vitem"><input type="checkbox" onchange="vUpdate()"><span>Checked a known edge case: a missing value, a blank cell, a zero</span></label>
+          <label class="vitem"><input type="checkbox" onchange="vUpdate()"><span>Confirmed the total or count matches an independent check (a filter, a pivot)</span></label>
+          <label class="vitem"><input type="checkbox" onchange="vUpdate()"><span>Read what the formula actually does — not just that it returns something</span></label>
+          <label class="vitem"><input type="checkbox" onchange="vUpdate()"><span>Checked references won't break when copied down (absolute vs relative)</span></label>
+          <label class="vitem"><input type="checkbox" onchange="vUpdate()"><span>Only then filled it down the full range and spot-checked the bottom rows</span></label>
+        </div>
+      </div>
+      <div class="vside">
+        <div class="vscore-row"><span>Verify score</span><strong id="vnum">0 / 6</strong></div>
+        <div class="vbar"><div id="vfill"></div></div>
+        <div class="vpanel" id="vpanel">
+          <span class="vtag" id="vtag">Verdict</span>
+          <p id="vmsg">Tick each check you actually performed — a green formula that returns a number can still be wrong.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <p>The point isn't ceremony — it's that a formula which <em>runs</em> and a formula which is <em>correct</em> are two different things, and only the test range tells them apart. AI removes the tedium of writing syntax. It does not remove your responsibility for the answer. Verify small, then trust big.</p>
+</section>
+
+<div class="takeaway">
+  <h2>What to carry forward</h2>
+  <p>You don't memorise functions anymore — you describe outcomes and let AI supply the syntax. But describing well, recognising the pattern, reading what you inherit, decoding errors, and verifying on a test range are skills that stay firmly yours. That's where the value moved.</p>
+  <ul>
+    <li>Plain English in, formula out · precision in the request means precision in the result</li>
+    <li>A good prompt names the data shape, the goal, the edge cases, and one example</li>
+    <li>Five patterns cover most work · lookups, conditional sums, text cleanup, IF logic, dynamic arrays</li>
+    <li>AI explains any inherited formula and translates every error code into a fix</li>
+    <li>Verify on a small test range first · a formula that runs is not a formula that's right</li>
+  </ul>
+</div>
+
+</div>
+<footer>MokshPath · Lesson 02 of 04 · Next up: AI for Data Cleaning &amp; Analysis →</footer>
+<script>
+
+/* ============ Figure 1 · Transformer ============ */
+const tfWrap=document.getElementById('tfWrap');
+const tfEn=document.getElementById('tfEn'),tfFx=document.getElementById('tfFx'),tfNote=document.getElementById('tfNote');
+const TF=[
+  {
+    en:'"Get me the price for the item in A2."',
+    fx:'=XLOOKUP(A2, Products!A:A, Products!B:B)',
+    note:'Under-specified. The AI guessed the columns and added no error handling — if A2 has no match, this cell shows #N/A. It works, until it doesn’t.'
+  },
+  {
+    en:'"Look up the price for the SKU in A2 from the Products sheet, matching column A to column B."',
+    fx:'=XLOOKUP(A2, Products!A:A, Products!B:B, "Not found")',
+    note:'Clearer. Now the columns are pinned and there’s a fallback message. Still no decision about blanks or duplicates — but far closer to usable.'
+  },
+  {
+    en:'"Look up the price for the SKU in A2 in the Products sheet (SKUs in column A, prices in column B). If there’s no match, show 0. Example: A2 = “BOLT-01” should return 4.50."',
+    fx:'=IFERROR(XLOOKUP(A2, Products!A:A, Products!B:B), 0)',
+    note:'Precise. Data shape, goal, edge case, and a worked example — the AI has almost nothing left to guess, so the formula lands right the first time.'
+  }
+];
+let tfCur=-1,tfTimer=null;
+function tfSet(i){
+  if(tfCur===i)return;
+  tfCur=i;
+  [0,1,2].forEach(j=>document.getElementById('tb'+j).classList.toggle('active',j===i));
+  tfEn.textContent=TF[i].en;
+  tfFx.classList.remove('show');
+  tfWrap.classList.add('working');
+  clearTimeout(tfTimer);
+  tfTimer=setTimeout(()=>{
+    tfFx.textContent=TF[i].fx;
+    tfFx.classList.add('show');
+    tfNote.textContent=TF[i].note;
+    tfWrap.classList.remove('working');
+  },820);
+}
+new IntersectionObserver((es,o)=>es.forEach(e=>{if(e.isIntersecting){tfSet(0);o.unobserve(e.target)}}),{threshold:0.4}).observe(tfWrap);
+
+/* ============ Figure 2 · Pattern tabs ============ */
+const PAT=[
+  {name:'Lookups',use:'Pull a matching value from elsewhere',code:'=XLOOKUP(A2, Products[SKU], Products[Price])',desc:'The job: "find the row where the key matches, give me back a value from that row." XLOOKUP is the modern one-liner; INDEX-MATCH (=INDEX(Price, MATCH(A2, SKU, 0))) does the same and works in older files. Ask AI for whichever your Excel version supports.'},
+  {name:'Conditional sums',use:'Add or count only rows that meet conditions',code:'=SUMIFS(Sales, Region, "East", Month, "Mar")',desc:'The job: "total (or count) only the rows where these things are true." SUMIFS sums with multiple conditions; COUNTIFS counts them. Describe the conditions in words — "sales where region is East and month is March" — and let AI assemble the ranges.'},
+  {name:'Text cleanup',use:'Fix messy imported text',code:'=TRIM(A2)   ·   =TEXTSPLIT(A2, ",")',desc:'The job: "this text is dirty — clean it." TRIM removes stray spaces; TEXTSPLIT breaks one cell into many by a delimiter; PROPER, UPPER and SUBSTITUTE reshape it further. Perfect for names, emails, and anything pasted from another system.'},
+  {name:'IF logic',use:'Return different results by condition',code:'=IF(C2>=1000, "Bulk", "Standard")',desc:'The job: "if this is true, do one thing; otherwise, do another." IF handles a single fork; IFS handles several branches without deep nesting. Say the rule in plain terms — "flag orders of 1000 or more as Bulk" — and AI builds the logic.'},
+  {name:'Dynamic arrays',use:'Return many results from one formula',code:'=SORT(UNIQUE(FILTER(A2:A99, B2:B99="East")))',desc:'The job: "give me a live list, not a single cell." FILTER keeps rows that match, UNIQUE removes duplicates, SORT orders them — and they update automatically as data changes. One formula, a whole spilled range of answers.'}
+];
+const patBody=document.getElementById('patBody'),patTabs=document.getElementById('patTabs');
+function patSet(i){
+  Array.prototype.forEach.call(patTabs.children,(b,j)=>b.classList.toggle('active',j===i));
+  const p=PAT[i];
+  patBody.innerHTML='<div class="pat-panel on"><h4>'+p.name+'</h4><div class="pat-use">'+p.use+'</div><div class="pat-code">'+p.code+'</div><p class="pat-desc">'+p.desc+'</p></div>';
+}
+patSet(0);
+
+/* ============ Figure 3 · Explain reveal ============ */
+const EX=[
+  {tag:'IFERROR( … , 0 )',msg:'The safety wrapper. It says: try the lookup inside, but if that produces any error, quietly show 0 instead. This is what stops an ugly #N/A appearing when a SKU isn’t found.'},
+  {tag:'XLOOKUP',msg:'The lookup engine. It searches one column for a value and returns the matching value from another column — the modern replacement for VLOOKUP, and easier to read.'},
+  {tag:'B2',msg:'What you’re searching for — the lookup value. Whatever SKU sits in cell B2 is the thing XLOOKUP will go hunting for.'},
+  {tag:'Products[SKU]',msg:'Where to search — the lookup array. This is the SKU column of a table named Products. XLOOKUP scans down it looking for the value in B2.'},
+  {tag:'Products[Price]',msg:'What to bring back — the return array. When XLOOKUP finds the matching SKU, it returns the price from the same row of this Price column.'},
+  {tag:'0',msg:'The fallback value for IFERROR. If anything inside errors out — typically "SKU not found" — the cell shows this 0 instead of an error code.'}
+];
+const exToks=Array.prototype.slice.call(document.querySelectorAll('#exFormula .ex-tok'));
+const exTag=document.getElementById('exTag'),exMsg=document.getElementById('exMsg');
+exToks.forEach(t=>t.addEventListener('click',()=>{
+  const i=+t.dataset.i;
+  exToks.forEach(x=>x.classList.toggle('active',x===t));
+  exTag.textContent=EX[i].tag;
+  exMsg.textContent=EX[i].msg;
+}));
+
+/* ============ Figure 4 · Error explainer ============ */
+const ERR=[
+  {big:'#N/A',name:'Not available',cause:'A lookup (XLOOKUP, VLOOKUP, MATCH) searched for a value that isn’t in the range — or is there but with a hidden space, a typo, or the wrong data type.',fix:'Wrap the lookup in IFERROR to show a friendly default, and check the search value really matches the source (trim spaces, confirm text vs number).',prompt:'"This XLOOKUP returns #N/A even though the value looks like it’s in the list. What could cause that, and how do I make it show ‘Not found’ instead?"'},
+  {big:'#REF!',name:'Broken reference',cause:'The formula pointed at cells that were deleted — you removed a row or column the formula depended on, so the reference has nowhere to point.',fix:'Undo the deletion if it was recent, or rewrite the formula against the current layout. AI can rebuild it if you describe what the cell should now reference.',prompt:'"I deleted a column and now this formula shows #REF!. Here’s the formula and my current column layout — rewrite it to point at the right cells."'},
+  {big:'#VALUE!',name:'Wrong type of value',cause:'A calculation received the wrong kind of input — most often text where a number was expected (a number stored as text, a stray letter, or a blank treated as text).',fix:'Find the offending cell and convert it to a real number, or wrap the input so text is handled. Ask AI to make the formula tolerant of the odd non-number.',prompt:'"This formula returns #VALUE!. I think one of the cells has a number stored as text. How do I find it and fix the formula so it still works?"'},
+  {big:'#DIV/0!',name:'Divide by zero',cause:'The formula divided by zero or by an empty cell — common early in a sheet before any data has been entered, or when a denominator legitimately can be zero.',fix:'Guard the division: show a blank or 0 when the denominator is zero. IFERROR or a small IF check handles it cleanly.',prompt:'"My percentage formula shows #DIV/0! when the total is empty. Rewrite it so it shows a blank instead of the error until there’s data."'},
+  {big:'#SPILL!',name:'Blocked spill range',cause:'A dynamic-array formula (FILTER, UNIQUE, SORT) tried to output multiple results into the cells below, but something — stray data, a merged cell — is already sitting there.',fix:'Clear the cells in the spill area below the formula, or move the formula somewhere with empty room to expand into.',prompt:'"My FILTER formula shows #SPILL!. What does that mean, and how do I find and clear whatever is blocking it from expanding?"'}
+];
+function errSet(i){
+  Array.prototype.forEach.call(document.getElementById('errList').children,(el,j)=>el.classList.toggle('active',j===i));
+  const e=ERR[i];
+  document.getElementById('errBig').textContent=e.big;
+  document.getElementById('errName').textContent=e.name;
+  document.getElementById('errCause').textContent=e.cause;
+  document.getElementById('errFix').textContent=e.fix;
+  document.getElementById('errPrompt').textContent=e.prompt;
+}
+errSet(0);
+
+/* ============ Figure 5 · Verify checklist ============ */
+const vboxes=Array.prototype.slice.call(document.querySelectorAll('#vlist input'));
+function vUpdate(){
+  const n=vboxes.filter(b=>b.checked).length;
+  document.getElementById('vfill').style.width=(n/6*100)+'%';
+  document.getElementById('vnum').textContent=n+' / 6';
+  const panel=document.getElementById('vpanel'),tag=document.getElementById('vtag'),msg=document.getElementById('vmsg');
+  panel.className='vpanel';
+  if(n===0){tag.textContent='Verdict';msg.textContent='Tick each check you actually performed — a green formula that returns a number can still be wrong.';return}
+  if(n<=2){panel.classList.add('v-bad');tag.textContent='Not verified — do not roll out';msg.textContent='You’ve barely tested it. Filling this down the full range now is how a single wrong assumption becomes ten thousand wrong cells.'}
+  else if(n<=3){panel.classList.add('v-warn');tag.textContent='Partly checked — keep going';msg.textContent='A start, but gaps remain. The edge cases and the copy-down behaviour are exactly where AI-drafted formulas quietly go wrong.'}
+  else if(n<=5){panel.classList.add('v-good');tag.textContent='Well verified — nearly there';msg.textContent='Solid discipline. Finish the last checks — especially the independent cross-check and the copy-down spot test — and you can trust it.'}
+  else{panel.classList.add('v-great');tag.textContent='Fully verified — trust it';msg.textContent='This is the standard. You know it’s right because you proved it on a slice you understood before scaling it up. Ship it.'}
+}
+function vPreset(){
+  const run=[1,1,1,1,0,1];
+  vboxes.forEach((b,i)=>b.checked=!!run[i]);
+  vUpdate();
+}
+function vClear(){vboxes.forEach(b=>b.checked=false);vUpdate()}
+const vlist=document.getElementById('vlist');
+new IntersectionObserver((es,o)=>es.forEach(e=>{if(e.isIntersecting){vlist.classList.remove('go');void vlist.offsetWidth;vlist.classList.add('go');o.unobserve(e.target)}}),{threshold:0.25}).observe(vlist);
+
+</script>
+</body>
+</html>
