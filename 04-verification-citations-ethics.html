@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Verification, Citations &amp; Ethics · Lesson 04</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,0,400;9..144,0,600;9..144,0,800;9..144,1,600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+
+:root{
+  --orange:#EF7F1A; --orange-light:#FF9429; --orange-dark:#D55222;
+  --brown:#412C23; --brown-dark:#2F1D19; --tan:#A34E1C;
+  --yellow:#FECC00; --cream:#FBF6EE; --paper:#FFFCF6;
+  --ink:#1C1410; --muted:#6E5C50; --line:#E8DCC8; --accent:#008DD2;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',system-ui,sans-serif;
+  background:var(--paper); color:var(--ink); line-height:1.6; overflow-x:hidden;
+}
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:radial-gradient(circle at 1px 1px,rgba(65,44,35,0.05) 1px,transparent 0);
+  background-size:24px 24px;
+}
+.topbar{
+  position:sticky;top:0;z-index:100;
+  background:rgba(255,252,246,0.92); backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+  padding:14px 40px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.brand{font-family:'Fraunces',serif;font-weight:800;font-size:17px;letter-spacing:-0.01em;color:var(--brown-dark)}
+.brand .dot{color:var(--orange)}
+.brand .sub{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.15em;color:var(--muted);font-weight:500;text-transform:uppercase;margin-left:8px}
+.logo-slot{width:44px;height:44px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.logo-slot svg{width:100%;height:100%;display:block}
+.page{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:50px 40px 100px}
+.hero{padding:30px 0 50px;border-bottom:1px solid var(--line)}
+.eyebrow{
+  font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.18em;
+  text-transform:uppercase;color:var(--orange-dark);font-weight:600;
+  display:inline-flex;align-items:center;gap:10px;
+}
+.eyebrow::before{content:"";width:24px;height:2px;background:var(--orange)}
+h1{
+  font-family:'Fraunces',serif;font-weight:800;
+  font-size:clamp(38px,7vw,80px);line-height:0.98;letter-spacing:-0.03em;
+  margin:18px 0 20px;color:var(--brown-dark);
+}
+h1 em{font-style:italic;color:var(--orange-dark);font-weight:600}
+.lede{font-size:19px;max-width:680px;color:var(--muted)}
+section{padding:70px 0;border-bottom:1px solid var(--line)}
+section:last-of-type{border-bottom:none}
+.section-num{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--orange);font-weight:600;letter-spacing:0.08em}
+h2{
+  font-family:'Fraunces',serif;font-weight:700;
+  font-size:clamp(28px,4.5vw,48px);line-height:1.05;letter-spacing:-0.02em;
+  margin:10px 0 22px;color:var(--brown-dark);max-width:720px;
+}
+h3{font-family:'Fraunces',serif;font-weight:600;font-size:24px;color:var(--brown-dark);margin:28px 0 12px}
+p{max-width:680px;margin-bottom:14px;color:var(--ink)}
+.lead{font-size:17px;color:var(--muted);max-width:680px;margin-bottom:26px}
+code{font-family:'JetBrains Mono',monospace;font-size:0.92em;background:var(--cream);padding:2px 6px;border-radius:4px;color:var(--brown-dark)}
+.illus{
+  background:var(--cream);border:1px solid var(--line);border-radius:18px;
+  padding:32px;margin:24px 0;position:relative;overflow:hidden;
+}
+.illus-title{
+  font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);
+  letter-spacing:0.12em;text-transform:uppercase;
+  margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:10px;
+}
+.controls{display:flex;gap:8px;flex-wrap:wrap}
+.controls button{
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  background:var(--paper);border:1px solid var(--line);color:var(--brown);
+  padding:6px 12px;border-radius:6px;cursor:pointer;
+  text-transform:uppercase;letter-spacing:0.1em;transition:all .2s;
+}
+.controls button:hover{background:var(--orange);color:#fff;border-color:var(--orange)}
+.controls button.active{background:var(--brown-dark);color:#fff;border-color:var(--brown-dark)}
+.takeaway{
+  background:var(--brown-dark);color:var(--paper);
+  border-radius:18px;padding:44px;margin-top:50px;position:relative;overflow:hidden;
+}
+.takeaway::after{
+  content:"";position:absolute;top:-40px;right:-40px;width:180px;height:180px;
+  border-radius:50%;background:radial-gradient(circle,var(--orange),transparent 70%);opacity:0.4;
+}
+.takeaway h2{color:var(--paper);margin-bottom:16px}
+.takeaway p{color:#E8D9C5;font-size:16px;max-width:680px}
+.takeaway ul{list-style:none;margin-top:18px;display:grid;gap:8px}
+.takeaway li{font-family:'JetBrains Mono',monospace;font-size:13px;padding-left:22px;position:relative;color:#FBE7CB}
+.takeaway li::before{content:"→";position:absolute;left:0;color:var(--orange);font-weight:bold}
+footer{text-align:center;padding:36px;color:var(--muted);font-size:12px;font-family:'JetBrains Mono',monospace;letter-spacing:0.1em}
+@media(max-width:700px){
+  .topbar{padding:12px 18px}
+  .page{padding:30px 18px 70px}
+  .illus{padding:20px}
+  .takeaway{padding:28px}
+  .logo-slot{width:42px;height:66px}
+}
+
+/* ── page-specific: fact-check pipeline ───────────────────── */
+.pipe{display:flex;flex-direction:column;gap:0}
+.pstep{
+  display:flex;gap:16px;align-items:flex-start;opacity:0;transform:translateX(-14px);
+}
+.pipe.reveal .pstep{animation:pstepIn .5s forwards}
+.pipe.reveal .pstep:nth-child(1){animation-delay:.05s}
+.pipe.reveal .pstep:nth-child(3){animation-delay:.2s}
+.pipe.reveal .pstep:nth-child(5){animation-delay:.35s}
+.pipe.reveal .pstep:nth-child(7){animation-delay:.5s}
+.pipe.reveal .pstep:nth-child(9){animation-delay:.65s}
+@keyframes pstepIn{to{opacity:1;transform:translateX(0)}}
+.pnum{
+  flex-shrink:0;width:40px;height:40px;border-radius:10px;background:var(--brown-dark);color:var(--paper);
+  display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-weight:600;font-size:14px;
+}
+.pstep:nth-child(1) .pnum{background:var(--orange-dark)}
+.pstep:nth-child(3) .pnum{background:var(--tan)}
+.pstep:nth-child(5) .pnum{background:var(--orange)}
+.pstep:nth-child(7) .pnum{background:var(--brown)}
+.pstep:nth-child(9) .pnum{background:var(--accent)}
+.pbody{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:14px 18px;flex:1}
+.pbody h4{font-family:'Fraunces',serif;font-size:17px;color:var(--brown-dark);margin-bottom:4px}
+.pbody p{font-size:13px;color:var(--muted);margin:0;max-width:none;line-height:1.5}
+.pbody .stage-tag{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:0.08em;text-transform:uppercase;color:var(--tan);background:var(--cream);padding:2px 8px;border-radius:5px;margin-top:8px}
+.pconn{width:40px;display:flex;justify-content:center;height:22px;opacity:0}
+.pipe.reveal .pconn{animation:pstepIn .4s forwards;animation-delay:.4s}
+.pconn::before{content:"";width:2px;background:var(--line);height:100%}
+
+/* ── page-specific: citation tester ───────────────────────── */
+.cite-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+.cite-tab{
+  font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.06em;
+  background:var(--paper);border:1px solid var(--line);color:var(--brown);
+  padding:9px 16px;border-radius:999px;cursor:pointer;transition:all .2s;
+}
+.cite-tab:hover{border-color:var(--orange);color:var(--orange-dark)}
+.cite-tab.active{background:var(--orange);border-color:var(--orange);color:#fff}
+.cite-card{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:16px}
+.cite-ref{font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--brown-dark);background:var(--cream);border-left:3px solid var(--tan);border-radius:8px;padding:12px 14px;line-height:1.6;margin-bottom:16px}
+.cite-checks{display:grid;gap:8px;margin-bottom:14px}
+.cite-row{display:flex;align-items:center;gap:12px;background:var(--cream);border:1px solid var(--line);border-radius:9px;padding:10px 14px;opacity:.35;transition:all .4s}
+.cite-row.done{opacity:1}
+.cite-row .cicon{flex-shrink:0;width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-weight:700;font-size:13px;background:var(--line);color:var(--muted)}
+.cite-row.pass .cicon{background:#2E7D46;color:#fff}
+.cite-row.fail .cicon{background:var(--orange-dark);color:#fff}
+.cite-row .clab{font-size:13px;color:var(--ink);flex:1}
+.cite-row .cnote{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);text-align:right}
+.cite-verdict{border-radius:10px;padding:14px 16px;font-size:14px;display:none;line-height:1.5}
+.cite-verdict.shown{display:block;animation:nodeIn .4s both}
+.cite-verdict.real{background:rgba(46,125,70,0.09);border:1px solid rgba(46,125,70,0.3);color:#215c33}
+.cite-verdict.fake{background:rgba(213,82,34,0.09);border:1px solid rgba(213,82,34,0.35);color:var(--orange-dark)}
+.cite-verdict strong{font-family:'Fraunces',serif;font-size:16px}
+@keyframes nodeIn{from{opacity:0;transform:translateY(14px) scale(.97)}to{opacity:1;transform:none}}
+
+/* ── page-specific: source-credibility evaluator ──────────── */
+.src-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-bottom:20px}
+.src-card{
+  background:var(--paper);border:1px solid var(--line);border-radius:14px;
+  padding:18px 20px;cursor:pointer;transition:all .25s;position:relative;
+}
+.src-card:hover{border-color:var(--orange);transform:translateY(-2px)}
+.src-card.picked{border-color:var(--orange);box-shadow:0 0 0 2px rgba(239,127,26,0.18)}
+.src-card h4{font-family:'Fraunces',serif;font-size:18px;color:var(--brown-dark);margin-bottom:4px}
+.src-card .sdesc{font-size:12.5px;color:var(--muted);max-width:none;margin-bottom:12px}
+.metric{margin-bottom:9px}
+.metric .mlab{display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.06em;text-transform:uppercase;color:var(--muted);margin-bottom:3px}
+.mbar{height:7px;background:var(--cream);border-radius:4px;overflow:hidden}
+.mfill{height:100%;border-radius:4px;width:0;transition:width .6s ease}
+.mfill.auth{background:var(--orange)}
+.mfill.evid{background:var(--tan)}
+.mfill.corr{background:var(--accent)}
+.src-verdict{
+  background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:18px 20px;
+  display:flex;align-items:center;gap:18px;flex-wrap:wrap;
+}
+.src-ring{flex-shrink:0;width:84px;height:84px;position:relative}
+.src-ring svg{transform:rotate(-90deg)}
+.src-ring .snum{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-weight:800;font-size:26px;color:var(--brown-dark)}
+.src-text{flex:1;min-width:200px}
+.src-text .stag{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;font-weight:600;margin-bottom:4px}
+.src-text p{font-size:13.5px;color:var(--ink);margin:0;max-width:none;line-height:1.5}
+.stag.go{color:#2E7D46} .stag.maybe{color:#7A6200} .stag.skip{color:var(--orange-dark)}
+
+/* ── page-specific: quote/disclose cards ──────────────────── */
+.card-two{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:stretch}
+.pcard{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:20px;display:flex;flex-direction:column}
+.pcard .k{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--tan);margin-bottom:10px;font-weight:600}
+.pcard h4{font-family:'Fraunces',serif;font-size:21px;color:var(--brown-dark);margin-bottom:10px}
+.qc-line{font-size:13.5px;color:var(--ink);padding:9px 12px;border-radius:9px;margin-bottom:8px;line-height:1.45}
+.qc-bad{background:rgba(213,82,34,0.07);border-left:3px solid var(--orange-dark)}
+.qc-good{background:rgba(46,125,70,0.07);border-left:3px solid #2E7D46}
+.qc-line .tagx{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;display:block;margin-bottom:3px}
+.qc-bad .tagx{color:var(--orange-dark)} .qc-good .tagx{color:#2E7D46}
+.disc-list{display:grid;gap:8px;margin-top:2px}
+.disc-item{display:flex;gap:11px;align-items:flex-start;font-size:13px;color:var(--ink);line-height:1.45}
+.disc-item .dico{flex-shrink:0;width:20px;height:20px;border-radius:6px;background:var(--cream);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--tan)}
+.disc-item strong{color:var(--brown-dark)}
+
+/* ── page-specific: detector-honesty panel ────────────────── */
+.det-wrap{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.det-box{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+.det-box .k{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;display:block;margin-bottom:10px;font-weight:600}
+.det-fp .k{color:var(--orange-dark)} .det-fn .k{color:var(--tan)}
+.det-box p{font-size:13px;color:var(--ink);max-width:none;margin:0 0 10px;line-height:1.5}
+.det-stat{display:flex;align-items:baseline;gap:8px;margin-bottom:6px}
+.det-stat .big{font-family:'Fraunces',serif;font-weight:800;font-size:34px;color:var(--brown-dark);line-height:1}
+.det-stat .cap{font-size:11.5px;color:var(--muted)}
+.det-note{background:var(--cream);border-left:3px solid var(--orange);border-radius:10px;padding:14px 16px;margin-top:14px}
+.det-note p{font-size:13.5px;color:var(--ink);max-width:none;margin:0;line-height:1.55}
+
+/* ── page-specific: vet-the-brief challenge ───────────────── */
+.brief-intro{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin-bottom:16px}
+.brief-intro p{font-size:13.5px;color:var(--ink);max-width:none;margin:0;line-height:1.55}
+.brief-list{display:grid;gap:10px}
+.brief{
+  display:flex;gap:14px;align-items:flex-start;background:var(--paper);
+  border:1px solid var(--line);border-radius:12px;padding:14px 18px;cursor:pointer;transition:all .2s;
+}
+.brief:hover{border-color:var(--orange)}
+.brief.flagged{border-color:var(--orange-dark);background:rgba(213,82,34,0.05)}
+.brief-box{
+  flex-shrink:0;width:24px;height:24px;border-radius:7px;border:2px solid var(--line);
+  display:flex;align-items:center;justify-content:center;transition:all .2s;
+  font-family:'JetBrains Mono',monospace;font-size:14px;color:transparent;font-weight:700;
+}
+.brief.flagged .brief-box{background:var(--orange-dark);border-color:var(--orange-dark);color:#fff}
+.brief-text{flex:1}
+.brief-text .bref{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--brown-dark);line-height:1.5;margin-bottom:4px}
+.brief-text .bhint{font-size:11.5px;color:var(--muted);display:none;line-height:1.45}
+.brief.revealed .bhint{display:block}
+.brief.revealed.correct .bhint{color:#215c33}
+.brief.revealed.wrong .bhint{color:var(--orange-dark)}
+.brief-status{
+  margin-top:16px;background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:14px 18px;
+  display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+}
+.bs-bar{flex:1;min-width:120px;height:8px;background:var(--cream);border-radius:4px;overflow:hidden}
+.bs-fill{height:100%;background:var(--orange-dark);width:0;transition:width .4s ease}
+.bs-lab{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--brown-dark);font-weight:600;white-space:nowrap}
+.bs-result{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;white-space:nowrap;display:none}
+.bs-result.shown{display:inline}
+
+/* ── page-specific: safe-practice checklist ───────────────── */
+.check-list{display:grid;gap:10px}
+.check{
+  display:flex;gap:14px;align-items:flex-start;background:var(--paper);
+  border:1px solid var(--line);border-radius:12px;padding:14px 18px;cursor:pointer;transition:all .2s;
+}
+.check:hover{border-color:var(--orange)}
+.check.on{border-color:#2E7D46;background:rgba(46,125,70,0.05)}
+.check-box{
+  flex-shrink:0;width:24px;height:24px;border-radius:7px;border:2px solid var(--line);
+  display:flex;align-items:center;justify-content:center;transition:all .2s;
+  font-family:'JetBrains Mono',monospace;font-size:14px;color:transparent;font-weight:700;
+}
+.check.on .check-box{background:#2E7D46;border-color:#2E7D46;color:#fff}
+.check-text h4{font-family:'Fraunces',serif;font-size:16.5px;color:var(--brown-dark);margin-bottom:3px}
+.check-text p{font-size:12.5px;color:var(--muted);margin:0;max-width:none;line-height:1.5}
+.check-progress{
+  margin-top:16px;background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:14px 18px;
+  display:flex;align-items:center;gap:14px;
+}
+.cp-bar{flex:1;height:8px;background:var(--cream);border-radius:4px;overflow:hidden}
+.cp-fill{height:100%;background:#2E7D46;width:0;transition:width .4s ease}
+.cp-lab{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--brown-dark);font-weight:600;white-space:nowrap}
+
+@media(max-width:760px){
+  .card-two{grid-template-columns:1fr}
+  .det-wrap{grid-template-columns:1fr}
+}
+
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="brand">MokshPath <span class="dot">·</span> <span class="sub">Lesson 04 · AI Research</span></div>
+  <div class="logo-slot" aria-label="MokshPath logo">
+    <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="22" cy="22" r="20" fill="#412C23"/>
+      <path d="M12 30V15l6 8 4-9 4 9 6-8v15" stroke="#EF7F1A" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <circle cx="22" cy="10" r="3" fill="#FECC00"/>
+    </svg>
+  </div>
+</div>
+<div class="page">
+
+<section class="hero">
+  <div class="eyebrow">Week 3 · Lesson 04 · AI Research</div>
+  <h1>Trust nothing until you've <em>checked</em> it.</h1>
+  <p class="lede">You've learned to prompt, search, and synthesise with AI. This lesson is the discipline that makes all of it safe to publish: verifying claims, confirming citations are real, judging whether a source deserves your trust, quoting people honestly, and knowing when to disclose that AI helped. It is the least glamorous week of the course — and the one that keeps your name clean. Let's be honest about where AI lies, and build the habits that catch it.</p>
+</section>
+
+<section>
+  <div class="section-num">01 / 05</div>
+  <h2>A claim isn't true because it sounds true</h2>
+  <p class="lead">AI writes with total confidence whether it's right or wrong — the fluent sentence and the fabricated one look identical. So you can't verify by feel. You need a repeatable pipeline that treats every factual claim as guilty until a primary source proves it innocent. Run the same five steps, every time, and hallucinations stop slipping through.</p>
+
+  <p>The pipeline moves from <strong>cheap</strong> checks to <strong>expensive</strong> ones. First you <strong>flag</strong> the specific claims worth checking — names, numbers, dates, quotes, "studies show." Then you <strong>rank</strong> them by risk: a wrong birth year is embarrassing; a wrong drug dosage is dangerous. High-risk claims earn the effort of tracing back to a <strong>primary source</strong> — the original paper, the actual filing, the person who said it — not a summary of a summary. Then you <strong>trace the citation</strong> to confirm the source actually says what you're claiming. Only then do you <strong>decide</strong>: keep it, fix it, or cut it.</p>
+  <p>Watch it assemble. Each stage is something you can do in minutes; skipping the last three is how confident nonsense reaches your reader.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 1 · The fact-check pipeline</span>
+      <div class="controls">
+        <button onclick="runPipe()">▶ Run the pipeline</button>
+      </div>
+    </div>
+    <div class="pipe" id="pipe">
+      <div class="pstep">
+        <div class="pnum">1</div>
+        <div class="pbody"><h4>Flag the checkable claims</h4><p>Underline every name, number, date, quotation, and "research shows." Opinions aren't checkable; facts are. Isolate them.</p><span class="stage-tag">Flag</span></div>
+      </div>
+      <div class="pconn"></div>
+      <div class="pstep">
+        <div class="pnum">2</div>
+        <div class="pbody"><h4>Rank each claim by risk</h4><p>How bad is it if this is wrong? A stray statistic in a blog is low-stakes; a medical or legal claim is high. Sort your effort.</p><span class="stage-tag">Rank</span></div>
+      </div>
+      <div class="pconn"></div>
+      <div class="pstep">
+        <div class="pnum">3</div>
+        <div class="pbody"><h4>Check against a primary source</h4><p>Go to the original — the paper, the dataset, the filing, the transcript. Not a news write-up of it, and never the AI's own recollection.</p><span class="stage-tag">Primary source</span></div>
+      </div>
+      <div class="pconn"></div>
+      <div class="pstep">
+        <div class="pnum">4</div>
+        <div class="pbody"><h4>Trace the citation</h4><p>Does the source truly say this? Open it, find the sentence, read the surrounding paragraph. AI often cites a real paper that says the opposite.</p><span class="stage-tag">Trace</span></div>
+      </div>
+      <div class="pconn"></div>
+      <div class="pstep">
+        <div class="pnum">5</div>
+        <div class="pbody"><h4>Decide: keep, fix, or cut</h4><p>Verified — keep it with the citation. Wrong — fix it to what the source says. Uncheckable — cut it. Never publish "probably true."</p><span class="stage-tag">Decide</span></div>
+      </div>
+    </div>
+  </div>
+
+  <h3>The rule this figure teaches</h3>
+  <p>Notice the pipeline never asks the AI "are you sure?" — because it will happily say yes and cite a fake paper to prove it. Verification is something <em>you</em> do against sources the model can't fabricate: the actual document, opened in your own browser. The model drafts; the primary source decides.</p>
+</section>
+
+<section>
+  <div class="section-num">02 / 05</div>
+  <h2>Is this citation real — or invented?</h2>
+  <p class="lead">The most dangerous AI failure isn't a vague answer; it's a crisp, formatted, authoritative-looking citation for a paper that does not exist. Real author names, a plausible journal, a DOI that looks right — all confidently assembled from thin air. Here's how to test one. Pick a citation below and run the four checks a fabrication can't survive.</p>
+
+  <p>The tests, from fastest to slowest: does the <strong>DOI resolve</strong> to a real page? Do the <strong>title, authors, and journal</strong> match that page exactly? And does the paper's <strong>content actually support</strong> the claim you're attaching to it? A fabricated citation fails one of these — usually the first. A <em>misused</em> real citation passes the first three and fails the last, which is why the content check is the one people skip and shouldn't.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 2 · Citation reality tester</span>
+    </div>
+    <div class="cite-tabs">
+      <button class="cite-tab active" onclick="showCite('a',this)">Citation A</button>
+      <button class="cite-tab" onclick="showCite('b',this)">Citation B</button>
+      <button class="cite-tab" onclick="showCite('c',this)">Citation C</button>
+      <button class="cite-tab" onclick="showCite('d',this)">Citation D</button>
+    </div>
+    <div class="cite-card">
+      <div class="cite-ref" id="citeRef"></div>
+      <div class="cite-checks" id="citeChecks">
+        <div class="cite-row" data-k="doi"><div class="cicon">?</div><div class="clab">DOI resolves to a live page</div><div class="cnote"></div></div>
+        <div class="cite-row" data-k="meta"><div class="cicon">?</div><div class="clab">Title, authors &amp; journal match</div><div class="cnote"></div></div>
+        <div class="cite-row" data-k="exists"><div class="cicon">?</div><div class="clab">Paper is indexed &amp; findable</div><div class="cnote"></div></div>
+        <div class="cite-row" data-k="content"><div class="cicon">?</div><div class="clab">Content supports the claim</div><div class="cnote"></div></div>
+      </div>
+      <div class="controls" style="margin-bottom:14px">
+        <button onclick="runCiteCheck()" id="citeRunBtn">▶ Run the four checks</button>
+      </div>
+      <div class="cite-verdict" id="citeVerdict"></div>
+    </div>
+  </div>
+
+  <h3>What separates fake from misused</h3>
+  <p>A <strong>fabricated</strong> citation collapses at the DOI or the index — the paper simply isn't there. A <strong>misused</strong> citation is scarier because it's real: correct authors, correct journal, correct year — attached to a claim the paper never makes. Both fail your standard, but only the content check catches the second. Never cite a source you haven't opened and read the relevant lines of.</p>
+</section>
+
+<section>
+  <div class="section-num">03 / 05</div>
+  <h2>Does this source deserve your trust?</h2>
+  <p class="lead">A citation can be perfectly real and still be a bad source to lean on. Verification isn't only "does it exist" — it's "how much weight can this bear." Judge a source on five dimensions: <strong>authority</strong> (who wrote it and do they know?), <strong>evidence</strong> (data or assertion?), <strong>bias</strong> (who benefits from you believing it?), <strong>recency</strong> (is it still current?), and <strong>corroboration</strong> (does anyone independent agree?).</p>
+
+  <p>No single dimension is decisive. A recent, well-evidenced blog from an anonymous author is worth more than a stale, unsourced page from a famous institution. The evaluator below blends the strong dimensions and lets weak ones — especially missing evidence or heavy bias — drag the score down, the way a careful reader's judgement should. Click a source to see how it scores.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 3 · Source-credibility evaluator · Authority × Evidence × Corroboration</span>
+    </div>
+    <div class="src-grid" id="srcGrid">
+      <div class="src-card" data-src="peer" onclick="pickSrc(this,'peer')">
+        <h4>Peer-reviewed study</h4>
+        <div class="sdesc">A 2024 paper in an indexed journal, methods and data disclosed, cited by others in the field.</div>
+        <div class="metric"><div class="mlab"><span>Authority</span><span>High</span></div><div class="mbar"><div class="mfill auth" data-w="90"></div></div></div>
+        <div class="metric"><div class="mlab"><span>Evidence</span><span>High</span></div><div class="mbar"><div class="mfill evid" data-w="88"></div></div></div>
+        <div class="metric"><div class="mlab"><span>Corroboration</span><span>High</span></div><div class="mbar"><div class="mfill corr" data-w="82"></div></div></div>
+      </div>
+      <div class="src-card" data-src="vendor" onclick="pickSrc(this,'vendor')">
+        <h4>Vendor "state of" report</h4>
+        <div class="sdesc">Glossy stats from a company selling the very thing the report says is booming.</div>
+        <div class="metric"><div class="mlab"><span>Authority</span><span>Med</span></div><div class="mbar"><div class="mfill auth" data-w="58"></div></div></div>
+        <div class="metric"><div class="mlab"><span>Evidence</span><span>Med</span></div><div class="mbar"><div class="mfill evid" data-w="50"></div></div></div>
+        <div class="metric"><div class="mlab"><span>Corroboration</span><span>Low</span></div><div class="mbar"><div class="mfill corr" data-w="24"></div></div></div>
+      </div>
+      <div class="src-card" data-src="forum" onclick="pickSrc(this,'forum')">
+        <h4>Anonymous forum post</h4>
+        <div class="sdesc">A confident claim with a big number, no author, no link, and nobody else repeating it.</div>
+        <div class="metric"><div class="mlab"><span>Authority</span><span>Low</span></div><div class="mbar"><div class="mfill auth" data-w="16"></div></div></div>
+        <div class="metric"><div class="mlab"><span>Evidence</span><span>Low</span></div><div class="mbar"><div class="mfill evid" data-w="18"></div></div></div>
+        <div class="metric"><div class="mlab"><span>Corroboration</span><span>Low</span></div><div class="mbar"><div class="mfill corr" data-w="12"></div></div></div>
+      </div>
+    </div>
+    <div class="src-verdict">
+      <div class="src-ring">
+        <svg width="84" height="84" viewBox="0 0 84 84">
+          <circle cx="42" cy="42" r="36" fill="none" stroke="#E8DCC8" stroke-width="8"/>
+          <circle id="srcRing" cx="42" cy="42" r="36" fill="none" stroke="#EF7F1A" stroke-width="8" stroke-linecap="round" stroke-dasharray="226" stroke-dashoffset="226" style="transition:stroke-dashoffset .7s ease, stroke .3s"/>
+        </svg>
+        <div class="snum" id="srcNum">–</div>
+      </div>
+      <div class="src-text">
+        <div class="stag" id="srcTag">Pick a source above</div>
+        <p id="srcMsg">The score blends authority, evidence, and corroboration — and lets heavy bias or missing evidence pull it down, the way a careful reader would.</p>
+      </div>
+    </div>
+  </div>
+
+  <h3>The rule this figure teaches</h3>
+  <p>Watch the vendor report: decent authority, decent-looking numbers — but nobody independent confirms it and it's selling something. Low corroboration plus obvious bias caps the score. That's correct. Treat single-source, self-interested claims as leads to verify, not facts to cite. One trustworthy corroborating source beats ten copies of the same press release.</p>
+</section>
+
+<section>
+  <div class="section-num">04 / 05</div>
+  <h2>Quote honestly, disclose plainly</h2>
+  <p class="lead">Two ethics habits separate careful researchers from careless ones: attributing quotes and paraphrases correctly, and being upfront about when AI helped. Neither is complicated. Both are constantly botched — usually not from malice but from moving fast and letting AI reword a source until the attribution quietly drifts from the truth.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 4 · Attribution and disclosure, side by side</span>
+    </div>
+    <div class="card-two">
+      <div class="pcard">
+        <span class="k">Quote &amp; attribute correctly</span>
+        <h4>Say who, say where, say it straight</h4>
+        <div class="qc-line qc-bad"><span class="tagx">✗ Sloppy</span>"Experts say remote work boosts productivity by 40%." — no expert, no study, a suspiciously round number floated as fact.</div>
+        <div class="qc-line qc-good"><span class="tagx">✓ Honest</span>Bloom et al. (2015), in a randomised trial at Ctrip, found a 13% performance increase among home-based staff — named author, real study, exact figure.</div>
+        <div class="qc-line qc-bad"><span class="tagx">✗ Sloppy</span>Reworded a source with AI until the wording is new but the idea is lifted — and dropped the citation because "it's my words now."</div>
+        <div class="qc-line qc-good"><span class="tagx">✓ Honest</span>Paraphrase in your own words <em>and</em> keep the citation — the credit is for the idea, not the exact phrasing. Quote verbatim inside quotation marks.</div>
+      </div>
+      <div class="pcard">
+        <span class="k">When &amp; how to disclose AI use</span>
+        <h4>Transparency, sized to the stakes</h4>
+        <div class="disc-list">
+          <div class="disc-item"><div class="dico">A</div><div><strong>Disclose when it shaped the substance.</strong> If AI drafted arguments, generated analysis, or wrote passages a reader would attribute to you, say so.</div></div>
+          <div class="disc-item"><div class="dico">B</div><div><strong>Follow the venue's rule first.</strong> Journals, universities, and employers have explicit AI policies — the correct disclosure is whatever they require, in their format.</div></div>
+          <div class="disc-item"><div class="dico">C</div><div><strong>Be specific, not vague.</strong> "AI assisted with drafting and code" beats a coy "AI may have been used." Name the tool and the role it played.</div></div>
+          <div class="disc-item"><div class="dico">D</div><div><strong>Light touch, light note.</strong> Grammar fixes or brainstorming rarely need a formal statement — but never hide substantive help behind "just editing."</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h3>The test that settles most cases</h3>
+  <p>When unsure whether to disclose, ask: <em>would a reasonable reader feel misled if they learned how much AI was involved?</em> If yes, disclose. The goal isn't confession for its own sake — it's making sure credit and responsibility land where they belong. You own everything you publish under your name, including the parts a machine wrote for you.</p>
+</section>
+
+<section>
+  <div class="section-num">05 / 05</div>
+  <h2>The uncomfortable truth about AI detectors</h2>
+  <p class="lead">A lot of people hope a "detector" will do this work for them — paste text, get a verdict, done. It won't. AI-writing detectors are unreliable in both directions, and leaning on them causes real harm. This is the honest panel: what they get wrong, and why accountability can't be outsourced to a tool.</p>
+
+  <p>Detectors fail two ways at once. They flag genuine human writing as AI — <strong>false positives</strong> that have wrongly accused students and writers, hitting non-native English speakers hardest because their phrasing reads as "too regular." And they miss lightly-edited AI text — <strong>false negatives</strong> that sail straight through. A verdict that's confidently wrong in both directions isn't evidence; it's a coin flip with a percentage sign.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 5 · Why detectors can't be your judge</span>
+    </div>
+    <div class="det-wrap">
+      <div class="det-box det-fp">
+        <span class="k">✗ False positives</span>
+        <div class="det-stat"><span class="big">Human</span><span class="cap">flagged as AI</span></div>
+        <p>Real essays — often by non-native English speakers or plain, structured writers — get labelled machine-made. Careers and grades have been damaged by a number that was simply wrong.</p>
+      </div>
+      <div class="det-box det-fn">
+        <span class="k">✗ False negatives</span>
+        <div class="det-stat"><span class="big">AI</span><span class="cap">passes as human</span></div>
+        <p>A few paraphrase passes or a "humaniser" tool, and AI-generated text scores clean. Anyone actually trying to cheat can beat the detector in minutes.</p>
+      </div>
+    </div>
+    <div class="det-note">
+      <p><strong>The accountability rule:</strong> a detector cannot verify a fact, confirm a citation, or judge a source — and it cannot be trusted to tell human from machine. So it decides nothing that matters. What matters is the same as it has always been: <em>you</em> checked the claims, <em>you</em> read the sources, and <em>you</em> stand behind what you published. Integrity is a process you run, not a score you paste.</p>
+    </div>
+  </div>
+
+  <h3>One last challenge — vet the brief</h3>
+  <p>Here's your final exercise for the week. A research assistant handed you five citations to support a report. Two of them are fabricated or badly misused. Read each, flag the ones you wouldn't trust, then reveal the answers. This is exactly the judgement everything above was training.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 6 · Vet-the-brief mini challenge · flag the 2 you don't trust</span>
+      <div class="controls">
+        <button onclick="revealBrief()">Reveal answers</button>
+        <button onclick="resetBrief()">Reset</button>
+      </div>
+    </div>
+    <div class="brief-intro"><p>Click to flag any citation you suspect is fabricated or misused. Two of the five are bad. Flag your two, then hit <strong>Reveal answers</strong> to score yourself.</p></div>
+    <div class="brief-list" id="briefList">
+      <div class="brief" data-bad="0" onclick="toggleBrief(this)">
+        <div class="brief-box">!</div>
+        <div class="brief-text">
+          <div class="bref">Bloom, N., et al. (2015). "Does Working from Home Work?" <em>Quarterly Journal of Economics</em>, 130(1), 165–218.</div>
+          <div class="bhint"></div>
+        </div>
+      </div>
+      <div class="brief" data-bad="1" onclick="toggleBrief(this)">
+        <div class="brief-box">!</div>
+        <div class="brief-text">
+          <div class="bref">Harrington, J. &amp; Vale, M. (2023). "Neural Correlates of Remote Collaboration." <em>Journal of Applied Cognitive Dynamics</em>, 47(3), 1102–1140. DOI:10.1042/jacd.2023.9917</div>
+          <div class="bhint"></div>
+        </div>
+      </div>
+      <div class="brief" data-bad="0" onclick="toggleBrief(this)">
+        <div class="brief-text" style="width:100%">
+          <div class="brief-box" style="float:left;margin-right:14px">!</div>
+          <div class="bref">OECD (2021). <em>Teleworking in the COVID-19 Pandemic: Trends and Prospects.</em> OECD Publishing, Paris.</div>
+          <div class="bhint"></div>
+        </div>
+      </div>
+      <div class="brief" data-bad="1" onclick="toggleBrief(this)">
+        <div class="brief-box">!</div>
+        <div class="brief-text">
+          <div class="bref">Bloom et al. (2015) — cited to claim remote work "raised productivity 40% and eliminated all burnout," neither of which the paper reports.</div>
+          <div class="bhint"></div>
+        </div>
+      </div>
+      <div class="brief" data-bad="0" onclick="toggleBrief(this)">
+        <div class="brief-box">!</div>
+        <div class="brief-text">
+          <div class="bref">Barrero, J.M., Bloom, N. &amp; Davis, S.J. (2021). "Why Working from Home Will Stick." NBER Working Paper 28731.</div>
+          <div class="bhint"></div>
+        </div>
+      </div>
+    </div>
+    <div class="brief-status">
+      <span class="bs-lab" id="bsLab">0 / 2 flagged</span>
+      <div class="bs-bar"><div class="bs-fill" id="bsFill"></div></div>
+      <span class="bs-result" id="bsResult"></span>
+    </div>
+  </div>
+
+  <h3>Before you publish anything, run this</h3>
+  <p>Everything this week compresses into one final checklist — the pass you make before your name goes on the work. Tick each one honestly; it's the difference between "I think it's right" and "I checked."</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 7 · The publish-with-integrity checklist</span>
+      <div class="controls">
+        <button onclick="checkAll()">Tick all</button>
+        <button onclick="checkClear()">Reset</button>
+      </div>
+    </div>
+    <div class="check-list" id="checkList">
+      <div class="check" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div class="check-text"><h4>Every claimed fact traced to a primary source</h4><p>No number, name, or "studies show" survives without you opening the original and confirming it there — never the AI's recollection.</p></div>
+      </div>
+      <div class="check" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div class="check-text"><h4>Every citation opened, not just formatted</h4><p>DOI resolves, metadata matches, and the paper actually says what you claim. A tidy reference list means nothing unread.</p></div>
+      </div>
+      <div class="check" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div class="check-text"><h4>Sources weighed, not just counted</h4><p>Authority, evidence, bias, recency, corroboration considered. Self-interested single sources treated as leads, not facts.</p></div>
+      </div>
+      <div class="check" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div class="check-text"><h4>Quotes and paraphrases attributed correctly</h4><p>Verbatim text in quotation marks, borrowed ideas credited even when reworded, no citation quietly dropped.</p></div>
+      </div>
+      <div class="check" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div class="check-text"><h4>AI use disclosed where it shaped the substance</h4><p>Follow the venue's policy, be specific about the tool and its role, and never hide meaningful help behind "just editing."</p></div>
+      </div>
+      <div class="check" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div class="check-text"><h4>You own it — no detector, no excuse</h4><p>You verified, you read, you stand behind it. Accountability is yours whether or not a machine drafted a word.</p></div>
+      </div>
+    </div>
+    <div class="check-progress">
+      <span class="cp-lab" id="cpLab">0 / 6 checks</span>
+      <div class="cp-bar"><div class="cp-fill" id="cpFill"></div></div>
+    </div>
+  </div>
+
+  <h3>Why this is the habit that lasts</h3>
+  <p>Tools will change; models will get better and worse in surprising ways. The discipline in this checklist won't age, because it doesn't depend on any tool being trustworthy — it depends on you being the last line of verification. That's the whole point of the week, and the whole point of the course: AI makes you faster, but it never makes you right. You do that.</p>
+</section>
+
+<div class="takeaway">
+  <h2>What to carry forward</h2>
+  <p>AI writes fiction and fact in the same confident voice, so you verify by process, not by feel. Trace every checkable claim to a primary source. Test citations for real — DOI, metadata, and above all content. Weigh sources on authority, evidence, bias, recency, and corroboration instead of counting them. Attribute honestly and disclose AI use where it shaped the work. And never hand your judgement to a detector — the accountability was always, and only, yours.</p>
+  <ul>
+    <li>Fact-check pipeline: flag → rank by risk → primary source → trace citation → decide</li>
+    <li>Test citations: DOI resolves · metadata matches · content actually supports the claim</li>
+    <li>Judge sources on authority × evidence × bias × recency × corroboration — not headcount</li>
+    <li>Quote verbatim in marks, credit reworded ideas, disclose AI where it shaped substance</li>
+    <li>Detectors are wrong both ways — you verified it, you read it, you own it</li>
+  </ul>
+</div>
+
+</div>
+<footer>MokshPath · Lesson 04 of 04 · Week 3 complete — Course complete: go verify something →</footer>
+<script>
+
+/* ══ Figure 1 · fact-check pipeline ══ */
+const pipeEl=document.getElementById('pipe');
+function runPipe(){
+  pipeEl.classList.remove('reveal');void pipeEl.offsetWidth;pipeEl.classList.add('reveal');
+}
+new IntersectionObserver((es,o)=>es.forEach(e=>{
+  if(e.isIntersecting){runPipe();o.unobserve(e.target)}
+}),{threshold:0.2}).observe(pipeEl);
+
+/* ══ Figure 2 · citation reality tester ══ */
+const CITES={
+  a:{
+    ref:'Bloom, N., Liang, J., Roberts, J. &amp; Ying, Z.J. (2015). "Does Working from Home Work? Evidence from a Chinese Experiment." <em>Quarterly Journal of Economics</em>, 130(1), 165–218. DOI:10.1093/qje/qju032',
+    checks:{doi:['pass','resolves'],meta:['pass','matches'],exists:['pass','indexed'],content:['pass','supported']},
+    verdict:'real',
+    msg:'<strong>Real and correctly used.</strong> The DOI resolves, the metadata matches exactly, the paper is widely indexed, and it genuinely reports the finding. Cite it with confidence — this is what a clean citation looks like.'
+  },
+  b:{
+    ref:'Harrington, J. &amp; Vale, M. (2023). "Neural Correlates of Remote Collaboration." <em>Journal of Applied Cognitive Dynamics</em>, 47(3), 1102–1140. DOI:10.1042/jacd.2023.9917',
+    checks:{doi:['fail','404'],meta:['fail','no match'],exists:['fail','not found'],content:['fail','n/a']},
+    verdict:'fake',
+    msg:'<strong>Fabricated.</strong> The DOI dead-ends, the "journal" isn\'t indexed anywhere, and no such paper exists. Real-sounding names and a crisp DOI are exactly how AI dresses up a hallucination. It fails at the very first check.'
+  },
+  c:{
+    ref:'OECD (2021). <em>Teleworking in the COVID-19 Pandemic: Trends and Prospects.</em> OECD Publishing, Paris.',
+    checks:{doi:['pass','resolves'],meta:['pass','matches'],exists:['pass','indexed'],content:['pass','supported']},
+    verdict:'real',
+    msg:'<strong>Real institutional source.</strong> Traceable to the OECD library, correct title and publisher, and its data backs the claim. Reports don\'t always carry a DOI — resolve the publisher\'s own record instead. Verified.'
+  },
+  d:{
+    ref:'Bloom, N. et al. (2015), cited to claim remote work "raised productivity 40% and eliminated employee burnout entirely."',
+    checks:{doi:['pass','resolves'],meta:['pass','matches'],exists:['pass','indexed'],content:['fail','contradicts']},
+    verdict:'fake',
+    msg:'<strong>Real paper, misused.</strong> The citation itself is genuine and passes the first three checks — but the paper reports a 13% performance gain, not 40%, and never claims burnout was eliminated. This is why the content check is the one you can\'t skip.'
+  }
+};
+let curCite='a';
+function showCite(k,btn){
+  document.querySelectorAll('.cite-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  curCite=k;
+  const c=CITES[k];
+  document.getElementById('citeRef').innerHTML=c.ref;
+  document.querySelectorAll('#citeChecks .cite-row').forEach(r=>{
+    r.className='cite-row';
+    r.querySelector('.cicon').textContent='?';
+    r.querySelector('.cnote').textContent='';
+  });
+  const v=document.getElementById('citeVerdict');
+  v.className='cite-verdict';v.innerHTML='';
+  document.getElementById('citeRunBtn').disabled=false;
+}
+function runCiteCheck(){
+  const c=CITES[curCite];
+  const rows=[...document.querySelectorAll('#citeChecks .cite-row')];
+  document.getElementById('citeRunBtn').disabled=true;
+  rows.forEach((r,i)=>{
+    const k=r.dataset.k;const res=c.checks[k];
+    setTimeout(()=>{
+      r.classList.add('done',res[0]);
+      r.querySelector('.cicon').textContent=res[0]==='pass'?'✓':'✗';
+      r.querySelector('.cnote').textContent=res[1];
+      if(i===rows.length-1){
+        const v=document.getElementById('citeVerdict');
+        v.className='cite-verdict '+c.verdict;
+        v.innerHTML=c.msg;
+        void v.offsetWidth;v.classList.add('shown');
+        document.getElementById('citeRunBtn').disabled=false;
+      }
+    },350*(i+1));
+  });
+}
+showCite('a',document.querySelector('.cite-tab.active'));
+
+/* ══ Figure 3 · source-credibility evaluator ══ */
+const SRC_DATA={
+  peer:{a:90,e:88,c:82,tag:'go',label:'Cite with confidence',
+    msg:'Named authors with standing, disclosed methods and data, and independent replication. All three strong dimensions line up — this is a source you can build an argument on.'},
+  vendor:{a:58,e:50,c:24,tag:'maybe',label:'Verify before you lean on it',
+    msg:'Plausible authority and glossy numbers — but nobody independent confirms them and the publisher profits from you believing them. Treat it as a lead to check, never a fact to cite unverified.'},
+  forum:{a:16,e:18,c:12,tag:'skip',label:'Do not cite',
+    msg:'No named author, no evidence, no corroboration, and a suspiciously round number. Interesting as a hint about where to look — worthless as a citation. Find the primary source or drop the claim.'}
+};
+const SRC_LEN=226;
+function pickSrc(card,key){
+  document.querySelectorAll('#srcGrid .src-card').forEach(c=>c.classList.remove('picked'));
+  card.classList.add('picked');
+  const d=SRC_DATA[key];
+  const raw=Math.round(Math.pow((d.a/100)*(d.e/100)*(d.c/100),1/3)*100);
+  const ring=document.getElementById('srcRing');
+  ring.style.strokeDashoffset=SRC_LEN-(SRC_LEN*raw/100);
+  const col=d.tag==='go'?'#2E7D46':d.tag==='maybe'?'#C79F00':'#D55222';
+  ring.style.stroke=col;
+  document.getElementById('srcNum').textContent=raw;
+  const tag=document.getElementById('srcTag');
+  tag.className='stag '+d.tag;
+  tag.textContent=d.label;
+  document.getElementById('srcMsg').textContent=d.msg;
+}
+function fillBars(root){
+  root.querySelectorAll('.mfill').forEach(f=>{f.style.width=f.dataset.w+'%'});
+}
+new IntersectionObserver((es,o)=>es.forEach(e=>{
+  if(e.isIntersecting){
+    fillBars(e.target);
+    pickSrc(document.querySelector('.src-card[data-src="peer"]'),'peer');
+    o.unobserve(e.target);
+  }
+}),{threshold:0.25}).observe(document.getElementById('srcGrid'));
+
+/* ══ Figure 6 · vet-the-brief challenge ══ */
+function briefFlagged(){return document.querySelectorAll('#briefList .brief.flagged').length}
+function updateBriefBar(){
+  const n=briefFlagged();
+  document.getElementById('bsFill').style.width=(Math.min(n,2)/2*100)+'%';
+  document.getElementById('bsLab').textContent=n+' / 2 flagged';
+}
+function toggleBrief(el){
+  if(el.classList.contains('revealed'))return;
+  el.classList.toggle('flagged');
+  updateBriefBar();
+}
+const BRIEF_HINTS={
+  good:'Genuine — DOI resolves, metadata matches, content supports the claim. Trust it.',
+  badFab:'Fabricated — this journal and DOI do not exist. It fails at the DOI and index checks.',
+  badMisuse:'Misused — the paper is real but reports ~13%, not 40%, and says nothing about burnout. Fails the content check.'
+};
+function revealBrief(){
+  const items=[...document.querySelectorAll('#briefList .brief')];
+  let correct=0,badTotal=0;
+  items.forEach((el,i)=>{
+    const bad=el.dataset.bad==='1';
+    const flagged=el.classList.contains('flagged');
+    el.classList.add('revealed');
+    if(bad)badTotal++;
+    const hintEl=el.querySelector('.bhint');
+    if(bad){
+      hintEl.textContent=(i===1)?BRIEF_HINTS.badFab:BRIEF_HINTS.badMisuse;
+      el.classList.add(flagged?'correct':'wrong');
+      if(flagged)correct++;
+    }else{
+      hintEl.textContent=BRIEF_HINTS.good;
+      el.classList.add(flagged?'wrong':'correct');
+      if(!flagged)correct++;
+    }
+  });
+  const flaggedBad=items.filter(el=>el.dataset.bad==='1'&&el.classList.contains('flagged')).length;
+  const res=document.getElementById('bsResult');
+  res.classList.add('shown');
+  if(flaggedBad===2 && briefFlagged()===2){
+    res.style.color='#2E7D46';res.textContent='Perfect — caught both.';
+  }else{
+    res.style.color='#D55222';res.textContent='Caught '+flaggedBad+' of 2 bad citations.';
+  }
+}
+function resetBrief(){
+  document.querySelectorAll('#briefList .brief').forEach(el=>{
+    el.className='brief';el.querySelector('.bhint').textContent='';
+  });
+  document.getElementById('bsResult').className='bs-result';
+  updateBriefBar();
+}
+
+/* ══ Figure 7 · publish-with-integrity checklist ══ */
+function updateProgress(){
+  const total=document.querySelectorAll('#checkList .check').length;
+  const on=document.querySelectorAll('#checkList .check.on').length;
+  document.getElementById('cpFill').style.width=(on/total*100)+'%';
+  document.getElementById('cpLab').textContent=on+' / '+total+' checks';
+}
+function toggleCheck(el){el.classList.toggle('on');updateProgress()}
+function checkAll(){document.querySelectorAll('#checkList .check').forEach(c=>c.classList.add('on'));updateProgress()}
+function checkClear(){document.querySelectorAll('#checkList .check').forEach(c=>c.classList.remove('on'));updateProgress()}
+
+</script>
+</body>
+</html>
