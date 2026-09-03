@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>AI Data Analysis &amp; Insights · Lesson 03</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,0,400;9..144,0,600;9..144,0,800;9..144,1,600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+
+:root{
+  --orange:#EF7F1A; --orange-light:#FF9429; --orange-dark:#D55222;
+  --brown:#412C23; --brown-dark:#2F1D19; --tan:#A34E1C;
+  --yellow:#FECC00; --cream:#FBF6EE; --paper:#FFFCF6;
+  --ink:#1C1410; --muted:#6E5C50; --line:#E8DCC8; --accent:#008DD2;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',system-ui,sans-serif;
+  background:var(--paper); color:var(--ink); line-height:1.6; overflow-x:hidden;
+}
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:radial-gradient(circle at 1px 1px,rgba(65,44,35,0.05) 1px,transparent 0);
+  background-size:24px 24px;
+}
+.topbar{
+  position:sticky;top:0;z-index:100;
+  background:rgba(255,252,246,0.92); backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+  padding:14px 40px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.brand{font-family:'Fraunces',serif;font-weight:800;font-size:17px;letter-spacing:-0.01em;color:var(--brown-dark)}
+.brand .dot{color:var(--orange)}
+.brand .sub{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.15em;color:var(--muted);font-weight:500;text-transform:uppercase;margin-left:8px}
+.logo-slot{width:44px;height:44px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.logo-slot svg{width:100%;height:100%;display:block}
+.page{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:50px 40px 100px}
+.hero{padding:30px 0 50px;border-bottom:1px solid var(--line)}
+.eyebrow{
+  font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.18em;
+  text-transform:uppercase;color:var(--orange-dark);font-weight:600;
+  display:inline-flex;align-items:center;gap:10px;
+}
+.eyebrow::before{content:"";width:24px;height:2px;background:var(--orange)}
+h1{
+  font-family:'Fraunces',serif;font-weight:800;
+  font-size:clamp(38px,7vw,80px);line-height:0.98;letter-spacing:-0.03em;
+  margin:18px 0 20px;color:var(--brown-dark);
+}
+h1 em{font-style:italic;color:var(--orange-dark);font-weight:600}
+.lede{font-size:19px;max-width:680px;color:var(--muted)}
+section{padding:70px 0;border-bottom:1px solid var(--line)}
+section:last-of-type{border-bottom:none}
+.section-num{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--orange);font-weight:600;letter-spacing:0.08em}
+h2{
+  font-family:'Fraunces',serif;font-weight:700;
+  font-size:clamp(28px,4.5vw,48px);line-height:1.05;letter-spacing:-0.02em;
+  margin:10px 0 22px;color:var(--brown-dark);max-width:720px;
+}
+h3{font-family:'Fraunces',serif;font-weight:600;font-size:24px;color:var(--brown-dark);margin:28px 0 12px}
+p{max-width:680px;margin-bottom:14px;color:var(--ink)}
+.lead{font-size:17px;color:var(--muted);max-width:680px;margin-bottom:26px}
+code{font-family:'JetBrains Mono',monospace;font-size:0.92em;background:var(--cream);padding:2px 6px;border-radius:4px;color:var(--brown-dark)}
+.illus{
+  background:var(--cream);border:1px solid var(--line);border-radius:18px;
+  padding:32px;margin:24px 0;position:relative;overflow:hidden;
+}
+.illus-title{
+  font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);
+  letter-spacing:0.12em;text-transform:uppercase;
+  margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:10px;
+}
+.controls{display:flex;gap:8px;flex-wrap:wrap}
+.controls button{
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  background:var(--paper);border:1px solid var(--line);color:var(--brown);
+  padding:6px 12px;border-radius:6px;cursor:pointer;
+  text-transform:uppercase;letter-spacing:0.1em;transition:all .2s;
+}
+.controls button:hover{background:var(--orange);color:#fff;border-color:var(--orange)}
+.controls button.active{background:var(--brown-dark);color:#fff;border-color:var(--brown-dark)}
+.takeaway{
+  background:var(--brown-dark);color:var(--paper);
+  border-radius:18px;padding:44px;margin-top:50px;position:relative;overflow:hidden;
+}
+.takeaway::after{
+  content:"";position:absolute;top:-40px;right:-40px;width:180px;height:180px;
+  border-radius:50%;background:radial-gradient(circle,var(--orange),transparent 70%);opacity:0.4;
+}
+.takeaway h2{color:var(--paper);margin-bottom:16px}
+.takeaway p{color:#E8D9C5;font-size:16px;max-width:680px}
+.takeaway ul{list-style:none;margin-top:18px;display:grid;gap:8px}
+.takeaway li{font-family:'JetBrains Mono',monospace;font-size:13px;padding-left:22px;position:relative;color:#FBE7CB}
+.takeaway li::before{content:"→";position:absolute;left:0;color:var(--orange);font-weight:bold}
+footer{text-align:center;padding:36px;color:var(--muted);font-size:12px;font-family:'JetBrains Mono',monospace;letter-spacing:0.1em}
+@media(max-width:700px){
+  .topbar{padding:12px 18px}
+  .page{padding:30px 18px 70px}
+  .illus{padding:20px}
+  .takeaway{padding:28px}
+  .logo-slot{width:38px;height:38px}
+}
+
+/* ============ Figure 1 · Analysis pipeline ============ */
+.pipe{display:flex;align-items:stretch;gap:0;flex-wrap:wrap}
+.pstep{
+  flex:1;min-width:120px;background:var(--paper);border:1px solid var(--line);
+  border-radius:14px;padding:18px 14px;text-align:center;cursor:pointer;
+  position:relative;transition:all .3s;opacity:0.55;
+}
+.pstep .arrow{
+  position:absolute;right:-16px;top:50%;transform:translateY(-50%);z-index:3;
+  color:var(--line);font-size:20px;font-weight:700;
+}
+.pstep:last-child .arrow{display:none}
+.pstep.on{opacity:1;border-color:var(--orange);box-shadow:0 10px 26px rgba(239,127,26,0.18);transform:translateY(-4px)}
+.pstep.on .arrow{color:var(--orange)}
+.pstep .p-ic{width:44px;height:44px;border-radius:12px;background:rgba(239,127,26,0.12);display:flex;align-items:center;justify-content:center;margin:0 auto 10px}
+.pstep .p-ic svg{width:24px;height:24px}
+.pstep .p-n{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;color:var(--muted);text-transform:uppercase}
+.pstep .p-t{font-family:'Fraunces',serif;font-size:16px;font-weight:700;color:var(--brown-dark);margin-top:3px;line-height:1.15}
+.pipe-panel{
+  background:var(--paper);border:1px solid var(--line);border-radius:14px;
+  padding:22px 24px;margin-top:22px;min-height:118px;
+}
+.pipe-panel.swap{animation:panelIn .4s ease}
+@keyframes panelIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.pp-tag{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:0.14em;text-transform:uppercase;color:var(--orange-dark);font-weight:600}
+.pp-title{font-family:'Fraunces',serif;font-size:21px;font-weight:700;color:var(--brown-dark);margin:5px 0 9px}
+.pp-why{font-size:14px;color:var(--ink);margin-bottom:11px;max-width:none}
+.pp-ai{
+  font-size:13px;color:var(--brown);background:var(--cream);border-left:3px solid var(--orange);
+  padding:10px 14px;border-radius:0 8px 8px 0;max-width:none;margin:0;
+}
+.pp-ai strong{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;color:var(--orange-dark)}
+
+/* ============ Figure 2 · Vague vs specific question ============ */
+.qgrid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.qcol{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:20px;display:flex;flex-direction:column}
+.qcol.vague{border-top:4px solid var(--muted)}
+.qcol.sharp{border-top:4px solid var(--orange)}
+.q-label{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:0.14em;text-transform:uppercase;font-weight:600;margin-bottom:12px}
+.qcol.vague .q-label{color:var(--muted)}
+.qcol.sharp .q-label{color:var(--orange-dark)}
+.q-item{
+  font-size:14px;color:var(--ink);background:var(--cream);border:1px solid var(--line);
+  border-radius:10px;padding:11px 14px;margin-bottom:9px;cursor:pointer;transition:all .2s;
+}
+.q-item:hover{border-color:var(--orange)}
+.q-item.on{background:var(--brown-dark);color:#FBE7CB;border-color:var(--brown-dark)}
+.q-out{
+  margin-top:8px;background:var(--paper);border:1px solid var(--line);
+  border-left:3px solid var(--yellow);border-radius:0 12px 12px 0;padding:16px 18px;min-height:96px;
+}
+.q-out.pop{animation:panelIn .35s ease}
+.q-out .qo-tag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--orange-dark);font-weight:600}
+.q-out .qo-body{font-size:14px;color:var(--brown-dark);margin-top:6px}
+
+/* ============ Figure 3 · PivotTable builder ============ */
+.pivot-grid{display:grid;grid-template-columns:250px 1fr;gap:24px;align-items:start}
+.zone{margin-bottom:16px}
+.zone-label{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.field{display:flex;flex-wrap:wrap;gap:7px}
+.field button{
+  font-family:'JetBrains Mono',monospace;font-size:11px;background:var(--paper);
+  border:1px solid var(--line);color:var(--brown);padding:8px 12px;border-radius:8px;
+  cursor:pointer;transition:all .2s;letter-spacing:0.02em;
+}
+.field button:hover{border-color:var(--orange)}
+.field button.rows{background:var(--orange);color:#fff;border-color:var(--orange)}
+.field button.cols{background:var(--tan);color:#fff;border-color:var(--tan)}
+.field button.vals{background:var(--brown-dark);color:#fff;border-color:var(--brown-dark)}
+.pv-legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:6px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:0.06em}
+.pv-legend span{display:inline-flex;align-items:center;gap:5px}
+.pv-legend i{width:11px;height:11px;border-radius:3px;display:inline-block}
+.pv-out{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:20px;box-shadow:0 8px 22px rgba(65,44,35,0.06);overflow-x:auto}
+.pv-hint{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);margin-bottom:14px;letter-spacing:0.03em;max-width:none}
+table.pvt{border-collapse:collapse;width:100%;font-size:13px;min-width:340px}
+table.pvt th,table.pvt td{border:1px solid var(--line);padding:9px 12px;text-align:right}
+table.pvt th{background:var(--cream);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.04em;color:var(--brown-dark);font-weight:600}
+table.pvt td:first-child,table.pvt th:first-child{text-align:left}
+table.pvt tr.tot td{font-weight:700;background:var(--cream);color:var(--brown-dark)}
+table.pvt tr.tot td:first-child{font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em}
+
+/* ============ Figure 4 · Chart chooser ============ */
+.chart-grid{display:grid;grid-template-columns:1fr 250px;gap:30px;align-items:start}
+.chips{display:flex;flex-wrap:wrap;gap:10px}
+.chip{
+  font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:0.02em;
+  border:1px solid var(--line);background:var(--paper);color:var(--brown);
+  padding:10px 15px;border-radius:999px;cursor:pointer;transition:all .25s;user-select:none;
+}
+.chip:hover{border-color:var(--orange)}
+.chip.on{background:var(--brown-dark);color:#FBE7CB;border-color:var(--brown-dark)}
+.chart-verdict{
+  margin-top:16px;font-size:14px;color:var(--brown-dark);background:var(--paper);
+  border:1px solid var(--line);border-left:3px solid var(--yellow);
+  padding:14px 16px;border-radius:0 10px 10px 0;min-height:60px;max-width:none;
+}
+.chart-verdict.pop{animation:panelIn .35s ease}
+.chart-verdict strong{color:var(--orange-dark)}
+.chart-hintrow{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);margin-top:16px;letter-spacing:0.03em;max-width:none}
+.chart-stage{text-align:center}
+.chart-viz{
+  height:200px;background:var(--paper);border:1px solid var(--line);border-radius:14px;
+  padding:16px;display:flex;align-items:flex-end;justify-content:center;
+}
+.chart-viz svg{width:100%;height:100%}
+.chart-name{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--orange-dark);font-weight:600;margin-top:12px}
+
+/* ============ Figure 5 · Validation sanity-check ============ */
+.val-wrap{display:grid;grid-template-columns:1fr 300px;gap:26px;align-items:start}
+.claim-list{display:grid;gap:10px}
+.claim{
+  background:var(--paper);border:1px solid var(--line);border-radius:12px;
+  padding:14px 16px;cursor:pointer;transition:all .25s;
+}
+.claim:hover{border-color:var(--orange)}
+.claim.checked{border-color:var(--brown-dark)}
+.claim .c-head{font-size:14px;color:var(--brown-dark);font-weight:600;display:flex;align-items:center;gap:9px}
+.claim .c-badge{
+  font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.08em;text-transform:uppercase;
+  padding:2px 8px;border-radius:5px;flex-shrink:0;
+}
+.claim.unchecked-state .c-badge{background:var(--cream);color:var(--muted);border:1px solid var(--line)}
+.claim.ok .c-badge{background:rgba(0,141,210,0.14);color:var(--accent)}
+.claim.bad .c-badge{background:rgba(213,82,34,0.14);color:var(--orange-dark)}
+.claim .c-detail{font-size:13px;color:var(--muted);margin-top:8px;display:none;line-height:1.5}
+.claim.checked .c-detail{display:block;animation:panelIn .3s ease}
+.val-side{
+  background:var(--brown-dark);color:#EFDFC9;border-radius:14px;padding:22px;position:sticky;top:90px;
+}
+.val-side h4{font-family:'Fraunces',serif;font-size:19px;color:var(--paper);margin-bottom:10px}
+.val-side .vs-num{font-family:'Fraunces',serif;font-size:52px;font-weight:800;color:var(--orange-light);line-height:1}
+.val-side .vs-cap{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#C9A574;margin-top:2px}
+.val-side p{color:#E8D9C5;font-size:13px;max-width:none;margin-top:14px}
+.val-side .vs-bar{height:8px;background:rgba(251,246,238,0.15);border-radius:6px;margin-top:14px;overflow:hidden}
+.val-side .vs-fill{height:100%;width:0;background:linear-gradient(90deg,var(--orange),var(--yellow));transition:width .5s cubic-bezier(.3,.8,.3,1)}
+
+@media(max-width:880px){
+  .pivot-grid,.chart-grid,.val-wrap{grid-template-columns:1fr}
+  .qgrid{grid-template-columns:1fr}
+  .val-side{position:static}
+  .pstep{min-width:calc(50% - 8px);flex:none}
+}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="brand">MokshPath <span class="dot">·</span> <span class="sub">Lesson 03 · AI Data Analysis</span></div>
+  <div class="logo-slot" aria-label="MokshPath logo">
+    <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="2" y="2" width="40" height="40" rx="11" fill="#412C23"/>
+      <path d="M10 31V14.5l6 8.5 6-8.5 6 8.5 6-8.5V31" stroke="#EF7F1A" stroke-width="3.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="34" cy="10.5" r="3" fill="#FECC00"/>
+    </svg>
+  </div>
+</div>
+<div class="page">
+
+<section class="hero">
+  <div class="eyebrow">Week 1 · Lesson 03 · AI Excel</div>
+  <h1>From a raw table to a real <em>insight</em>.</h1>
+  <p class="lede">A spreadsheet full of numbers is not an answer — it's raw material. In this lesson you turn a messy table into insight through a repeatable pipeline: clean it, structure it, ask it a sharp question, visualize the answer, and — the step everyone skips — validate what the AI hands back before you trust it.</p>
+</section>
+
+<section>
+  <div class="section-num">01 / 05</div>
+  <h2>Insight is a pipeline, not a lucky glance</h2>
+  <p class="lead">Beginners stare at a wall of rows hoping a pattern will jump out. It rarely does. Analysts don't have better eyes — they run every dataset through the same five steps, and AI can help at each one. Master the pipeline and the "insight" stops being luck.</p>
+
+  <p>The mistake is jumping straight from a raw export to a chart. Skip the middle and you get a beautiful graph of dirty data — confident, colourful, and wrong. The pipeline forces order: first you <strong>clean</strong> the obvious mess, then you <strong>structure</strong> the range as a proper Table so Excel and AI understand it, then you <strong>ask</strong> one specific question, then you <strong>visualize</strong> only that answer, and finally you <strong>validate</strong> the result against something you already know. Click through each stage below.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 1 · The raw-table-to-insight pipeline</span>
+      <div class="controls">
+        <button id="pipeBtn" onclick="tourPipe()">▶ Walk through</button>
+        <button onclick="resetPipe()">↺ Reset</button>
+      </div>
+    </div>
+    <div class="pipe" id="pipe">
+      <div class="pstep" data-step="clean" onclick="selectStep('clean')">
+        <div class="p-ic"><svg viewBox="0 0 24 24" fill="none"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13" stroke="#EF7F1A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="p-n">Step 1</div><div class="p-t">Clean</div>
+        <span class="arrow">→</span>
+      </div>
+      <div class="pstep" data-step="structure" onclick="selectStep('structure')">
+        <div class="p-ic"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="16" rx="2" stroke="#EF7F1A" stroke-width="2"/><path d="M3 9h18M9 4v16" stroke="#EF7F1A" stroke-width="2"/></svg></div>
+        <div class="p-n">Step 2</div><div class="p-t">Structure</div>
+        <span class="arrow">→</span>
+      </div>
+      <div class="pstep" data-step="ask" onclick="selectStep('ask')">
+        <div class="p-ic"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#EF7F1A" stroke-width="2"/><path d="M9.5 9.5a2.5 2.5 0 114 2c-1 .7-1.5 1.2-1.5 2.5M12 17h.01" stroke="#EF7F1A" stroke-width="2" stroke-linecap="round"/></svg></div>
+        <div class="p-n">Step 3</div><div class="p-t">Ask</div>
+        <span class="arrow">→</span>
+      </div>
+      <div class="pstep" data-step="visualize" onclick="selectStep('visualize')">
+        <div class="p-ic"><svg viewBox="0 0 24 24" fill="none"><path d="M4 20V4M4 20h16M8 20v-6M13 20V9M18 20v-9" stroke="#EF7F1A" stroke-width="2" stroke-linecap="round"/></svg></div>
+        <div class="p-n">Step 4</div><div class="p-t">Visualize</div>
+        <span class="arrow">→</span>
+      </div>
+      <div class="pstep" data-step="validate" onclick="selectStep('validate')">
+        <div class="p-ic"><svg viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="#EF7F1A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="p-n">Step 5</div><div class="p-t">Validate</div>
+        <span class="arrow">→</span>
+      </div>
+    </div>
+    <div class="pipe-panel" id="pipePanel">
+      <div class="pp-tag" id="ppTag">Interactive pipeline</div>
+      <div class="pp-title" id="ppTitle">Click any stage above</div>
+      <p class="pp-why" id="ppWhy">Every clean insight travels these five steps in order. Skipping the middle — going straight from raw export to chart — is how beginners produce confident, colourful, wrong conclusions. Click a stage, or press "Walk through", to see what happens there and where AI helps.</p>
+      <p class="pp-ai" id="ppAi"><strong>Tip —</strong> the order is not optional. A chart built on unclean data just makes the error look official.</p>
+    </div>
+  </div>
+
+  <h3>Why order matters</h3>
+  <p>Each stage protects the next. Cleaning protects structuring; structuring protects the question; the question protects the chart. Break the chain anywhere and the error flows downstream, growing more convincing at every step. A pretty dashboard is the most dangerous place for a mistake to hide — nobody double-checks something that looks finished.</p>
+</section>
+
+<section>
+  <div class="section-num">02 / 05</div>
+  <h2>A vague question gets a vague answer</h2>
+  <p class="lead">AI is only as sharp as the question you feed it. "Analyse this data" returns a shrug dressed up as a summary. "Which region's revenue fell the most from Q1 to Q2, and by what percent?" returns a number you can act on. The skill isn't the tool — it's the question.</p>
+
+  <p>Good analytical questions share three traits: they name a <strong>metric</strong> (revenue, count, average), a <strong>dimension</strong> to slice by (region, month, product), and a <strong>comparison or time frame</strong> (versus last quarter, top 5, since March). Miss any one and the AI has to guess — and it guesses confidently. Click a vague question on the left and watch its sharpened twin on the right.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 2 · Vague vs specific — pick a question</span>
+      <div class="controls">
+        <button onclick="resetQ()">↺ Reset</button>
+      </div>
+    </div>
+    <div class="qgrid">
+      <div class="qcol vague">
+        <div class="q-label">✗ Vague — the AI has to guess</div>
+        <div class="q-item" onclick="pickQ('a',this)">"Analyse my sales data."</div>
+        <div class="q-item" onclick="pickQ('b',this)">"Are we doing well?"</div>
+        <div class="q-item" onclick="pickQ('c',this)">"What's interesting here?"</div>
+        <div class="q-item" onclick="pickQ('d',this)">"Show me trends."</div>
+      </div>
+      <div class="qcol sharp">
+        <div class="q-label">✓ Specific — the AI can answer</div>
+        <div class="q-out" id="qOut">
+          <div class="qo-tag">The sharpened version</div>
+          <div class="qo-body" id="qBody">Click a vague question on the left. We'll rewrite it into a question with a metric, a dimension, and a time frame — the version an AI can actually answer with a number.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Turn the AI's answer into the next question</h3>
+  <p>Analysis is a conversation, not a single shot. When the AI tells you the North region fell 18%, your next question writes itself: "Was that one product or all of them?" Each answer narrows the next question until you reach the actual cause. Beginners ask one big question and stop; analysts ask ten small ones and arrive somewhere.</p>
+</section>
+
+<section>
+  <div class="section-num">03 / 05</div>
+  <h2>The PivotTable, finally explained</h2>
+  <p class="lead">A PivotTable is the single most useful thing in Excel that beginners avoid. It sounds technical; it's actually just four buckets. Drop a field into <strong>Rows</strong>, <strong>Columns</strong>, or <strong>Values</strong>, add a <strong>Filter</strong>, and Excel summarizes thousands of rows in an instant.</p>
+
+  <p>Here's the whole idea: <strong>Rows</strong> are the categories you list down the side. <strong>Columns</strong> split each row across the top. <strong>Values</strong> are the numbers being crunched — a sum, a count, an average. <strong>Filters</strong> hide rows you don't want to count. That's it. Assign the fields below and watch the summary rebuild itself. And yes — you can now just ask Copilot "pivot this by region and month" and it builds the same table for you.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 3 · Build a PivotTable by assigning fields</span>
+      <div class="controls">
+        <button onclick="pivotDemo()">▶ Show example</button>
+        <button onclick="resetPivot()">↺ Reset</button>
+      </div>
+    </div>
+    <div class="pivot-grid">
+      <div>
+        <div class="zone">
+          <div class="zone-label">Drag "Region" to…</div>
+          <div class="field"><button id="f-region-rows" onclick="assign('region','rows')">Rows</button><button id="f-region-cols" onclick="assign('region','cols')">Columns</button></div>
+        </div>
+        <div class="zone">
+          <div class="zone-label">Drag "Quarter" to…</div>
+          <div class="field"><button id="f-quarter-rows" onclick="assign('quarter','rows')">Rows</button><button id="f-quarter-cols" onclick="assign('quarter','cols')">Columns</button></div>
+        </div>
+        <div class="zone">
+          <div class="zone-label">Value to summarize</div>
+          <div class="field"><button id="f-rev" class="vals" onclick="void 0">Sum of Revenue</button></div>
+        </div>
+        <div class="pv-legend">
+          <span><i style="background:var(--orange)"></i>Rows</span>
+          <span><i style="background:var(--tan)"></i>Columns</span>
+          <span><i style="background:var(--brown-dark)"></i>Values</span>
+        </div>
+      </div>
+      <div class="pv-out">
+        <p class="pv-hint" id="pvHint">Assign Region and Quarter to Rows or Columns to see the pivot rebuild.</p>
+        <div id="pvTable"></div>
+      </div>
+    </div>
+  </div>
+
+  <h3>AI-assisted pivoting</h3>
+  <p>The mechanics above are worth learning once, because they teach you how summarization thinks. But day to day, Copilot in Excel will build a PivotTable from a plain-English request and even suggest which fields answer your question. Let it draft the pivot — then glance at the totals to confirm it summed the column you meant, not the row labels next to it.</p>
+</section>
+
+<section>
+  <div class="section-num">04 / 05</div>
+  <h2>The right chart answers the question you're asking</h2>
+  <p class="lead">A chart is not decoration — it's an argument. The wrong chart type hides the very pattern you were hunting for. Before you pick a shape, name your question: comparison, trend over time, composition, or relationship. The question chooses the chart.</p>
+
+  <p>Four questions cover most of what a beginner needs. <strong>Comparing categories?</strong> Bar chart. <strong>Watching something change over time?</strong> Line chart. <strong>Showing parts of a whole?</strong> Pie — but only if you have a handful of slices. <strong>Looking for a relationship between two numbers?</strong> Scatter plot. Outliers, meanwhile, show up best on scatter and box plots. Pick your question below and see which chart fits — and which trap to avoid.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 4 · The chart chooser</span>
+      <div class="controls">
+        <button onclick="resetChart()">↺ Reset</button>
+      </div>
+    </div>
+    <div class="chart-grid" id="chartWrap">
+      <div>
+        <div class="chips">
+          <span class="chip on" id="q-compare" onclick="pickChart('compare')">Compare categories</span>
+          <span class="chip" id="q-trend" onclick="pickChart('trend')">Change over time</span>
+          <span class="chip" id="q-part" onclick="pickChart('part')">Parts of a whole</span>
+          <span class="chip" id="q-relate" onclick="pickChart('relate')">Relationship / outliers</span>
+        </div>
+        <div class="chart-verdict" id="chartVerdict"></div>
+        <p class="chart-hintrow">There is no "best chart" in the abstract — only the best chart for the question. Change the question and the answer changes.</p>
+      </div>
+      <div class="chart-stage">
+        <div class="chart-viz" id="chartViz"></div>
+        <div class="chart-name" id="chartName">Bar chart</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Spotting trends and outliers</h3>
+  <p>A <strong>trend</strong> is a direction that holds across many points — best read on a line chart, where your eye follows the slope. An <strong>outlier</strong> is a single point that refuses to behave — best caught on a scatter or by sorting the raw column. AI is good at flagging both ("March spikes 3× the average"), but always ask <em>why</em> before you celebrate: an outlier is often a data-entry error, not a discovery.</p>
+</section>
+
+<section>
+  <div class="section-num">05 / 05</div>
+  <h2>Never ship a finding you haven't sanity-checked</h2>
+  <p class="lead">AI reads your spreadsheet faster than you can — and misreads it just as fast. It can sum the wrong column, mistake text dates for numbers, or count a header row as data. The output looks authoritative either way. The final, non-negotiable step is validation.</p>
+
+  <p>You can "ask your data a question" two ways, and the choice has a privacy dimension. <strong>Copilot inside Excel</strong> works on the file already open, under your organisation's data protections — nothing leaves your tenant. <strong>Uploading a CSV to ChatGPT or Claude</strong> is powerful and flexible, but you are sending that data to an external service — so strip names, emails and anything confidential first, and check your company's policy before uploading customer data. Whichever route you take, the findings are a draft until you check them. Click each AI claim below to run the sanity-check.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 5 · Sanity-check the AI's findings</span>
+      <div class="controls">
+        <button onclick="checkAll()">▶ Check all</button>
+        <button onclick="resetVal()">↺ Reset</button>
+      </div>
+    </div>
+    <div class="val-wrap" id="valWrap">
+      <div class="claim-list" id="claimList">
+        <div class="claim unchecked-state" data-claim="total" onclick="toggleClaim(this)">
+          <div class="c-head"><span class="c-badge">Not checked</span> "Total revenue for the year was ₹48.2 lakh."</div>
+          <div class="c-detail"></div>
+        </div>
+        <div class="claim unchecked-state" data-claim="date" onclick="toggleClaim(this)">
+          <div class="c-head"><span class="c-badge">Not checked</span> "Sales peaked in month 13."</div>
+          <div class="c-detail"></div>
+        </div>
+        <div class="claim unchecked-state" data-claim="col" onclick="toggleClaim(this)">
+          <div class="c-head"><span class="c-badge">Not checked</span> "Average order value was ₹12,400."</div>
+          <div class="c-detail"></div>
+        </div>
+        <div class="claim unchecked-state" data-claim="growth" onclick="toggleClaim(this)">
+          <div class="c-head"><span class="c-badge">Not checked</span> "Revenue grew 8% from Q3 to Q4."</div>
+          <div class="c-detail"></div>
+        </div>
+      </div>
+      <div class="val-side">
+        <h4>Sanity-check score</h4>
+        <div class="vs-num" id="vsNum">0<span style="font-size:24px">/4</span></div>
+        <div class="vs-cap">Claims verified</div>
+        <div class="vs-bar"><div class="vs-fill" id="vsFill"></div></div>
+        <p id="vsMsg">Click each finding to check it against something you already know — a total you can eyeball, a date range, a column definition. Two of these four claims are wrong.</p>
+      </div>
+    </div>
+  </div>
+
+  <h3>The three-second sanity check</h3>
+  <p>You don't need to re-do the AI's maths — you need one number you already trust to compare against. Does the total roughly match last year? Does the date range make sense (there is no month 13)? Is the average in a believable range? If a finding fails the gut check, the AI probably misread a column. Trust, but verify — and with AI, verify first.</p>
+</section>
+
+<div class="takeaway">
+  <h2>What to carry forward</h2>
+  <p>You now know that insight is manufactured, not spotted. Raw data becomes an answer only when it's cleaned, structured, questioned sharply, visualized honestly, and checked against reality. AI accelerates every step — and quietly introduces errors at every step too, which is why the human owns the last word.</p>
+  <ul>
+    <li>Run every dataset through the pipeline: clean → structure → ask → visualize → validate</li>
+    <li>A sharp question names a metric, a dimension, and a time frame</li>
+    <li>PivotTables are four buckets — Rows, Columns, Values, Filters — nothing more</li>
+    <li>The question chooses the chart; the wrong chart hides the pattern</li>
+    <li>Copilot keeps data in-house; uploading a CSV sends it out — strip the sensitive columns</li>
+    <li>AI misreads columns and dates — sanity-check every finding before you ship it</li>
+  </ul>
+</div>
+
+</div>
+<footer>MokshPath · Lesson 03 of 04 · Next up: AI Reporting &amp; Automation →</footer>
+<script>
+
+/* ============ Figure 1 · Analysis pipeline ============ */
+const STEPS={
+  clean:{t:"Clean the obvious mess",
+    why:"Before anything else, kill the noise: trim stray spaces, fix inconsistent labels (\"Mumbai\" vs \"mumbai\" vs \"MUM\"), remove duplicate rows, and decide what to do with blanks. Dirty data doesn't announce itself — it silently distorts every count and average downstream.",
+    ai:"AI can spot inconsistent categories and flag likely duplicates faster than you can scroll. Ask it: \"list every distinct spelling in the Region column\" — the mess becomes obvious instantly."},
+  structure:{t:"Structure it as a Table",
+    why:"Select your range and turn it into a proper Excel Table (Ctrl+T). Now every column has a name, formulas auto-fill, and both Excel and AI understand where the data starts and stops. A named Table is the difference between \"sum column D\" and \"sum Revenue\" — one is fragile, one is clear.",
+    ai:"Copilot and ChatGPT both understand a well-structured Table far better than a loose range. Clean headers in row one, no blank rows, one fact per column — that's all the structure AI needs to reason well."},
+  ask:{t:"Ask one specific question",
+    why:"Resist the urge to ask everything at once. Pick a single question with a metric, a dimension and a time frame: \"which product had the highest average order value in Q4?\" One sharp question returns an answer you can act on; ten vague ones return a shrug.",
+    ai:"This is where prompting pays off. Give the AI the column names and one precise question. The narrower the question, the more reliable the answer — and the easier it is to verify."},
+  visualize:{t:"Visualize only that answer",
+    why:"A chart should make one point, not display everything you have. Once the AI or PivotTable gives you the number, pick the chart that proves it — a bar for a comparison, a line for a trend — and strip everything that doesn't serve that single argument.",
+    ai:"AI can suggest a chart type from your question and even draft it. But you decide what the chart is arguing — a graph of the wrong thing is just a confident lie with axes."},
+  validate:{t:"Validate against reality",
+    why:"The last step is the one everyone skips. Take the AI's finding and check it against something you already know — a rough total, a plausible range, a date that makes sense. If \"total revenue\" is off by a factor of ten, the AI summed the wrong column. Never publish an unverified number.",
+    ai:"AI is confidently wrong more often than confidently right on messy data. Treat every finding as a draft: sanity-check the headline number before it reaches anyone who'll make a decision on it."}
+};
+const stepOrder=["clean","structure","ask","visualize","validate"];
+let pipeTimer=null,pipeIdx=0;
+function selectStep(k){
+  document.querySelectorAll('#pipe .pstep').forEach(el=>el.classList.remove('on'));
+  const el=document.querySelector('#pipe [data-step="'+k+'"]');
+  if(el)el.classList.add('on');
+  const d=STEPS[k],panel=document.getElementById('pipePanel');
+  document.getElementById('ppTag').textContent='Stage '+(stepOrder.indexOf(k)+1)+' of 5';
+  document.getElementById('ppTitle').textContent=d.t;
+  document.getElementById('ppWhy').textContent=d.why;
+  document.getElementById('ppAi').innerHTML='<strong>AI assist —</strong> '+d.ai;
+  panel.classList.remove('swap');void panel.offsetWidth;panel.classList.add('swap');
+}
+function tourPipe(){
+  stopPipe();
+  document.getElementById('pipeBtn').classList.add('active');
+  pipeIdx=0;selectStep(stepOrder[0]);
+  pipeTimer=setInterval(()=>{
+    pipeIdx++;
+    if(pipeIdx>=stepOrder.length){stopPipe();return}
+    selectStep(stepOrder[pipeIdx]);
+  },3200);
+}
+function stopPipe(){
+  if(pipeTimer){clearInterval(pipeTimer);pipeTimer=null}
+  document.getElementById('pipeBtn').classList.remove('active');
+}
+function resetPipe(){
+  stopPipe();
+  document.querySelectorAll('#pipe .pstep').forEach(el=>el.classList.remove('on'));
+  document.getElementById('ppTag').textContent='Interactive pipeline';
+  document.getElementById('ppTitle').textContent='Click any stage above';
+  document.getElementById('ppWhy').textContent='Every clean insight travels these five steps in order. Skipping the middle — going straight from raw export to chart — is how beginners produce confident, colourful, wrong conclusions. Click a stage, or press "Walk through", to see what happens there and where AI helps.';
+  document.getElementById('ppAi').innerHTML='<strong>Tip —</strong> the order is not optional. A chart built on unclean data just makes the error look official.';
+}
+new IntersectionObserver((es,o)=>es.forEach(e=>{if(e.isIntersecting){tourPipe();o.unobserve(e.target)}}),{threshold:0.4}).observe(document.getElementById('pipe'));
+
+/* ============ Figure 2 · Vague vs specific ============ */
+const QMAP={
+  a:{tag:"From \"Analyse my sales data\"",body:"\"Which product category had the highest total revenue in FY24, and how did it compare to FY23?\" — now there's a metric (revenue), a dimension (category) and a time frame (FY24 vs FY23)."},
+  b:{tag:"From \"Are we doing well?\"",body:"\"Did total revenue grow or shrink from Q3 to Q4, and by what percentage?\" — \"doing well\" becomes a single measurable comparison the AI can compute and you can verify."},
+  c:{tag:"From \"What's interesting here?\"",body:"\"Which region's revenue fell more than 10% month-over-month at any point this year?\" — \"interesting\" becomes a concrete rule that surfaces real anomalies instead of a generic summary."},
+  d:{tag:"From \"Show me trends\"",body:"\"Plot monthly revenue for the top 3 products over the last 12 months.\" — a trend needs a metric, a time axis and a scope; now the AI knows exactly what to chart."}
+};
+function pickQ(k,el){
+  document.querySelectorAll('.qcol.vague .q-item').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');
+  const d=QMAP[k];
+  document.querySelector('#qOut .qo-tag').textContent=d.tag;
+  document.getElementById('qBody').textContent=d.body;
+  const out=document.getElementById('qOut');
+  out.classList.remove('pop');void out.offsetWidth;out.classList.add('pop');
+}
+function resetQ(){
+  document.querySelectorAll('.qcol.vague .q-item').forEach(b=>b.classList.remove('on'));
+  document.querySelector('#qOut .qo-tag').textContent='The sharpened version';
+  document.getElementById('qBody').textContent="Click a vague question on the left. We'll rewrite it into a question with a metric, a dimension, and a time frame — the version an AI can actually answer with a number.";
+}
+
+/* ============ Figure 3 · PivotTable builder ============ */
+const DATA={
+  North:{Q1:120,Q2:98,Q3:110,Q4:140},
+  South:{Q1:90,Q2:105,Q3:100,Q4:118},
+  West:{Q1:150,Q2:160,Q3:145,Q4:170}
+};
+const QUARTERS=["Q1","Q2","Q3","Q4"],REGIONS=["North","South","West"];
+let assignMap={region:null,quarter:null};
+function assign(field,zone){
+  assignMap[field]=zone;
+  ['rows','cols'].forEach(z=>{
+    document.getElementById('f-'+field+'-'+z).classList.remove('rows','cols');
+  });
+  document.getElementById('f-'+field+'-'+zone).classList.add(zone);
+  renderPivot();
+}
+function fmt(n){return '₹'+n+'k'}
+function renderPivot(){
+  const rowsField=Object.keys(assignMap).find(f=>assignMap[f]==='rows');
+  const colsField=Object.keys(assignMap).find(f=>assignMap[f]==='cols');
+  const hint=document.getElementById('pvHint'),host=document.getElementById('pvTable');
+  if(!rowsField&&!colsField){host.innerHTML='';hint.textContent='Assign Region and Quarter to Rows or Columns to see the pivot rebuild.';return}
+  hint.textContent='Sum of Revenue (₹ thousands) · '+(rowsField?rowsField:'—')+' down, '+(colsField?colsField:'—')+' across';
+  const regionsFirst=(rowsField==='region');
+  let rowKeys,colKeys,rowIsRegion;
+  if(rowsField==='region'){rowKeys=REGIONS;rowIsRegion=true}
+  else if(rowsField==='quarter'){rowKeys=QUARTERS;rowIsRegion=false}
+  else{rowKeys=['Total'];rowIsRegion=null}
+  if(colsField==='region')colKeys=REGIONS;
+  else if(colsField==='quarter')colKeys=QUARTERS;
+  else colKeys=null;
+  function cellVal(rk,ck){
+    // determine region+quarter selection
+    let regs=REGIONS,qs=QUARTERS;
+    if(rowIsRegion===true)regs=[rk]; else if(rowIsRegion===false)qs=[rk];
+    if(colKeys){
+      if(colsField==='region')regs=(rowIsRegion===false)?regs:regs, regs=[ck];
+      else qs=[ck];
+      if(colsField==='region')regs=[ck];
+      if(colsField==='quarter')qs=[ck];
+    }
+    let s=0;regs.forEach(r=>qs.forEach(q=>s+=DATA[r][q]));return s;
+  }
+  let html='<table class="pvt"><tr><th>'+(rowsField?rowsField[0].toUpperCase()+rowsField.slice(1):'Total')+'</th>';
+  if(colKeys)colKeys.forEach(ck=>html+='<th>'+ck+'</th>');
+  html+='<th>Total</th></tr>';
+  rowKeys.forEach(rk=>{
+    html+='<tr><td>'+rk+'</td>';
+    let rowTot=0;
+    if(colKeys){colKeys.forEach(ck=>{const v=cellVal(rk,ck);rowTot+=v;html+='<td>'+fmt(v)+'</td>'})}
+    else{rowTot=cellVal(rk,null);}
+    html+='<td>'+fmt(rowTot)+'</td></tr>';
+  });
+  // grand total row
+  html+='<tr class="tot"><td>Grand total</td>';
+  let grand=0;
+  if(colKeys){colKeys.forEach(ck=>{let cs=0;rowKeys.forEach(rk=>cs+=cellVal(rk,ck));grand+=cs;html+='<td>'+fmt(cs)+'</td>'})}
+  else{rowKeys.forEach(rk=>grand+=cellVal(rk,null));}
+  html+='<td>'+fmt(grand)+'</td></tr></table>';
+  host.innerHTML=html;
+}
+function pivotDemo(){assign('region','rows');assign('quarter','cols')}
+function resetPivot(){
+  assignMap={region:null,quarter:null};
+  ['region','quarter'].forEach(f=>['rows','cols'].forEach(z=>document.getElementById('f-'+f+'-'+z).classList.remove('rows','cols')));
+  renderPivot();
+}
+new IntersectionObserver((es,o)=>es.forEach(e=>{if(e.isIntersecting){pivotDemo();o.unobserve(e.target)}}),{threshold:0.3}).observe(document.getElementById('pvTable'));
+
+/* ============ Figure 4 · Chart chooser ============ */
+const CHARTS={
+  compare:{name:"Bar chart",
+    verdict:"<strong>Comparing categories?</strong> Use a bar chart — the eye compares bar lengths effortlessly, even across a dozen categories. Trap: don't use a pie for this; humans read length far better than angle.",
+    svg:'<svg viewBox="0 0 200 150"><line x1="20" y1="130" x2="190" y2="130" stroke="#A34E1C" stroke-width="1.5"/><rect x="34" y="70" width="24" height="60" fill="#EF7F1A"/><rect x="72" y="45" width="24" height="85" fill="#FF9429"/><rect x="110" y="90" width="24" height="40" fill="#D55222"/><rect x="148" y="30" width="24" height="100" fill="#FECC00"/></svg>'},
+  trend:{name:"Line chart",
+    verdict:"<strong>Watching change over time?</strong> Use a line chart — the slope between points is the trend, and your eye follows it naturally. Trap: bars for time-series make the reader reconstruct the direction themselves.",
+    svg:'<svg viewBox="0 0 200 150"><line x1="20" y1="130" x2="190" y2="130" stroke="#A34E1C" stroke-width="1.5"/><polyline points="30,110 65,90 100,100 135,55 175,40" fill="none" stroke="#EF7F1A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="30" cy="110" r="4" fill="#D55222"/><circle cx="65" cy="90" r="4" fill="#D55222"/><circle cx="100" cy="100" r="4" fill="#D55222"/><circle cx="135" cy="55" r="4" fill="#D55222"/><circle cx="175" cy="40" r="4" fill="#D55222"/></svg>'},
+  part:{name:"Pie chart",
+    verdict:"<strong>Showing parts of a whole?</strong> A pie works — but only with 2–5 slices that sum to 100%. Trap: more than five slices and nobody can compare them; switch to a bar chart of the same shares.",
+    svg:'<svg viewBox="0 0 200 150"><g transform="translate(100,75)"><path d="M0 0 L0 -60 A60 60 0 0 1 52 30 Z" fill="#EF7F1A"/><path d="M0 0 L52 30 A60 60 0 0 1 -52 30 Z" fill="#FECC00"/><path d="M0 0 L-52 30 A60 60 0 0 1 0 -60 Z" fill="#A34E1C"/></g></svg>'},
+  relate:{name:"Scatter plot",
+    verdict:"<strong>Looking for a relationship or outliers?</strong> Use a scatter plot — each point is one record, and the odd one out jumps off the page. Trap: a summary chart hides individual outliers; scatter keeps every point visible.",
+    svg:'<svg viewBox="0 0 200 150"><line x1="20" y1="130" x2="190" y2="130" stroke="#A34E1C" stroke-width="1.5"/><line x1="20" y1="130" x2="20" y2="20" stroke="#A34E1C" stroke-width="1.5"/><circle cx="45" cy="110" r="4" fill="#EF7F1A"/><circle cx="65" cy="95" r="4" fill="#EF7F1A"/><circle cx="85" cy="100" r="4" fill="#EF7F1A"/><circle cx="105" cy="80" r="4" fill="#EF7F1A"/><circle cx="125" cy="70" r="4" fill="#EF7F1A"/><circle cx="150" cy="60" r="4" fill="#EF7F1A"/><circle cx="160" cy="30" r="5" fill="#D55222" stroke="#2F1D19" stroke-width="1.5"/></svg>'}
+};
+function pickChart(k){
+  document.querySelectorAll('.chips .chip').forEach(c=>c.classList.remove('on'));
+  document.getElementById('q-'+k).classList.add('on');
+  const d=CHARTS[k];
+  document.getElementById('chartViz').innerHTML=d.svg;
+  document.getElementById('chartName').textContent=d.name;
+  const v=document.getElementById('chartVerdict');
+  v.innerHTML=d.verdict;
+  v.classList.remove('pop');void v.offsetWidth;v.classList.add('pop');
+}
+function resetChart(){pickChart('compare')}
+new IntersectionObserver((es,o)=>es.forEach(e=>{if(e.isIntersecting){pickChart('compare');o.unobserve(e.target)}}),{threshold:0.4}).observe(document.getElementById('chartWrap'));
+
+/* ============ Figure 5 · Validation ============ */
+const CLAIMS={
+  total:{ok:true,badge:"Checks out",
+    detail:"Eyeball test: 12 months averaging roughly ₹4 lakh each lands near ₹48 lakh. Add the monthly column yourself with =SUM — if it matches, the AI read the right column. This one holds."},
+  date:{ok:false,badge:"Wrong",
+    detail:"There is no month 13. The AI treated a text label or an off-by-one index as a real month — a classic date/column misread. Sort the date column and confirm it runs Jan–Dec before trusting any \"peak month\" claim."},
+  col:{ok:true,badge:"Checks out",
+    detail:"Average order value of ₹12,400 is plausible for this business. Cross-check: total revenue ÷ number of orders should land in the same ballpark. It does — the AI averaged the right column."},
+  growth:{ok:false,badge:"Wrong",
+    detail:"Q3 totalled ₹355k and Q4 totalled ₹428k in the pivot above — that's a 21% jump, not 8%. The AI likely compared the wrong two columns or misaligned a quarter. Recompute from the PivotTable totals before quoting a growth number."}
+};
+let checkedSet=new Set();
+function applyClaim(el,d){
+  el.classList.remove('unchecked-state');
+  el.classList.add('checked',d.ok?'ok':'bad');
+  el.querySelector('.c-badge').textContent=(d.ok?'✓ ':'✗ ')+d.badge;
+  el.querySelector('.c-detail').textContent=d.detail;
+}
+function toggleClaim(el){
+  const key=el.dataset.claim,d=CLAIMS[key];
+  if(el.classList.contains('checked')){
+    el.classList.remove('checked','ok','bad');el.classList.add('unchecked-state');
+    el.querySelector('.c-badge').textContent='Not checked';
+    el.querySelector('.c-detail').textContent='';
+    checkedSet.delete(key);
+  }else{
+    applyClaim(el,d);checkedSet.add(key);
+  }
+  updateVal();
+}
+function updateVal(){
+  const n=checkedSet.size;
+  document.getElementById('vsNum').innerHTML=n+'<span style="font-size:24px">/4</span>';
+  document.getElementById('vsFill').style.width=(n/4*100)+'%';
+  const msg=document.getElementById('vsMsg');
+  if(n===0)msg.textContent='Click each finding to check it against something you already know — a total you can eyeball, a date range, a column definition. Two of these four claims are wrong.';
+  else if(n<4)msg.textContent='Keep going. '+n+' of 4 checked. Notice how two claims quietly failed the gut check — that\'s the AI misreading a column or a date.';
+  else msg.textContent='All four checked. Two were wrong: "month 13" and the fake 8% growth. This is exactly why you never ship an AI finding unverified.';
+}
+function checkAll(){
+  document.querySelectorAll('#claimList .claim').forEach(el=>{
+    if(!el.classList.contains('checked')){applyClaim(el,CLAIMS[el.dataset.claim]);checkedSet.add(el.dataset.claim)}
+  });
+  updateVal();
+}
+function resetVal(){
+  checkedSet.clear();
+  document.querySelectorAll('#claimList .claim').forEach(el=>{
+    el.classList.remove('checked','ok','bad');el.classList.add('unchecked-state');
+    el.querySelector('.c-badge').textContent='Not checked';
+    el.querySelector('.c-detail').textContent='';
+  });
+  updateVal();
+}
+updateVal();
+
+</script>
+</body>
+</html>
