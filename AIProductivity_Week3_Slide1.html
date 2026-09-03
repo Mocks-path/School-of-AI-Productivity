@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>An Industry Perspective on Your Week 3 Topic — AI Research</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+  :root{
+    --orange:#E87A2E;--orange-dark:#D06A20;--orange-light:#F5943E;--orange-glow:rgba(232,122,46,0.12);
+    --navy:#2B2D42;--navy-dark:#1A1B2E;
+    --bg:#F3EDE7;--bg-card:#FFFFFF;--bg-light:#F9F5F0;
+    --text-primary:#2B2D42;--text-secondary:#6B6D7B;--text-muted:#9597A6;
+    --border:#E5DDD4;
+    --green:#4CAF50;--green-light:#E8F5E9;--blue:#4285F4;--red:#EA4335;--purple:#8B5CF6;
+    --shadow-sm:0 2px 8px rgba(43,45,66,0.06);
+    --shadow-md:0 8px 24px rgba(43,45,66,0.08);
+    --shadow-lg:0 16px 48px rgba(43,45,66,0.12);
+    --radius:14px;--radius-sm:8px;
+  }
+  html,body{height:100%}
+  body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text-primary);overflow:hidden;-webkit-font-smoothing:antialiased}
+
+  .deck{position:fixed;inset:0;overflow:hidden}
+  .slide{position:absolute;inset:0;padding:4.5rem 5.5rem 5rem;display:flex;flex-direction:column;opacity:0;pointer-events:none;transition:opacity .55s ease;background:var(--bg)}
+  .slide.active{opacity:1;pointer-events:auto;z-index:2}
+  .slide::before{content:'';position:absolute;top:-15%;right:-10%;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle, rgba(232,122,46,0.08) 0%, rgba(232,122,46,0) 70%);pointer-events:none;z-index:0}
+  .slide::after{content:'';position:absolute;bottom:-20%;left:-12%;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle, rgba(43,45,66,0.04) 0%, rgba(43,45,66,0) 70%);pointer-events:none;z-index:0}
+  .slide.dark{background:var(--navy-dark)}
+  .slide.dark::before{background:radial-gradient(circle, rgba(232,122,46,0.14) 0%, rgba(232,122,46,0) 70%)}
+  .slide.dark::after{background:radial-gradient(circle, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 70%)}
+
+  .deck-logo{position:fixed;top:1.3rem;right:2rem;width:52px;height:auto;z-index:50;filter:drop-shadow(0 4px 12px rgba(43,45,66,0.10));animation:logoFloat 5s ease-in-out infinite}
+  @keyframes logoFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+  .deck-wordmark{position:fixed;top:1.55rem;right:5.6rem;z-index:50;text-align:right;line-height:1.1;user-select:none}
+  .deck-wordmark .wm-name{font-family:'DM Serif Display',serif;font-size:1.05rem;color:var(--navy)}
+  .deck-wordmark .wm-name span{color:var(--orange)}
+  .deck-wordmark .wm-tag{font-size:.58rem;color:var(--text-muted);font-weight:500;letter-spacing:.04em;text-transform:uppercase}
+  body.dark-slide .deck-wordmark .wm-name{color:#fff}
+  body.dark-slide .deck-wordmark .wm-tag{color:rgba(255,255,255,0.5)}
+
+  .slide-inner{position:relative;z-index:2;flex:1;display:flex;flex-direction:column;max-width:1280px;margin:0 auto;width:100%}
+  .eyebrow{display:inline-flex;align-items:center;gap:.5rem;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--orange);margin-bottom:1.1rem}
+  .eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--orange);animation:pulse 2s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+
+  h2.slide-title{font-family:'DM Serif Display',serif;font-size:clamp(1.9rem,3.4vw,2.9rem);line-height:1.12;color:var(--navy);margin-bottom:.9rem}
+  h2.slide-title em{font-style:normal;color:var(--orange)}
+  .slide.dark h2.slide-title{color:#fff}
+  .slide-sub{font-size:1.02rem;color:var(--text-secondary);line-height:1.6;max-width:760px;margin-bottom:1.6rem}
+  .slide.dark .slide-sub{color:rgba(255,255,255,0.72)}
+
+  .anim{opacity:0;transform:translateY(22px)}
+  .slide.active .anim{animation:fadeUp .75s cubic-bezier(.2,.7,.2,1) forwards}
+  .slide.active .anim.d1{animation-delay:.05s}
+  .slide.active .anim.d2{animation-delay:.18s}
+  .slide.active .anim.d3{animation-delay:.32s}
+  .slide.active .anim.d4{animation-delay:.46s}
+  .slide.active .anim.d5{animation-delay:.6s}
+  .slide.active .anim.d6{animation-delay:.74s}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+  .anim-scale{opacity:0;transform:scale(.92)}
+  .slide.active .anim-scale{animation:scaleIn .75s cubic-bezier(.2,.7,.2,1) forwards}
+  .slide.active .anim-scale.d1{animation-delay:.1s}
+  .slide.active .anim-scale.d2{animation-delay:.25s}
+  .slide.active .anim-scale.d3{animation-delay:.4s}
+  .slide.active .anim-scale.d4{animation-delay:.55s}
+  @keyframes scaleIn{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:scale(1)}}
+
+  /* ── SLIDE 1: TITLE ── */
+  .title-slide .slide-inner{align-items:center;justify-content:center;text-align:center}
+  .title-badge{display:inline-flex;align-items:center;gap:.5rem;padding:.5rem 1.2rem;border-radius:50px;background:var(--orange-glow);color:var(--orange);font-size:.76rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:1.8rem}
+  .title-slide h1{font-family:'DM Serif Display',serif;font-size:clamp(2.6rem,5.4vw,4.6rem);line-height:1.06;color:var(--navy);margin-bottom:1rem;letter-spacing:-.01em}
+  .title-slide h1 em{font-style:normal;color:var(--orange)}
+  .title-slide .subtitle{font-size:1.15rem;color:var(--text-secondary);max-width:700px;line-height:1.55;margin-bottom:2.4rem}
+  .title-meta{display:flex;gap:2.2rem;justify-content:center;color:var(--text-muted);font-size:.82rem;font-weight:500;letter-spacing:.05em;text-transform:uppercase}
+  .title-meta span{display:inline-flex;align-items:center;gap:.5rem}
+  .title-meta span::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--orange)}
+
+  /* ── SLIDE 2: HOOK ── */
+  .hook-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.1rem;margin-top:1rem;max-width:1100px}
+  .hook-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:1.4rem 1.5rem;box-shadow:var(--shadow-sm);transition:transform .3s, box-shadow .3s}
+  .hook-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-md)}
+  .hook-icon{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.35rem;margin-bottom:.8rem}
+  .hook-card:nth-child(1) .hook-icon{background:rgba(66,133,244,0.1)}
+  .hook-card:nth-child(2) .hook-icon{background:var(--orange-glow)}
+  .hook-card:nth-child(3) .hook-icon{background:rgba(76,175,80,0.1)}
+  .hook-card h4{font-family:'DM Serif Display',serif;font-size:1.08rem;color:var(--navy);margin-bottom:.3rem;line-height:1.3}
+  .hook-card p{font-size:.84rem;color:var(--text-secondary);line-height:1.55}
+  .hook-bottom{margin-top:1.6rem;padding:1.1rem 1.4rem;background:var(--navy-dark);color:#fff;border-radius:var(--radius);font-size:1rem;font-weight:500;line-height:1.55;max-width:1100px;box-shadow:var(--shadow-md)}
+  .hook-bottom em{color:var(--orange-light);font-style:normal;font-weight:700}
+  .engine-row{display:flex;align-items:center;gap:.6rem;margin-top:1.4rem;flex-wrap:wrap;max-width:1100px}
+  .engine-step{padding:.6rem 1.2rem;border-radius:50px;background:var(--bg-card);border:1.5px solid var(--border);font-size:.85rem;font-weight:700;color:var(--navy);box-shadow:var(--shadow-sm)}
+  .engine-step span{color:var(--orange);margin-right:.35rem}
+  .engine-arrow{color:var(--orange);font-weight:800;font-size:1.1rem}
+
+  /* ── SLIDE 3: REVEAL ── */
+  .reveal-slide .slide-inner{align-items:center;justify-content:center;text-align:center}
+  .reveal-headline{font-family:'DM Serif Display',serif;font-size:clamp(2.2rem,4.4vw,3.7rem);line-height:1.12;color:var(--navy);max-width:1050px;margin-bottom:1.8rem}
+  .reveal-headline .strike{position:relative;color:var(--text-muted)}
+  .reveal-headline .strike::after{content:'';position:absolute;left:-3%;right:-3%;top:55%;height:4px;background:var(--orange);transform:scaleX(0);transform-origin:left}
+  .slide.active .reveal-headline .strike::after{animation:strike .6s ease forwards .8s}
+  @keyframes strike{to{transform:scaleX(1)}}
+  .reveal-headline em{font-style:normal;color:var(--orange)}
+  .reveal-compare{display:grid;grid-template-columns:1fr auto 1fr;gap:1.2rem;align-items:stretch;max-width:980px;width:100%;margin-bottom:1.6rem}
+  .reveal-col{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:1.2rem 1.4rem;text-align:left;box-shadow:var(--shadow-sm)}
+  .reveal-col h5{font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.7rem}
+  .reveal-col.then h5{color:var(--text-muted)}
+  .reveal-col.now h5{color:var(--orange)}
+  .reveal-col ul{list-style:none}
+  .reveal-col li{font-size:.85rem;color:var(--text-secondary);line-height:1.5;padding:.3rem 0 .3rem 1.2rem;position:relative}
+  .reveal-col.then li::before{content:'✕';position:absolute;left:0;color:var(--text-muted);font-size:.75rem}
+  .reveal-col.now li::before{content:'✓';position:absolute;left:0;color:var(--green);font-weight:800;font-size:.8rem}
+  .reveal-col.now{border-color:rgba(232,122,46,0.4)}
+  .reveal-mid{display:flex;align-items:center;justify-content:center;font-size:1.6rem;color:var(--orange);font-weight:800}
+  .reveal-caution{padding:.8rem 1.4rem;border-radius:50px;background:rgba(234,67,53,0.08);border:1px solid rgba(234,67,53,0.25);color:#B3362B;font-size:.9rem;font-weight:600}
+
+  /* ── INDUSTRY STOPS (4–6) ── */
+  .industry-layout{display:grid;grid-template-columns:1fr 1.05fr;gap:2.6rem;align-items:center;flex:1}
+  .industry-left{display:flex;flex-direction:column;justify-content:center}
+  .industry-tag{display:inline-flex;align-items:center;gap:.5rem;padding:.4rem 1rem;border-radius:50px;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:1.1rem;width:fit-content}
+  .industry-left h2{font-family:'DM Serif Display',serif;font-size:clamp(1.9rem,3.4vw,2.9rem);color:var(--navy);line-height:1.12;margin-bottom:1.1rem}
+  .industry-left h2 em{font-style:normal;color:var(--orange)}
+  .industry-left p.lede{font-size:.98rem;color:var(--text-secondary);line-height:1.65;margin-bottom:1.5rem}
+  .industry-key{background:var(--navy-dark);color:#fff;padding:1.05rem 1.3rem;border-radius:var(--radius);font-size:.94rem;font-weight:500;line-height:1.5;border-left:4px solid var(--orange)}
+  .industry-key em{font-style:normal;color:var(--orange-light);font-weight:700}
+  .industry-right{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:1.7rem;box-shadow:var(--shadow-md)}
+  .industry-right h5{font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:1.1rem}
+  .use-list{display:flex;flex-direction:column;gap:.8rem}
+  .use-item{display:flex;align-items:flex-start;gap:.85rem;padding:.8rem .95rem;background:var(--bg-light);border-radius:var(--radius-sm);border-left:3px solid var(--orange)}
+  .use-item .num{width:26px;height:26px;border-radius:50%;background:var(--orange);color:#fff;font-size:.76rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .use-item p{font-size:.88rem;color:var(--text-primary);line-height:1.5}
+  .use-item p strong{color:var(--navy);font-weight:700}
+  .industry-founder .industry-tag{background:rgba(66,133,244,0.1);color:var(--blue)}
+  .industry-agency .industry-tag{background:var(--orange-glow);color:var(--orange)}
+  .industry-supplier .industry-tag{background:rgba(76,175,80,0.1);color:var(--green)}
+  .stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:.7rem;margin-bottom:1.1rem}
+  .stat-card{padding:.85rem .6rem;background:var(--bg-light);border-radius:var(--radius-sm);text-align:center;border:1px solid var(--border)}
+  .stat-card .sv{font-family:'DM Serif Display',serif;font-size:1.5rem;color:var(--orange);line-height:1.1}
+  .stat-card .sl{font-size:.62rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em;font-weight:700;margin-top:.3rem}
+
+  /* flow diagram (slide 6) */
+  .flow-col{display:flex;flex-direction:column;gap:.45rem}
+  .flow-node{display:flex;align-items:center;gap:.8rem;padding:.7rem .95rem;background:var(--bg-light);border-radius:var(--radius-sm);border:1.5px solid var(--border);font-size:.86rem;font-weight:600;color:var(--navy)}
+  .flow-node .fi{width:32px;height:32px;border-radius:8px;background:var(--orange-glow);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+  .flow-node.auto{border-color:rgba(76,175,80,0.45)}
+  .flow-node.auto .fi{background:rgba(76,175,80,0.12)}
+  .flow-node .tag-auto{margin-left:auto;font-size:.6rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--green);background:var(--green-light);padding:.2rem .5rem;border-radius:4px}
+  .flow-node .tag-human{margin-left:auto;font-size:.6rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--orange);background:var(--orange-glow);padding:.2rem .5rem;border-radius:4px}
+  .flow-down{text-align:center;color:var(--orange);font-weight:800;font-size:.95rem;line-height:1}
+
+  /* ── SLIDE 7: PATTERN ── */
+  .pattern-slide .slide-inner{align-items:center;justify-content:center;text-align:center}
+  .pattern-quote{font-family:'DM Serif Display',serif;font-size:clamp(2.2rem,4.4vw,3.6rem);line-height:1.14;color:var(--navy);max-width:1050px;margin-bottom:1.2rem}
+  .pattern-quote em{font-style:normal;color:var(--orange)}
+  .pattern-divide{width:80px;height:3px;background:var(--orange);margin:1.2rem auto 1.8rem;border-radius:2px}
+  .pattern-loop{display:flex;align-items:center;gap:.7rem;flex-wrap:wrap;justify-content:center;margin-bottom:1.6rem}
+  .loop-chip{padding:.65rem 1.3rem;border-radius:50px;background:var(--bg-card);border:1.5px solid var(--border);font-size:.9rem;font-weight:700;color:var(--navy);box-shadow:var(--shadow-sm)}
+  .loop-chip.hot{background:var(--orange);border-color:var(--orange);color:#fff;box-shadow:0 6px 20px rgba(232,122,46,0.3)}
+  .loop-arrow{color:var(--orange);font-weight:800;font-size:1.15rem}
+  .pattern-tag{font-size:1.08rem;color:var(--text-secondary);max-width:760px;line-height:1.55}
+  .pattern-tag strong{color:var(--navy);font-weight:700}
+
+  /* ── SLIDE 8: CURRICULUM BRIDGE ── */
+  .bridge-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.1rem;margin-top:.6rem;max-width:1080px}
+  .bridge-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:1.35rem 1.5rem;box-shadow:var(--shadow-sm);position:relative;overflow:hidden}
+  .bridge-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px}
+  .bridge-card:nth-child(1)::before{background:linear-gradient(90deg,var(--blue),#7BAAF7)}
+  .bridge-card:nth-child(2)::before{background:linear-gradient(90deg,var(--orange),var(--orange-light))}
+  .bridge-card:nth-child(3)::before{background:linear-gradient(90deg,var(--purple),#A78BFA)}
+  .bridge-card:nth-child(4)::before{background:linear-gradient(90deg,var(--green),#7BC67E)}
+  .bridge-num{font-size:.66rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--orange);margin-bottom:.4rem}
+  .bridge-card h4{font-family:'DM Serif Display',serif;font-size:1.15rem;color:var(--navy);margin-bottom:.35rem}
+  .bridge-card p{font-size:.85rem;color:var(--text-secondary);line-height:1.55}
+  .bridge-card .maps{margin-top:.6rem;font-size:.72rem;font-weight:700;color:var(--orange);text-transform:uppercase;letter-spacing:.05em}
+
+  /* ── CONCEPT SLIDES (9–12) ── */
+  .concept-layout{display:grid;grid-template-columns:1fr 1fr;gap:2.6rem;align-items:center;flex:1}
+  .concept-left h2{font-family:'DM Serif Display',serif;font-size:clamp(1.8rem,3.2vw,2.7rem);color:var(--navy);line-height:1.14;margin-bottom:1rem}
+  .concept-left h2 em{font-style:normal;color:var(--orange)}
+  .concept-left p.lede{font-size:.96rem;color:var(--text-secondary);line-height:1.65;margin-bottom:1.3rem}
+  .concept-visual{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:1.6rem;box-shadow:var(--shadow-md)}
+  .concept-visual h5{font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:1rem}
+  .score-list{display:flex;flex-direction:column;gap:.7rem}
+  .score-item{display:flex;align-items:center;gap:.8rem}
+  .score-item .sn{font-size:.84rem;font-weight:700;color:var(--navy);width:120px;flex-shrink:0}
+  .score-track{flex:1;height:10px;background:var(--bg-light);border-radius:5px;overflow:hidden;border:1px solid var(--border)}
+  .score-fill{height:100%;border-radius:5px;background:linear-gradient(90deg,var(--orange),var(--orange-light));width:0}
+  .slide.active .score-fill{transition:width 1s ease .6s}
+  .score-item .sp{font-size:.78rem;font-weight:800;color:var(--orange);width:36px;text-align:right}
+  .copy-compare{display:flex;flex-direction:column;gap:.8rem}
+  .copy-block{padding:.95rem 1.05rem;border-radius:var(--radius-sm);font-size:.86rem;line-height:1.55}
+  .copy-block .cb-tag{display:inline-block;font-size:.6rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:.18rem .55rem;border-radius:4px;margin-bottom:.45rem}
+  .copy-block.generic{background:var(--bg-light);border:1.5px dashed var(--border);color:var(--text-muted)}
+  .copy-block.generic .cb-tag{background:#E5E0DA;color:var(--text-secondary)}
+  .copy-block.directed{background:var(--orange-glow);border:1.5px solid rgba(232,122,46,0.35);color:var(--text-primary)}
+  .copy-block.directed .cb-tag{background:var(--orange);color:#fff}
+  .copy-block.mono{font-family:'DM Serif Display',serif;font-style:italic}
+  .copy-block .cb-body{font-family:'Plus Jakarta Sans',sans-serif;font-style:normal}
+  .copy-block .formula{font-family:ui-monospace,'SF Mono',Menlo,Consolas,monospace;font-size:.8rem;background:rgba(43,45,66,0.05);padding:.5rem .65rem;border-radius:6px;display:block;margin-top:.15rem;color:var(--navy)}
+  .copy-block.directed .formula{background:rgba(232,122,46,0.1)}
+  .ad-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.7rem;margin-bottom:1rem}
+  .ad-card{border-radius:var(--radius-sm);border:1.5px solid var(--border);padding:.8rem .7rem;background:var(--bg-light);text-align:center}
+  .ad-card .ah{font-size:.78rem;font-weight:700;color:var(--navy);line-height:1.35;margin-bottom:.5rem;min-height:2.6em}
+  .ad-card .am{font-size:.68rem;font-weight:800;color:var(--text-muted)}
+  .ad-card.winner{background:var(--green-light);border-color:var(--green)}
+  .ad-card.winner .am{color:#2E7D32}
+  .ad-card.loser{opacity:.6}
+  .ad-card.loser .am{color:#B3362B}
+  .ad-note{font-size:.8rem;color:var(--text-secondary);line-height:1.5;text-align:center}
+  .metric-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.8rem;margin-bottom:1rem}
+  .metric-tile{padding:1rem;background:var(--bg-light);border-radius:var(--radius-sm);border:1px solid var(--border);text-align:center}
+  .metric-tile .mv{font-family:'DM Serif Display',serif;font-size:1.55rem;color:var(--navy);line-height:1.1}
+  .metric-tile .ml{font-size:.64rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;font-weight:700;margin-top:.35rem}
+  .verdict-row{display:flex;gap:.7rem}
+  .verdict{flex:1;padding:.75rem;border-radius:var(--radius-sm);text-align:center;font-weight:800;font-size:.88rem}
+  .verdict.scale{background:var(--green-light);color:#2E7D32;border:1.5px solid var(--green)}
+  .verdict.kill{background:rgba(234,67,53,0.08);color:#B3362B;border:1.5px solid rgba(234,67,53,0.4)}
+
+  /* clean-table visual (slide 10) */
+  .clean-row{display:grid;grid-template-columns:1fr auto 1fr;gap:.7rem;align-items:stretch;margin-bottom:.9rem}
+  .clean-box{border-radius:var(--radius-sm);padding:.7rem .8rem;font-family:ui-monospace,'SF Mono',Menlo,Consolas,monospace;font-size:.7rem;line-height:1.7}
+  .clean-box.before{background:var(--bg-light);border:1.5px dashed var(--border);color:var(--text-muted)}
+  .clean-box.after{background:var(--green-light);border:1.5px solid rgba(76,175,80,0.5);color:#2E5D30}
+  .clean-box h6{font-family:'Plus Jakarta Sans',sans-serif;font-size:.58rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;margin-bottom:.5rem;color:inherit}
+  .clean-mid{display:flex;align-items:center;justify-content:center;font-size:1.4rem;color:var(--orange);font-weight:800}
+  .clean-note{font-size:.78rem;color:var(--text-secondary);line-height:1.5}
+  .clean-note strong{color:var(--orange)}
+
+  /* ── SLIDE 13: HONEST (dark) ── */
+  .honest-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.1rem;margin:1.4rem 0;max-width:1080px}
+  .honest-card{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.14);border-radius:var(--radius);padding:1.4rem 1.5rem}
+  .honest-card .hv{font-family:'DM Serif Display',serif;font-size:1.7rem;color:var(--orange-light);line-height:1.15;margin-bottom:.55rem}
+  .honest-card p{font-size:.86rem;color:rgba(255,255,255,0.75);line-height:1.55}
+  .honest-key{max-width:1080px;padding:1.05rem 1.35rem;border-radius:var(--radius);background:rgba(232,122,46,0.14);border-left:4px solid var(--orange);color:#fff;font-size:.98rem;font-weight:500;line-height:1.55}
+  .honest-key em{font-style:normal;color:var(--orange-light);font-weight:700}
+  .honest-case{max-width:1080px;margin-bottom:1rem;padding:.9rem 1.3rem;border-radius:var(--radius);background:rgba(234,67,53,0.12);border:1px solid rgba(234,67,53,0.35);color:#fff;font-size:.9rem;font-weight:500;line-height:1.5}
+  .honest-case strong{color:#FF9E92}
+
+  /* ── SLIDE 14: VALUE ── */
+  .value-layout{display:grid;grid-template-columns:1.05fr 1fr;gap:2.6rem;align-items:center;flex:1}
+  .value-list{display:flex;flex-direction:column;gap:.8rem}
+  .value-item{display:flex;align-items:flex-start;gap:.9rem;padding:.9rem 1.05rem;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);box-shadow:var(--shadow-sm)}
+  .value-item .vi{width:38px;height:38px;border-radius:10px;background:var(--orange-glow);display:flex;align-items:center;justify-content:center;font-size:1.05rem;flex-shrink:0}
+  .value-item h4{font-size:.92rem;color:var(--navy);font-weight:700;margin-bottom:.15rem}
+  .value-item p{font-size:.8rem;color:var(--text-secondary);line-height:1.5}
+  .proof-card{background:var(--navy-dark);border-radius:var(--radius);padding:1.7rem;color:#fff;box-shadow:var(--shadow-lg)}
+  .proof-card h5{font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--orange-light);margin-bottom:1rem}
+  .proof-card .doc{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:var(--radius-sm);padding:1.05rem 1.2rem}
+  .proof-card .doc h4{font-family:'DM Serif Display',serif;font-size:1.15rem;margin-bottom:.6rem}
+  .proof-card .doc ul{list-style:none}
+  .proof-card .doc li{font-size:.84rem;color:rgba(255,255,255,0.78);padding:.28rem 0 .28rem 1.3rem;position:relative;line-height:1.45}
+  .proof-card .doc li::before{content:'✓';position:absolute;left:0;color:var(--orange-light);font-weight:800}
+  .proof-card .verdict-line{margin-top:.9rem;font-size:.88rem;color:rgba(255,255,255,0.85);line-height:1.5}
+  .proof-card .verdict-line em{font-style:normal;color:var(--orange-light);font-weight:700}
+
+  /* ── SLIDE 15: WHO WINS ── */
+  .roles-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-top:1.2rem;max-width:1160px}
+  .role-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:1.4rem 1.3rem;box-shadow:var(--shadow-sm);transition:transform .3s}
+  .role-card:hover{transform:translateY(-4px)}
+  .role-icon{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;margin-bottom:.8rem}
+  .role-card:nth-child(1) .role-icon{background:rgba(66,133,244,0.1)}
+  .role-card:nth-child(2) .role-icon{background:var(--orange-glow)}
+  .role-card:nth-child(3) .role-icon{background:rgba(139,92,246,0.1)}
+  .role-card:nth-child(4) .role-icon{background:rgba(76,175,80,0.1)}
+  .role-card h4{font-family:'DM Serif Display',serif;font-size:1.05rem;color:var(--navy);margin-bottom:.35rem}
+  .role-card p{font-size:.82rem;color:var(--text-secondary);line-height:1.55}
+  .roles-footer{margin-top:1.5rem;font-size:1rem;color:var(--text-secondary);max-width:1160px}
+  .roles-footer strong{color:var(--orange)}
+
+  /* ── SLIDE 16: BELONG ── */
+  .belong-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;margin-top:.8rem;max-width:1000px}
+  .belong-item{display:flex;align-items:flex-start;gap:.9rem;padding:1rem 1.15rem;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow-sm)}
+  .belong-item .bi{width:40px;height:40px;border-radius:10px;background:var(--orange-glow);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
+  .belong-item p{font-size:.88rem;color:var(--text-primary);line-height:1.55}
+  .belong-item p strong{color:var(--navy)}
+  .belong-banner{margin-top:1.4rem;max-width:1000px;padding:1.05rem 1.35rem;background:var(--navy-dark);color:#fff;border-radius:var(--radius);font-size:.98rem;line-height:1.55;font-weight:500}
+  .belong-banner em{font-style:normal;color:var(--orange-light);font-weight:700}
+
+  /* ── SLIDE 17: CLOSING (dark) ── */
+  .closing-slide .slide-inner{align-items:center;justify-content:center;text-align:center}
+  .closing-quote{font-family:'DM Serif Display',serif;font-size:clamp(2.2rem,4.6vw,3.9rem);line-height:1.12;color:#fff;max-width:1050px;margin-bottom:1.6rem}
+  .closing-quote em{font-style:normal;color:var(--orange-light)}
+  .closing-sub{font-size:1.1rem;color:rgba(255,255,255,0.72);max-width:760px;line-height:1.6;margin-bottom:2.2rem}
+  .closing-pills{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center}
+  .closing-pill{padding:.7rem 1.6rem;border-radius:50px;background:var(--orange);color:#fff;font-weight:700;font-size:1rem;letter-spacing:.03em;box-shadow:0 6px 20px rgba(232,122,46,0.35)}
+  .closing-pill.alt{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.25);box-shadow:none}
+
+  /* ── DECK CHROME ── */
+  .deck-progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--orange),var(--orange-light));width:0;z-index:60;transition:width .4s ease}
+  .deck-chrome{position:fixed;bottom:1.4rem;left:0;right:0;z-index:40;display:flex;justify-content:space-between;align-items:center;padding:0 2rem;pointer-events:none}
+  .deck-counter{pointer-events:auto;background:var(--bg-card);border:1px solid var(--border);box-shadow:var(--shadow-sm);padding:.45rem .9rem;border-radius:50px;font-size:.78rem;font-weight:700;color:var(--navy);font-variant-numeric:tabular-nums;letter-spacing:.04em}
+  .deck-counter .total{color:var(--text-muted);font-weight:500}
+  .deck-controls{pointer-events:auto;display:flex;gap:.5rem}
+  .deck-btn{width:38px;height:38px;border-radius:50%;border:1px solid var(--border);background:var(--bg-card);box-shadow:var(--shadow-sm);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--navy);transition:all .2s}
+  .deck-btn:hover{background:var(--orange);color:#fff;border-color:var(--orange);transform:translateY(-2px)}
+  .deck-btn:disabled{opacity:.35;cursor:not-allowed;pointer-events:none}
+  .deck-btn svg{width:16px;height:16px}
+  body.dark-slide .deck-counter{background:rgba(255,255,255,0.1);color:#fff;border-color:rgba(255,255,255,0.2)}
+  body.dark-slide .deck-btn{background:rgba(255,255,255,0.1);color:#fff;border-color:rgba(255,255,255,0.2)}
+  .hint{position:fixed;bottom:1.55rem;left:50%;transform:translateX(-50%);pointer-events:none;font-size:.68rem;color:var(--text-muted);letter-spacing:.08em;text-transform:uppercase;font-weight:600;opacity:.6;z-index:30}
+  .hint kbd{background:var(--bg-card);border:1px solid var(--border);border-bottom-width:2px;border-radius:5px;padding:.15rem .4rem;font-family:inherit;font-size:.68rem;color:var(--navy);margin:0 .15rem}
+  body.dark-slide .hint{color:rgba(255,255,255,0.5)}
+  body.dark-slide .hint kbd{background:rgba(255,255,255,0.1);color:#fff;border-color:rgba(255,255,255,0.2)}
+
+  @media (max-width:1100px){
+    .slide{padding:3.5rem 2.5rem 5rem}
+    .industry-layout,.concept-layout,.value-layout{grid-template-columns:1fr;gap:1.4rem}
+    .roles-grid{grid-template-columns:repeat(2,1fr)}
+    .hook-grid,.bridge-grid,.honest-grid,.belong-grid{grid-template-columns:1fr}
+    .reveal-compare,.clean-row{grid-template-columns:1fr}
+    .reveal-mid,.clean-mid{transform:rotate(90deg)}
+    .deck-wordmark{display:none}
+    .hint{display:none}
+  }
+</style>
+</head>
+<body>
+
+<div class="deck-progress" id="progress"></div>
+
+<!-- Persistent MokshPath mascot logo -->
+<svg class="deck-logo" viewBox="0 0 955 1486" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect x="453" y="314" width="48" height="55" rx="6" fill="#EF7F1A"/>
+  <ellipse cx="210" cy="408" rx="68" ry="82" fill="#D9DADA"/>
+  <ellipse cx="740" cy="408" rx="68" ry="82" fill="#D9DADA"/>
+  <ellipse cx="477" cy="380" rx="285" ry="324" fill="#EBE3D6"/>
+  <ellipse cx="477" cy="392" rx="240" ry="225" fill="#412C23"/>
+  <circle cx="389" cy="430" r="38" fill="#fff"/>
+  <circle cx="565" cy="430" r="38" fill="#fff"/>
+  <circle cx="389" cy="430" r="15" fill="#2B2D42"/>
+  <circle cx="565" cy="430" r="15" fill="#2B2D42"/>
+  <circle cx="395" cy="424" r="5" fill="#fff"/>
+  <circle cx="571" cy="424" r="5" fill="#fff"/>
+  <path d="M380 1180c30 28 65 42 97 42s67-14 97-42" stroke="#A34E1C" stroke-width="16" stroke-linecap="round" fill="none"/>
+  <ellipse cx="477" cy="1350" rx="430" ry="105" fill="#EF7F1A"/>
+  <ellipse cx="477" cy="1320" rx="380" ry="78" fill="#FF9429"/>
+</svg>
+
+<div class="deck-wordmark">
+  <div class="wm-name">AI Productivity<span> · Research</span></div>
+  <div class="wm-tag">Research · Week 3</div>
+</div>
+
+<div class="deck" id="deck">
+
+  <!-- ═══ SLIDE 1: TITLE ═══ -->
+  <section class="slide title-slide active" data-slide="1">
+    <div class="slide-inner">
+      <div class="title-badge anim d1"><span style="width:8px;height:8px;border-radius:50%;background:var(--orange);animation:pulse 2s infinite"></span> Hello and Welcome</div>
+      <h1 class="anim d2">An <em>Industry Perspective</em><br>on Your Week 3 Topic</h1>
+      <p class="subtitle anim d3">Who really uses AI to research, how it rebuilt the daily work of finding what's true, and which skills — the ones you build this week — decide whether you trust a machine blindly or hand your team a finding they can stand behind.</p>
+      <div class="title-meta anim d4">
+        <span>AI Productivity: Zero to Efficient</span>
+        <span>Week 3 · AI Research</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SLIDE 2: HOOK ═══ -->
+  <section class="slide" data-slide="2">
+    <div class="slide-inner">
+      <div class="eyebrow anim d1"><span class="dot"></span> The Hook</div>
+      <h2 class="slide-title anim d2">The People Who Live in the <em>Search</em></h2>
+      <p class="slide-sub anim d3">Not search engineers. Just people who spend hours every week gathering, reading, and cross-checking — turning a pile of sources into one trustworthy answer.</p>
+      <div class="hook-grid">
+        <div class="hook-card anim-scale d1">
+          <div class="hook-icon">📈</div>
+          <h4>The analyst in Bangalore</h4>
+          <p>Sizing up a new region before a board meeting — reading report after report by hand.</p>
+        </div>
+        <div class="hook-card anim-scale d2">
+          <div class="hook-icon">📰</div>
+          <h4>The journalist in Toronto</h4>
+          <p>Chasing whether a claim is actually true before it goes to print — one source at a time.</p>
+        </div>
+        <div class="hook-card anim-scale d3">
+          <div class="hook-icon">🎓</div>
+          <h4>The student in Nairobi</h4>
+          <p>Hunting for the twenty papers that matter out of two thousand — before the deadline.</p>
+        </div>
+      </div>
+      <div class="engine-row anim d4">
+        <div class="engine-step"><span>1</span>Ask a sharp question</div><div class="engine-arrow">→</div>
+        <div class="engine-step"><span>2</span>Gather at volume</div><div class="engine-arrow">→</div>
+        <div class="engine-step"><span>3</span>Open the source</div><div class="engine-arrow">→</div>
+        <div class="engine-step"><span>4</span>Decide what's true</div>
+      </div>
+      <div class="hook-bottom anim d5">Finding what's true and explaining why is where careers are made — and until recently, every one of those hours was manual. <em>That work is your Week 3.</em></div>
+    </div>
+  </section>
+
+  <!-- ═══ SLIDE 3: REVEAL ═══ -->
+  <section class="slide reveal-slide" data-slide="3">
+    <div class="slide-inner">
+      <div class="eyebrow anim d1" style="justify-content:center"><span class="dot"></span> The Reveal</div>
+      <div class="reveal-headline anim d2">Research used to be <span class="strike">all on you</span>.<br>AI moved right into the <em>gathering</em>.</div>
+      <div class="reveal-compare">
+        <div class="reveal-col then anim-scale d2">
+          <h5>The old way</h5>
+          <ul>
+            <li>Open ten tabs and read them one by one</li>
+            <li>Wade through a page of blue links</li>
+            <li>Copy quotes by hand, lose the source</li>
+            <li>Skim long documents for one fact</li>
+          </ul>
+        </div>
+        <div class="reveal-mid anim d3">→</div>
+        <div class="reveal-col now anim-scale d3">
+          <h5>AI inside the research</h5>
+          <ul>
+            <li>Ask in English → answer engine cites its sources</li>
+            <li>Point an agent at a topic → sourced draft report</li>
+            <li>Load your own PDFs → ask across the whole corpus</li>
+            <li>Summarize a long document in seconds</li>
+          </ul>
+        </div>
+      </div>
+      <div class="reveal-caution anim d4">⚠ AI changed how fast you get a <strong>draft</strong>, not who's accountable for the <strong>facts</strong>. It's a research assistant, not a fact-checker.</div>
+    </div>
+  </section>
+
+  <!-- ═══ SLIDE 4: INDUSTRY STOP 1 ═══ -->
+  <section class="slide industry-founder" data-slide="4">
+    <div class="slide-inner">
+      <div class="industry-layout">
+        <div class="industry-left">
+          <div class="industry-tag anim d1">Industry Stop 1 · Market Analyst</div>
+          <h2 class="anim d2">The Analyst's <em>Gather-and-Verify</em> Loop</h2>
+          <p class="lede anim d3">She used to lose the first day just collecting — reading reports, opening tab after tab to learn a new market. Now a Deep Research agent drafts a sourced landscape in an hour. But she doesn't ship what the machine wrote: she opens the citations, confirms the market-size figure traces to a real report, and reads the sources, not just the summary.</p>
+          <div class="industry-key anim d4">Her advantage isn't that AI gathers fast — everyone has that. It's <em>verification speed</em>: she can confirm every load-bearing fact faster than a colleague can finish reading.</div>
+        </div>
+        <div class="industry-right anim-scale d3">
+          <h5>Before AI → With AI</h5>
+          <div class="stat-row">
+            <div class="stat-card"><div class="sv">1 day</div><div class="sl">Lost to gathering (now ~1 hr)</div></div>
+            <div class="stat-card"><div class="sv">Minutes</div><div class="sl">To a sourced draft landscape</div></div>
+            <div class="stat-card"><div class="sv">Every</div><div class="sl">Key citation opened by hand</div></div>
+          </div>
+          <div class="use-list">
+            <div class="use-item"><div class="num">1</div><p><strong>Ask it:</strong> "map the competitive landscape for meal-kit delivery in three markets, with sources."</p></div>
+            <div class="use-item"><div class="num">2</div><p><strong>Gather it:</strong> the agent browses dozens of sources and drafts a structured report.</p></div>
+            <div class="use-item"><div class="num">3</div><p><strong>Verify it:</strong> open the citations; confirm the market-size figure is a real report, not invented.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SLIDE 5: INDUSTRY STOP 2 ═══ -->
+  <section class="slide industry-agency" data-slide="5">
+    <div class="slide-inner">
+      <div class="industry-layout">
+        <div class="industry-left">
+          <div class="industry-tag anim d1">Industry Stop 2 · Consultant &amp; Journalist</div>
+          <h2 class="anim d2">Gather Fast, <em>Vouch</em> for It</h2>
+          <p class="lede anim d3">The consultant used to bill hours just assembling background. Now an answer engine drafts the landscape in an afternoon — freeing their real time for the "so what" a client pays for. The journalist gathers just as fast, then does the thing that defines the craft: verifying every fact against a primary source before it's printed.</p>
+          <div class="industry-key anim d4">AI didn't replace the analyst or the reporter — it moved the value up the chain, from <em>gathering the facts</em> to <em>vouching for them</em>.</div>
+        </div>
+        <div class="industry-right anim-scale d3">
+          <h5>Same move, two jobs</h5>
+          <div class="stat-row">
+            <div class="stat-card"><div class="sv">Hrs → Aft.</div><div class="sl">To assemble a landscape</div></div>
+            <div class="stat-card"><div class="sv">100%</div><div class="sl">Facts checked before print</div></div>
+            <div class="stat-card"><div class="sv">"So what"</div><div class="sl">Where the value now lives</div></div>
+          </div>
+          <div class="use-list">
+            <div class="use-item"><div class="num">1</div><p><strong>Consultant:</strong> answer engine drafts the industry background — then human judgment adds the recommendation.</p></div>
+            <div class="use-item"><div class="num">2</div><p><strong>Journalist:</strong> AI summarizes a long document and surfaces leads — fast.</p></div>
+            <div class="use-item"><div class="num">3</div><p><strong>Both:</strong> nothing gets published until a human traces it to a primary source.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SLIDE 6: INDUSTRY STOP 3 ═══ -->
+  <section class="slide industry-supplier" data-slide="6">
+    <div class="slide-inner">
+      <div class="industry-layout">
+        <div class="industry-left">
+          <div class="industry-tag anim d1">Industry Stop 3 · Scientists · Lawyers · Students</div>
+          <h2 class="anim d2">Three Jobs, <em>One Rule</em></h2>
+          <p class="lede anim d3">The scientist surveys a field and asks questions across a stack of papers at once. The lawyer drafts research and finds precedent fast. The student uses AI to understand hard material and find sources. Different stakes — one shared rule: AI gathers and drafts at volume; the human checks the source and carries the accountability.</p>
+          <div class="industry-key anim d4">The grunt work of gathering runs itself. <em>The responsibility never does.</em></div>
+        </div>
+        <div class="industry-right anim-scale d3">
+          <h5>The same loop, whatever the stakes</h5>
+          <div class="flow-col">
+            <div class="flow-node auto"><div class="fi">🔬</div>Scientist: summarize 5 years on a protein<span class="tag-auto">AI</span></div>
+            <div class="flow-node auto"><div class="fi">⚖️</div>Lawyer: draft research, find precedent<span class="tag-auto">AI</span></div>
+            <div class="flow-node auto"><div class="fi">🎓</div>Student: understand + find sources<span class="tag-auto">AI</span></div>
+            <div class="flow-down">↓</div>
+            <div class="flow-node"><div class="fi">🧠</div>Human opens the actual paper / case → <strong>&nbsp;confirms it's real</strong><span class="tag-human">verify</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SLIDE 7: PATTERN ═══ -->
+  <section class="slide pattern-slide" data-slide="7">
+    <div class="slide-inner">
+      <div class="eyebrow anim d1" style="justify-content:center"><span class="dot"></span> The Pattern Across All of Them</div>
+      <div class="pattern-quote anim d2">AI does the <em>gathering</em>.<br>Humans do the <em>verifying</em>.</div>
+      <div class="pattern-divide anim d3"></div>
+      <div class="pattern-loop anim d4">
+        <div class="loop-chip">Ask a sharp question</div><div class="loop-arrow">→</div>
+        <div class="loop-chip">Let AI gather &amp; draft</div><div class="loop-arrow">→</div>
+        <div class="loop-chip">Open the source, verify</div><div class="loop-arrow">→</div>
+        <div class="loop-chip hot">Decide what you'll stand behind</div><div class="loop-arrow">↺</div>
+      </div>
+      <p class="pattern-tag anim d5">Analyst, consultant, journalist, scientist, lawyer, student — different jobs, the exact same loop. <strong>That loop is not a trick. It's a skill — and it's what this week teaches you.</strong></p>
+    </div>
+  </section>
+
+  <!-- ═══ SLIDE 8: CURRICULUM BRIDGE ═══ -->
+  <section class="slide" data-slide="8">
+    <div class="slide-inner">
+      <div class="eyebrow anim d1"><span class="dot"></span> Curriculum Bridge</div>
+      <h2 class="slide-title anim d2">Your Four Lessons — <em>Four Stations</em> on the Line</h2>
+      <p class="slide-sub anim d3">By Friday you won't have studied AI research. You'll have run the whole workflow once, end to end — gather, verify, decide.</p>
+      <div class="bridge-grid">
+        <div class="bridge-card anim-scale d1">
+          <div class="bridge-num">Lesson 1</div>
+          <h4>Answer Engines with Citations</h4>
+          <p>Asking sharp questions and following the citations back to the source before you trust the answer.</p>
+          <div class="maps">↳ maps to: the analyst's gather-and-verify loop</div>
+        </div>
+        <div class="bridge-card anim-scale d2">
+          <div class="bridge-num">Lesson 2</div>
+          <h4>Deep Research Agents</h4>
+          <p>Pointing an agent at a topic and getting a structured, sourced draft — read like an editor.</p>
+          <div class="maps">↳ maps to: the consultant's afternoon landscape</div>
+        </div>
+        <div class="bridge-card anim-scale d3">
+          <div class="bridge-num">Lesson 3</div>
+          <h4>Research on Your Own Documents</h4>
+          <p>Loading a private corpus into a tool like NotebookLM and asking questions across all of it.</p>
+          <div class="maps">↳ maps to: the scientist's stack of papers</div>
+        </div>
+        <div class="bridge-card anim-scale d4">
+          <div class="bridge-num">Lesson 4</div>
+          <h4>Verification &amp; Honest Citing</h4>
+          <p>The habit that turns a fast draft into a finding you can defend — clear of plagiarism and fabricated facts.</p>
+          <div class="maps">↳ maps to: your credibility, protected</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SLIDE 9: CONCEPT 1 ═══ -->
+  <section class="slide" data-slide="9">
+    <div class="slide-inner">
+      <div class="concept-layout">
+        <div class="concept-left">
+          <div class="eyebrow anim d1"><span class="dot"></span> Concept 1 of 4</div>
+          <h2 class="anim d2">Answer Engines <em>with Citations</em></h2>
+          <p class="lede anim d3">Search always meant a page of links you had to open yourself. Perplexity, ChatGPT search, Google's AI overviews, Claude — you ask in plain English and get a synthesized answer with numbered citations attached. It feels finished.</p>
+          <div class="industry-key anim d4">The citation is an <em>invitation to verify</em>, not a guarantee. For anything that matters, click it and confirm the source really says what the answer claims.</div>
+        </div>
+        <div class="concept-visual anim-scale d3">
+          <h5>Plain English → sourced answer</h5>
+          <div class="copy-compare">
+            <div class="copy-block generic mono">
+              <span class="cb-tag" style="font-family:'Plus Jakarta Sans',sans-serif;font-style:normal">You ask</span>
+              <span class="cb-body">"What share of EU new-car sales were electric last year?"</span>
+            </div>
+            <div class="copy-block directed">
+              <span class="cb-tag">Engine answers · then you verify</span>
+              <span class="formula">"~14.6% of EU new registrations were BEVs. [1] [2] [3]"</span>
+              <span style="font-size:.72rem;color:var(--text-secondary);display:block;margin-top:.5rem">✓ Click [1]: does the cited page actually state that figure — for that year, that region?</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SLIDE 10: CONCEPT 2 ═══ -->
+  <section class="slide" data-slide="10">
+    <div class="slide-inner">
+      <div class="concept-layout">
+        <div class="concept-left">
+          <div class="eyebrow anim d1"><span class="dot"></span> Concept 2 of 4</div>
+          <h2 class="anim d2">Deep Research <em>Agents</em></h2>
+          <p class="lede anim d3">Give an agent a topic — "the state of EV charging in Europe" — and instead of one answer it plans, browses dozens of sources, and returns a structured, multi-page report with a source list. What took an analyst two days now drafts in twenty minutes.</p>
+          <div class="industry-key anim d4">The catch: a longer, more confident report is <em>more</em> persuasive and just as capable of being wrong. Read it like an editor — never let polish substitute for proof.</div>
+        </div>
+        <div class="concept-visual anim-scale d3">
+          <h5>Read the agent's report like an editor</h5>
+          <div class="clean-row">
+            <div class="clean-box before">
+              <h6>The draft hands you</h6>
+              "Market grew 41% YoY"<br>"12 major operators"<br>"Ref: IEA 2025, p.4"<br>Polished · confident<br>8 pages, 30 citations
+            </div>
+            <div class="clean-mid">→</div>
+            <div class="clean-box after">
+              <h6>You spot-check</h6>
+              ✓ 41% traced to source<br>✓ operator list confirmed<br>⚑ "IEA p.4" — no such stat<br>opened load-bearing links<br>proof &gt; polish
+            </div>
+          </div>
+          <p class="clean-note"><strong>Then verify:</strong> a fabricated stat on page 4 is far harder to catch than one on page 1.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SLIDE 11: CONCEPT 3 ═══ -->
+  <section class="slide" data-slide="11">
+    <div class="slide-inner">
+      <div class="concept-layout">
+        <div class="concept-left">
+          <div class="eyebrow anim d1"><span class="dot"></span> Concept 3 of 4</div>
+          <h2 class="anim d2">Research on Your <em>Own Documents</em></h2>
+          <p class="lede anim d3">Load a stack of PDFs, transcripts, or reports into a tool like NotebookLM and ask questions <em>across all of them at once</em> — "what did every one of these interviews say about pricing?" — grounded in your own material, with a pointer back to the exact passage.</p>
+          <div class="industry-key anim d4">It answers from what you gave it — but can still misread or over-generalize. Click through to the source paragraph and confirm it read the passage the way you would.</div>
+        </div>
+        <div class="concept-visual anim-scale d3">
+          <h5>One question · fifteen documents</h5>
+          <div class="ad-grid">
+            <div class="ad-card winner">
+              <div class="ah">"9 of 15 flagged price as the top blocker"</div>
+              <div class="am">grounded · check the 9 ✓</div>
+            </div>
+            <div class="ad-card loser">
+              <div class="ah">"Everyone said pricing was fine"</div>
+              <div class="am">over-general · reread</div>
+            </div>
+            <div class="ad-card loser">
+              <div class="ah">Quote with no passage pointer</div>
+              <div class="am">unverified · trace it</div>
+            </div>
+          </div>
+          <p class="ad-note">AI reads the pile fast. The human job is confirming what it found is <strong>really in there</strong>.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SLIDE 12: CONCEPT 4 ═══ -->
+  <section class="slide" data-slide="12">
+    <div class="slide-inner">
+      <div class="concept-layout">
+        <div class="concept-left">
+          <div class="eyebrow anim d1"><span class="dot"></span> Concept 4 of 4</div>
+          <h2 class="anim d2">Verification &amp; <em>Honest Citing</em></h2>
+          <p class="lede anim d3">Every AI research tool hands you claims and citations. The discipline: treat each load-bearing fact as unconfirmed until you've opened the source and seen it — and cite honestly, crediting real sources rather than pasting AI text as your own thought.</p>
+          <div class="industry-key anim d4">Skip verification and you don't save time — you <em>launder a hallucination</em> into a report someone makes a decision on.</div>
+        </div>
+        <div class="concept-visual anim-scale d3">
+          <h5>The payoff · and the guardrail</h5>
+          <div class="metric-grid">
+            <div class="metric-tile"><div class="mv">Trust</div><div class="ml">Findings people can rely on</div></div>
+            <div class="metric-tile"><div class="mv">Survives</div><div class="ml">Work that holds up to scrutiny</div></div>
+            <div class="metric-tile"><div class="mv">0</div><div class="ml">Facts published unverified</div></div>
+            <div class="metric-tile"><div class="mv">Credit</div><div class="ml">Real sources, honestly cited</div></div>
+          </div>
+          <div class="verdict-row">
+            <div class="verdict scale">Opened the source → CITE IT</div>
+            <div class="verdict kill">Never read it → DON'T CLAIM IT</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SLIDE 13: HONEST (dark) ═══ -->
+  <section class="slide dark" data-slide="13">
+    <div class="slide-inner">
+      <div class="eyebrow anim d1"><span class="dot"></span> The Honest Slide</div>
+      <h2 class="slide-title anim d2">Where AI Research <em>Bites</em></h2>
+      <p class="slide-sub anim d3">The slide most courses skip. Anyone who says AI removes the need to check your sources is setting you up to be the next cautionary headline.</p>
+      <div class="honest-case anim d2">⚖️ <strong>The signature real-world case:</strong> multiple lawyers have been sanctioned by courts for filing briefs full of AI-generated cases that were completely fabricated — discovered only when a judge tried to look them up.</div>
+      <div class="honest-grid">
+        <div class="honest-card anim-scale d1">
+          <div class="hv">Fabricated citations</div>
+          <p>AI invents a study, a case, or a quote that looks perfectly real, formatted flawlessly, and <strong style="color:#fff">simply does not exist</strong>.</p>
+        </div>
+        <div class="honest-card anim-scale d2">
+          <div class="hv">Hallucinated facts</div>
+          <p>A plausible statistic stated with <strong style="color:#fff">total confidence</strong> and no real source behind it.</p>
+        </div>
+        <div class="honest-card anim-scale d3">
+          <div class="hv">Over-trust &amp; ethics</div>
+          <p>Leaning on AI text without reading it slides into <strong style="color:#fff">plagiarism</strong> — passing a machine's draft off as your own understanding.</p>
+        </div>
+      </div>
+      <div class="honest-key anim d4">AI removes the <em>drudgery of gathering</em>. The responsibility for what's true stays exactly where it always was — <em>with you</em>.</div>
+    </div>
+  </section>
+
+  <!-- ═══ SLIDE 14: VALUE ═══ -->
+  <section class="slide" data-slide="14">
+    <div class="slide-inner">
+      <div class="eyebrow anim d1"><span class="dot"></span> Career Note</div>
+      <h2 class="slide-title anim d2">What Teams &amp; Recruiters <em>Actually Value</em></h2>
+      <div class="value-layout">
+        <div class="value-list">
+          <div class="value-item anim d2"><div class="vi">🧭</div><div><h4>Gather a landscape fast</h4><p>An answer engine or agent draft, in an afternoon, not a week.</p></div></div>
+          <div class="value-item anim d3"><div class="vi">📚</div><div><h4>Work through your own documents</h4><p>Ask questions across a private corpus at speed — grounded in your material.</p></div></div>
+          <div class="value-item anim d4"><div class="vi">🔍</div><div><h4>Verify every load-bearing fact</h4><p>Open the citation, confirm the source, before you rely on it.</p></div></div>
+          <div class="value-item anim d5"><div class="vi">✍️</div><div><h4>Cite honestly</h4><p>Credit real sources; never pass AI text off as your own thought.</p></div></div>
+        </div>
+        <div class="proof-card anim-scale d3">
+          <h5>What impresses most — not that you used AI</h5>
+          <div class="doc">
+            <h4>📁 One Documented, Source-Backed Finding</h4>
+            <ul>
+              <li>"Here's the market summary"</li>
+              <li>"Here's the 20 minutes it took to draft"</li>
+              <li>"Here's every citation I opened and confirmed"</li>
+            </ul>
+          </div>
+          <p class="verdict-line">Fast <em>and</em> verified is rare. Speed alone makes people nervous — <em>speed with a verification habit makes you the person the team trusts with the truth.</em></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SLIDE 15: WHO WINS ═══ -->
+  <section class="slide" data-slide="15">
+    <div class="slide-inner">
+      <div class="eyebrow anim d1"><span class="dot"></span> From Inside the Industry</div>
+      <h2 class="slide-title anim d2">Who Actually <em>Wins</em> with AI Research</h2>
+      <p class="slide-sub anim d3">Not the fastest reader. Not the person with the best search tricks. The winners share four traits — and every one is a habit, not a talent.</p>
+      <div class="roles-grid">
+        <div class="role-card anim-scale d1">
+          <div class="role-icon">🎯</div>
+          <h4>Sharp questions</h4>
+          <p>A vague research prompt gets a vague, unfocused pile back.</p>
+        </div>
+        <div class="role-card anim-scale d2">
+          <div class="role-icon">🔍</div>
+          <h4>Verify at the source</h4>
+          <p>They open the citation and confirm it before relying on a single fact.</p>
+        </div>
+        <div class="role-card anim-scale d3">
+          <div class="role-icon">✍️</div>
+          <h4>Cite honestly</h4>
+          <p>They credit real sources and never pass AI text off as their own.</p>
+        </div>
+        <div class="role-card anim-scale d4">
+          <div class="role-icon">🤨</div>
+          <h4>Healthily skeptical</h4>
+          <p>They treat every confident report as an unverified draft — not the truth.</p>
+        </div>
+      </div>
+      <p class="roles-footer anim d5">Habits can be built. <strong>Starting this week.</strong></p>
+    </div>
+  </section>
+
+  <!-- ═══ SLIDE 16: YOU BELONG ═══ -->
+  <section class="slide" data-slide="16">
+    <div class="slide-inner">
+      <div class="eyebrow anim d1"><span class="dot"></span> Whatever You're Bringing</div>
+      <h2 class="slide-title anim d2">You <em>Belong</em> Here</h2>
+      <div class="belong-grid">
+        <div class="belong-item anim d2"><div class="bi">🕳️</div><p>Ever gone down a rabbit hole to settle an argument with facts? You already understand <strong>what research is for</strong>.</p></div>
+        <div class="belong-item anim d3"><div class="bi">🤔</div><p>Ever thought <em>"wait, is that actually true?"</em> That instinct <strong>is the whole mindset</strong>.</p></div>
+        <div class="belong-item anim d4"><div class="bi">💬</div><p>Can write a clear question? You can write a <strong>clear research prompt</strong> — that's most of the skill.</p></div>
+        <div class="belong-item anim d5"><div class="bi">✅</div><p>Ever checked a claim before you shared it? You already have the <strong>verification habit</strong>.</p></div>
+      </div>
+      <div class="belong-banner anim d6">No library-science degree. No special access. No permission required. What this field demands is what you already control — <em>a sharp question, and the discipline to open the source before you trust the answer.</em></div>
+    </div>
+  </section>
+
+  <!-- ═══ SLIDE 17: CLOSING (dark) ═══ -->
+  <section class="slide dark closing-slide" data-slide="17">
+    <div class="slide-inner">
+      <div class="eyebrow anim d1" style="justify-content:center"><span class="dot"></span> The Invitation</div>
+      <div class="closing-quote anim d2">Every "how did you find all that so fast?" was once someone deciding to <em>gather smarter and check harder</em>.</div>
+      <p class="closing-sub anim d3">This week you build the habit — answer engines, research agents, your own documents, verification, end to end. It won't just save you time. It will make you <strong style="color:#fff">the person others come to</strong> when they need to know what's actually true.</p>
+      <div class="closing-pills anim d4">
+        <div class="closing-pill">Ask the sharp question</div>
+        <div class="closing-pill alt">Open the source to verify</div>
+        <div class="closing-pill alt">Hand over a finding they trust</div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ── DECK CHROME ── -->
+<div class="deck-chrome">
+  <div class="deck-counter"><span id="cur">1</span> <span class="total">/ 17</span></div>
+  <div class="deck-controls">
+    <button class="deck-btn" id="prevBtn" aria-label="Previous slide">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <button class="deck-btn" id="nextBtn" aria-label="Next slide">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>
+  </div>
+</div>
+<div class="hint">Navigate with <kbd>←</kbd> <kbd>→</kbd> or <kbd>Space</kbd></div>
+
+<script>
+(function(){
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const total = slides.length;
+  let idx = 0;
+  const cur = document.getElementById('cur');
+  const progress = document.getElementById('progress');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+
+  function show(i){
+    idx = Math.max(0, Math.min(total - 1, i));
+    slides.forEach((s, j) => s.classList.toggle('active', j === idx));
+    cur.textContent = idx + 1;
+    progress.style.width = ((idx + 1) / total * 100) + '%';
+    prevBtn.disabled = idx === 0;
+    nextBtn.disabled = idx === total - 1;
+    document.body.classList.toggle('dark-slide', slides[idx].classList.contains('dark'));
+    // animate score bars if present
+    slides[idx].querySelectorAll('.score-fill').forEach(f => {
+      f.style.width = '0';
+      requestAnimationFrame(() => { setTimeout(() => { f.style.width = f.dataset.w; }, 50); });
+    });
+  }
+
+  prevBtn.addEventListener('click', () => show(idx - 1));
+  nextBtn.addEventListener('click', () => show(idx + 1));
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); show(idx + 1); }
+    else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); show(idx - 1); }
+    else if (e.key === 'Home') { e.preventDefault(); show(0); }
+    else if (e.key === 'End') { e.preventDefault(); show(total - 1); }
+  });
+
+  // click right/left thirds of the deck to advance/go back
+  document.getElementById('deck').addEventListener('click', e => {
+    if (e.target.closest('button, a, input')) return;
+    const x = e.clientX / window.innerWidth;
+    if (x > 0.72) show(idx + 1);
+    else if (x < 0.1) show(idx - 1);
+  });
+
+  // touch swipe
+  let touchX = null;
+  document.addEventListener('touchstart', e => { touchX = e.touches[0].clientX; }, {passive:true});
+  document.addEventListener('touchend', e => {
+    if (touchX === null) return;
+    const dx = e.changedTouches[0].clientX - touchX;
+    if (Math.abs(dx) > 60) show(idx + (dx < 0 ? 1 : -1));
+    touchX = null;
+  }, {passive:true});
+
+  show(0);
+})();
+</script>
+</body>
+</html>
