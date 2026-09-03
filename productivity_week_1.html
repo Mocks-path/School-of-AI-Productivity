@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Excel Week 1 — Save Maya's Friday: Turn a Chaotic Spreadsheet into an Automated Weekly Report</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --orange:#E87A2E;--orange-dark:#D06A20;--orange-light:#F5943E;--orange-glow:rgba(232,122,46,0.12);
+  --navy:#2B2D42;--navy-dark:#1A1B2E;
+  --bg:#F3EDE7;--bg-card:#FFFFFF;--bg-light:#F9F5F0;
+  --text-primary:#2B2D42;--text-secondary:#6B6D7B;--text-muted:#9597A6;
+  --border:#E5DDD4;
+  --green:#4CAF50;--green-light:#E8F5E9;
+  --blue:#3F88C5;--purple:#8B5CF6;--pink:#EC4899;--red:#E74C3C;
+  --shadow-sm:0 2px 8px rgba(43,45,66,0.06);
+  --shadow-md:0 8px 24px rgba(43,45,66,0.08);
+  --shadow-lg:0 16px 48px rgba(43,45,66,0.12);
+  --radius:14px;--radius-sm:8px;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text-primary);overflow-x:hidden;-webkit-font-smoothing:antialiased;line-height:1.6}
+
+/* ─── HEADER ─── */
+.header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:.8rem 2rem;display:flex;align-items:center;justify-content:space-between}
+.header-left{display:flex;align-items:center;gap:.7rem}
+.header-title{font-family:'DM Serif Display',serif;font-size:1.15rem;color:var(--navy);line-height:1.2}
+.header-title span{color:var(--orange)}
+.header-tag{font-size:.65rem;color:var(--text-muted);font-weight:500;letter-spacing:.04em;text-transform:uppercase}
+.logo-mascot{width:44px;height:44px;flex-shrink:0}
+.progress-pill{display:flex;align-items:center;gap:.6rem;padding:.4rem .9rem;background:var(--orange-glow);border-radius:50px;font-size:.72rem;color:var(--orange);font-weight:700}
+.progress-pill .dot{width:7px;height:7px;border-radius:50%;background:var(--orange);animation:pulse 2s infinite}
+
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.9)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes popIn{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:scale(1)}}
+@keyframes shimmer{0%{background-position:-400px 0}100%{background-position:400px 0}}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ─── HERO ─── */
+.hero{padding:3.5rem 2rem 2.5rem;background:linear-gradient(180deg,var(--bg) 0%,var(--bg-light) 100%);position:relative;overflow:hidden}
+.hero-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1.4fr 1fr;gap:2.5rem;align-items:center}
+.hero-badge{display:inline-flex;align-items:center;gap:.45rem;padding:.4rem 1rem;border-radius:50px;background:var(--orange-glow);color:var(--orange);font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:1rem;animation:fadeUp .7s ease}
+.hero h1{font-family:'DM Serif Display',serif;font-size:clamp(1.9rem,4vw,2.8rem);line-height:1.15;color:var(--navy);margin-bottom:.9rem;animation:fadeUp .7s ease .1s both}
+.hero h1 em{font-style:normal;color:var(--orange)}
+.hero-sub{font-size:.95rem;color:var(--text-secondary);line-height:1.7;margin-bottom:1.4rem;animation:fadeUp .7s ease .2s both}
+.usecase-banner{background:#fff;border-radius:var(--radius);padding:1rem 1.2rem;border:1px solid var(--border);box-shadow:var(--shadow-sm);display:flex;align-items:center;gap:1rem;animation:fadeUp .7s ease .3s both}
+.usecase-icon{width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,#4CAF50,#3F88C5);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.4rem}
+.usecase-text{font-size:.82rem;color:var(--text-secondary);line-height:1.5}
+.usecase-text strong{color:var(--navy);font-weight:700}
+.hero-visual{display:flex;justify-content:center;align-items:center;animation:fadeUp .8s ease .2s both}
+.hero-mascot{width:230px;height:auto;animation:float 3.5s ease-in-out infinite;filter:drop-shadow(0 12px 40px rgba(232,122,46,0.22))}
+.budget-strip{max-width:1100px;margin:1.6rem auto 0;display:grid;grid-template-columns:repeat(4,1fr);gap:.8rem;animation:fadeUp .8s ease .35s both}
+.budget-chip{background:#fff;border:1px solid var(--border);border-radius:10px;padding:.75rem .9rem;text-align:center;box-shadow:var(--shadow-sm)}
+.budget-chip .bv{font-family:'DM Serif Display',serif;font-size:1.25rem;color:var(--orange)}
+.budget-chip .bl{font-size:.64rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;font-weight:700;margin-top:.15rem}
+
+/* ─── SECTION SHELL ─── */
+.section{padding:3rem 2rem;scroll-margin-top:80px}
+.section.alt{background:var(--bg-light)}
+.container{max-width:1100px;margin:0 auto}
+.section-header{margin-bottom:2rem}
+.section-num{display:inline-flex;align-items:center;gap:.5rem;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--orange);margin-bottom:.5rem}
+.section-num .num{width:24px;height:24px;border-radius:50%;background:var(--orange);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.7rem}
+.section-title{font-family:'DM Serif Display',serif;font-size:clamp(1.5rem,2.8vw,2rem);color:var(--navy);line-height:1.25;margin-bottom:.4rem}
+.section-sub{font-size:.92rem;color:var(--text-secondary);line-height:1.65;max-width:720px}
+.story-beat{background:#fff;border-left:4px solid var(--orange);border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:1rem 1.2rem;font-size:.88rem;color:var(--text-primary);line-height:1.65;box-shadow:var(--shadow-sm);margin-bottom:1.6rem}
+.story-beat .sb-tag{display:inline-block;font-size:.62rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--orange);margin-bottom:.3rem}
+.story-beat em{color:var(--text-secondary)}
+
+/* ─── TAB NAV ─── */
+.tab-nav{display:flex;gap:.4rem;overflow-x:auto;padding:.4rem;background:rgba(255,255,255,0.7);backdrop-filter:blur(8px);border-radius:50px;border:1px solid var(--border);box-shadow:var(--shadow-sm);position:sticky;top:72px;z-index:50;margin:0 auto 2rem;max-width:fit-content;flex-wrap:nowrap;-ms-overflow-style:none;scrollbar-width:none}
+.tab-nav::-webkit-scrollbar{display:none}
+.tab-btn{padding:.55rem 1.1rem;border-radius:50px;border:none;background:transparent;color:var(--text-secondary);font-size:.78rem;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap;transition:all .2s}
+.tab-btn:hover{color:var(--orange)}
+.tab-btn.active{background:var(--orange);color:#fff;box-shadow:0 3px 12px rgba(232,122,46,0.35)}
+
+/* ─── GENERIC CARDS/GRIDS ─── */
+.pick-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;margin-bottom:1.5rem}
+.pick-grid.four{grid-template-columns:repeat(4,1fr)}
+.pick-card{background:#fff;border-radius:var(--radius);padding:1.4rem;border:2px solid var(--border);cursor:pointer;transition:all .3s;position:relative;overflow:hidden}
+.pick-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;transition:height .3s}
+.pick-card:nth-child(1)::before{background:linear-gradient(90deg,var(--green),#7BC67E)}
+.pick-card:nth-child(2)::before{background:linear-gradient(90deg,var(--blue),#5DADE2)}
+.pick-card:nth-child(3)::before{background:linear-gradient(90deg,var(--purple),#B39DDB)}
+.pick-card:nth-child(4)::before{background:linear-gradient(90deg,var(--pink),#F48FB1)}
+.pick-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-md)}
+.pick-card.active{border-color:var(--orange);box-shadow:var(--shadow-md)}
+.pick-card.active::before{height:6px}
+.pick-icon{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;margin-bottom:.8rem;background:var(--bg-light)}
+.pick-card h4{font-family:'DM Serif Display',serif;font-size:1.05rem;color:var(--navy);margin-bottom:.3rem}
+.pick-card .pc-tag{font-size:.66rem;color:var(--orange);font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:.6rem}
+.pick-card p{font-size:.78rem;color:var(--text-secondary);line-height:1.5}
+.pick-detail{background:#fff;border-radius:var(--radius);padding:1.3rem 1.5rem;border:1px solid var(--border);box-shadow:var(--shadow-sm);font-size:.86rem;line-height:1.65;display:none}
+.pick-detail.show{display:block;animation:fadeUp .4s ease}
+.pick-detail strong{color:var(--navy)}
+.pick-detail .verdict-pill{display:inline-block;padding:.2rem .7rem;border-radius:50px;font-size:.68rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;margin-bottom:.5rem}
+.vp-good{background:var(--green-light);color:#2E7D32}
+.vp-mid{background:#FFF3CD;color:#856404}
+.vp-bad{background:#FEE;color:#C62828}
+
+/* ─── SCENARIO QUIZ ─── */
+.scenario-panel{background:#fff;border-radius:var(--radius);padding:1.5rem;border:1px solid var(--border);box-shadow:var(--shadow-sm);margin-top:1.4rem}
+.scenario-title{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-muted);margin-bottom:.6rem}
+.scenario-q{font-size:1rem;color:var(--navy);margin-bottom:1rem;font-weight:600;line-height:1.5}
+.scenario-options{display:grid;grid-template-columns:1fr;gap:.6rem;margin-bottom:1rem}
+.scenario-btn{padding:.75rem .9rem;border-radius:8px;border:1.5px solid var(--border);background:#fff;font-size:.82rem;font-weight:600;color:var(--text-primary);cursor:pointer;font-family:inherit;transition:all .2s;text-align:left;line-height:1.45}
+.scenario-btn:hover{border-color:var(--orange);color:var(--orange)}
+.scenario-btn.correct{background:var(--green-light);border-color:var(--green);color:#2E7D32}
+.scenario-btn.wrong{background:#FEE;border-color:var(--red);color:#C62828}
+.scenario-feedback{padding:.9rem;border-radius:8px;font-size:.83rem;line-height:1.55;display:none}
+.scenario-feedback.show{display:block;animation:fadeUp .4s ease}
+.scenario-feedback.success{background:var(--green-light);color:#2E7D32;border-left:3px solid var(--green)}
+.scenario-feedback.fail{background:#FEE;color:#C62828;border-left:3px solid var(--red)}
+.btn-action{padding:.55rem 1.1rem;border-radius:8px;background:var(--orange);color:#fff;border:none;font-size:.82rem;font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s}
+.btn-action:hover{background:var(--orange-dark);transform:translateY(-1px);box-shadow:0 4px 12px rgba(232,122,46,0.3)}
+.btn-secondary{background:transparent;color:var(--text-primary);border:1.5px solid var(--border);padding:.55rem 1.1rem;border-radius:8px;font-size:.82rem;font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s}
+.btn-secondary:hover{border-color:var(--orange);color:var(--orange)}
+
+/* ─── CHAT MOCK (prompt showdown) ─── */
+.chat-mock{background:#fff;border-radius:var(--radius);border:1px solid var(--border);box-shadow:var(--shadow-sm);overflow:hidden;margin-top:1rem}
+.chat-head{background:var(--navy-dark);color:#fff;padding:.6rem 1rem;font-size:.78rem;font-weight:600;display:flex;align-items:center;gap:.5rem}
+.chat-head .cdot{width:8px;height:8px;border-radius:50%;background:var(--green)}
+.chat-body{padding:1.1rem;display:flex;flex-direction:column;gap:.8rem;min-height:150px}
+.chat-msg{max-width:88%;padding:.8rem 1rem;border-radius:12px;font-size:.83rem;line-height:1.55}
+.chat-msg.user{align-self:flex-end;background:var(--orange-glow);color:var(--text-primary);border:1px solid rgba(232,122,46,0.25);border-bottom-right-radius:3px}
+.chat-msg.ai{align-self:flex-start;background:var(--bg-light);border:1px solid var(--border);border-bottom-left-radius:3px}
+.chat-msg.ai strong{color:var(--orange)}
+.chat-msg .who{display:block;font-size:.62rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--text-muted);margin-bottom:.3rem}
+
+/* ─── SPREADSHEET MOCK ─── */
+.sheet-wrap{background:#fff;border-radius:var(--radius);border:1px solid var(--border);box-shadow:var(--shadow-md);overflow:hidden;margin-top:1rem}
+.sheet-chrome{background:#217346;color:#fff;padding:.5rem 1rem;font-size:.75rem;font-weight:700;display:flex;align-items:center;gap:.5rem}
+.sheet-chrome .xicon{width:18px;height:18px;background:#fff;color:#217346;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:800}
+.sheet-tabs{background:#F3F2F1;border-bottom:1px solid var(--border);display:flex;font-size:.7rem}
+.sheet-tabs .stab{padding:.4rem .9rem;color:var(--text-secondary);border-right:1px solid var(--border)}
+.sheet-tabs .stab.on{background:#fff;color:#217346;font-weight:700;border-bottom:2px solid #217346}
+.sheet-scroll{overflow-x:auto}
+table.sheet{border-collapse:collapse;width:100%;font-size:.74rem;min-width:560px}
+table.sheet th,table.sheet td{border:1px solid #E5E5E5;padding:.35rem .55rem;text-align:left;white-space:nowrap}
+table.sheet thead th{background:#F3F2F1;color:var(--text-secondary);font-weight:700;text-align:center}
+table.sheet tbody th{background:#F3F2F1;color:var(--text-muted);font-weight:600;text-align:center;width:28px}
+table.sheet td.hl-bad{background:#FEE;color:#C62828;font-weight:600}
+table.sheet td.hl-good{background:var(--green-light);color:#2E7D32;font-weight:600}
+table.sheet td.hl-fix{background:var(--orange-glow);color:var(--orange-dark);font-weight:600}
+.sheet-cap{font-size:.76rem;color:var(--text-muted);padding:.6rem 1rem;background:var(--bg-light);border-top:1px solid var(--border)}
+
+/* ─── FORMULA LAB ─── */
+.formula-lab{background:#fff;border-radius:var(--radius);padding:1.4rem;border:1px solid var(--border);box-shadow:var(--shadow-sm);margin-top:1.4rem}
+.fl-tabs{display:flex;gap:.4rem;margin-bottom:1rem;flex-wrap:wrap}
+.fl-tab{padding:.45rem .9rem;border-radius:50px;border:1.5px solid var(--border);background:#fff;font-size:.74rem;font-weight:600;color:var(--text-secondary);cursor:pointer;font-family:inherit;transition:all .2s}
+.fl-tab:hover{border-color:var(--orange);color:var(--orange)}
+.fl-tab.active{background:var(--orange);border-color:var(--orange);color:#fff}
+.fl-prompt{background:var(--orange-glow);border:1px solid rgba(232,122,46,0.25);border-radius:8px;padding:.8rem 1rem;font-size:.83rem;line-height:1.5;margin-bottom:.9rem}
+.fl-prompt .who{display:block;font-size:.62rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--orange);margin-bottom:.3rem}
+.fl-code{background:var(--navy-dark);border-radius:8px;padding:.85rem 1rem;font-family:'Consolas','Courier New',monospace;font-size:.8rem;color:#D8DAE5;overflow-x:auto;line-height:1.5;margin-bottom:.9rem}
+.fl-code .kw{color:#F5943E}.fl-code .st{color:#8BD49C}.fl-code .rf{color:#82AAFF}
+.fl-explain{font-size:.83rem;line-height:1.6;color:var(--text-secondary)}
+.fl-explain strong{color:var(--navy)}
+
+/* review-style two column */
+.review-mine{background:#fff;border-radius:var(--radius);padding:1.4rem;border:1px solid var(--border);box-shadow:var(--shadow-sm);margin-top:1.4rem}
+.review-cols{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:.9rem}
+.review-col{border-radius:var(--radius-sm);padding:1rem 1.1rem}
+.review-col.love{background:var(--green-light)}
+.review-col.hate{background:#FEE}
+.review-col h5{font-size:.72rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.6rem}
+.review-col.love h5{color:#2E7D32}
+.review-col.hate h5{color:#C62828}
+.review-col li{font-size:.8rem;line-height:1.5;margin-left:1.1rem;margin-bottom:.35rem;color:var(--text-primary)}
+
+/* ─── ERROR FIXER ─── */
+.err-panel{background:#fff;border-radius:var(--radius);padding:1.5rem;border:1px solid var(--border);box-shadow:var(--shadow-sm);margin-top:1.4rem}
+.err-badge{display:inline-flex;align-items:center;gap:.4rem;background:#FEE;color:#C62828;font-weight:800;font-size:.85rem;padding:.35rem .8rem;border-radius:7px;font-family:'Consolas',monospace}
+.err-cell{font-family:'Consolas',monospace;background:var(--bg-light);border:1px solid var(--border);border-radius:6px;padding:.6rem .8rem;font-size:.82rem;margin:.8rem 0;color:var(--text-primary)}
+.err-cell b{color:#C62828}
+
+/* ─── CALCULATOR ─── */
+.calc{background:#fff;border-radius:var(--radius);padding:1.5rem;border:1px solid var(--border);box-shadow:var(--shadow-sm);margin-top:1.4rem}
+.calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.4rem}
+.calc-field{margin-bottom:1rem}
+.calc-field label{display:flex;justify-content:space-between;font-size:.78rem;font-weight:700;color:var(--text-primary);margin-bottom:.35rem}
+.calc-field label output{color:var(--orange);font-weight:800}
+.calc-slider{-webkit-appearance:none;appearance:none;width:100%;height:6px;border-radius:3px;background:var(--border);outline:none;cursor:pointer}
+.calc-slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:20px;height:20px;border-radius:50%;background:#fff;border:3px solid var(--orange);cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.15)}
+.calc-slider::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:#fff;border:3px solid var(--orange);cursor:pointer}
+.calc-out{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;align-content:start}
+.calc-tile{padding:.95rem;background:var(--bg-light);border-radius:10px;text-align:center;border:1.5px solid transparent;transition:all .3s}
+.calc-tile.warn{border-color:var(--red);background:#FEE}
+.calc-tile.ok{border-color:var(--green);background:var(--green-light)}
+.calc-tile .cv{font-family:'DM Serif Display',serif;font-size:1.45rem;color:var(--navy);line-height:1.1}
+.calc-tile .cl{font-size:.64rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em;font-weight:700;margin-top:.3rem}
+.calc-note{grid-column:1/-1;font-size:.8rem;line-height:1.55;padding:.8rem 1rem;border-radius:8px;background:var(--orange-glow);color:var(--text-primary)}
+.calc-note strong{color:var(--orange)}
+
+/* ─── CHART / PIVOT ─── */
+.pivot-wrap{background:#fff;border-radius:var(--radius);border:1px solid var(--border);box-shadow:var(--shadow-md);overflow:hidden;margin-top:1.4rem}
+.pivot-head{background:#F5F5F7;padding:.55rem 1rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:.4rem;font-size:.72rem;color:var(--text-muted)}
+.pivot-head .sdot{width:9px;height:9px;border-radius:50%}
+.pivot-body{padding:1.4rem 1.6rem}
+.pivot-body h4{font-family:'DM Serif Display',serif;font-size:1.05rem;color:var(--navy);margin-bottom:1rem}
+.bars{display:flex;align-items:flex-end;gap:1.1rem;height:200px;padding:0 .5rem;border-bottom:2px solid var(--border);margin-bottom:.6rem}
+.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%}
+.bar{width:100%;max-width:56px;border-radius:6px 6px 0 0;background:linear-gradient(180deg,var(--orange-light),var(--orange));position:relative;transition:height 1s cubic-bezier(.2,.8,.2,1);height:0}
+.bar .bnum{position:absolute;top:-1.3rem;left:0;right:0;text-align:center;font-size:.72rem;font-weight:800;color:var(--navy)}
+.bar-lbl{font-size:.68rem;color:var(--text-secondary);margin-top:.4rem;font-weight:600;text-align:center}
+.bar-col.peak .bar{background:linear-gradient(180deg,#7BC67E,var(--green))}
+.ask-data{margin-top:1.2rem}
+.ask-chip{display:inline-block;margin:.25rem .3rem .25rem 0;padding:.45rem .9rem;border-radius:50px;border:1.5px solid var(--border);background:#fff;font-size:.76rem;font-weight:600;color:var(--text-secondary);cursor:pointer;font-family:inherit;transition:all .2s}
+.ask-chip:hover{border-color:var(--orange);color:var(--orange)}
+.ask-chip.active{background:var(--orange);border-color:var(--orange);color:#fff}
+.ask-answer{margin-top:.9rem;padding:.9rem 1.1rem;border-radius:8px;background:var(--bg-light);border-left:3px solid var(--orange);font-size:.84rem;line-height:1.6;display:none}
+.ask-answer.show{display:block;animation:fadeUp .4s ease}
+.ask-answer strong{color:var(--orange-dark)}
+
+/* checklist + feed */
+.build-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1.5rem}
+.build-card{background:#fff;border-radius:var(--radius);padding:1.3rem;border:1px solid var(--border);box-shadow:var(--shadow-sm)}
+.build-card h4{font-size:.95rem;color:var(--navy);margin-bottom:.7rem;display:flex;align-items:center;gap:.5rem}
+.build-card h4::before{content:'';width:10px;height:10px;border-radius:50%;background:var(--orange)}
+.checklist{list-style:none;padding:0}
+.checklist li{display:flex;align-items:flex-start;gap:.6rem;padding:.42rem 0;font-size:.84rem;color:var(--text-primary);cursor:pointer;line-height:1.45}
+.checklist li .check{width:18px;height:18px;border-radius:5px;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;transition:all .2s}
+.checklist li.done .check{background:var(--green);border-color:var(--green)}
+.checklist li.done .check::after{content:'✓';color:#fff;font-size:.7rem;font-weight:800}
+.checklist li.done{color:var(--text-muted);text-decoration:line-through}
+.feed{background:var(--navy-dark);border-radius:10px;padding:1rem 1.1rem;min-height:220px;max-height:280px;overflow-y:auto}
+.feed-line{display:flex;gap:.6rem;font-size:.78rem;line-height:1.55;padding:.3rem 0;color:#D8DAE5;animation:fadeUp .4s ease}
+.feed-line .ft{color:var(--orange-light);font-weight:700;flex-shrink:0}
+.feed-line.hint-line{color:#8B8DA0;font-style:italic}
+.done-note{margin-top:1rem;padding:.8rem;background:var(--green-light);border-radius:7px;font-size:.78rem;color:#2E7D32;display:none}
+
+/* ─── DASHBOARD BUILDER ─── */
+.dash-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:1.4rem;margin-top:1.4rem}
+.dash-controls .prompt-field{display:flex;flex-direction:column;gap:.4rem;margin-bottom:.9rem}
+.dash-controls label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted)}
+.dash-controls select{padding:.6rem .8rem;border:1.5px solid var(--border);border-radius:7px;font-family:inherit;font-size:.83rem;color:var(--text-primary);background:#fff}
+.dash-controls select:focus{outline:none;border-color:var(--orange)}
+.dash-preview{background:#fff;border-radius:var(--radius);border:1px solid var(--border);box-shadow:var(--shadow-md);overflow:hidden}
+.dashp-head{background:var(--navy-dark);color:#fff;padding:.7rem 1rem;display:flex;align-items:center;justify-content:space-between}
+.dashp-title{font-family:'DM Serif Display',serif;font-size:1rem}
+.dashp-when{font-size:.66rem;color:rgba(255,255,255,.6)}
+.dashp-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem;padding:1rem}
+.dashp-kpi{background:var(--bg-light);border-radius:9px;padding:.7rem;text-align:center}
+.dashp-kpi .kv{font-family:'DM Serif Display',serif;font-size:1.2rem;color:var(--orange)}
+.dashp-kpi .kl{font-size:.6rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em;font-weight:700;margin-top:.2rem}
+.dashp-note{padding:0 1rem 1rem;font-size:.78rem;line-height:1.55;color:var(--text-secondary)}
+.dashp-note strong{color:var(--navy)}
+
+/* ─── VERDICT ─── */
+.week-verdict{display:none;margin-top:1.4rem;background:var(--navy-dark);border-radius:var(--radius);padding:1.6rem;color:#fff;animation:popIn .5s ease}
+.week-verdict.show{display:block}
+.week-verdict h4{font-family:'DM Serif Display',serif;font-size:1.35rem;margin-bottom:.8rem}
+.week-verdict h4 em{font-style:normal;color:var(--orange-light)}
+.wv-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.7rem;margin-bottom:1rem}
+.wv-tile{background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.14);border-radius:9px;padding:.8rem;text-align:center}
+.wv-tile .v{font-family:'DM Serif Display',serif;font-size:1.3rem;color:var(--orange-light)}
+.wv-tile .l{font-size:.62rem;text-transform:uppercase;letter-spacing:.05em;color:rgba(255,255,255,0.55);font-weight:700;margin-top:.25rem}
+.week-verdict p{font-size:.87rem;line-height:1.65;color:rgba(255,255,255,0.85)}
+.week-verdict p strong{color:var(--orange-light)}
+
+/* ─── FOOTER / RECAP ─── */
+.footer-cta{text-align:center;padding:3rem 2rem 5.5rem;background:var(--navy-dark);color:#fff}
+.footer-cta h2{font-family:'DM Serif Display',serif;font-size:1.9rem;margin-bottom:.6rem}
+.footer-cta h2 em{color:var(--orange);font-style:normal}
+.footer-cta>p{font-size:.92rem;color:rgba(255,255,255,0.7);max-width:600px;margin:0 auto 1.8rem}
+.recap-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.9rem;max-width:1050px;margin:0 auto 1.8rem;text-align:left}
+.recap-card{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.13);border-radius:var(--radius);padding:1.2rem 1.3rem}
+.recap-card .rn{font-size:.62rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--orange-light);margin-bottom:.35rem}
+.recap-card h4{font-family:'DM Serif Display',serif;font-size:1.02rem;margin-bottom:.35rem;color:#fff}
+.recap-card p{font-size:.76rem;color:rgba(255,255,255,0.65);line-height:1.55}
+.footer-note{font-size:.72rem;color:rgba(255,255,255,0.4);margin-top:1.6rem;max-width:640px;margin-left:auto;margin-right:auto;line-height:1.6}
+
+/* ─── COMPLETION BAR ─── */
+.completion-bar{position:fixed;bottom:0;left:0;right:0;background:rgba(255,255,255,0.95);backdrop-filter:blur(10px);border-top:1px solid var(--border);padding:.7rem 2rem;display:flex;align-items:center;justify-content:space-between;z-index:90;box-shadow:0 -2px 12px rgba(0,0,0,0.05)}
+.completion-info{display:flex;align-items:center;gap:.8rem;font-size:.82rem;color:var(--text-primary);font-weight:600}
+.completion-track{flex:1;max-width:280px;height:8px;background:var(--bg-light);border-radius:4px;overflow:hidden;margin:0 1rem}
+.completion-fill{height:100%;background:linear-gradient(90deg,var(--orange),var(--orange-light));border-radius:4px;transition:width .5s ease}
+.completion-percent{font-family:'DM Serif Display',serif;color:var(--orange);font-size:1.15rem}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:880px){
+  .hero-inner{grid-template-columns:1fr;text-align:center}
+  .hero-mascot{width:170px;margin:0 auto}
+  .usecase-banner{text-align:left}
+  .budget-strip{grid-template-columns:repeat(2,1fr)}
+  .pick-grid,.pick-grid.four{grid-template-columns:1fr}
+  .calc-grid,.build-grid,.dash-grid,.review-cols{grid-template-columns:1fr}
+  .dashp-kpis{grid-template-columns:repeat(3,1fr)}
+  .wv-grid,.recap-grid{grid-template-columns:repeat(2,1fr)}
+  .header{padding:.7rem 1rem}
+  .section{padding:2.2rem 1rem}
+  .hero{padding:2.5rem 1rem 2rem}
+}
+</style>
+</head>
+<body>
+
+<!-- ─── HEADER ─── -->
+<header class="header">
+  <div class="header-left">
+    <svg class="logo-mascot" viewBox="0 0 955 1486" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="477" cy="380" rx="285" ry="324" fill="#EBE3D6"/>
+      <ellipse cx="477" cy="380" rx="240" ry="270" fill="#412C23"/>
+      <circle cx="389" cy="430" r="36" fill="#fff"/>
+      <circle cx="565" cy="430" r="36" fill="#fff"/>
+      <circle cx="389" cy="430" r="14" fill="#2B2D42"/>
+      <circle cx="565" cy="430" r="14" fill="#2B2D42"/>
+      <path d="M380 1180c30 28 65 42 97 42s67-14 97-42" stroke="#A34E1C" stroke-width="14" stroke-linecap="round" fill="none"/>
+      <ellipse cx="477" cy="1350" rx="430" ry="100" fill="#EF7F1A"/>
+      <ellipse cx="477" cy="1350" rx="380" ry="78" fill="#FF9429"/>
+    </svg>
+    <div>
+      <div class="header-title">MokshPath · <span>AI Excel</span></div>
+      <div class="header-tag">Week 1 · Fun While You Learn</div>
+    </div>
+  </div>
+  <div class="progress-pill"><span class="dot"></span> <span id="headerProgressText">0 of 5 chapters explored</span></div>
+</header>
+
+<!-- ─── HERO ─── -->
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-badge"><span style="width:7px;height:7px;border-radius:50%;background:var(--orange);display:inline-block"></span> Story Project · One Chaotic Week</div>
+      <h1>Save Maya's Friday — Turn One <em>Chaotic Spreadsheet</em> into an Automated Weekly Report</h1>
+      <p class="hero-sub">Maya just inherited the sales reporting at <strong>Rolling Pin Bakery</strong>. The handover was one file: <em>sales_final_FINAL_v3.xlsx</em> — 2,000 messy rows, trailing spaces, a broken formula, and a boss who wants a clean insights report every Friday by 4 p.m. She has never written a macro. She has AI. Over four chapters you'll help her pick the right AI helper, clean and calculate with plain-English prompts, find the real story in the data, and automate the whole report so it builds itself. Every choice below has a consequence. Choose like a pro.</p>
+      <div class="usecase-banner">
+        <div class="usecase-icon">📊</div>
+        <div class="usecase-text"><strong>The Mission:</strong> By Friday 4 p.m., that ugly spreadsheet must become a clean, trustworthy, one-click weekly dashboard — using AI in Excel, not ten late nights. Win or lose, you'll walk away knowing the full AI-Excel playbook: tools, formulas, analysis, and automation.</div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <svg class="hero-mascot" viewBox="0 0 955 1486" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="bodyGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#EBE3D6"/><stop offset="1" stop-color="#D1D0CC"/></linearGradient>
+          <linearGradient id="faceGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7A6A48"/><stop offset="1" stop-color="#412C23"/></linearGradient>
+          <linearGradient id="feetGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FF9429"/><stop offset="1" stop-color="#EF7F1A"/></linearGradient>
+        </defs>
+        <ellipse cx="210" cy="408" rx="68" ry="82" fill="#D9DADA"/>
+        <ellipse cx="740" cy="408" rx="68" ry="82" fill="#D9DADA"/>
+        <ellipse cx="477" cy="380" rx="285" ry="324" fill="url(#bodyGrad)"/>
+        <ellipse cx="477" cy="392" rx="240" ry="225" fill="url(#faceGrad)"/>
+        <circle cx="389" cy="430" r="38" fill="#fff"/>
+        <circle cx="565" cy="430" r="38" fill="#fff"/>
+        <circle cx="389" cy="430" r="15" fill="#2B2D42"/>
+        <circle cx="565" cy="430" r="15" fill="#2B2D42"/>
+        <circle cx="395" cy="424" r="5" fill="#fff"/>
+        <circle cx="571" cy="424" r="5" fill="#fff"/>
+        <path d="M380 1180c30 28 65 42 97 42s67-14 97-42" stroke="#A34E1C" stroke-width="16" stroke-linecap="round" fill="none"/>
+        <ellipse cx="477" cy="1350" rx="430" ry="105" fill="url(#feetGrad)"/>
+        <ellipse cx="477" cy="1320" rx="380" ry="78" fill="#FF9429"/>
+      </svg>
+    </div>
+  </div>
+  <div class="budget-strip">
+    <div class="budget-chip"><div class="bv">2,000 rows</div><div class="bl">Of messy sales data</div></div>
+    <div class="budget-chip"><div class="bv">Fri · 4pm</div><div class="bl">Report deadline</div></div>
+    <div class="budget-chip"><div class="bv">0 macros</div><div class="bl">Maya has ever written</div></div>
+    <div class="budget-chip"><div class="bv">4 lessons</div><div class="bl">Woven into 1 story</div></div>
+  </div>
+</section>
+
+<!-- ─── TAB NAVIGATION ─── -->
+<div class="tab-nav" id="tabNav">
+  <button class="tab-btn active" data-target="s1">Ch 1 · Pick the AI</button>
+  <button class="tab-btn" data-target="s2">Ch 2 · Clean &amp; Formulas</button>
+  <button class="tab-btn" data-target="s3">Ch 3 · Analyze</button>
+  <button class="tab-btn" data-target="s4">Ch 4 · Automate</button>
+  <button class="tab-btn" data-target="s5">Ship It · Friday</button>
+</div>
+
+<!-- ═══════════ CHAPTER 1: PICK THE AI HELPER ═══════════ -->
+<section class="section" id="s1">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-num"><div class="num">1</div> Chapter One · Monday</div>
+      <h2 class="section-title">Excel in the AI Era — Meet the Tools, Pick the Right Helper</h2>
+      <p class="section-sub">Rule one of AI Excel: there is no single "AI button." There are four very different helpers, each with a licence, a privacy trade-off, and a sweet spot. Today Maya matches the job to the right tool — before touching a single cell.</p>
+    </div>
+
+    <div class="story-beat">
+      <span class="sb-tag">📖 The story so far</span>
+      Monday, 9:10 a.m. Maya opens <em>sales_final_FINAL_v3.xlsx</em> and her coffee goes cold. Product names like "  Croissant " and "croissant" sit in the same column. A total in cell G2 reads <strong>#REF!</strong>. Her manager pings: <em>"Clean weekly report every Friday 4 p.m., starting this week. Thanks!"</em> Before she panics, she does the professional thing: <em>she figures out which AI helper fits the job — and which she's even allowed to use with company data.</em> Click each tool to inspect it, then commit.
+    </div>
+
+    <div class="pick-grid four">
+      <div class="pick-card" data-tool="copilot" onclick="pickTool('copilot')">
+        <div class="pick-icon">🟩</div>
+        <div class="pc-tag">Paid licence</div>
+        <h4>Copilot in Excel</h4>
+        <p>Microsoft 365 Copilot, built into Excel. Works on a formatted Table, edits your live file, writes formulas &amp; charts. Powerful — but a paid add-on your workplace must enable.</p>
+      </div>
+      <div class="pick-card" data-tool="analyze" onclick="pickTool('analyze')">
+        <div class="pick-icon">🔎</div>
+        <div class="pc-tag">Free · built-in</div>
+        <h4>Analyze Data</h4>
+        <p>The free "Analyze Data" button (Home tab) in any modern Excel. Suggests PivotTables, trends and charts with one click. No AI subscription, no data leaves your file.</p>
+      </div>
+      <div class="pick-card" data-tool="chatgpt" onclick="pickTool('chatgpt')">
+        <div class="pick-icon">💬</div>
+        <div class="pc-tag">Privacy check first</div>
+        <h4>ChatGPT / Claude</h4>
+        <p>Brilliant at writing &amp; explaining formulas from plain English. You can upload a file — but company sales data may not be allowed to leave the building. Read your policy.</p>
+      </div>
+      <div class="pick-card" data-tool="gemini" onclick="pickTool('gemini')">
+        <div class="pick-icon">🟦</div>
+        <div class="pc-tag">If you're on Sheets</div>
+        <h4>Gemini in Sheets</h4>
+        <p>Google Workspace's AI, inside Google Sheets. Same idea as Copilot, different suite. Great — only if your bakery lives in Google, not Microsoft.</p>
+      </div>
+    </div>
+    <div class="pick-detail" id="toolDetail"></div>
+
+    <div class="chat-mock">
+      <div class="chat-head"><span class="cdot"></span> AI Assistant · The prompt showdown — vague vs. specific</div>
+      <div class="chat-body" id="promptChat">
+        <div class="chat-msg ai"><span class="who">Narrator</span>You get out of AI exactly what you put in. Below are three ways Maya could ask for help cleaning her sheet. <strong>Pick the one you think earns the most useful answer</strong> — then see what comes back.</div>
+      </div>
+    </div>
+    <div class="scenario-panel">
+      <div class="scenario-title">🎯 Checkpoint · Pick Maya's prompt</div>
+      <div class="scenario-q">Which prompt does Maya send to her AI helper?</div>
+      <div class="scenario-options">
+        <button class="scenario-btn" onclick="pickPrompt(0)">"Fix my Excel sheet."</button>
+        <button class="scenario-btn" onclick="pickPrompt(1)">"Write me a magic formula that cleans everything automatically."</button>
+        <button class="scenario-btn" onclick="pickPrompt(2)">"I have a sales table with columns Date, Product, Qty, Price. Product names have extra spaces and mixed capitalisation. Give me a formula to standardise the Product column, and explain each part so I can check it."</button>
+      </div>
+      <div class="scenario-feedback" id="promptFb"></div>
+    </div>
+
+    <div class="scenario-panel">
+      <div class="scenario-title">🧠 Pop Quiz · Tool &amp; privacy instincts (3 rounds)</div>
+      <div class="scenario-q" id="toolQ">Loading…</div>
+      <div class="scenario-options" id="toolOpts"></div>
+      <div class="scenario-feedback" id="toolFb"></div>
+      <button class="btn-secondary" id="toolNext" onclick="nextToolQ()" style="margin-top:.5rem;display:none">Next round →</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ CHAPTER 2: CLEAN + FORMULAS ═══════════ -->
+<section class="section alt" id="s2">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-num"><div class="num">2</div> Chapter Two · Tuesday</div>
+      <h2 class="section-title">AI Formulas &amp; Functions — Clean the Mess in Plain English</h2>
+      <p class="section-sub">A dirty column poisons every total downstream. Today Maya describes what she wants in plain English and AI hands back the exact formula — <strong>TRIM</strong>, <strong>TEXTSPLIT</strong>, <strong>XLOOKUP</strong>, <strong>SUMIFS</strong>, dynamic arrays. Her job: read it, sanity-check it, keep it.</p>
+    </div>
+
+    <div class="story-beat">
+      <span class="sb-tag">📖 The story so far</span>
+      Tuesday. Maya stares at the raw data. "  Croissant " ≠ "croissant" to Excel, so her SUMIFS totals are splitting one product into four. Instead of hand-editing 2,000 rows, she describes the problem to AI and gets a formula back in seconds. But she remembers Chapter 1's lesson: <em>AI is leverage, not truth — read what it gives you.</em> Inspect the messy sheet, then step through the formula lab.
+    </div>
+
+    <div class="sheet-wrap">
+      <div class="sheet-chrome"><span class="xicon">X</span> sales_final_FINAL_v3.xlsx — the raw handover</div>
+      <div class="sheet-tabs"><span class="stab on">RawSales</span><span class="stab">Products</span><span class="stab">Report</span></div>
+      <div class="sheet-scroll">
+        <table class="sheet">
+          <thead><tr><th></th><th>A · Date</th><th>B · Product</th><th>C · Qty</th><th>D · Price</th><th>E · Region</th></tr></thead>
+          <tbody>
+            <tr><th>2</th><td>03/06/2026</td><td class="hl-bad">  Croissant </td><td>12</td><td>₹90</td><td>North</td></tr>
+            <tr><th>3</th><td>03/06/2026</td><td class="hl-bad">croissant</td><td>8</td><td>₹90</td><td>north</td></tr>
+            <tr><th>4</th><td>03-06-2026</td><td>Sourdough Loaf</td><td>5</td><td>₹220</td><td>South</td></tr>
+            <tr><th>5</th><td>03/06/2026</td><td class="hl-bad">CROISSANT </td><td>3</td><td>₹90</td><td>North</td></tr>
+            <tr><th>6</th><td>04/06/2026</td><td>Blueberry Muffin</td><td>14</td><td>₹75</td><td>West</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="sheet-cap">⚠️ Three of these rows are the <em>same</em> product to a human — and four different products to Excel. Spaces and capitals matter. This is why Maya's totals are wrong.</div>
+    </div>
+
+    <div class="formula-lab">
+      <div style="font-family:'DM Serif Display',serif;font-size:1.1rem;color:var(--navy);margin-bottom:.9rem">🧪 The Formula Lab — describe it, AI writes it, you verify it</div>
+      <div class="fl-tabs">
+        <button class="fl-tab active" data-fl="trim" onclick="setFormula('trim')">TRIM · fix spaces &amp; caps</button>
+        <button class="fl-tab" data-fl="split" onclick="setFormula('split')">TEXTSPLIT · split a column</button>
+        <button class="fl-tab" data-fl="lookup" onclick="setFormula('lookup')">XLOOKUP · pull the price</button>
+        <button class="fl-tab" data-fl="sumifs" onclick="setFormula('sumifs')">SUMIFS · total by product</button>
+      </div>
+      <div class="fl-prompt" id="flPrompt"><span class="who">You → AI</span></div>
+      <div class="fl-code" id="flCode"></div>
+      <div class="fl-explain" id="flExplain"></div>
+    </div>
+
+    <div class="err-panel">
+      <div style="font-family:'DM Serif Display',serif;font-size:1.1rem;color:var(--navy);margin-bottom:.5rem">🚨 The Broken Cell — fixing G2's <span class="err-badge">#REF!</span> error</div>
+      <p style="font-size:.83rem;color:var(--text-secondary);line-height:1.6">Cell G2 was supposed to total weekly revenue. Someone deleted a column the old formula pointed at, so now it shows an error. Maya pastes the broken formula into AI and asks: <em>"Why does this show #REF!, and how do I fix it?"</em></p>
+      <div class="err-cell">G2 = SUM(<b>#REF!</b>2:#REF!2000) &nbsp;→&nbsp; 🡒 &nbsp; the column it referenced was deleted</div>
+      <div class="scenario-panel" style="margin-top:1rem">
+        <div class="scenario-title">🎯 Checkpoint · What actually fixes a #REF! (and a #N/A)?</div>
+        <div class="scenario-q">AI explains the two errors. Which understanding is correct?</div>
+        <div class="scenario-options">
+          <button class="scenario-btn" onclick="errQ(0)">Both errors mean Excel is broken — just close and reopen the file.</button>
+          <button class="scenario-btn" onclick="errQ(1)">#REF! means a referenced cell/column was deleted — repoint the formula to the correct range. #N/A (in XLOOKUP) means "not found" — usually a spelling/space mismatch, so TRIM your lookup value first.</button>
+          <button class="scenario-btn" onclick="errQ(2)">Wrap every formula in IFERROR so the errors disappear from view, then move on.</button>
+        </div>
+        <div class="scenario-feedback" id="errFb"></div>
+      </div>
+    </div>
+
+    <div class="scenario-panel">
+      <div class="scenario-title">🧠 Pop Quiz · Formula instincts (3 rounds)</div>
+      <div class="scenario-q" id="formQ">Loading…</div>
+      <div class="scenario-options" id="formOpts"></div>
+      <div class="scenario-feedback" id="formFb"></div>
+      <button class="btn-secondary" id="formNext" onclick="nextFormQ()" style="margin-top:.5rem;display:none">Next round →</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ CHAPTER 3: ANALYZE ═══════════ -->
+<section class="section" id="s3">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-num"><div class="num">3</div> Chapter Three · Wednesday</div>
+      <h2 class="section-title">AI Data Analysis &amp; Insights — Ask the Data Questions</h2>
+      <p class="section-sub">Clean data is worthless until it says something. Today Maya turns rows into a PivotTable and a chart in one click, then <em>talks to her data</em> in plain English. And — the crucial beat — she catches the AI getting a total wrong by sanity-checking it herself.</p>
+    </div>
+
+    <div class="story-beat">
+      <span class="sb-tag">📖 The story so far</span>
+      Wednesday. The data is finally clean. Maya highlights the table and clicks <strong>Analyze Data</strong>; Excel proposes a PivotTable of revenue by product and a bar chart, ready in seconds. Then she types questions as if messaging a colleague. It feels like magic — until one answer looks <em>too</em> big. Good analysts don't just accept AI output; they check it against reality.
+    </div>
+
+    <div class="pivot-wrap">
+      <div class="pivot-head">
+        <span class="sdot" style="background:#FF5F57"></span><span class="sdot" style="background:#FEBC2E"></span><span class="sdot" style="background:#28C840"></span>
+        <span style="margin-left:.6rem">Analyze Data → PivotChart · Revenue by product (this week)</span>
+      </div>
+      <div class="pivot-body">
+        <h4>📈 Weekly revenue by product — built by one click</h4>
+        <div class="bars" id="bars">
+          <div class="bar-col peak"><div class="bar" data-h="100"><span class="bnum">₹19,800</span></div><div class="bar-lbl">Croissant</div></div>
+          <div class="bar-col"><div class="bar" data-h="72"><span class="bnum">₹14,300</span></div><div class="bar-lbl">Sourdough</div></div>
+          <div class="bar-col"><div class="bar" data-h="55"><span class="bnum">₹10,950</span></div><div class="bar-lbl">Muffin</div></div>
+          <div class="bar-col"><div class="bar" data-h="38"><span class="bnum">₹7,600</span></div><div class="bar-lbl">Bagel</div></div>
+          <div class="bar-col"><div class="bar" data-h="24"><span class="bnum">₹4,800</span></div><div class="bar-lbl">Cookie</div></div>
+        </div>
+        <div class="ask-data">
+          <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted);margin-bottom:.5rem">💬 Ask the data (click a question)</div>
+          <span class="ask-chip" onclick="askData(0,this)">What's my best-selling product?</span>
+          <span class="ask-chip" onclick="askData(1,this)">Which day peaked?</span>
+          <span class="ask-chip" onclick="askData(2,this)">Any region falling behind?</span>
+          <span class="ask-chip" onclick="askData(3,this)">What's total weekly revenue?</span>
+          <div class="ask-answer" id="askAnswer"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="err-panel" style="margin-top:1.4rem">
+      <div style="font-family:'DM Serif Display',serif;font-size:1.1rem;color:var(--navy);margin-bottom:.5rem">🕵️ Catch the AI's mistake — the sanity check</div>
+      <p style="font-size:.83rem;color:var(--text-secondary);line-height:1.6">Maya asked her chat AI: <em>"What was total revenue this week?"</em> It confidently replied <strong>₹73,450</strong>. But she adds the five product bars in her head: 19,800 + 14,300 + 10,950 + 7,600 + 4,800 = <strong>₹57,450</strong>. The AI was ₹16,000 off — it had silently included a duplicate region column. <em>The lesson of the whole week hides in this one moment.</em></p>
+      <div class="scenario-panel" style="margin-top:1rem">
+        <div class="scenario-title">🎯 Checkpoint · The number looks wrong. Now what?</div>
+        <div class="scenario-q">The AI's total (₹73,450) doesn't match your quick sum (₹57,450). What does a pro do?</div>
+        <div class="scenario-options">
+          <button class="scenario-btn" onclick="sanityQ(0)">Trust the AI — it can add better than I can. Paste ₹73,450 into the report.</button>
+          <button class="scenario-btn" onclick="sanityQ(1)">Stop. Verify with a formula I control — =SUM of the pivot column — find why they differ, and only then report the number I can defend.</button>
+          <button class="scenario-btn" onclick="sanityQ(2)">Split the difference and report ₹65,000 to be safe.</button>
+        </div>
+        <div class="scenario-feedback" id="sanityFb"></div>
+      </div>
+    </div>
+
+    <div class="review-mine">
+      <div style="font-family:'DM Serif Display',serif;font-size:1.1rem;color:var(--navy)">🔍 AI reads 300 customer feedback notes in 30 seconds</div>
+      <p style="font-size:.82rem;color:var(--text-secondary);margin-top:.3rem">Maya pastes a column of free-text customer comments and asks AI: <em>"Summarise what customers love and what they complain about."</em> Instant themes she can put in Friday's report — but she'll still spot-read a few rows to confirm the AI didn't invent any.</p>
+      <div class="review-cols">
+        <div class="review-col love">
+          <h5>💚 What customers love</h5>
+          <ul>
+            <li>"The morning croissants are the best in the neighbourhood"</li>
+            <li>"Sourdough always sells out — please bake more"</li>
+            <li>"Staff remember my usual order"</li>
+          </ul>
+        </div>
+        <div class="review-col hate">
+          <h5>💔 What they complain about</h5>
+          <ul>
+            <li>"Cookies gone by noon" → <strong>bake a second cookie batch</strong></li>
+            <li>"Card machine down again" → <strong>flag to ops for Friday report</strong></li>
+            <li>"West branch runs out early" → <strong>the region insight AI just found</strong></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ CHAPTER 4: AUTOMATE ═══════════ -->
+<section class="section alt" id="s4">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-num"><div class="num">4</div> Chapter Four · Thursday</div>
+      <h2 class="section-title">AI Automation &amp; Reporting — Make the Report Build Itself</h2>
+      <p class="section-sub">Maya has done the work once. A pro never does it twice by hand. Today AI writes an <strong>Office Script</strong>, a <strong>Power Automate</strong> flow schedules it, and a dashboard assembles on its own — <em>but only after Maya tests it on a copy, never the original.</em></p>
+    </div>
+
+    <div class="story-beat">
+      <span class="sb-tag">📖 The story so far</span>
+      Thursday. Next Friday this exact chore returns. So Maya asks AI: <em>"Write an Office Script that trims the Product column, refreshes the PivotTable, and updates the dashboard."</em> Ninety seconds later she has code she doesn't need to fully understand — but she does need to run it safely. Rule of automation: <strong>test on a copy first.</strong> Work the build checklist and watch it come together.
+    </div>
+
+    <div class="scenario-panel">
+      <div class="scenario-title">🎯 Checkpoint · The golden rule of automation</div>
+      <div class="scenario-q">AI just handed Maya a script that edits her whole file. What does she do first?</div>
+      <div class="scenario-options">
+        <button class="scenario-btn" onclick="autoQ(0)">Run it straight on sales_final_FINAL_v3.xlsx — AI wrote it, so it's fine.</button>
+        <button class="scenario-btn" onclick="autoQ(1)">Duplicate the file, run the script on the copy, check every output against my manual numbers, THEN point it at the real workflow.</button>
+        <button class="scenario-btn" onclick="autoQ(2)">Email the script to my boss and let them run it.</button>
+      </div>
+      <div class="scenario-feedback" id="autoFb"></div>
+    </div>
+
+    <div class="build-grid">
+      <div class="build-card">
+        <h4>Maya's automation build checklist</h4>
+        <ul class="checklist" id="buildList">
+          <li data-step="0" onclick="runBuildStep(0)"><span class="check"></span><strong>&nbsp;Duplicate the file&nbsp;</strong> — test everything on a copy, never the original</li>
+          <li data-step="1" onclick="runBuildStep(1)"><span class="check"></span>Ask AI for an <strong>&nbsp;Office Script&nbsp;</strong> to trim + total + refresh the pivot</li>
+          <li data-step="2" onclick="runBuildStep(2)"><span class="check"></span>Read the script; run it once; compare outputs to yesterday's manual numbers</li>
+          <li data-step="3" onclick="runBuildStep(3)"><span class="check"></span>Add a <strong>&nbsp;Power Automate&nbsp;</strong> flow: run the script every Friday 3:30 p.m.</li>
+          <li data-step="4" onclick="runBuildStep(4)"><span class="check"></span>Auto-email the finished dashboard PDF to the manager</li>
+          <li data-step="5" onclick="runBuildStep(5)"><span class="check"></span>Write a 3-line "what this does" note so future-Maya trusts it</li>
+        </ul>
+        <div class="done-note" id="buildDone">✅ <strong>The report now builds itself.</strong> Every Friday at 3:30, the script cleans, totals, refreshes and emails — Maya just double-checks and signs off. Zero code, written once.</div>
+      </div>
+      <div class="build-card">
+        <h4>Automation feed (click checklist items)</h4>
+        <div class="feed" id="buildFeed">
+          <div class="feed-line hint-line"><span class="ft">--:--</span>Waiting for you to start… tick items on the left.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dash-grid">
+      <div class="dash-controls">
+        <div style="font-family:'DM Serif Display',serif;font-size:1.1rem;color:var(--navy);margin-bottom:.8rem">🎛️ Dashboard Assembler — configure the auto-report</div>
+        <div class="prompt-field">
+          <label>Headline KPI</label>
+          <select id="dHeadline" onchange="renderDash()">
+            <option value="rev">Total weekly revenue</option>
+            <option value="best">Best-selling product</option>
+            <option value="growth">Week-over-week growth</option>
+          </select>
+        </div>
+        <div class="prompt-field">
+          <label>Chart type AI suggests</label>
+          <select id="dChart" onchange="renderDash()">
+            <option value="bar">Revenue by product (bar)</option>
+            <option value="line">Daily trend (line)</option>
+            <option value="region">Revenue by region (pie)</option>
+          </select>
+        </div>
+        <div class="prompt-field">
+          <label>Delivery schedule</label>
+          <select id="dSchedule" onchange="renderDash()">
+            <option value="fri">Auto-email · Fridays 3:30 p.m.</option>
+            <option value="daily">Auto-email · every morning</option>
+            <option value="manual">Manual · run when I click</option>
+          </select>
+        </div>
+        <p style="font-size:.78rem;color:var(--text-muted);line-height:1.55;margin-top:.6rem">💡 The dashboard on the right updates as you choose. In real Excel, Power Automate schedules an Office Script to do exactly this — no VBA, no code you write yourself.</p>
+      </div>
+      <div>
+        <div class="dash-preview">
+          <div class="dashp-head">
+            <div class="dashp-title" id="dashTitle">Rolling Pin · Weekly Sales</div>
+            <div class="dashp-when" id="dashWhen">Auto · Fri 3:30 p.m.</div>
+          </div>
+          <div class="dashp-kpis">
+            <div class="dashp-kpi"><div class="kv" id="dKpi1">₹57,450</div><div class="kl" id="dKpiL1">Weekly revenue</div></div>
+            <div class="dashp-kpi"><div class="kv">Croissant</div><div class="kl">Top seller</div></div>
+            <div class="dashp-kpi"><div class="kv">+8%</div><div class="kl">vs last week</div></div>
+          </div>
+          <div class="dashp-note" id="dashNote"><strong>Insight:</strong> Croissants drove 34% of revenue; the West region ran out early three days — bake more, restock West. AI drafted this note; Maya approved it.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ SHIP IT: FRIDAY ═══════════ -->
+<section class="section" id="s5">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-num"><div class="num">5</div> Ship It · Friday 4 p.m.</div>
+      <h2 class="section-title">Friday Verdict — Read the Report, Sign It, Send It</h2>
+      <p class="section-sub">The deadline is here. Feelings don't matter now — the numbers and the checks do. Maya reviews the auto-built report, verifies the figures she can defend, and decides whether each item is <strong>Verified</strong>, <strong>Flag &amp; note</strong>, or <strong>Trust blindly</strong> (never that last one). Judge each line.</p>
+    </div>
+
+    <div class="story-beat">
+      <span class="sb-tag">📖 The story so far</span>
+      Friday, 3:31 p.m. The script ran a minute ago and the dashboard is sitting in Maya's inbox — clean, on time, exactly what her manager asked for on Monday. But shipping isn't clicking "send." It's taking thirty seconds to confirm the AI didn't quietly lie. Judge the three report lines below the way a professional would.
+    </div>
+
+    <div class="err-panel">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:.6rem">
+        <div>
+          <div style="font-family:'DM Serif Display',serif;font-size:1.15rem;color:var(--navy)">Rolling Pin · Auto-Built Weekly Report</div>
+          <div style="font-size:.78rem;color:var(--text-muted)">Generated by Office Script · Friday 3:30 p.m. · awaiting Maya's sign-off</div>
+        </div>
+      </div>
+
+      <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted);margin:.4rem 0 .8rem">Judge each line before you hit send</div>
+
+      <div class="scenario-panel" style="margin-top:0">
+        <div class="scenario-q" style="font-size:.92rem">📊 Line 1 — "Total weekly revenue: <strong>₹57,450</strong>" (matches Maya's =SUM check)</div>
+        <div class="scenario-options" style="grid-template-columns:1fr 1fr 1fr;gap:.5rem">
+          <button class="scenario-btn" style="text-align:center" onclick="judge('A','verify',this)">Verified ✓</button>
+          <button class="scenario-btn" style="text-align:center" onclick="judge('A','flag',this)">Flag &amp; note</button>
+          <button class="scenario-btn" style="text-align:center" onclick="judge('A','trust',this)">Trust blindly</button>
+        </div>
+        <div class="scenario-feedback" id="fbA"></div>
+      </div>
+
+      <div class="scenario-panel">
+        <div class="scenario-q" style="font-size:.92rem">🤖 Line 2 — "AI note: sales <strong>up 300% year-over-year</strong>" (Maya has no last-year data in this file)</div>
+        <div class="scenario-options" style="grid-template-columns:1fr 1fr 1fr;gap:.5rem">
+          <button class="scenario-btn" style="text-align:center" onclick="judge('B','verify',this)">Verified ✓</button>
+          <button class="scenario-btn" style="text-align:center" onclick="judge('B','flag',this)">Flag &amp; note</button>
+          <button class="scenario-btn" style="text-align:center" onclick="judge('B','trust',this)">Trust blindly</button>
+        </div>
+        <div class="scenario-feedback" id="fbB"></div>
+      </div>
+
+      <div class="scenario-panel">
+        <div class="scenario-q" style="font-size:.92rem">🥐 Line 3 — "Croissant is the top seller (₹19,800)" (chart + pivot both agree)</div>
+        <div class="scenario-options" style="grid-template-columns:1fr 1fr 1fr;gap:.5rem">
+          <button class="scenario-btn" style="text-align:center" onclick="judge('C','verify',this)">Verified ✓</button>
+          <button class="scenario-btn" style="text-align:center" onclick="judge('C','flag',this)">Flag &amp; note</button>
+          <button class="scenario-btn" style="text-align:center" onclick="judge('C','trust',this)">Trust blindly</button>
+        </div>
+        <div class="scenario-feedback" id="fbC"></div>
+      </div>
+
+      <div class="week-verdict" id="weekVerdict">
+        <h4>📜 The Friday Verdict: <em>report shipped — with Maya's name on it, honestly.</em></h4>
+        <div class="wv-grid">
+          <div class="wv-tile"><div class="v">2 hrs</div><div class="l">Instead of two late nights</div></div>
+          <div class="wv-tile"><div class="v">1 click</div><div class="l">To rebuild it next week</div></div>
+          <div class="wv-tile"><div class="v">1 catch</div><div class="l">AI error she caught</div></div>
+          <div class="wv-tile"><div class="v">3:58 p.m.</div><div class="l">Sent · 2 min early</div></div>
+        </div>
+        <p>Maya kept Line 1 and Line 3 (both verified against numbers she controls), and she <strong>flagged Line 2</strong> — deleting the fake "300% YoY" claim the AI hallucinated, since the file had no last-year data. That single edit is the difference between an analyst and a copy-paste button. Her manager replied: <em>"This is exactly what I wanted — and it's early. How?"</em> Maya smiled. The secret wasn't working harder. It was <strong>AI as leverage, verified by a human who reads the output.</strong> Next Friday, the report emails itself. 🎉</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FOOTER RECAP ─── -->
+<div class="footer-cta">
+  <h2>🎉 On Monday, that spreadsheet was a <em>nightmare</em>.</h2>
+  <p>By Friday it was a one-click report Maya proudly signed. Here's what the story secretly taught you — the four lessons of Week 1: AI Excel.</p>
+  <div class="recap-grid">
+    <div class="recap-card">
+      <div class="rn">Lesson 1</div>
+      <h4>Excel in the AI Era</h4>
+      <p>Four helpers, four trade-offs: Copilot (paid, in-file), free Analyze Data, ChatGPT/Claude (check privacy before uploading company data), Gemini in Sheets. Match the tool to the job. Chapter 1.</p>
+    </div>
+    <div class="recap-card">
+      <div class="rn">Lesson 2</div>
+      <h4>AI Formulas &amp; Functions</h4>
+      <p>Describe the problem in plain English; AI returns TRIM, TEXTSPLIT, XLOOKUP, SUMIFS, dynamic arrays. You read it, verify it, and fix #REF!/#N/A by understanding the cause. Chapter 2.</p>
+    </div>
+    <div class="recap-card">
+      <div class="rn">Lesson 3</div>
+      <h4>AI Data Analysis &amp; Insights</h4>
+      <p>One-click PivotTables and charts, then "ask the data" in plain English — and always sanity-check a total against a sum you control. Chapter 3's caught error is the whole point.</p>
+    </div>
+    <div class="recap-card">
+      <div class="rn">Lesson 4</div>
+      <h4>AI Automation &amp; Reporting</h4>
+      <p>Office Scripts + Power Automate turn a weekly chore into a scheduled, self-emailing dashboard — tested on a copy, never the original. Do it once, ship it forever. Chapter 4.</p>
+    </div>
+  </div>
+  <button class="btn-action" style="font-size:.9rem;padding:.8rem 1.8rem" onclick="document.getElementById('s1').scrollIntoView({behavior:'smooth'})">↻ Replay Maya's week</button>
+  <div class="footer-note">Rolling Pin Bakery is a teaching scenario. Real AI tools, licences and privacy rules change — always confirm what your workplace allows before uploading company data, and remember the golden rule this whole week was built on: <strong>AI is leverage, not truth. A human who reads the output ships the report.</strong></div>
+</div>
+
+<!-- ─── COMPLETION BAR ─── -->
+<div class="completion-bar">
+  <div class="completion-info"><span style="font-size:1.1rem">📊</span><span>Maya's Report Progress</span></div>
+  <div class="completion-track"><div class="completion-fill" id="completionFill" style="width:0%"></div></div>
+  <div class="completion-percent" id="completionPct">0%</div>
+</div>
+
+<script>
+/* ───────── PROGRESS TRACKING ───────── */
+const visited = new Set();
+function markVisited(id){
+  visited.add(id);
+  const pct = Math.round((visited.size / 5) * 100);
+  document.getElementById('completionFill').style.width = pct + '%';
+  document.getElementById('completionPct').textContent = pct + '%';
+  document.getElementById('headerProgressText').textContent = `${visited.size} of 5 chapters explored`;
+}
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.target).scrollIntoView({behavior:'smooth', block:'start'});
+    markVisited(btn.dataset.target);
+  });
+});
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting && e.intersectionRatio > 0.3) {
+      markVisited(e.target.id);
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.target === e.target.id));
+    }
+  });
+}, {threshold:[0.3]});
+document.querySelectorAll('.section').forEach(s => observer.observe(s));
+
+/* ───────── CHAPTER 1: TOOL PICK ───────── */
+const toolInfo = {
+  copilot: `<span class="verdict-pill vp-mid">Powerful · but paid</span><br><strong>Copilot in Excel</strong> lives right inside the app and edits your live file — write a formula, build a chart, summarise a table, all from a chat box. The catch: it's part of a <strong>paid Microsoft 365 Copilot licence</strong> your organisation must switch on, and it works best when your data is a formatted <em>Excel Table</em>. If the bakery has it enabled, it's Maya's fastest path. If not, she pivots to the free tools. <em>Great when licensed; don't assume it's there.</em>`,
+  analyze: `<span class="verdict-pill vp-good">✓ Free · nothing leaves the file</span><br><strong>Analyze Data</strong> (Home tab, right side) is the free AI already inside modern Excel — no subscription, no upload. Click it and Excel suggests PivotTables, trends and charts, and answers simple natural-language questions about the highlighted range. For a beginner on a budget with sensitive sales data, this is the <strong>safe, immediate starting point</strong> — and it's exactly what Maya uses for Chapter 3's analysis. <em>The unsung hero of AI Excel.</em>`,
+  chatgpt: `<span class="verdict-pill vp-mid">Brilliant · read your privacy policy first</span><br><strong>ChatGPT / Claude</strong> are the best in class at <em>writing and explaining formulas from plain English</em> — paste a broken formula and ask "why is this wrong?" and you'll learn faster than from any manual. You can also upload a file for analysis. The honest caveat: <strong>uploading company sales data to a public AI may breach your workplace's data policy.</strong> Safe move — describe the structure and share dummy data, not the real customer records, unless IT has approved it. <em>Use its brain, protect your data.</em>`,
+  gemini: `<span class="verdict-pill vp-mid">Right idea · wrong suite for Maya</span><br><strong>Gemini in Google Sheets</strong> is Google Workspace's built-in AI — generate formulas, tables and insights with a prompt, much like Copilot but in Sheets. It's excellent… if your organisation runs on Google. Rolling Pin Bakery runs on Microsoft Excel, so this isn't Maya's tool today — but it's the exact same skill, portable to whichever suite you land in. <em>Know it exists; use it when you're in Sheets.</em>`
+};
+function pickTool(k){
+  document.querySelectorAll('#s1 .pick-card').forEach(c => c.classList.toggle('active', c.dataset.tool === k));
+  const d = document.getElementById('toolDetail');
+  d.innerHTML = toolInfo[k];
+  d.classList.add('show');
+}
+
+/* prompt showdown */
+const promptResults = [
+  {ok:false, fb:'✗ Too vague. "Fix my Excel sheet" gives the AI nothing to work with — it can\'t see your file or know what "fixed" means. You\'ll get a generic checklist, not a usable formula. Vague prompt in, vague answer out. Try the detailed one.',
+   chat:`<div class="chat-msg user"><span class="who">Maya</span>Fix my Excel sheet.</div><div class="chat-msg ai"><span class="who">AI</span>I'd be glad to help! Could you tell me what's wrong — errors, formatting, formulas? A few general tips: check for extra spaces, use TRIM, verify your ranges… <strong>(A generic list, because you gave it nothing specific to fix.)</strong></div>`},
+  {ok:false, fb:'✗ There is no "magic formula that cleans everything." Cleaning is several specific steps (trim spaces, standardise case, split columns, dedupe). Asking for magic gets you a confident-sounding but wrong one-liner. Give the AI the real structure instead.',
+   chat:`<div class="chat-msg user"><span class="who">Maya</span>Write me a magic formula that cleans everything automatically.</div><div class="chat-msg ai"><span class="who">AI</span>There isn't a single formula that cleans an entire dataset — cleaning depends on <em>what</em> is messy. <strong>Tell me the columns and the specific problems</strong> and I'll give you the exact functions (TRIM, PROPER, TEXTSPLIT…) step by step.</div>`},
+  {ok:true, fb:'✓ Exactly. Structure (the columns) + the specific problem (spaces, mixed case) + a request to <strong>explain each part so you can check it</strong>. That last clause is the whole course in one line — you\'re using AI as leverage, not blind trust. This becomes Maya\'s TRIM/PROPER formula in Chapter 2.',
+   chat:`<div class="chat-msg user"><span class="who">Maya</span>I have a sales table: Date, Product, Qty, Price. Product names have extra spaces and mixed capitalisation. Give me a formula to standardise the Product column, and explain each part so I can check it.</div><div class="chat-msg ai"><span class="who">AI</span>Use <strong>=TRIM(PROPER(B2))</strong>. <strong>PROPER</strong> capitalises the first letter of each word ("croissant" → "Croissant"); <strong>TRIM</strong> removes the leading/trailing spaces ("  Croissant " → "Croissant"). Fill it down column-wide. Now "  croissant" and "CROISSANT " both become "Croissant", so your SUMIFS totals stop splitting. <strong>← Check it on 3 rows before trusting all 2,000.</strong></div>`}
+];
+let promptAnswered = false;
+function pickPrompt(i){
+  const r = promptResults[i];
+  const btns = document.querySelectorAll('#s1 .scenario-panel:first-of-type .scenario-btn');
+  if (!promptAnswered){
+    btns.forEach((b,j) => { if (j===2) b.classList.add('correct'); else if (j===i && !r.ok) b.classList.add('wrong'); });
+    if (r.ok) promptAnswered = true;
+  }
+  const fb = document.getElementById('promptFb');
+  fb.className = 'scenario-feedback show ' + (r.ok ? 'success' : 'fail');
+  fb.innerHTML = r.fb;
+  document.getElementById('promptChat').innerHTML = r.chat;
+}
+
+/* tool + privacy quiz */
+const toolQs = [
+  {q:"Your company's sales file has real customer names. You want ChatGPT to help. Safest first move?", opts:["Upload the whole file — AI needs the data to help","Check the data-handling policy first; if unsure, share only the structure or dummy data, not real records","Rename the file so nobody notices"], correct:1, explain:"Uploading real company data to a public AI can breach privacy/data policies. Describe the structure or use fake sample rows — the AI writes the same formula either way. Verify what your workplace allows."},
+  {q:"You have no Copilot licence and a tight budget. Which AI is already free inside modern Excel?", opts:["Copilot Pro","The 'Analyze Data' button on the Home tab","You must buy something to use any AI"], correct:1, explain:"Analyze Data is built into modern Excel at no extra cost and never sends your data out. It suggests PivotTables, charts and answers simple questions — the perfect free starting point."},
+  {q:"Which statement about Copilot in Excel is accurate?", opts:["It's free and on by default for everyone","It's a paid Microsoft 365 add-on your org must enable, and it works best on formatted Tables","It only works in Google Sheets"], correct:1, explain:"Copilot is a paid licence, not a default freebie, and it performs best when your range is a proper Excel Table. Gemini is the Google Sheets equivalent — same idea, different suite."}
+];
+let tqIdx = 0;
+function renderToolQ(){
+  const s = toolQs[tqIdx];
+  document.getElementById('toolQ').textContent = `Round ${tqIdx+1}/3 — ${s.q}`;
+  document.getElementById('toolOpts').innerHTML = s.opts.map((o,i)=>`<button class="scenario-btn" onclick="answerToolQ(${i})">${o}</button>`).join('');
+  const fb = document.getElementById('toolFb');
+  fb.className = 'scenario-feedback'; fb.innerHTML = '';
+  document.getElementById('toolNext').style.display = 'none';
+}
+function answerToolQ(i){
+  const s = toolQs[tqIdx];
+  document.querySelectorAll('#toolOpts .scenario-btn').forEach((b,j)=>{
+    b.disabled = true;
+    if (j===s.correct) b.classList.add('correct'); else if (j===i) b.classList.add('wrong');
+  });
+  const fb = document.getElementById('toolFb');
+  fb.className = 'scenario-feedback show ' + (i===s.correct ? 'success' : 'fail');
+  fb.innerHTML = (i===s.correct ? '✓ Spot on! ' : '✗ Not quite. ') + s.explain + (tqIdx===toolQs.length-1 ? '<br><br>🎉 Chapter 1 complete — Maya will use free Analyze Data for analysis and ChatGPT (dummy data only) for formulas. Tomorrow: clean the mess.' : '');
+  document.getElementById('toolNext').style.display = tqIdx < toolQs.length-1 ? 'inline-block' : 'none';
+}
+function nextToolQ(){ tqIdx++; if (tqIdx < toolQs.length) renderToolQ(); }
+renderToolQ();
+
+/* ───────── CHAPTER 2: FORMULA LAB ───────── */
+const formulas = {
+  trim: {
+    prompt:'Product names have leading/trailing spaces and mixed capitalisation. Give me a formula to standardise column B, and explain it.',
+    code:`<span class="rf">C2</span> = <span class="kw">TRIM</span>(<span class="kw">PROPER</span>(<span class="rf">B2</span>))`,
+    explain:`<strong>PROPER</strong> capitalises the first letter of each word, so "croissant" and "CROISSANT" both become "Croissant". <strong>TRIM</strong> strips the leading and trailing spaces, so "  Croissant " becomes "Croissant". Fill it down the whole column and your four fake "products" collapse back into one. <strong>Verify:</strong> spot-check three rows before trusting all 2,000 — AI is leverage, you're the reviewer.`
+  },
+  split: {
+    prompt:'One column has "Product - Region" jammed together, like "Croissant - North". Split it into two columns.',
+    code:`<span class="rf">D2#</span> = <span class="kw">TEXTSPLIT</span>(<span class="rf">A2</span>, <span class="st">" - "</span>)`,
+    explain:`<strong>TEXTSPLIT</strong> is a modern dynamic-array function: it breaks "Croissant - North" at the delimiter <span style="font-family:monospace">" - "</span> and spills the result into two cells automatically — no dragging. The <strong>#</strong> means it "spills" as many columns as it finds. (Older Excel? AI will offer Text-to-Columns or LEFT/RIGHT instead.) <strong>Verify:</strong> check a row where the product name itself contains a dash, so the split doesn't misfire.`
+  },
+  lookup: {
+    prompt:'I have a Products sheet with a price list. Pull each product\'s price into my sales sheet by matching the name.',
+    code:`<span class="rf">E2</span> = <span class="kw">XLOOKUP</span>(<span class="rf">C2</span>, <span class="rf">Products!A:A</span>, <span class="rf">Products!B:B</span>, <span class="st">"Not found"</span>)`,
+    explain:`<strong>XLOOKUP</strong> takes the cleaned product name in C2, finds it in the Products name column, and returns the matching price. The fourth argument, <span style="font-family:monospace">"Not found"</span>, is the friendly message shown instead of a bare <strong>#N/A</strong> error when there's no match. <strong>Why cleaning came first:</strong> XLOOKUP is exact — "croissant" won't match "Croissant", which is precisely why Maya ran TRIM/PROPER before this step.`
+  },
+  sumifs: {
+    prompt:'Total the revenue (Qty × Price) for each product, this week only.',
+    code:`<span class="rf">H2</span> = <span class="kw">SUMIFS</span>(<span class="rf">Revenue</span>, <span class="rf">Product</span>, <span class="rf">G2</span>, <span class="rf">Date</span>, <span class="st">"&gt;="</span>&amp;<span class="rf">WeekStart</span>)`,
+    explain:`<strong>SUMIFS</strong> adds up the Revenue column, but <em>only</em> for rows where the Product matches G2 <strong>and</strong> the Date is on or after the week's start. Multiple conditions, one clean total. This is the formula that was silently broken before cleaning: mixed-case product names made it total "Croissant" and "croissant" separately. Clean data first, correct totals second. <strong>Verify:</strong> the five product totals should sum to your grand total — which stars in Chapter 3.`
+  }
+};
+function setFormula(k){
+  document.querySelectorAll('.fl-tab').forEach(t => t.classList.toggle('active', t.dataset.fl === k));
+  const f = formulas[k];
+  document.getElementById('flPrompt').innerHTML = '<span class="who">Maya → AI</span>' + f.prompt;
+  document.getElementById('flCode').innerHTML = f.code;
+  document.getElementById('flExplain').innerHTML = f.explain;
+}
+setFormula('trim');
+
+/* error understanding checkpoint */
+const errFbs = [
+  {ok:false, fb:'✗ Reopening won\'t help — the errors describe a real problem in the formula, not a glitch. Excel is telling you something specific; the skill is reading the message, not restarting.'},
+  {ok:true, fb:'✓ Exactly right. <strong>#REF!</strong> = "you\'re pointing at a cell that no longer exists" → repoint the range. <strong>#N/A</strong> in a lookup = "I searched and found nothing" → almost always a spelling or trailing-space mismatch, so TRIM the lookup value. Understanding the <em>cause</em> is the durable skill; AI can explain any error if you paste it in.'},
+  {ok:false, fb:'✗ Wrapping everything in IFERROR just <em>hides</em> the problem — your total would silently read 0 or blank and you\'d ship a wrong report. IFERROR is for known, handled cases, not for sweeping real errors under the rug. Fix the cause first.'}
+];
+function errQ(i){
+  const btns = document.querySelectorAll('#s2 .err-panel .scenario-btn');
+  btns.forEach((b,j)=>{ b.disabled = true; if (errFbs[j].ok) b.classList.add('correct'); else if (j===i) b.classList.add('wrong'); });
+  const fb = document.getElementById('errFb');
+  fb.className = 'scenario-feedback show ' + (errFbs[i].ok ? 'success' : 'fail');
+  fb.innerHTML = errFbs[i].fb;
+}
+
+/* formula quiz */
+const formQs = [
+  {q:"Your SUMIFS totals are splitting one product into several. Most likely cause?", opts:["Excel is buggy","The product text isn't standardised — extra spaces or mixed case make 'Croissant' and ' croissant' look different","You need a faster computer"], correct:1, explain:"Text conditions are exact. Clean the column with TRIM/PROPER first, and SUMIFS will group correctly. Dirty data is the #1 cause of wrong totals."},
+  {q:"XLOOKUP returns #N/A for a product you KNOW exists in the list. First thing to check?", opts:["Rewrite the whole formula","A spelling or trailing-space mismatch between the two sheets — TRIM both sides","Delete the product"], correct:1, explain:"#N/A means 'not found'. 99% of the time it's a hidden space or a capitalisation difference. TRIM the lookup value and the source list, and the match reappears."},
+  {q:"AI hands you a formula you don't fully understand. Best practice before shipping it?", opts:["Trust it — AI is usually right","Ask AI to explain each part, then test it on a few rows where you already know the answer","Paste it everywhere immediately"], correct:2, explain:"The whole-course rule: AI drafts, you verify. Ask it to explain, then test against known values. A formula that gives the right answer on 3 checked rows earns the right to run on 2,000."}
+];
+let fqIdx = 0;
+function renderFormQ(){
+  const s = formQs[fqIdx];
+  document.getElementById('formQ').textContent = `Round ${fqIdx+1}/3 — ${s.q}`;
+  document.getElementById('formOpts').innerHTML = s.opts.map((o,i)=>`<button class="scenario-btn" onclick="answerFormQ(${i})">${o}</button>`).join('');
+  const fb = document.getElementById('formFb');
+  fb.className = 'scenario-feedback'; fb.innerHTML = '';
+  document.getElementById('formNext').style.display = 'none';
+}
+function answerFormQ(i){
+  const s = formQs[fqIdx];
+  document.querySelectorAll('#formOpts .scenario-btn').forEach((b,j)=>{
+    b.disabled = true;
+    if (j===s.correct) b.classList.add('correct'); else if (j===i) b.classList.add('wrong');
+  });
+  const fb = document.getElementById('formFb');
+  fb.className = 'scenario-feedback show ' + (i===s.correct ? 'success' : 'fail');
+  fb.innerHTML = (i===s.correct ? '✓ Spot on! ' : '✗ Not quite. ') + s.explain + (fqIdx===formQs.length-1 ? '<br><br>🎉 Chapter 2 complete — the sheet is clean and the totals are finally trustworthy. Tomorrow: make the data talk.' : '');
+  document.getElementById('formNext').style.display = fqIdx < formQs.length-1 ? 'inline-block' : 'none';
+}
+function nextFormQ(){ fqIdx++; if (fqIdx < formQs.length) renderFormQ(); }
+renderFormQ();
+
+/* ───────── CHAPTER 3: ANALYZE ───────── */
+/* animate bars into view */
+const barObserver = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      document.querySelectorAll('#bars .bar').forEach(b=>{ b.style.height = b.dataset.h + '%'; });
+      barObserver.disconnect();
+    }
+  });
+},{threshold:0.4});
+const barsEl = document.getElementById('bars');
+if(barsEl) barObserver.observe(barsEl);
+
+const askAnswers = [
+  '<strong>Croissant</strong> at ₹19,800 — 34% of the week\'s revenue and your clear #1. It\'s also the product customers rave about. Insight for the report: protect supply and bake more early.',
+  '<strong>Saturday</strong> peaked at ₹14,200, driven by weekend croissant and muffin runs. Tuesday was the trough. Insight: staff and stock heavier on weekends.',
+  '<strong>West</strong> is falling behind — it ran out of stock before noon on three days, so it under-reported not from low demand but from empty shelves. This is the kind of nuance AI surfaces and a human confirms. Restock West earlier.',
+  'The pivot column <strong>=SUM</strong> gives <strong>₹57,450</strong> (19,800 + 14,300 + 10,950 + 7,600 + 4,800). ⚠️ Note: a chat AI first told Maya ₹73,450 — it wrongly included a duplicate column. Always check the total against a sum you control. See the sanity-check below.'
+];
+function askData(i, el){
+  document.querySelectorAll('.ask-chip').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  const a = document.getElementById('askAnswer');
+  a.innerHTML = askAnswers[i];
+  a.classList.add('show');
+}
+
+/* sanity-check checkpoint */
+const sanityFbs = [
+  {ok:false, fb:'✗ <strong>The expensive mistake.</strong> AI can\'t "add better than you" — it can confidently hallucinate. Here it silently double-counted a region column and inflated the total by ₹16,000. If Maya pastes ₹73,450 into the board report, her name is on a wrong number. Never trust a total you didn\'t verify.'},
+  {ok:true, fb:'✓ <strong>This is the whole week in one move.</strong> A pro checks AI output against a source they control — here, a plain <strong>=SUM</strong> of the pivot column returns ₹57,450, exposing the AI\'s ₹73,450 as a double-count. You investigate, find the duplicate column, and report the number you can defend. AI is leverage; the human who reads the output ships the truth.'},
+  {ok:false, fb:'✗ <strong>The worst of both worlds.</strong> "Splitting the difference" to ₹65,000 invents a third wrong number backed by neither the AI nor your own maths. There is a correct, knowable answer (₹57,450) — go find it with a formula you control, don\'t average your way to a guess.'}
+];
+function sanityQ(i){
+  const btns = document.querySelectorAll('#s3 .err-panel .scenario-btn');
+  btns.forEach((b,j)=>{ b.disabled = true; if (sanityFbs[j].ok) b.classList.add('correct'); else if (j===i) b.classList.add('wrong'); });
+  const fb = document.getElementById('sanityFb');
+  fb.className = 'scenario-feedback show ' + (sanityFbs[i].ok ? 'success' : 'fail');
+  fb.innerHTML = sanityFbs[i].fb;
+}
+
+/* ───────── CHAPTER 4: AUTOMATE ───────── */
+const autoFbs = [
+  {ok:false, fb:'✗ <strong>Never run new automation on your only copy.</strong> If the AI-written script has a bug — a wrong range, an overwrite — it could scramble the real file with no undo. The one-second insurance is duplicating first.'},
+  {ok:true, fb:'✓ <strong>The golden rule of automation.</strong> Duplicate → run on the copy → compare every output against numbers you already trust → only then wire it into the real weekly workflow. AI writes the script fast; you make it <em>safe</em>. This is how professionals ship automation without fear.'},
+  {ok:false, fb:'✗ Passing an untested, AI-generated script to your boss just moves the risk onto someone else — and it\'s still untested. You own the verification. Test it on a copy yourself, then hand over something you\'ve confirmed works.'}
+];
+function autoQ(i){
+  const btns = document.querySelectorAll('#s4 .scenario-panel:first-of-type .scenario-btn');
+  btns.forEach((b,j)=>{ b.disabled = true; if (autoFbs[j].ok) b.classList.add('correct'); else if (j===i) b.classList.add('wrong'); });
+  const fb = document.getElementById('autoFb');
+  fb.className = 'scenario-feedback show ' + (autoFbs[i].ok ? 'success' : 'fail');
+  fb.innerHTML = autoFbs[i].fb;
+}
+
+/* build checklist + feed */
+const buildEvents = [
+  {t:'Thu 09:15', msg:'sales_final_FINAL_v3 — COPY.xlsx created. From here on, nothing risky touches the original. Insurance: bought.'},
+  {t:'Thu 10:02', msg:'AI drafted an Office Script: trims Product, recalculates SUMIFS totals, refreshes the PivotTable. 40 lines Maya reads but doesn\'t hand-write.'},
+  {t:'Thu 11:20', msg:'Script run once on the copy. Totals match yesterday\'s manual numbers to the rupee. Green light — it\'s trustworthy.'},
+  {t:'Thu 13:45', msg:'Power Automate flow added: "Every Friday 3:30 p.m., run this script on the live file." No VBA, no code Maya writes herself.'},
+  {t:'Thu 15:10', msg:'Flow extended: export dashboard as PDF and email it to the manager automatically. The report now delivers itself.'},
+  {t:'Thu 16:30', msg:'3-line note saved at the top of the script: what it does, what to check, who to ask. Future-Maya (and the next hire) will thank her.'}
+];
+const buildSteps = new Set();
+function runBuildStep(i){
+  if (buildSteps.has(i)) return;
+  buildSteps.add(i);
+  document.querySelector(`#buildList li[data-step="${i}"]`).classList.add('done');
+  const feed = document.getElementById('buildFeed');
+  if (buildSteps.size === 1) feed.innerHTML = '';
+  const e = buildEvents[i];
+  feed.innerHTML += `<div class="feed-line"><span class="ft">${e.t}</span><span>${e.msg}</span></div>`;
+  feed.scrollTop = feed.scrollHeight;
+  if (buildSteps.size === buildEvents.length) document.getElementById('buildDone').style.display = 'block';
+}
+
+/* dashboard assembler */
+const dashData = {
+  headlines: {
+    rev:{v:'₹57,450', l:'Weekly revenue'},
+    best:{v:'Croissant', l:'Best seller'},
+    growth:{v:'+8%', l:'WoW growth'}
+  },
+  charts: {
+    bar:'Revenue-by-product bar chart on top — instantly shows Croissant leading and Cookies trailing.',
+    line:'Daily-trend line chart on top — the Saturday peak and Tuesday dip jump out at a glance.',
+    region:'Revenue-by-region pie on top — makes the under-supplied West slice impossible to miss.'
+  },
+  schedules: {
+    fri:'Auto · Fri 3:30 p.m.',
+    daily:'Auto · every morning',
+    manual:'Manual · on click'
+  }
+};
+function renderDash(){
+  const h = document.getElementById('dHeadline').value;
+  const c = document.getElementById('dChart').value;
+  const s = document.getElementById('dSchedule').value;
+  document.getElementById('dKpi1').textContent = dashData.headlines[h].v;
+  document.getElementById('dKpiL1').textContent = dashData.headlines[h].l;
+  document.getElementById('dashWhen').textContent = dashData.schedules[s];
+  document.getElementById('dashNote').innerHTML = '<strong>Chart:</strong> ' + dashData.charts[c] + ' <strong>Insight:</strong> the West region ran out early — bake more, restock West. AI drafted this note; Maya approved it.';
+}
+
+/* ───────── SHIP IT: FRIDAY JUDGE ───────── */
+const judgeKey = {
+  A: {right:'verify', fb:{
+    verify:'✓ Correct — <strong>VERIFIED.</strong> ₹57,450 matches Maya\'s own =SUM of the pivot column exactly. She can defend this number in any meeting. Ship it.',
+    flag:'△ Over-cautious. This figure already survived a sanity check — her =SUM confirms it to the rupee. No flag needed; it\'s clean. Verdict: <strong>VERIFIED</strong>.',
+    trust:'✗ Right answer, wrong reason — never "trust blindly," even when the number is correct. The habit is what matters: it was verified against a sum she controls. Verdict: <strong>VERIFIED</strong> (because checked, not because trusted).'}},
+  B: {right:'flag', fb:{
+    flag:'✓ Correct — <strong>FLAG &amp; NOTE.</strong> The file contains no last-year data, so "up 300% YoY" is a hallucination — AI inventing a confident number from nothing. Maya deletes the claim and notes "no prior-year data available." This single edit is what separates an analyst from a copy-paste button.',
+    verify:'✗ You can\'t verify what doesn\'t exist. There\'s no last-year data in the file, so "300% YoY" is unverifiable by definition — which means it\'s a hallucination to remove, not a fact to confirm. Verdict: <strong>FLAG &amp; NOTE</strong>.',
+    trust:'✗ This is the exact trap the whole week warns about. A confident-sounding AI claim with no data behind it, shipped unchecked, is how wrong numbers reach a boss\'s inbox. Verdict: <strong>FLAG &amp; remove it</strong>.'}},
+  C: {right:'verify', fb:{
+    verify:'✓ Correct — <strong>VERIFIED.</strong> Croissant at ₹19,800 is confirmed by both the PivotTable and the chart — two independent views agree, and it\'s the product customers rave about. Solid headline for the report.',
+    flag:'△ No flag needed here — the chart and pivot independently agree on ₹19,800, and it lines up with customer feedback. Two sources concurring is exactly what "verified" looks like. Verdict: <strong>VERIFIED</strong>.',
+    trust:'✗ It happens to be right, but "trust blindly" is never the habit. It\'s verified because two independent views (pivot + chart) agree — cross-checking, not faith. Verdict: <strong>VERIFIED</strong>.'}}
+};
+const judged = {};
+function judge(line, verdict, btn){
+  if (judged[line]) return;
+  const k = judgeKey[line];
+  judged[line] = true;
+  const panel = btn.closest('.scenario-panel');
+  panel.querySelectorAll('.scenario-btn').forEach(b => {
+    b.disabled = true;
+    b.dataset.v = b.getAttribute('onclick').includes("'"+k.right+"'") ? 'r' : '';
+  });
+  panel.querySelectorAll('.scenario-btn').forEach(b => {
+    if (b.getAttribute('onclick').includes("'"+k.right+"'")) b.classList.add('correct');
+    else if (b === btn) b.classList.add('wrong');
+  });
+  const fb = document.getElementById('fb'+line);
+  fb.className = 'scenario-feedback show ' + (verdict===k.right ? 'success' : 'fail');
+  fb.innerHTML = k.fb[verdict];
+  if (judged.A && judged.B && judged.C){
+    setTimeout(()=>{ document.getElementById('weekVerdict').classList.add('show'); document.getElementById('weekVerdict').scrollIntoView({behavior:'smooth', block:'center'}); }, 600);
+  }
+}
+</script>
+</body>
+</html>
