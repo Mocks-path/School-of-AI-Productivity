@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>AI Automation &amp; Capstone · Lesson 04</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,0,400;9..144,0,600;9..144,0,800;9..144,1,600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+
+:root{
+  --orange:#EF7F1A; --orange-light:#FF9429; --orange-dark:#D55222;
+  --brown:#412C23; --brown-dark:#2F1D19; --tan:#A34E1C;
+  --yellow:#FECC00; --cream:#FBF6EE; --paper:#FFFCF6;
+  --ink:#1C1410; --muted:#6E5C50; --line:#E8DCC8; --accent:#008DD2;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',system-ui,sans-serif;
+  background:var(--paper); color:var(--ink); line-height:1.6; overflow-x:hidden;
+}
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:radial-gradient(circle at 1px 1px,rgba(65,44,35,0.05) 1px,transparent 0);
+  background-size:24px 24px;
+}
+.topbar{
+  position:sticky;top:0;z-index:100;
+  background:rgba(255,252,246,0.92); backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+  padding:14px 40px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.brand{font-family:'Fraunces',serif;font-weight:800;font-size:17px;letter-spacing:-0.01em;color:var(--brown-dark)}
+.brand .dot{color:var(--orange)}
+.brand .sub{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.15em;color:var(--muted);font-weight:500;text-transform:uppercase;margin-left:8px}
+.logo-slot{width:44px;height:44px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.logo-slot svg{width:100%;height:100%;display:block}
+.page{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:50px 40px 100px}
+.hero{padding:30px 0 50px;border-bottom:1px solid var(--line)}
+.eyebrow{
+  font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.18em;
+  text-transform:uppercase;color:var(--orange-dark);font-weight:600;
+  display:inline-flex;align-items:center;gap:10px;
+}
+.eyebrow::before{content:"";width:24px;height:2px;background:var(--orange)}
+h1{
+  font-family:'Fraunces',serif;font-weight:800;
+  font-size:clamp(38px,7vw,80px);line-height:0.98;letter-spacing:-0.03em;
+  margin:18px 0 20px;color:var(--brown-dark);
+}
+h1 em{font-style:italic;color:var(--orange-dark);font-weight:600}
+.lede{font-size:19px;max-width:680px;color:var(--muted)}
+section{padding:70px 0;border-bottom:1px solid var(--line)}
+section:last-of-type{border-bottom:none}
+.section-num{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--orange);font-weight:600;letter-spacing:0.08em}
+h2{
+  font-family:'Fraunces',serif;font-weight:700;
+  font-size:clamp(28px,4.5vw,48px);line-height:1.05;letter-spacing:-0.02em;
+  margin:10px 0 22px;color:var(--brown-dark);max-width:720px;
+}
+h3{font-family:'Fraunces',serif;font-weight:600;font-size:24px;color:var(--brown-dark);margin:28px 0 12px}
+p{max-width:680px;margin-bottom:14px;color:var(--ink)}
+.lead{font-size:17px;color:var(--muted);max-width:680px;margin-bottom:26px}
+code{font-family:'JetBrains Mono',monospace;font-size:0.92em;background:var(--cream);padding:2px 6px;border-radius:4px;color:var(--brown-dark)}
+.illus{
+  background:var(--cream);border:1px solid var(--line);border-radius:18px;
+  padding:32px;margin:24px 0;position:relative;overflow:hidden;
+}
+.illus-title{
+  font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);
+  letter-spacing:0.12em;text-transform:uppercase;
+  margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:10px;
+}
+.controls{display:flex;gap:8px;flex-wrap:wrap}
+.controls button{
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  background:var(--paper);border:1px solid var(--line);color:var(--brown);
+  padding:6px 12px;border-radius:6px;cursor:pointer;
+  text-transform:uppercase;letter-spacing:0.1em;transition:all .2s;
+}
+.controls button:hover{background:var(--orange);color:#fff;border-color:var(--orange)}
+.controls button.active{background:var(--brown-dark);color:#fff;border-color:var(--brown-dark)}
+.takeaway{
+  background:var(--brown-dark);color:var(--paper);
+  border-radius:18px;padding:44px;margin-top:50px;position:relative;overflow:hidden;
+}
+.takeaway::after{
+  content:"";position:absolute;top:-40px;right:-40px;width:180px;height:180px;
+  border-radius:50%;background:radial-gradient(circle,var(--orange),transparent 70%);opacity:0.4;
+}
+.takeaway h2{color:var(--paper);margin-bottom:16px}
+.takeaway p{color:#E8D9C5;font-size:16px;max-width:680px}
+.takeaway ul{list-style:none;margin-top:18px;display:grid;gap:8px}
+.takeaway li{font-family:'JetBrains Mono',monospace;font-size:13px;padding-left:22px;position:relative;color:#FBE7CB}
+.takeaway li::before{content:"→";position:absolute;left:0;color:var(--orange);font-weight:bold}
+footer{text-align:center;padding:36px;color:var(--muted);font-size:12px;font-family:'JetBrains Mono',monospace;letter-spacing:0.1em}
+@media(max-width:700px){
+  .topbar{padding:12px 18px}
+  .page{padding:30px 18px 70px}
+  .illus{padding:20px}
+  .takeaway{padding:28px}
+  .logo-slot{width:42px;height:66px}
+}
+
+/* ── page-specific: automation scoring grid ───────────────── */
+.score-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-bottom:20px}
+.task-card{
+  background:var(--paper);border:1px solid var(--line);border-radius:14px;
+  padding:18px 20px;cursor:pointer;transition:all .25s;position:relative;
+}
+.task-card:hover{border-color:var(--orange);transform:translateY(-2px)}
+.task-card.picked{border-color:var(--orange);box-shadow:0 0 0 2px rgba(239,127,26,0.18)}
+.task-card h4{font-family:'Fraunces',serif;font-size:18px;color:var(--brown-dark);margin-bottom:4px}
+.task-card .tdesc{font-size:12.5px;color:var(--muted);max-width:none;margin-bottom:12px}
+.metric{margin-bottom:9px}
+.metric .mlab{display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.06em;text-transform:uppercase;color:var(--muted);margin-bottom:3px}
+.mbar{height:7px;background:var(--cream);border-radius:4px;overflow:hidden}
+.mfill{height:100%;border-radius:4px;width:0;transition:width .6s ease}
+.mfill.freq{background:var(--orange)}
+.mfill.pain{background:var(--tan)}
+.mfill.stab{background:var(--accent)}
+.score-verdict{
+  background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:18px 20px;
+  display:flex;align-items:center;gap:18px;flex-wrap:wrap;
+}
+.score-ring{flex-shrink:0;width:84px;height:84px;position:relative}
+.score-ring svg{transform:rotate(-90deg)}
+.score-ring .snum{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-weight:800;font-size:26px;color:var(--brown-dark)}
+.score-text{flex:1;min-width:200px}
+.score-text .stag{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;font-weight:600;margin-bottom:4px}
+.score-text p{font-size:13.5px;color:var(--ink);margin:0;max-width:none;line-height:1.5}
+.stag.go{color:#2E7D46} .stag.maybe{color:#7A6200} .stag.skip{color:var(--orange-dark)}
+
+/* ── page-specific: toolkit comparison cards ──────────────── */
+.tool-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+.tool-tab{
+  font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.06em;
+  background:var(--paper);border:1px solid var(--line);color:var(--brown);
+  padding:9px 16px;border-radius:999px;cursor:pointer;transition:all .2s;
+}
+.tool-tab:hover{border-color:var(--orange);color:var(--orange-dark)}
+.tool-tab.active{background:var(--orange);border-color:var(--orange);color:#fff}
+.tool-panel{
+  background:var(--paper);border:1px solid var(--line);border-radius:14px;
+  overflow:hidden;display:none;
+}
+.tool-panel.shown{display:block;animation:nodeIn .4s both}
+@keyframes nodeIn{from{opacity:0;transform:translateY(14px) scale(.97)}to{opacity:1;transform:none}}
+.tool-band{padding:14px 20px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#fff;font-weight:600;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.tool-band .lvl{font-size:10px;opacity:.9;letter-spacing:0.1em}
+.tp-native .tool-band{background:var(--orange-dark)}
+.tp-power .tool-band{background:var(--tan)}
+.tp-zapier .tool-band{background:var(--brown)}
+.tp-make .tool-band{background:var(--accent)}
+.tool-body{padding:20px}
+.tool-body h4{font-family:'Fraunces',serif;font-size:22px;color:var(--brown-dark);margin-bottom:8px}
+.tool-plain{font-size:14px;color:var(--ink);max-width:none;margin-bottom:16px;line-height:1.55}
+.tool-when{background:var(--cream);border-radius:10px;padding:12px 16px;margin-bottom:14px;border-left:3px solid var(--orange)}
+.tool-when .k{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--tan);display:block;margin-bottom:4px;font-weight:600}
+.tool-when p{font-size:13.5px;color:var(--ink);margin:0;max-width:none;line-height:1.5}
+.tool-pc{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.tool-pc h5{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:6px}
+.tool-pc .gp h5{color:#2E7D46} .tool-pc .gc h5{color:var(--muted)}
+.tool-pc ul{list-style:none;display:grid;gap:5px}
+.tool-pc li{font-size:12.5px;color:var(--ink);padding-left:16px;position:relative;line-height:1.45}
+.tool-pc .gp li::before{content:"+";position:absolute;left:0;color:#2E7D46;font-weight:700}
+.tool-pc .gc li::before{content:"−";position:absolute;left:0;color:var(--muted);font-weight:700}
+
+/* ── page-specific: build a trigger → action automation ───── */
+.recipe-wrap{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:stretch}
+.recipe-col{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:18px 20px;display:flex;flex-direction:column}
+.recipe-col .k{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--tan);margin-bottom:12px;font-weight:600}
+.recipe-picks{display:grid;gap:8px}
+.recipe-pick{
+  font-size:13.5px;color:var(--ink);background:var(--cream);border:1px solid var(--line);
+  border-radius:9px;padding:11px 14px;cursor:pointer;transition:all .2s;line-height:1.4;
+  display:flex;align-items:center;gap:10px;
+}
+.recipe-pick:hover{border-color:var(--orange)}
+.recipe-pick.picked{border-color:var(--orange);background:rgba(239,127,26,0.08);color:var(--brown-dark);font-weight:500}
+.recipe-pick .ric{font-size:18px;flex-shrink:0}
+.recipe-out{background:var(--brown-dark);border-radius:12px;padding:0;overflow:hidden;flex:1;min-height:240px;display:flex;flex-direction:column}
+.recipe-out .oh{padding:10px 14px;background:rgba(0,0,0,0.25);font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#E8D9C5;display:flex;justify-content:space-between}
+.recipe-body{padding:18px;flex:1;display:flex;flex-direction:column;gap:12px}
+.rline{display:flex;gap:12px;align-items:flex-start}
+.rline .rtag{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;flex-shrink:0;width:52px;padding-top:2px}
+.rline.when .rtag{color:var(--orange-light)}
+.rline.then .rtag{color:#FECC00}
+.rline .rtxt{font-size:13px;color:#FBE7CB;line-height:1.5}
+.rarrow{color:#9C8A7A;font-size:16px;padding-left:64px}
+.rguard{margin-top:auto;background:rgba(0,141,210,0.14);border:1px solid rgba(0,141,210,0.35);border-radius:9px;padding:10px 12px}
+.rguard .gk{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:#7FD0F5;font-weight:600;display:block;margin-bottom:3px}
+.rguard p{font-size:12px;color:#CFE9F7;margin:0;max-width:none;line-height:1.45}
+.recipe-note{font-size:12.5px;color:var(--muted);margin-top:14px;max-width:none;font-style:italic}
+
+/* ── page-specific: recurring status pipeline ─────────────── */
+.flow{display:flex;flex-direction:column;gap:0}
+.fstep{
+  display:flex;gap:16px;align-items:flex-start;opacity:0;transform:translateX(-14px);
+}
+.flow.reveal .fstep{animation:fstepIn .5s forwards}
+.flow.reveal .fstep:nth-child(1){animation-delay:.05s}
+.flow.reveal .fstep:nth-child(3){animation-delay:.2s}
+.flow.reveal .fstep:nth-child(5){animation-delay:.35s}
+.flow.reveal .fstep:nth-child(7){animation-delay:.5s}
+.flow.reveal .fstep:nth-child(9){animation-delay:.65s}
+@keyframes fstepIn{to{opacity:1;transform:translateX(0)}}
+.fnum{
+  flex-shrink:0;width:40px;height:40px;border-radius:10px;background:var(--brown-dark);color:var(--paper);
+  display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-weight:600;font-size:14px;
+}
+.fstep:nth-child(1) .fnum{background:var(--orange-dark)}
+.fstep:nth-child(3) .fnum{background:var(--tan)}
+.fstep:nth-child(5) .fnum{background:var(--orange)}
+.fstep:nth-child(7) .fnum{background:var(--brown)}
+.fstep:nth-child(9) .fnum{background:var(--accent)}
+.fbody{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:14px 18px;flex:1}
+.fbody h4{font-family:'Fraunces',serif;font-size:17px;color:var(--brown-dark);margin-bottom:4px}
+.fbody p{font-size:13px;color:var(--muted);margin:0;max-width:none;line-height:1.5}
+.fbody .tool-tag{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:0.08em;text-transform:uppercase;color:var(--tan);background:var(--cream);padding:2px 8px;border-radius:5px;margin-top:8px}
+.fconn{width:40px;display:flex;justify-content:center;height:22px;opacity:0}
+.flow.reveal .fconn{animation:fstepIn .4s forwards;animation-delay:.4s}
+.fconn::before{content:"";width:2px;background:var(--line);height:100%}
+
+/* ── page-specific: capstone module map ───────────────────── */
+.cap-stage{display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;margin-bottom:20px}
+.cap-node{
+  flex:1;min-width:150px;background:var(--paper);border:1px solid var(--line);border-radius:14px;
+  padding:16px 14px;cursor:pointer;transition:all .25s;text-align:center;position:relative;
+}
+.cap-node:hover{transform:translateY(-3px);border-color:var(--orange)}
+.cap-node.active{border-color:var(--orange);box-shadow:0 0 0 2px rgba(239,127,26,0.2);background:rgba(239,127,26,0.05)}
+.cap-node .cn-icon{width:46px;height:46px;border-radius:12px;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-weight:800;font-size:20px;color:#fff}
+.cap-node:nth-child(1) .cn-icon{background:var(--orange-dark)}
+.cap-node:nth-child(3) .cn-icon{background:var(--tan)}
+.cap-node:nth-child(5) .cn-icon{background:var(--orange)}
+.cap-node:nth-child(7) .cn-icon{background:var(--brown)}
+.cap-node:nth-child(9) .cn-icon{background:var(--accent)}
+.cap-node .cn-mod{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:3px}
+.cap-node .cn-name{font-family:'Fraunces',serif;font-size:15px;color:var(--brown-dark);font-weight:600;line-height:1.15}
+.cap-arrow{align-self:center;color:var(--line);font-size:20px;flex:0 0 auto}
+.cap-detail{
+  background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:22px 24px;
+  min-height:150px;position:relative;overflow:hidden;
+}
+.cap-detail .cd-inner{animation:nodeIn .4s both}
+.cap-detail .cd-head{display:flex;align-items:center;gap:12px;margin-bottom:12px;flex-wrap:wrap}
+.cap-detail .cd-chip{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;color:#fff;padding:4px 10px;border-radius:6px}
+.cap-detail h4{font-family:'Fraunces',serif;font-size:22px;color:var(--brown-dark)}
+.cap-detail .cd-role{font-size:14px;color:var(--ink);max-width:none;line-height:1.6;margin-bottom:14px}
+.cap-detail .cd-handoff{background:var(--cream);border-radius:10px;padding:11px 15px;border-left:3px solid var(--orange)}
+.cap-detail .cd-handoff .hk{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:0.1em;text-transform:uppercase;color:var(--tan);display:block;margin-bottom:3px;font-weight:600}
+.cap-detail .cd-handoff p{font-size:13px;color:var(--ink);margin:0;max-width:none;line-height:1.5}
+
+/* ── page-specific: safety checklist ──────────────────────── */
+.check-list{display:grid;gap:10px}
+.check{
+  display:flex;gap:14px;align-items:flex-start;background:var(--paper);
+  border:1px solid var(--line);border-radius:12px;padding:14px 18px;cursor:pointer;transition:all .2s;
+}
+.check:hover{border-color:var(--orange)}
+.check.on{border-color:#2E7D46;background:rgba(46,125,70,0.05)}
+.check-box{
+  flex-shrink:0;width:24px;height:24px;border-radius:7px;border:2px solid var(--line);
+  display:flex;align-items:center;justify-content:center;transition:all .2s;
+  font-family:'JetBrains Mono',monospace;font-size:14px;color:transparent;font-weight:700;
+}
+.check.on .check-box{background:#2E7D46;border-color:#2E7D46;color:#fff}
+.check-text h4{font-family:'Fraunces',serif;font-size:16.5px;color:var(--brown-dark);margin-bottom:3px}
+.check-text p{font-size:12.5px;color:var(--muted);margin:0;max-width:none;line-height:1.5}
+.check-progress{
+  margin-top:16px;background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:14px 18px;
+  display:flex;align-items:center;gap:14px;
+}
+.cp-bar{flex:1;height:8px;background:var(--cream);border-radius:4px;overflow:hidden}
+.cp-fill{height:100%;background:#2E7D46;width:0;transition:width .4s ease}
+.cp-lab{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--brown-dark);font-weight:600;white-space:nowrap}
+
+/* ── page-specific: course completion panel ───────────────── */
+.finish{
+  background:linear-gradient(140deg,var(--brown-dark),var(--tan));
+  color:var(--paper);border-radius:18px;padding:44px;margin-top:26px;position:relative;overflow:hidden;
+}
+.finish::before{
+  content:"";position:absolute;top:-60px;left:-40px;width:220px;height:220px;border-radius:50%;
+  background:radial-gradient(circle,var(--yellow),transparent 70%);opacity:0.35;
+}
+.finish::after{
+  content:"";position:absolute;bottom:-70px;right:-30px;width:200px;height:200px;border-radius:50%;
+  background:radial-gradient(circle,var(--orange-light),transparent 70%);opacity:0.4;
+}
+.finish .fin-inner{position:relative;z-index:1}
+.finish .fin-badge{
+  font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;
+  color:var(--yellow);font-weight:600;display:inline-flex;align-items:center;gap:8px;margin-bottom:14px;
+}
+.finish h2{font-family:'Fraunces',serif;color:#fff;margin-bottom:14px;max-width:640px}
+.finish h2 em{font-style:italic;color:var(--yellow);font-weight:600}
+.finish p{color:#F6E7D2;font-size:16px;max-width:640px}
+.fin-modules{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:22px 0 8px}
+.fin-mod{background:rgba(255,252,246,0.1);border:1px solid rgba(255,252,246,0.18);border-radius:11px;padding:12px 14px}
+.fin-mod .fm-k{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--yellow);display:block;margin-bottom:4px}
+.fin-mod .fm-v{font-family:'Fraunces',serif;font-size:15px;color:#fff;font-weight:600;line-height:1.2}
+.fin-cta{
+  margin-top:24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;
+}
+.fin-btn{
+  font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;font-weight:600;
+  background:var(--yellow);color:var(--brown-dark);border:none;border-radius:999px;padding:12px 22px;cursor:pointer;transition:all .2s;
+}
+.fin-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,0.25)}
+.fin-note{font-family:'JetBrains Mono',monospace;font-size:11px;color:#F6E7D2;letter-spacing:0.06em}
+.confetti{position:absolute;top:0;width:9px;height:14px;opacity:0;pointer-events:none;z-index:2;border-radius:2px}
+
+@media(max-width:760px){
+  .recipe-wrap{grid-template-columns:1fr}
+  .tool-pc{grid-template-columns:1fr}
+  .cap-arrow{display:none}
+  .cap-node{min-width:130px}
+}
+
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="brand">MokshPath <span class="dot">·</span> <span class="sub">Lesson 04 · AI Project Mgmt</span></div>
+  <div class="logo-slot" aria-label="MokshPath logo">
+    <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="22" cy="22" r="20" fill="#412C23"/>
+      <path d="M12 30V15l6 8 4-9 4 9 6-8v15" stroke="#EF7F1A" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <circle cx="22" cy="10" r="3" fill="#FECC00"/>
+    </svg>
+  </div>
+</div>
+<div class="page">
+
+<section class="hero">
+  <div class="eyebrow">Week 5 · Lesson 04 · Capstone</div>
+  <h1>Automate the <em>chase</em>, close the <em>loop</em>.</h1>
+  <p class="lede">Great project managers spend far too much of their week chasing status, copying updates between tools, and rebuilding the same report every Friday. This final lesson hands that work to no-code automation — trigger→action recipes that run while you focus on people and decisions. Then we tie the whole course together: Research, Project Management, Excel, Office, and PowerPoint working as one pipeline on a single real project. Welcome to your capstone.</p>
+</section>
+
+<section>
+  <div class="section-num">01 / 04</div>
+  <h2>Not every PM task deserves a robot</h2>
+  <p class="lead">The most common automation mistake is automating the wrong thing — spending an afternoon wiring up a workflow you trigger twice a year. A PM task is worth automating when three things line up: it happens <strong>often</strong>, it's <strong>painful</strong> or nag-heavy by hand, and the process is <strong>stable</strong> (same steps, same fields, same tools every time).</p>
+
+  <p><strong>Frequency</strong> is the obvious one: a status round-up you send every week repays a five-minute setup within days; a one-off kickoff email never will. <strong>Pain</strong> is human cost — chasing eight people for updates is soul-draining even at the same frequency, and tired PMs forget to follow up. <strong>Stability</strong> is the sneaky one everyone forgets: automation only works if next week's process looks like this week's. If your board columns, owners, and cadence keep changing, an automation just breaks in new and creative ways.</p>
+  <p>Multiply those three and you get a rough automation score. High on all three? Build it today. High on frequency and pain but low on stability? Fix the process first, or you're automating a moving target. Click a task below to see how it scores.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 1 · Should you automate this? Frequency × Pain × Stability</span>
+    </div>
+    <div class="score-grid" id="scoreGrid">
+      <div class="task-card" data-task="status" onclick="pickTask(this,'status')">
+        <h4>Weekly status chase</h4>
+        <div class="tdesc">Every Monday you ping the same owners for their task updates and paste replies into one place.</div>
+        <div class="metric"><div class="mlab"><span>Frequency</span><span>High</span></div><div class="mbar"><div class="mfill freq" data-w="94"></div></div></div>
+        <div class="metric"><div class="mlab"><span>Pain</span><span>High</span></div><div class="mbar"><div class="mfill pain" data-w="82"></div></div></div>
+        <div class="metric"><div class="mlab"><span>Stability</span><span>High</span></div><div class="mbar"><div class="mfill stab" data-w="86"></div></div></div>
+      </div>
+      <div class="task-card" data-task="scope" onclick="pickTask(this,'scope')">
+        <h4>Negotiating a scope change</h4>
+        <div class="tdesc">A stakeholder wants to add work; you weigh trade-offs, timeline, and budget with the team.</div>
+        <div class="metric"><div class="mlab"><span>Frequency</span><span>Med</span></div><div class="mbar"><div class="mfill freq" data-w="50"></div></div></div>
+        <div class="metric"><div class="mlab"><span>Pain</span><span>High</span></div><div class="mbar"><div class="mfill pain" data-w="80"></div></div></div>
+        <div class="metric"><div class="mlab"><span>Stability</span><span>Low</span></div><div class="mbar"><div class="mfill stab" data-w="18"></div></div></div>
+      </div>
+      <div class="task-card" data-task="kickoff" onclick="pickTask(this,'kickoff')">
+        <h4>One-time project kickoff</h4>
+        <div class="tdesc">Setting up a brand-new board, inviting the team, and drafting the charter — once, per project.</div>
+        <div class="metric"><div class="mlab"><span>Frequency</span><span>Low</span></div><div class="mbar"><div class="mfill freq" data-w="16"></div></div></div>
+        <div class="metric"><div class="mlab"><span>Pain</span><span>Med</span></div><div class="mbar"><div class="mfill pain" data-w="56"></div></div></div>
+        <div class="metric"><div class="mlab"><span>Stability</span><span>High</span></div><div class="mbar"><div class="mfill stab" data-w="78"></div></div></div>
+      </div>
+    </div>
+    <div class="score-verdict">
+      <div class="score-ring">
+        <svg width="84" height="84" viewBox="0 0 84 84">
+          <circle cx="42" cy="42" r="36" fill="none" stroke="#E8DCC8" stroke-width="8"/>
+          <circle id="ringFill" cx="42" cy="42" r="36" fill="none" stroke="#EF7F1A" stroke-width="8" stroke-linecap="round" stroke-dasharray="226" stroke-dashoffset="226" style="transition:stroke-dashoffset .7s ease, stroke .3s"/>
+        </svg>
+        <div class="snum" id="ringNum">–</div>
+      </div>
+      <div class="score-text">
+        <div class="stag" id="scoreTag">Pick a task above</div>
+        <p id="scoreMsg">Each score multiplies frequency, pain, and stability. A workflow is only worth building when all three cooperate.</p>
+      </div>
+    </div>
+  </div>
+
+  <h3>The rule this figure teaches</h3>
+  <p>Notice the scope-change negotiation: high pain, real frequency — but low stability drags the whole score down. That's correct, and it's a gift. Judgement calls, trade-offs, and stakeholder trust are exactly the work you should <em>keep</em>. Automate the status chase so you have more hours for the scope conversation. Automate stable pain. Protect the human judgement.</p>
+</section>
+
+<section>
+  <div class="section-num">02 / 04</div>
+  <h2>Four no-code tools, four jobs — in plain English</h2>
+  <p class="lead">You don't need to write a line of code to automate project work. Four tools cover almost everything a PM needs, and beginners waste weeks picking wrong. Here they are, honestly compared — click a tab. Every one works by the same idea: a <strong>trigger</strong> ("when this happens") fires an <strong>action</strong> ("do that").</p>
+
+  <p>The short version: your <strong>PM tool's built-in rules</strong> (Asana, Trello, Monday, Jira, Planner) handle automations that live entirely inside the board. <strong>Power Automate</strong> is the Microsoft-world connector that ties Planner, Teams, Outlook, and Excel together. <strong>Zapier</strong> is the friendliest cross-app glue — thousands of connectors, almost no learning curve. <strong>Make</strong> (formerly Integromat) is the visual power tool for multi-step flows with branches and logic. Pick by where your work lives and how complex the flow is.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 2 · The no-code PM automation toolkit, compared</span>
+    </div>
+    <div class="tool-tabs">
+      <button class="tool-tab active" onclick="showTool('native',this)">Native PM rules</button>
+      <button class="tool-tab" onclick="showTool('power',this)">Power Automate</button>
+      <button class="tool-tab" onclick="showTool('zapier',this)">Zapier</button>
+      <button class="tool-tab" onclick="showTool('make',this)">Make</button>
+    </div>
+
+    <div class="tool-panel tp-native shown" id="tool-native">
+      <div class="tool-band"><span>Native PM rules &amp; triggers</span><span class="lvl">No code · Start here</span></div>
+      <div class="tool-body">
+        <h4>The automation already in your board</h4>
+        <p class="tool-plain">Asana, Trello, Monday, Jira, and Microsoft Planner all ship with built-in rules: "when a task moves to Done, notify the owner," "when a due date passes, flag it red." You build them from menus in minutes, and they need no extra account. For anything that stays inside one tool, this is always your first stop.</p>
+        <div class="tool-when"><span class="k">Reach for it when</span><p>The whole automation happens inside one board — moving cards, assigning owners, setting due dates, sending in-app reminders.</p></div>
+        <div class="tool-pc">
+          <div class="gp"><h5>Strong points</h5><ul><li>Zero setup — it's already in your tool</li><li>No extra login or licence</li><li>Menu-driven, minutes to build</li></ul></div>
+          <div class="gc"><h5>Trade-offs</h5><ul><li>Can't reach outside its own app</li><li>Rule library varies by plan</li><li>No complex multi-step logic</li></ul></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tool-panel tp-power" id="tool-power">
+      <div class="tool-band"><span>Power Automate</span><span class="lvl">Low code · Microsoft 365</span></div>
+      <div class="tool-body">
+        <h4>The wiring for the Microsoft world</h4>
+        <p class="tool-plain">If your team lives in Teams, Planner, Outlook, and Excel, Power Automate is the connector that ties them together: "when a Planner task is completed, post a message in Teams and log a row in Excel." It's drag-and-drop, ships with Microsoft 365, and reaches hundreds of other services too.</p>
+        <div class="tool-when"><span class="k">Reach for it when</span><p>Your project data moves between Microsoft apps — Planner, Teams, Outlook, SharePoint, Excel — on a schedule or in response to an event.</p></div>
+        <div class="tool-pc">
+          <div class="gp"><h5>Strong points</h5><ul><li>Deep Microsoft 365 integration</li><li>Scheduling and triggers built in</li><li>Included with most business plans</li></ul></div>
+          <div class="gc"><h5>Trade-offs</h5><ul><li>Best inside the Microsoft ecosystem</li><li>Can get fiddly with complex conditions</li><li>Licensing tiers can confuse beginners</li></ul></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tool-panel tp-zapier" id="tool-zapier">
+      <div class="tool-band"><span>Zapier</span><span class="lvl">No code · The friendly glue</span></div>
+      <div class="tool-body">
+        <h4>The connector anyone can drive</h4>
+        <p class="tool-plain">Zapier links thousands of apps with the least friction of any tool here. A "Zap" is one trigger and one or more actions in plain language: "when a form is submitted, create a task in Asana and message the channel." No ecosystem lock-in, generous free tier, and the fastest path from idea to working automation for most beginners.</p>
+        <div class="tool-when"><span class="k">Reach for it when</span><p>You need two different apps to talk — a form, a CRM, a chat tool, a PM board — and you want it working in ten minutes, not an afternoon.</p></div>
+        <div class="tool-pc">
+          <div class="gp"><h5>Strong points</h5><ul><li>Huge app library, works everywhere</li><li>Genuinely beginner-friendly</li><li>Fast from idea to running Zap</li></ul></div>
+          <div class="gc"><h5>Trade-offs</h5><ul><li>Paid tiers add up at scale</li><li>Limited branching in simple Zaps</li><li>Yet another account to manage</li></ul></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tool-panel tp-make" id="tool-make">
+      <div class="tool-band"><span>Make (Integromat)</span><span class="lvl">No code · Visual power tool</span></div>
+      <div class="tool-body">
+        <h4>The whiteboard for complex flows</h4>
+        <p class="tool-plain">Make gives you a visual canvas where each app is a node you wire together, with branches, filters, and loops. It handles the multi-step "if the task is high priority, do A; otherwise do B" logic that trips up simpler tools — and often costs less at volume. The trade is a steeper first hour.</p>
+        <div class="tool-when"><span class="k">Reach for it when</span><p>Your flow has real logic — branches, conditions, several apps in sequence — and you've outgrown a single trigger-to-action Zap.</p></div>
+        <div class="tool-pc">
+          <div class="gp"><h5>Strong points</h5><ul><li>Visual canvas shows the whole flow</li><li>Branches, filters, loops built in</li><li>Cost-effective at higher volume</li></ul></div>
+          <div class="gc"><h5>Trade-offs</h5><ul><li>Steeper first hour than Zapier</li><li>Easy to over-engineer a simple job</li><li>More concepts to learn upfront</li></ul></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h3>A one-line decision rule</h3>
+  <p>If the automation lives <em>inside one board</em>, use your PM tool's native rules. If your team is <em>all-in on Microsoft 365</em>, use Power Automate. If you just need <em>two apps to talk quickly</em>, reach for Zapier. And if the flow has <em>real branching logic</em> across several apps, Make earns its steeper learning curve. Start simple and only climb when the job demands it.</p>
+</section>
+
+<section>
+  <div class="section-num">03 / 04</div>
+  <h2>Build a trigger → action automation — no code</h2>
+  <p class="lead">Here's the shift that makes automation beginner-friendly: you no longer describe steps in code, you describe them in plain language. Every no-code recipe is the same shape — <strong>WHEN</strong> something happens, <strong>THEN</strong> do something. Pick a trigger below and watch a safe, ready-to-build recipe assemble, guardrails and all.</p>
+
+  <p>The magic and the danger are the same: these run without you. So every recipe below bakes in three rules — always <strong>test on a dummy project first</strong>, keep a <strong>human in the loop</strong> for anything that reaches a person, and <strong>never let automation auto-send to a client</strong>. Robots draft; people approve and send.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 3 · Pick a trigger → get a safe recipe</span>
+    </div>
+    <div class="recipe-wrap">
+      <div class="recipe-col">
+        <span class="k">1 · Choose the trigger (click one)</span>
+        <div class="recipe-picks" id="recipePicks">
+          <div class="recipe-pick picked" data-recipe="overdue" onclick="pickRecipe(this,'overdue')"><span class="ric">⏰</span>When a task passes its due date and is still open</div>
+          <div class="recipe-pick" data-recipe="done" onclick="pickRecipe(this,'done')"><span class="ric">✅</span>When a task is moved to the Done column</div>
+          <div class="recipe-pick" data-recipe="new" onclick="pickRecipe(this,'new')"><span class="ric">📝</span>When a new request lands in the intake form</div>
+        </div>
+        <p class="recipe-note">You never wrote a script. But notice each recipe names the exact trigger and the exact action — vague rules fire at the wrong moment.</p>
+      </div>
+      <div class="recipe-col" style="padding:0;background:transparent;border:none">
+        <span class="k" style="padding:0 2px">2 · The no-code recipe assembles</span>
+        <div class="recipe-out">
+          <div class="oh"><span>Recipe · no code</span><span id="recipeTool">Zapier / Power Automate</span></div>
+          <div class="recipe-body" id="recipeBody"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h3>The part you cannot skip: the guardrails</h3>
+  <p>No-code recipes feel harmless because there's no scary code — but a mis-aimed trigger can nag the wrong person every hour, or worse, fire an unfinished message straight to a client. Before you switch any recipe on, run it against a dummy project and watch it fire once. Route anything that touches a human through a draft-and-approve step. And hold one line absolutely: automation may <em>prepare</em> a client message, but a person presses send. Always.</p>
+</section>
+
+<section>
+  <div class="section-num">04 / 04</div>
+  <h2>One recurring workflow, then the whole course</h2>
+  <p class="lead">Let's put it together. The single highest-value PM automation is the recurring status round-up: instead of chasing eight people every Monday, a workflow requests updates, collects the replies, has AI summarize them, and posts a clean digest — leaving you just the ten-second skim.</p>
+
+  <p>It's a small assembly line, and each stage maps to a tool from Figure 2. Notice where the human stays: the AI drafts the summary, but you approve it before it reaches stakeholders. Watch it assemble.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 4 · The recurring status-update pipeline</span>
+      <div class="controls">
+        <button onclick="runFlow()">▶ Run the pipeline</button>
+      </div>
+    </div>
+    <div class="flow" id="flow">
+      <div class="fstep">
+        <div class="fnum">1</div>
+        <div class="fbody"><h4>Trigger fires on schedule</h4><p>Every Monday at 9:00am a timer kicks the whole thing off — no manual pinging, no forgotten follow-ups.</p><span class="tool-tag">Power Automate</span></div>
+      </div>
+      <div class="fconn"></div>
+      <div class="fstep">
+        <div class="fnum">2</div>
+        <div class="fbody"><h4>Status requests go out</h4><p>Each task owner gets a short, personalized nudge asking for a one-line update on their open items.</p><span class="tool-tag">Zapier</span></div>
+      </div>
+      <div class="fconn"></div>
+      <div class="fstep">
+        <div class="fnum">3</div>
+        <div class="fbody"><h4>Replies are collected in one place</h4><p>Responses land in a single sheet or form — no inbox archaeology, no copy-paste across threads.</p><span class="tool-tag">Excel / Forms</span></div>
+      </div>
+      <div class="fconn"></div>
+      <div class="fstep">
+        <div class="fnum">4</div>
+        <div class="fbody"><h4>AI summarizes into a digest</h4><p>The updates become a tidy paragraph: what shipped, what's blocked, what needs a decision — you review it.</p><span class="tool-tag">AI + You</span></div>
+      </div>
+      <div class="fconn"></div>
+      <div class="fstep">
+        <div class="fnum">5</div>
+        <div class="fbody"><h4>You approve, then it posts</h4><p>One glance, one click — the approved digest lands in the team channel. Your only job all week.</p><span class="tool-tag">You → Teams</span></div>
+      </div>
+    </div>
+  </div>
+
+  <h3>The capstone: your whole toolkit on one project</h3>
+  <p>Automation is the last brick, but the real payoff of this course is watching all five modules act as one machine. A single real project — say, launching a new internal onboarding program — flows straight through everything you've learned. Click each module below to see the role it plays in the end-to-end pipeline.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 5 · The full-course capstone — five modules, one project</span>
+    </div>
+    <div class="cap-stage" id="capStage">
+      <div class="cap-node active" data-cap="research" onclick="pickCap(this,'research')">
+        <div class="cn-icon">R</div>
+        <div class="cn-mod">Module 1</div>
+        <div class="cn-name">AI Research</div>
+      </div>
+      <div class="cap-arrow">→</div>
+      <div class="cap-node" data-cap="pm" onclick="pickCap(this,'pm')">
+        <div class="cn-icon">P</div>
+        <div class="cn-mod">Module 2</div>
+        <div class="cn-name">Project Mgmt</div>
+      </div>
+      <div class="cap-arrow">→</div>
+      <div class="cap-node" data-cap="excel" onclick="pickCap(this,'excel')">
+        <div class="cn-icon">E</div>
+        <div class="cn-mod">Module 3</div>
+        <div class="cn-name">AI Excel</div>
+      </div>
+      <div class="cap-arrow">→</div>
+      <div class="cap-node" data-cap="office" onclick="pickCap(this,'office')">
+        <div class="cn-icon">O</div>
+        <div class="cn-mod">Module 4</div>
+        <div class="cn-name">AI Office</div>
+      </div>
+      <div class="cap-arrow">→</div>
+      <div class="cap-node" data-cap="ppt" onclick="pickCap(this,'ppt')">
+        <div class="cn-icon">S</div>
+        <div class="cn-mod">Module 5</div>
+        <div class="cn-name">PowerPoint</div>
+      </div>
+    </div>
+    <div class="cap-detail" id="capDetail"></div>
+  </div>
+
+  <p>See the handoffs? Research feeds the plan, the plan drives the tracking sheet, the sheet feeds the documents, the documents become the deck — and automation quietly keeps the whole chain fresh. No single tool did the project. The <em>pipeline</em> did. That orchestration is the skill this course was really teaching.</p>
+
+  <h3>Build boldly, but guard carefully</h3>
+  <p>Every automation above can run untouched for months — which is exactly the danger. A silent workflow nagging the wrong person, or firing a half-finished note to a client, is worse than no automation at all, because everyone assumes it's fine. Automation earns trust only when built defensively. Walk this checklist before you let anything run unattended.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 6 · The safe-automation checklist</span>
+      <div class="controls">
+        <button onclick="checkAll()">Tick all</button>
+        <button onclick="checkClear()">Reset</button>
+      </div>
+    </div>
+    <div class="check-list" id="checkList">
+      <div class="check" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div class="check-text"><h4>Test on a dummy project first</h4><p>Fire any new recipe on a throwaway board and watch it run once. If it nags the wrong person, it bothers a fake owner, not your CEO.</p></div>
+      </div>
+      <div class="check" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div class="check-text"><h4>Keep a human in the loop</h4><p>Anything that reaches a real person should pass through a draft-and-approve step. Robots prepare; people decide and send.</p></div>
+      </div>
+      <div class="check" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div class="check-text"><h4>Never auto-send to a client</h4><p>Automation may draft a client email or status note — but a person presses send. This line is not negotiable, ever.</p></div>
+      </div>
+      <div class="check" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div class="check-text"><h4>Assume the process will change</h4><p>Automations break when a column is renamed or an owner leaves. Review your recipes when the board changes shape.</p></div>
+      </div>
+      <div class="check" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div class="check-text"><h4>Add a sanity check to the output</h4><p>Have the workflow flag the obvious — "no replies collected" or "digest is empty." A robot that shouts when confused is a safe robot.</p></div>
+      </div>
+    </div>
+    <div class="check-progress">
+      <span class="cp-lab" id="cpLab">0 / 5 safeguards</span>
+      <div class="cp-bar"><div class="cp-fill" id="cpFill"></div></div>
+    </div>
+  </div>
+
+  <h3>Why "keep a human in the loop" is the whole game</h3>
+  <p>Almost every automation horror story ends the same way: a workflow ran exactly as told, and what it was told was subtly wrong — a reminder to a departed employee, a draft that shipped before it was finished. Manual mistakes are loud; automated ones repeat perfectly until someone notices. A ten-second human skim costs you almost nothing. Skipping it can cost a client's trust in a single click.</p>
+</section>
+
+<div class="finish" id="finish">
+  <div class="fin-inner">
+    <div class="fin-badge">◆ Course complete · 5 of 5 modules</div>
+    <h2>You are now the <em>AI-augmented</em> professional.</h2>
+    <p>You started this course doing the work by hand — researching in tabs, planning in your head, wrestling spreadsheets, writing documents from a blank page, and building decks slide by slide. You finish it orchestrating a pipeline. That's not a small upgrade; it's a different way of working. The tools will keep changing. The instinct you built — describe clearly, let AI draft, always review, keep the human on the decisions — will not.</p>
+    <div class="fin-modules">
+      <div class="fin-mod"><span class="fm-k">Module 1</span><span class="fm-v">AI Research</span></div>
+      <div class="fin-mod"><span class="fm-k">Module 2</span><span class="fm-v">Project Mgmt</span></div>
+      <div class="fin-mod"><span class="fm-k">Module 3</span><span class="fm-v">AI Excel</span></div>
+      <div class="fin-mod"><span class="fm-k">Module 4</span><span class="fm-v">AI Office</span></div>
+      <div class="fin-mod"><span class="fm-k">Module 5</span><span class="fm-v">PowerPoint</span></div>
+    </div>
+    <div class="fin-cta">
+      <button class="fin-btn" onclick="celebrate()">🎉 Celebrate completion</button>
+      <span class="fin-note">Go build something. The pipeline is yours now.</span>
+    </div>
+  </div>
+</div>
+
+<div class="takeaway">
+  <h2>What to carry forward</h2>
+  <p>Automation is leverage, not magic. Automate PM work that is frequent, painful, and stable — and protect the judgement calls. Match the tool to the job: native rules inside one board, Power Automate for Microsoft, Zapier for quick cross-app glue, Make for real branching logic. Every recipe is WHEN → THEN. Let automation draft, but keep a human on anything that reaches a person, and never auto-send to a client. And remember the capstone: no single tool ran the project — the pipeline did.</p>
+  <ul>
+    <li>Worth automating = Frequency × Pain × Stability. Low stability kills the score</li>
+    <li>Native rules · Power Automate · Zapier · Make — pick by where work lives &amp; how complex the flow is</li>
+    <li>Every no-code recipe is WHEN a trigger fires → THEN an action runs</li>
+    <li>Test on a dummy project · keep a human in the loop · never auto-send to clients</li>
+    <li>Research → PM → Excel → Office → PowerPoint = one pipeline, and you now run it</li>
+  </ul>
+</div>
+
+</div>
+<footer>MokshPath · Lesson 04 of 04 · Week 5 &amp; course complete — you are the AI-augmented professional ★</footer>
+<script>
+
+/* ══ Figure 1 · automation scoring ══ */
+const TASK_DATA={
+  status:{f:94,p:82,s:86,tag:'go',label:'Automate it — now',
+    msg:'High frequency, real nag-pain, a rock-steady weekly process. This is the textbook case. A five-minute recipe pays for itself in days and runs for the life of the project.'},
+  scope:{f:50,p:80,s:18,tag:'skip',label:'Keep this human',
+    msg:'Painful and frequent enough — but every scope change is different, so there is no stable process to automate. This is judgement work: trade-offs, trust, negotiation. Protect it, do not automate it.'},
+  kickoff:{f:16,p:56,s:78,tag:'maybe',label:'A checklist, not a robot',
+    msg:'Stable and a bit tedious, but you do it once per project. The time to wire up automation would dwarf the task itself. A reusable template or checklist beats a workflow here.'}
+};
+const RING_LEN=226;
+function pickTask(card,key){
+  document.querySelectorAll('#scoreGrid .task-card').forEach(c=>c.classList.remove('picked'));
+  card.classList.add('picked');
+  const d=TASK_DATA[key];
+  /* score = geometric blend, weighted so low stability really hurts */
+  const raw=Math.round(Math.pow((d.f/100)*(d.p/100)*(d.s/100),1/3)*100);
+  const ring=document.getElementById('ringFill');
+  ring.style.strokeDashoffset=RING_LEN-(RING_LEN*raw/100);
+  const col=d.tag==='go'?'#2E7D46':d.tag==='maybe'?'#C79F00':'#D55222';
+  ring.style.stroke=col;
+  document.getElementById('ringNum').textContent=raw;
+  const tag=document.getElementById('scoreTag');
+  tag.className='stag '+d.tag;
+  tag.textContent=d.label;
+  document.getElementById('scoreMsg').textContent=d.msg;
+}
+function fillBars(root){
+  root.querySelectorAll('.mfill').forEach(f=>{f.style.width=f.dataset.w+'%'});
+}
+new IntersectionObserver((es,o)=>es.forEach(e=>{
+  if(e.isIntersecting){
+    fillBars(e.target);
+    pickTask(document.querySelector('.task-card[data-task="status"]'),'status');
+    o.unobserve(e.target);
+  }
+}),{threshold:0.25}).observe(document.getElementById('scoreGrid'));
+
+/* ══ Figure 2 · toolkit tabs ══ */
+function showTool(key,btn){
+  document.querySelectorAll('.tool-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.tool-panel').forEach(p=>p.classList.remove('shown'));
+  const el=document.getElementById('tool-'+key);
+  void el.offsetWidth;
+  el.classList.add('shown');
+}
+
+/* ══ Figure 3 · build a trigger → action recipe ══ */
+const RECIPES={
+  overdue:{tool:'Native rule / Zapier',
+    when:'A task passes its due date and is still in an open column.',
+    then:'Post a gentle in-app reminder to the task owner and flag the card amber on the board.',
+    guard:'Reminds the owner only — never escalates to the client. Test on a dummy board so the first misfire nags a fake owner.'},
+  done:{tool:'Native rule / Power Automate',
+    when:'A task is dragged into the Done column.',
+    then:'Move it to the archive, add the completion date, and drop a one-line note in the team channel.',
+    guard:'Posts to the internal channel only. A human still writes any client-facing "we shipped it" note by hand.'},
+  new:{tool:'Zapier / Make',
+    when:'A new request is submitted through the intake form.',
+    then:'Create a card in the Backlog, tag it by type, and draft an acknowledgement for you to review.',
+    guard:'The acknowledgement is drafted, not sent. You read it, approve it, and press send — automation never emails the requester directly.'}
+};
+function pickRecipe(el,key){
+  document.querySelectorAll('#recipePicks .recipe-pick').forEach(p=>p.classList.remove('picked'));
+  el.classList.add('picked');
+  const d=RECIPES[key];
+  document.getElementById('recipeTool').textContent=d.tool;
+  const body=document.getElementById('recipeBody');
+  body.style.opacity='0';
+  setTimeout(()=>{
+    body.innerHTML=
+      '<div class="rline when"><span class="rtag">When</span><span class="rtxt">'+d.when+'</span></div>'+
+      '<div class="rarrow">↓</div>'+
+      '<div class="rline then"><span class="rtag">Then</span><span class="rtxt">'+d.then+'</span></div>'+
+      '<div class="rguard"><span class="gk">Guardrail</span><p>'+d.guard+'</p></div>';
+    body.style.transition='opacity .3s';
+    body.style.opacity='1';
+  },120);
+}
+pickRecipe(document.querySelector('.recipe-pick[data-recipe="overdue"]'),'overdue');
+
+/* ══ Figure 4 · status pipeline ══ */
+const flowEl=document.getElementById('flow');
+function runFlow(){
+  flowEl.classList.remove('reveal');void flowEl.offsetWidth;flowEl.classList.add('reveal');
+}
+new IntersectionObserver((es,o)=>es.forEach(e=>{
+  if(e.isIntersecting){runFlow();o.unobserve(e.target)}
+}),{threshold:0.2}).observe(flowEl);
+
+/* ══ Figure 5 · capstone module map ══ */
+const CAP_DATA={
+  research:{chip:'Module 1 · AI Research',col:'#D55222',name:'AI Research',
+    role:'The project starts here. You use AI to scan best practices for onboarding programs, pull benchmarks, and stress-test your assumptions — turning a vague brief into a grounded, evidence-backed picture of what "good" looks like.',
+    handoff:'Hands off a clear problem statement and a set of findings → straight into the project plan.'},
+  pm:{chip:'Module 2 · Project Management',col:'#A34E1C',name:'Project Management',
+    role:'The findings become a plan. AI helps you break the program into phases and tasks, assign owners and due dates, and set up the board — the structure everything else hangs on. This is where research turns into a schedule people can actually work.',
+    handoff:'Hands off a task list with owners and dates → into the tracking spreadsheet and the automations from this lesson.'},
+  excel:{chip:'Module 3 · AI Excel',col:'#EF7F1A',name:'AI Excel',
+    role:'The plan needs numbers. You use AI in Excel to build the budget, model the timeline, and track status — cleaning the update data, writing the formulas, and letting the recurring pipeline keep the sheet fresh without manual re-keying.',
+    handoff:'Hands off clean figures and a live status table → into the status documents and the report.'},
+  office:{chip:'Module 4 · AI Office',col:'#412C23',name:'AI Office',
+    role:'The numbers need words around them. AI drafts the project charter, the weekly status write-ups, and stakeholder emails — pulling straight from the plan and the sheet so the documents always match the real state of the project.',
+    handoff:'Hands off polished written updates and a charter → into the presentation and the automated digest.'},
+  ppt:{chip:'Module 5 · PowerPoint',col:'#008DD2',name:'PowerPoint',
+    role:'The story reaches the room. AI turns the charter and status data into a clean stakeholder deck — the milestone review, the go/no-go, the launch readout. The same facts that started as research now land as a decision-ready presentation.',
+    handoff:'Closes the loop → feedback and decisions flow back into the plan, and the whole pipeline runs again.'}
+};
+function pickCap(node,key){
+  document.querySelectorAll('#capStage .cap-node').forEach(n=>n.classList.remove('active'));
+  node.classList.add('active');
+  const d=CAP_DATA[key];
+  const detail=document.getElementById('capDetail');
+  detail.innerHTML=
+    '<div class="cd-inner">'+
+      '<div class="cd-head"><span class="cd-chip" style="background:'+d.col+'">'+d.chip+'</span><h4>'+d.name+'</h4></div>'+
+      '<p class="cd-role">'+d.role+'</p>'+
+      '<div class="cd-handoff"><span class="hk">The handoff</span><p>'+d.handoff+'</p></div>'+
+    '</div>';
+}
+pickCap(document.querySelector('.cap-node[data-cap="research"]'),'research');
+
+/* ══ Figure 6 · safety checklist ══ */
+function updateProgress(){
+  const total=document.querySelectorAll('#checkList .check').length;
+  const on=document.querySelectorAll('#checkList .check.on').length;
+  document.getElementById('cpFill').style.width=(on/total*100)+'%';
+  document.getElementById('cpLab').textContent=on+' / '+total+' safeguards';
+}
+function toggleCheck(el){el.classList.toggle('on');updateProgress()}
+function checkAll(){document.querySelectorAll('#checkList .check').forEach(c=>c.classList.add('on'));updateProgress()}
+function checkClear(){document.querySelectorAll('#checkList .check').forEach(c=>c.classList.remove('on'));updateProgress()}
+
+/* ══ Course completion · confetti ══ */
+function celebrate(){
+  const host=document.getElementById('finish');
+  const cols=['#FECC00','#EF7F1A','#FF9429','#008DD2','#FBF6EE','#A34E1C'];
+  for(let i=0;i<70;i++){
+    const c=document.createElement('div');
+    c.className='confetti';
+    c.style.left=Math.random()*100+'%';
+    c.style.background=cols[i%cols.length];
+    c.style.transform='rotate('+Math.random()*360+'deg)';
+    host.appendChild(c);
+    const dx=(Math.random()-0.5)*120;
+    const dur=1400+Math.random()*1400;
+    c.animate([
+      {transform:'translate(0,-20px) rotate(0deg)',opacity:1},
+      {transform:'translate('+dx+'px,'+(host.offsetHeight+40)+'px) rotate('+(Math.random()*720)+'deg)',opacity:0}
+    ],{duration:dur,easing:'cubic-bezier(.2,.6,.4,1)'});
+    setTimeout(()=>c.remove(),dur);
+  }
+}
+new IntersectionObserver((es,o)=>es.forEach(e=>{
+  if(e.isIntersecting){setTimeout(celebrate,400);o.unobserve(e.target)}
+}),{threshold:0.4}).observe(document.getElementById('finish'));
+
+</script>
+</body>
+</html>
