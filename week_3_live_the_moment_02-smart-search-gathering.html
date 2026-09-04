@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 2 · Smart Search &amp; Information Gathering — MokshPath</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=JetBrains+Mono:wght@400;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --orange:#E87A2E;--orange-dark:#D06A20;--orange-light:#F5943E;--orange-glow:rgba(232,122,46,0.12);
+  --navy:#2B2D42;--navy-dark:#1A1B2E;
+  --bg:#F3EDE7;--bg-card:#FFFFFF;--bg-light:#F9F5F0;
+  --text-primary:#2B2D42;--text-secondary:#6B6D7B;--text-muted:#9597A6;
+  --border:#E5DDD4;--green:#4CAF50;--green-light:#E8F5E9;--red:#E04E3C;--red-light:#FDECEA;
+  --shadow-sm:0 2px 8px rgba(43,45,66,0.06);--shadow-md:0 8px 24px rgba(43,45,66,0.08);
+  --shadow-lg:0 16px 48px rgba(43,45,66,0.12);
+  --radius:14px;--radius-sm:8px;
+  --mono:'JetBrains Mono',monospace;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text-primary);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+
+/* ── NAV ── */
+.nav{position:sticky;top:0;z-index:100;background:var(--bg-card);border-bottom:1px solid var(--border);padding:0 2rem;height:64px;display:flex;align-items:center;justify-content:space-between;box-shadow:var(--shadow-sm)}
+.nav-left{display:flex;align-items:center;gap:.7rem}
+.lesson-badge{font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--orange);background:var(--orange-glow);padding:.3rem .7rem;border-radius:50px}
+.nav-logo{display:flex;align-items:center;gap:.7rem;text-decoration:none}
+.nav-logo-icon{width:auto;height:48px;display:block;object-fit:contain}
+.nav-logo-text{display:flex;flex-direction:column;line-height:1.15}
+.nav-logo-name{font-family:'DM Serif Display',serif;font-size:1.25rem;color:var(--navy)}
+.nav-logo-name span{color:var(--orange)}
+.nav-logo-tag{font-size:.62rem;color:var(--text-muted);font-weight:500;letter-spacing:.02em}
+
+/* ── HERO ── */
+.hero{padding:3.5rem 2rem 2.5rem;text-align:center;position:relative}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:.45rem;padding:.4rem 1rem;border-radius:50px;background:var(--orange-glow);color:var(--orange);font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:1.2rem}
+.hero-eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--orange);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.hero h1{font-family:'DM Serif Display',serif;font-size:clamp(2rem,4vw,3rem);line-height:1.13;color:var(--navy);margin-bottom:1rem;max-width:780px;margin-left:auto;margin-right:auto}
+.hero h1 em{font-style:normal;color:var(--orange)}
+.hero-sub{font-size:1.02rem;color:var(--text-secondary);line-height:1.7;max-width:620px;margin:0 auto}
+
+/* ── PROGRESS RAIL ── */
+.progress-rail{max-width:760px;margin:1.8rem auto 0;display:flex;align-items:center;gap:.5rem}
+.progress-dot{flex:1;height:6px;background:var(--border);border-radius:3px;transition:background .3s}
+.progress-dot.done{background:linear-gradient(90deg,var(--orange),var(--orange-light))}
+.progress-label{font-size:.7rem;color:var(--text-muted);font-weight:600;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+
+/* ── SECTIONS ── */
+section.lesson{padding:3rem 2rem}
+.container{max-width:1080px;margin:0 auto}
+.lesson-num{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;background:var(--orange);color:#fff;font-family:'DM Serif Display',serif;font-size:1.1rem;margin-bottom:.9rem}
+.lesson-title{font-family:'DM Serif Display',serif;font-size:clamp(1.6rem,2.5vw,2.1rem);color:var(--navy);margin-bottom:.55rem;line-height:1.2}
+.lesson-intro{font-size:.95rem;color:var(--text-secondary);line-height:1.7;max-width:680px;margin-bottom:2rem}
+.lesson-card{background:var(--bg-card);border-radius:var(--radius);box-shadow:var(--shadow-sm);border:1px solid var(--border);padding:2rem;margin-top:1.5rem}
+
+/* ── ACTIVITY 1: SORTER ── */
+.classify-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:1rem}
+@media (max-width:760px){.classify-grid{grid-template-columns:1fr}}
+.classify-scenarios{display:flex;flex-direction:column;gap:.7rem}
+.scenario-card{background:var(--bg-card);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:1rem 1.1rem;cursor:grab;transition:all .25s;position:relative;user-select:none}
+.scenario-card:hover{border-color:var(--orange);box-shadow:var(--shadow-sm);transform:translateY(-1px)}
+.scenario-card.dragging{opacity:.4}
+.scenario-card.placed{opacity:.35;cursor:not-allowed;pointer-events:none}
+.scenario-card.placed.correct{border-color:var(--green);background:var(--green-light)}
+.scenario-card.placed.wrong{border-color:var(--red);background:var(--red-light)}
+.scenario-text{font-size:.86rem;color:var(--text-primary);line-height:1.5;font-weight:500}
+.scenario-hint{font-size:.72rem;color:var(--text-muted);margin-top:.3rem;font-style:italic}
+.bucket-stack{display:flex;flex-direction:column;gap:1rem}
+.bucket{border:2px dashed var(--border);border-radius:var(--radius-sm);padding:1rem;min-height:88px;transition:all .25s;background:rgba(255,255,255,0.5)}
+.bucket.drag-over{border-color:var(--orange);background:var(--orange-glow);border-style:solid}
+.bucket-title{font-family:'DM Serif Display',serif;font-size:1rem;color:var(--navy);margin-bottom:.25rem}
+.bucket-sub{font-size:.7rem;color:var(--text-muted);margin-bottom:.6rem;letter-spacing:.04em;text-transform:uppercase;font-weight:600}
+.bucket-drop{display:flex;flex-wrap:wrap;gap:.4rem;min-height:32px}
+.dropped-pill{background:var(--bg-card);border:1px solid var(--border);border-radius:50px;padding:.3rem .7rem;font-size:.72rem;font-weight:500;color:var(--text-primary)}
+.dropped-pill.correct{background:var(--green-light);border-color:var(--green);color:#256B29}
+.dropped-pill.wrong{background:var(--red-light);border-color:var(--red);color:#933}
+.activity-feedback{margin-top:1.2rem;padding:1rem 1.2rem;border-radius:var(--radius-sm);font-size:.85rem;line-height:1.5;display:none}
+.activity-feedback.show{display:block;animation:fadeIn .4s ease}
+.activity-feedback.success{background:var(--green-light);color:#1F5723;border-left:3px solid var(--green)}
+.activity-feedback.partial{background:#FFF4E5;color:#7A4A0A;border-left:3px solid #E89B2E}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+
+.activity-toolbar{display:flex;gap:.6rem;margin-top:1.2rem;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:.4rem;padding:.6rem 1.2rem;border-radius:8px;font-size:.82rem;font-weight:600;border:none;cursor:pointer;transition:all .2s;font-family:inherit}
+.btn-primary{background:var(--orange);color:#fff}.btn-primary:hover{background:var(--orange-dark);transform:translateY(-1px);box-shadow:0 4px 12px rgba(232,122,46,0.3)}
+.btn-ghost{background:transparent;border:1.5px solid var(--border);color:var(--text-secondary)}.btn-ghost:hover{border-color:var(--orange);color:var(--orange)}
+
+/* ── COMPARE CARDS ── */
+.compare-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:1.2rem}
+@media (max-width:760px){.compare-grid{grid-template-columns:1fr}}
+.compare-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:1.2rem;transition:all .3s}
+.compare-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-md);border-color:transparent}
+.compare-icon{width:38px;height:38px;border-radius:8px;display:flex;align-items:center;justify-content:center;margin-bottom:.7rem;font-size:1.05rem;font-weight:700;font-family:'DM Serif Display',serif;color:#fff}
+.compare-card:nth-child(1) .compare-icon{background:linear-gradient(135deg,#66BB6A,#4CAF50)}
+.compare-card:nth-child(2) .compare-icon{background:linear-gradient(135deg,var(--orange),var(--orange-light))}
+.compare-card:nth-child(3) .compare-icon{background:linear-gradient(135deg,#E04E3C,#C43A29)}
+.compare-card h4{font-family:'DM Serif Display',serif;font-size:1.05rem;color:var(--navy);margin-bottom:.3rem}
+.compare-card p{font-size:.82rem;color:var(--text-secondary);line-height:1.55}
+.compare-card ul{list-style:none;padding:0;margin-top:.6rem;border-top:1px dashed var(--border);padding-top:.55rem}
+.compare-card li{font-size:.74rem;color:var(--text-secondary);padding:.15rem 0;display:flex;gap:.4rem;align-items:flex-start;line-height:1.45}
+.compare-card li::before{content:'✓';color:var(--green);font-weight:700;flex-shrink:0}
+.compare-card.warn li::before{content:'⚠';color:var(--orange)}
+.compare-card.danger li::before{content:'✗';color:var(--red)}
+
+/* ── ACTIVITY 2: PROMPT BUILDER ── */
+.prompt-pool{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1rem}
+.frag-chip{background:var(--bg-card);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:.65rem .9rem;font-size:.8rem;line-height:1.45;cursor:pointer;transition:all .2s;max-width:340px;user-select:none;font-weight:500}
+.frag-chip:hover{border-color:var(--orange);box-shadow:var(--shadow-sm);transform:translateY(-1px)}
+.frag-chip.used{opacity:0;pointer-events:none;position:absolute;visibility:hidden}
+.frag-chip.shake{animation:shake .35s ease;border-color:var(--red);background:var(--red-light)}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.prompt-slots{margin-top:1.4rem;border:2px dashed var(--border);border-radius:var(--radius-sm);padding:1rem;min-height:90px;background:rgba(255,255,255,0.5)}
+.slot-line{display:flex;align-items:flex-start;gap:.6rem;padding:.45rem .2rem;font-size:.83rem;line-height:1.5;animation:fadeIn .35s ease}
+.slot-tag{font-family:var(--mono);font-size:.62rem;font-weight:600;letter-spacing:.05em;color:#fff;background:var(--navy);padding:.18rem .5rem;border-radius:4px;flex-shrink:0;margin-top:.1rem;text-transform:uppercase}
+.slot-line.t-topic .slot-tag{background:#5B8FE0}
+.slot-line.t-context .slot-tag{background:var(--orange)}
+.slot-line.t-constraint .slot-tag{background:#66BB6A}
+.slot-line.t-sources .slot-tag{background:#8E6BC0}
+.prompt-hint{margin-top:.8rem;padding:.7rem .9rem;background:var(--red-light);border-left:3px solid var(--red);border-radius:4px;font-size:.78rem;color:#7A2A1E;line-height:1.55;display:none}
+.prompt-hint.show{display:block;animation:fadeIn .3s ease}
+.prompt-preview{margin-top:1.2rem;background:#1A1B2E;border-radius:var(--radius-sm);padding:1.2rem 1.4rem;font-family:var(--mono);font-size:.78rem;line-height:1.75;color:#E8E8EC;display:none;border:1px solid var(--navy)}
+.prompt-preview.show{display:block;animation:fadeIn .4s ease}
+.prompt-preview .pp-label{color:var(--orange-light);font-weight:600;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;display:block;margin-bottom:.6rem}
+.structure-bar{display:flex;gap:.4rem;margin-top:1rem;flex-wrap:wrap}
+.structure-step{font-size:.68rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:.3rem .7rem;border-radius:50px;color:#fff}
+.structure-step:nth-child(1){background:#5B8FE0}.structure-step:nth-child(3){background:var(--orange)}
+.structure-step:nth-child(5){background:#66BB6A}.structure-step:nth-child(7){background:#8E6BC0}
+.structure-arrow{color:var(--text-muted);font-weight:700;align-self:center;font-size:.75rem}
+
+/* ── LOOP STRIP ── */
+.loop-strip{margin-top:1.2rem;background:#1A1B2E;border-radius:var(--radius-sm);padding:1rem 1.2rem;font-family:var(--mono);font-size:.8rem;line-height:1.7;color:#E8E8EC;border:1px solid var(--navy);overflow-x:auto}
+.loop-strip .fn{color:var(--orange-light);font-weight:600}
+.loop-strip .cm{color:#7E8AA0;display:block;font-size:.72rem;margin-top:.35rem}
+
+/* ── ACTIVITY 3: CITATION CLINIC ── */
+.validate-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:1rem}
+@media (max-width:760px){.validate-grid{grid-template-columns:1fr}}
+.product-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:1.4rem;box-shadow:var(--shadow-sm)}
+.product-card h4{font-family:'DM Serif Display',serif;font-size:1.15rem;color:var(--navy);margin-bottom:.2rem}
+.product-tag{font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--orange);margin-bottom:.8rem;display:block}
+.stat-row{display:flex;justify-content:space-between;padding:.42rem 0;border-bottom:1px dashed var(--border);font-size:.8rem}
+.stat-row:last-of-type{border-bottom:none}
+.stat-label{color:var(--text-secondary)}
+.stat-value{font-family:var(--mono);font-weight:600;color:var(--navy);text-align:right}
+.check-block{margin-top:1rem;padding-top:.9rem;border-top:2px solid var(--border)}
+.check-block h5{font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-muted);margin-bottom:.6rem}
+.err-opt{display:block;width:100%;text-align:left;background:var(--bg-light);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:.6rem .8rem;font-size:.8rem;line-height:1.45;cursor:pointer;transition:all .2s;font-family:inherit;color:var(--text-primary);margin-bottom:.45rem}
+.err-opt:hover:not(:disabled){border-color:var(--orange);transform:translateX(2px)}
+.err-opt:disabled{cursor:default}
+.err-opt.right{background:var(--green-light);border-color:var(--green);color:#1F5723;font-weight:600}
+.err-opt.wrong{background:var(--red-light);border-color:var(--red);color:#7A2A1E}
+.err-code{font-family:var(--mono);font-size:.76rem;background:var(--bg-light);color:var(--navy);border:1px solid var(--border);border-radius:6px;padding:.6rem .75rem;display:block;margin-bottom:.7rem;line-height:1.5}
+.err-code .cite-url{color:var(--orange-dark);font-weight:600}
+.err-note{font-size:.74rem;color:var(--text-secondary);margin-top:.5rem;line-height:1.55;padding:.55rem .7rem;background:var(--bg-light);border-radius:6px;border-left:3px solid var(--orange);display:none}
+.err-note.show{display:block;animation:fadeIn .3s ease}
+
+/* ── ACTIVITY 4: QUIZ ── */
+.quiz-q{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:1.3rem 1.4rem;margin-top:1rem}
+.quiz-q-num{font-family:var(--mono);font-size:.68rem;font-weight:600;color:var(--orange);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.4rem}
+.quiz-q-text{font-size:.92rem;font-weight:600;color:var(--navy);line-height:1.55;margin-bottom:.9rem}
+.quiz-opts{display:grid;gap:.5rem}
+.quiz-opt{text-align:left;background:var(--bg-light);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:.7rem .9rem;font-size:.83rem;line-height:1.5;cursor:pointer;transition:all .2s;font-family:inherit;color:var(--text-primary)}
+.quiz-opt:hover:not(:disabled){border-color:var(--orange);transform:translateX(2px)}
+.quiz-opt:disabled{cursor:default;opacity:.75}
+.quiz-opt.right{background:var(--green-light);border-color:var(--green);color:#1F5723;opacity:1;font-weight:600}
+.quiz-opt.wrong{background:var(--red-light);border-color:var(--red);color:#7A2A1E;opacity:1}
+.quiz-explain{margin-top:.7rem;padding:.7rem .9rem;border-radius:6px;font-size:.78rem;line-height:1.6;display:none}
+.quiz-explain.show{display:block;animation:fadeIn .3s ease}
+.quiz-explain.ok{background:var(--green-light);color:#1F5723;border-left:3px solid var(--green)}
+.quiz-explain.no{background:#FFF4E5;color:#7A4A0A;border-left:3px solid #E89B2E}
+
+/* ── REFLECTION ── */
+.reflect-prompt{display:grid;grid-template-columns:1fr;gap:.8rem;margin-top:1rem}
+.reflect-q{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:1rem 1.2rem}
+.reflect-q-text{font-size:.88rem;font-weight:600;color:var(--navy);margin-bottom:.5rem}
+.reflect-q textarea{width:100%;border:1px solid var(--border);border-radius:6px;padding:.6rem .8rem;font-family:inherit;font-size:.85rem;color:var(--text-primary);background:var(--bg-light);resize:vertical;min-height:60px}
+.reflect-q textarea:focus{outline:none;border-color:var(--orange)}
+
+/* ── FOOTER NEXT ── */
+.next-up{background:linear-gradient(135deg,var(--navy-dark),var(--navy));border-radius:var(--radius);padding:2.4rem;color:#fff;margin-top:2rem;text-align:center;position:relative;overflow:hidden}
+.next-up::before{content:'';position:absolute;top:-50px;right:-50px;width:180px;height:180px;border-radius:50%;background:rgba(232,122,46,0.12)}
+.next-up h3{font-family:'DM Serif Display',serif;font-size:1.5rem;margin-bottom:.5rem;position:relative}
+.next-up p{font-size:.92rem;color:rgba(255,255,255,0.75);margin-bottom:1.2rem;position:relative}
+.next-up .btn-primary{position:relative}
+
+@media (max-width:760px){
+  .nav{padding:0 1rem}
+  .nav-logo-tag{display:none}
+  .hero{padding:2.5rem 1.2rem 2rem}
+  section.lesson{padding:2rem 1.2rem}
+  .lesson-card{padding:1.4rem}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-left">
+    <span class="lesson-badge">Lesson 2 of 4</span>
+  </div>
+  <a href="https://mokshpath.org/" class="nav-logo">
+    <img class="nav-logo-icon" src="hero.svg" alt="MokshPath logo">
+    <div class="nav-logo-text">
+      <span class="nav-logo-name">Moksh<span>Path</span></span>
+      <span class="nav-logo-tag">Guided Path to True Learning</span>
+    </div>
+  </a>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-eyebrow"><span class="dot"></span> Week 3 · AI Research</div>
+  <h1>Smart Search &amp; Information Gathering — <em>ask sharp, read the sources, trust nothing blindly</em></h1>
+  <p class="hero-sub">Four hands-on activities. Match research needs to the right tool, rebuild a vague query into a strong research prompt block by block, run a citation clinic on three real-looking sources, and drill the verify-first habits that keep AI answer engines from quietly leading you wrong.</p>
+  <div class="progress-rail">
+    <span class="progress-label">Progress</span>
+    <div class="progress-dot" id="prog1"></div>
+    <div class="progress-dot" id="prog2"></div>
+    <div class="progress-dot" id="prog3"></div>
+    <div class="progress-dot" id="prog4"></div>
+  </div>
+</header>
+
+<!-- ── ACTIVITY 1: TOOL SORTER ── -->
+<section class="lesson" id="activity-1">
+  <div class="container">
+    <span class="lesson-num">1</span>
+    <h2 class="lesson-title">Match the research need to the right tool</h2>
+    <p class="lesson-intro">A plain chatbot, an answer engine, and a deep-research agent are not interchangeable. Picking the wrong one is why people get stale facts or invented citations. Study the three tool families below, then drag each research need into the tool that fits it best. Guess freely — wrong answers explain themselves on hover.</p>
+
+    <div class="compare-grid">
+      <div class="compare-card">
+        <div class="compare-icon">C</div>
+        <h4>Plain LLM chat</h4>
+        <p>"Reason over what the model already knows." No live web — answers come from training data with a cutoff date.</p>
+        <ul>
+          <li>Great for drafting, brainstorming, explaining</li>
+          <li>Fast, no links to chase</li>
+          <li>Can be stale or confidently wrong — no sources</li>
+        </ul>
+      </div>
+      <div class="compare-card warn">
+        <div class="compare-icon">A</div>
+        <h4>Answer engine (search)</h4>
+        <p>"Search the live web, then summarize with citations." Perplexity, ChatGPT search, Google AI mode.</p>
+        <ul>
+          <li>Current facts, prices, news, releases</li>
+          <li>Every claim links to a source you can open</li>
+          <li>Only as good as the pages it happened to find</li>
+        </ul>
+      </div>
+      <div class="compare-card danger">
+        <div class="compare-icon">D</div>
+        <h4>Deep research agent</h4>
+        <p>"Run many searches over minutes, read dozens of pages, write a cited report." A bigger, slower job.</p>
+        <ul>
+          <li>Comparisons, landscapes, literature-style scans</li>
+          <li>Worth the wait for multi-angle questions</li>
+          <li>Overkill for a single quick fact</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="lesson-card" style="margin-top:1.5rem">
+      <div class="classify-grid">
+        <div class="classify-scenarios" id="scenarioList"></div>
+        <div class="bucket-stack">
+          <div class="bucket" data-bucket="chat">
+            <div class="bucket-title">Plain LLM chat</div>
+            <div class="bucket-sub">Draft · Explain · Brainstorm</div>
+            <div class="bucket-drop" data-drop="chat"></div>
+          </div>
+          <div class="bucket" data-bucket="answer">
+            <div class="bucket-title">Answer engine (search)</div>
+            <div class="bucket-sub">Perplexity · ChatGPT search</div>
+            <div class="bucket-drop" data-drop="answer"></div>
+          </div>
+          <div class="bucket" data-bucket="deep">
+            <div class="bucket-title">Deep research agent</div>
+            <div class="bucket-sub">Multi-source · Cited report</div>
+            <div class="bucket-drop" data-drop="deep"></div>
+          </div>
+        </div>
+      </div>
+      <div class="activity-feedback" id="feedback1"></div>
+      <div class="activity-toolbar">
+        <button class="btn btn-ghost" onclick="resetActivity1()">↻ Try again</button>
+        <button class="btn btn-primary" onclick="showAnswers1()">Show me the answers</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 2: BUILD-A-RESEARCH-PROMPT ── -->
+<section class="lesson" id="activity-2" style="background:var(--bg-light)">
+  <div class="container">
+    <span class="lesson-num" style="background:#5B8FE0">2</span>
+    <h2 class="lesson-title">Turn a vague query into a strong research prompt</h2>
+    <p class="lesson-intro">"Best CRM software?" gets you a generic listicle. A research prompt that actually helps names four things: <strong>TOPIC → CONTEXT → CONSTRAINTS → SOURCES</strong>. The eight blocks of a strong research prompt are scrambled below — click them in the order they should appear. A wrong click tells you why it doesn't fit yet.</p>
+
+    <div class="structure-bar">
+      <span class="structure-step">1 · Topic</span><span class="structure-arrow">→</span>
+      <span class="structure-step">2 · Context</span><span class="structure-arrow">→</span>
+      <span class="structure-step">3 · Constraints</span><span class="structure-arrow">→</span>
+      <span class="structure-step">4 · Sources</span>
+    </div>
+
+    <div class="lesson-card">
+      <h4 style="font-family:'DM Serif Display',serif;font-size:1.05rem;color:var(--navy)">Click the next block of the prompt</h4>
+      <div class="prompt-pool" id="fragPool"></div>
+      <div class="prompt-hint" id="promptHint"></div>
+      <div class="prompt-slots" id="promptSlots">
+        <div style="font-size:.75rem;color:var(--text-muted);font-style:italic" id="slotPlaceholder">Your research prompt will build up here, block by block…</div>
+      </div>
+      <div class="prompt-preview" id="promptPreview"></div>
+      <div class="activity-feedback" id="feedback2"></div>
+      <div class="activity-toolbar">
+        <button class="btn btn-ghost" onclick="resetActivity2()">↻ Start over</button>
+      </div>
+    </div>
+
+    <div class="loop-strip">
+      <span class="fn">The search loop:</span> Ask → Read → Follow to primary → Capture → Verify
+      <span class="cm">// Ask a sharp question. Read the summary AND open the sources. Follow citations back to the primary source (the original study, filing, or vendor page — not a blog quoting a blog). Capture the exact quote + link. Verify the claim in a second, independent source before you rely on it.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 3: CITATION CLINIC ── -->
+<section class="lesson" id="activity-3">
+  <div class="container">
+    <span class="lesson-num" style="background:#4CAF50">3</span>
+    <h2 class="lesson-title">The citation clinic — which source do you trust?</h2>
+    <p class="lesson-intro">Answer engines hand you a tidy summary with footnotes. The footnotes are where the real work is. Each patient below shows a claim and the source the AI cited for it. Pick the honest verdict — is this citation trustworthy and relevant, or not? Every choice explains itself, so wrong guesses teach too.</p>
+
+    <div class="lesson-card">
+      <div class="validate-grid">
+        <div class="product-card" id="cardA">
+          <span class="product-tag">Citation A</span>
+          <h4>The claim with the anonymous blog</h4>
+          <div class="err-code"><strong>Claim:</strong> "Product X boosts team productivity by 47%."<br><span class="cite-url">→ cited: bestsaas-deals-2024.blogspot.com</span> — an affiliate blog with a "Buy Now" button next to the number.</div>
+          <div class="check-block">
+            <h5>Trustworthy &amp; relevant?</h5>
+            <div id="checksA"></div>
+          </div>
+          <div class="err-note" id="noteA"></div>
+        </div>
+        <div class="product-card" id="cardB">
+          <span class="product-tag">Citation B</span>
+          <h4>The stat from a stale page</h4>
+          <div class="err-code"><strong>Claim:</strong> "The current free tier includes 5 GB of storage."<br><span class="cite-url">→ cited: vendor.com/pricing</span> — but the page footer reads "Last updated: March 2021," and today is 2026.</div>
+          <div class="check-block">
+            <h5>Trustworthy &amp; relevant?</h5>
+            <div id="checksB"></div>
+          </div>
+          <div class="err-note" id="noteB"></div>
+        </div>
+        <div class="product-card" id="cardC" style="grid-column:1/-1">
+          <span class="product-tag">Citation C</span>
+          <h4>The primary source that actually fits</h4>
+          <div class="err-code"><strong>Claim:</strong> "Global smartphone shipments fell 3.2% year-over-year in Q1."<br><span class="cite-url">→ cited: the research firm's own press release</span> — dated this quarter, with the exact 3.2% figure and a methodology note. A second firm reports a similar decline.</div>
+          <div class="check-block">
+            <h5>Trustworthy &amp; relevant?</h5>
+            <div id="checksC"></div>
+          </div>
+          <div class="err-note" id="noteC"></div>
+        </div>
+      </div>
+      <div class="activity-feedback" id="feedback3"></div>
+      <div class="activity-toolbar">
+        <button class="btn btn-ghost" onclick="resetActivity3()">↻ Reset clinic</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 4: VERIFY-FIRST QUIZ ── -->
+<section class="lesson" id="activity-4" style="background:var(--bg-light)">
+  <div class="container">
+    <span class="lesson-num" style="background:#8E6BC0">4</span>
+    <h2 class="lesson-title">The verify-first quiz — read the citations, not just the summary</h2>
+    <p class="lesson-intro">Answer engines are fast and often right — but they summarize whatever pages they happened to surface, and they can state a wrong fact with total confidence. This quiz drills the habit that keeps you safe: <strong>always open the source and confirm the claim.</strong> Five situations, one honest answer each — the misconceptions are where the real learning is.</p>
+
+    <div id="quizWrap"></div>
+    <div class="activity-feedback" id="feedback4"></div>
+    <div class="activity-toolbar">
+      <button class="btn btn-ghost" onclick="resetQuiz()">↻ Retake quiz</button>
+    </div>
+  </div>
+</section>
+
+<!-- ── REFLECT ── -->
+<section class="lesson" style="padding-bottom:1.5rem">
+  <div class="container">
+    <h2 class="lesson-title" style="font-size:1.5rem">Quick reflect — make it stick</h2>
+    <p class="lesson-intro" style="margin-bottom:1rem">A sentence each is enough. Writing it in your own words is what moves it into memory. (Nothing is saved or sent.)</p>
+    <div class="reflect-prompt">
+      <div class="reflect-q">
+        <div class="reflect-q-text">You need to recommend a project-management tool for a 12-person remote team on a tight budget, by Friday. Write the research prompt you'd give an answer engine — include topic, context, constraints, and an explicit ask for sources.</div>
+        <textarea placeholder="'Compare project-management tools for a 12-person fully-remote team under $10/user/month, launching this week. For each, cite the current pricing page and one independent review from 2025 or later...'"></textarea>
+      </div>
+      <div class="reflect-q">
+        <div class="reflect-q-text">An answer engine gives you a confident number with a footnote. Describe the exact steps you'd take before repeating that number in a report your boss will read.</div>
+        <textarea placeholder="I'd open the cited page, confirm the exact figure is really there (not paraphrased), check the date, note if it's a primary source, then verify the same claim in one independent source before I use it..."></textarea>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NEXT UP -->
+<section class="lesson" style="padding-top:0">
+  <div class="container">
+    <div class="next-up">
+      <h3>Lesson 3 · Synthesis &amp; Analysis</h3>
+      <p>You can gather trustworthy sources. Next: turn a pile of findings into an argument — using AI to compare, cluster, and stress-test the evidence so you produce a conclusion you can actually defend, not just a summary of what you read.</p>
+      <a href="03-synthesis-analysis.html" class="btn btn-primary">Continue to Lesson 3 →</a>
+    </div>
+  </div>
+</section>
+
+<script>
+const $ = id => document.getElementById(id);
+
+/* ─── ACTIVITY 1: Research Tool Sorter ─── */
+const NEEDS = [
+  {id:'n1', text:'Explain the difference between qualitative and quantitative research in plain English', hint:'Reasoning over general knowledge — no live web needed.', bucket:'chat', why:'This is stable, general knowledge the model already holds. A plain chat answers it instantly — no sources to chase, no risk of staleness. Reaching for a search tool here just adds friction.'},
+  {id:'n2', text:'Draft a first outline for a blog post on remote-work culture', hint:'Generation, not fact-finding.', bucket:'chat', why:'Drafting and brainstorming are what plain LLM chat is best at. You are creating text, not verifying a fact, so live search adds nothing — just start writing.'},
+  {id:'n3', text:'What is the exact current price of the Pro plan, updated today?', hint:'A live, time-sensitive fact that changes.', bucket:'answer', why:'Prices change and have a "right now" answer with a source. An answer engine searches the live pricing page and links it, so you can confirm the number. A plain chatbot might quote a stale, invented price.'},
+  {id:'n4', text:'Did that company release a new model this week, and what did reviewers say?', hint:'Recent news — needs the live web and citations.', bucket:'answer', why:'Anything "this week" is beyond a plain model\'s training cutoff. An answer engine finds current coverage and cites it, letting you open the reviews yourself instead of trusting a summary.'},
+  {id:'n5', text:'Compare the top 6 email marketing platforms on price, deliverability, and integrations, with sources for each', hint:'Many pages, many angles, one cited report.', bucket:'deep', why:'A multi-tool, multi-attribute comparison across six products is exactly what a deep research agent is for — it runs many searches, reads dozens of pages, and returns a cited report. An answer engine can do a lighter version, but depth here earns the wait.'},
+  {id:'n6', text:'Map the current landscape of open-source vector databases, who backs each, and their trade-offs', hint:'A broad, multi-source scan — a small literature review.', bucket:'deep', why:'A landscape scan spans many vendors, backers, and trade-offs — dozens of sources. That is a deep research task: let the agent read widely over several minutes and hand you a structured, cited overview.'}
+];
+const BUCKET_NAMES = {chat:'Plain LLM chat', answer:'Answer engine (search)', deep:'Deep research agent'};
+
+let placed = {};
+function renderScenarios(){
+  const list = $('scenarioList');
+  const shuffled = [...NEEDS].sort(()=>Math.random()-0.5);
+  list.innerHTML = shuffled.map(p => `
+    <div class="scenario-card" draggable="true" data-id="${p.id}">
+      <div class="scenario-text">${p.text}</div>
+      <div class="scenario-hint">${p.hint}</div>
+    </div>`).join('');
+  list.querySelectorAll('.scenario-card').forEach(card => {
+    card.addEventListener('dragstart', e => {
+      e.dataTransfer.setData('id', card.dataset.id);
+      card.classList.add('dragging');
+    });
+    card.addEventListener('dragend', () => card.classList.remove('dragging'));
+  });
+}
+function setupBuckets(){
+  document.querySelectorAll('.bucket').forEach(b => {
+    b.addEventListener('dragover', e => { e.preventDefault(); b.classList.add('drag-over'); });
+    b.addEventListener('dragleave', () => b.classList.remove('drag-over'));
+    b.addEventListener('drop', e => {
+      e.preventDefault();
+      b.classList.remove('drag-over');
+      handleDrop(e.dataTransfer.getData('id'), b.dataset.bucket);
+    });
+  });
+}
+function handleDrop(id, bucket){
+  const need = NEEDS.find(p => p.id === id);
+  if (!need || placed[id]) return;
+  const correct = need.bucket === bucket;
+  placed[id] = {bucket, correct};
+  const card = document.querySelector(`.scenario-card[data-id="${id}"]`);
+  card.classList.add('placed', correct ? 'correct' : 'wrong');
+  const pill = document.createElement('span');
+  pill.className = 'dropped-pill ' + (correct ? 'correct' : 'wrong');
+  pill.textContent = (correct ? '✓ ' : '✗ ') + need.text.substring(0, 34) + (need.text.length > 34 ? '…' : '');
+  pill.title = correct ? need.why : `Best tool: ${BUCKET_NAMES[need.bucket]}. ${need.why}`;
+  document.querySelector(`[data-drop="${bucket}"]`).appendChild(pill);
+  checkActivity1Done();
+}
+function checkActivity1Done(){
+  if (Object.keys(placed).length === NEEDS.length) {
+    const right = Object.values(placed).filter(p => p.correct).length;
+    const fb = $('feedback1');
+    if (right === NEEDS.length) {
+      fb.className = 'activity-feedback show success';
+      fb.innerHTML = `<strong>All six correct — you're matching the tool to the job.</strong> If it's stable knowledge or a first draft, <em>plain chat</em> is fastest. If it's a live fact you must be able to source, use an <em>answer engine</em> and open the links. If it's a broad, multi-angle comparison, spend the minutes on a <em>deep research</em> agent. The wrong tool is how people end up with stale facts or invented citations.`;
+    } else {
+      fb.className = 'activity-feedback show partial';
+      fb.innerHTML = `<strong>You got ${right} of 6.</strong> Hover any red pill for the right tool and the reasoning. The classic mix-up: asking a <em>plain chatbot</em> a "what's the price right now?" question — it has no live web, so it may confidently invent a stale number. Anything time-sensitive belongs in an answer engine. Click <em>Try again</em> for a fresh shuffle.`;
+    }
+    $('prog1').classList.add('done');
+  }
+}
+function resetActivity1(){
+  placed = {};
+  $('feedback1').className = 'activity-feedback';
+  document.querySelectorAll('.bucket-drop').forEach(d => d.innerHTML = '');
+  renderScenarios();
+  $('prog1').classList.remove('done');
+}
+function showAnswers1(){
+  NEEDS.forEach(p => { if (!placed[p.id]) handleDrop(p.id, p.bucket); });
+}
+
+/* ─── ACTIVITY 2: Build-a-Research-Prompt ─── */
+const FRAGMENTS = [
+  {order:1, tag:'topic',      text:'I need to choose a note-taking app for a small research team and want a grounded comparison, not a listicle.'},
+  {order:2, tag:'topic',      text:'Focus on the 4–5 tools most commonly used by academic and knowledge workers today.'},
+  {order:3, tag:'context',    text:'Context: 8 people, mixed Mac/Windows, we already use Google Workspace and want tools that integrate with it.'},
+  {order:4, tag:'context',    text:'We care most about linked notes, search across old notes, and offline access on the road.'},
+  {order:5, tag:'constraint', text:'Constraints: budget is under $12 per user per month, and it must have a real free or trial tier we can test first.'},
+  {order:6, tag:'constraint', text:'Only use information from the last 18 months — pricing and features change fast, so ignore older pages.'},
+  {order:7, tag:'sources',    text:'For every claim about price or features, cite the current official page plus one independent review.'},
+  {order:8, tag:'sources',    text:'Flag anything you could not verify against a source, and tell me where the sources disagree.'}
+];
+const STAGE_HINTS = {
+  topic:'Start with the TOPIC — state exactly what you\'re researching and how narrow to make it, so the engine isn\'t guessing your intent.',
+  context:'CONTEXT comes after the topic: who you are, your setup, and what you actually care about, so the answer fits your situation.',
+  constraint:'CONSTRAINTS come after context — budget, recency, must-haves. This is what filters a generic list down to your real options.',
+  sources:'SOURCES come last — demand citations, an independent check, and honesty about what couldn\'t be verified. This is what makes it research, not a guess.'
+};
+let promptStep = 0, promptMistakes = 0;
+function renderFragments(){
+  const shuffled = [...FRAGMENTS].sort(()=>Math.random()-0.5);
+  $('fragPool').innerHTML = shuffled.map(f =>
+    `<div class="frag-chip" data-order="${f.order}" onclick="pickFragment(${f.order}, this)">${f.text}</div>`
+  ).join('');
+}
+function pickFragment(order, chip){
+  const hint = $('promptHint');
+  if (order !== promptStep + 1) {
+    promptMistakes++;
+    chip.classList.remove('shake'); void chip.offsetWidth;
+    chip.classList.add('shake');
+    const expected = FRAGMENTS.find(f => f.order === promptStep + 1);
+    const label = {topic:'TOPIC', context:'CONTEXT', constraint:'CONSTRAINTS', sources:'SOURCES'}[expected.tag];
+    hint.innerHTML = `<strong>Not yet.</strong> ${STAGE_HINTS[expected.tag]} (Block ${promptStep + 1} of 8 — you're building the <strong>${label}</strong> section.)`;
+    hint.classList.add('show');
+    return;
+  }
+  hint.classList.remove('show');
+  promptStep++;
+  chip.classList.add('used');
+  const frag = FRAGMENTS.find(f => f.order === order);
+  const ph = $('slotPlaceholder');
+  if (ph) ph.remove();
+  const line = document.createElement('div');
+  line.className = 'slot-line t-' + frag.tag;
+  const tagLabel = {topic:'topic', context:'context', constraint:'limits', sources:'sources'}[frag.tag];
+  line.innerHTML = `<span class="slot-tag">${tagLabel}</span><span>${frag.text}</span>`;
+  $('promptSlots').appendChild(line);
+  if (promptStep === FRAGMENTS.length) finishPrompt();
+}
+function finishPrompt(){
+  const preview = $('promptPreview');
+  preview.innerHTML = `<span class="pp-label">Your assembled research prompt — copy this pattern for any topic</span>` +
+    FRAGMENTS.map(f => f.text).join(' ');
+  preview.classList.add('show');
+  const fb = $('feedback2');
+  const whys = `<ul style="margin:.6rem 0 0 1.1rem;line-height:1.7">
+    <li><strong>Topic</strong> stated with a scope ("4–5 most-used tools", "not a listicle") stops the engine from returning a shallow, generic list.</li>
+    <li><strong>Context</strong> — your team size, OS mix, existing tools, what you value — is what turns a generic answer into one that fits your situation.</li>
+    <li><strong>Constraints</strong> like budget and a recency window ("last 18 months") filter the world down to your real options and cut stale pages out.</li>
+    <li><strong>Sources</strong> — cite the official page, add an independent review, and flag what couldn't be verified — is the difference between research and a confident guess.</li></ul>`;
+  if (promptMistakes === 0) {
+    fb.className = 'activity-feedback show success';
+    fb.innerHTML = `<strong>Perfect assembly — zero wrong clicks.</strong> You've internalized TOPIC → CONTEXT → CONSTRAINTS → SOURCES. Why each block earns its place:${whys}`;
+  } else {
+    fb.className = 'activity-feedback show partial';
+    fb.innerHTML = `<strong>Assembled — with ${promptMistakes} wrong click${promptMistakes > 1 ? 's' : ''} on the way.</strong> That's fine: the order <em>is</em> the lesson — say what you want and how narrow, then your situation, then the hard limits, then demand sources. Why each block matters:${whys} Hit <em>Start over</em> and try for a clean run.`;
+  }
+  $('prog2').classList.add('done');
+}
+function resetActivity2(){
+  promptStep = 0; promptMistakes = 0;
+  $('promptHint').classList.remove('show');
+  $('promptPreview').className = 'prompt-preview';
+  $('feedback2').className = 'activity-feedback';
+  $('promptSlots').innerHTML = '<div style="font-size:.75rem;color:var(--text-muted);font-style:italic" id="slotPlaceholder">Your research prompt will build up here, block by block…</div>';
+  renderFragments();
+  $('prog2').classList.remove('done');
+}
+
+/* ─── ACTIVITY 3: Citation Clinic ─── */
+const PATIENTS = {
+  A: {
+    correct: 1,
+    opts: [
+      {t:'Trustworthy — it names a specific number, so someone must have measured it', ex:'No — a precise number is not evidence. An affiliate blog with a "Buy Now" button has a financial reason to publish an impressive, unsourced stat. Precision without a primary source is a red flag, not a green one.'},
+      {t:'Not trustworthy — an anonymous affiliate blog with a commercial motive and no primary source', ex:'Correct. The site earns money when you buy, the "47%" has no linked study behind it, and there\'s no named author or methodology. Follow the citation back: if it cites nothing, or cites another blog, the number is unverified marketing. Find the original study or drop the claim.'},
+      {t:'Trustworthy — the answer engine chose it, so it must be reliable', ex:'No — an answer engine cites whatever page it surfaced, good or bad. The tool doesn\'t vet quality for you; reading the citation critically is your job, and this one fails on source quality and motive.'}
+    ]
+  },
+  B: {
+    correct: 2,
+    opts: [
+      {t:'Trustworthy — it\'s the vendor\'s own official page, so the figure must be right', ex:'No — being the official page isn\'t enough if it\'s stale. The right source can still carry an outdated fact. The 2021 date means the free tier may have changed several times since. Authority without recency can still mislead.'},
+      {t:'Not trustworthy — vendor pages are marketing and always biased', ex:'Partly, but that\'s the wrong reason to reject it. For its own current pricing, the vendor\'s official page is actually the primary source. The real problem here is specific: the page is five years out of date.'},
+      {t:'Relevant source, but stale — a 2021 page can\'t be trusted for a 2026 "current" claim', ex:'Correct. The vendor page is the right kind of source for pricing, but "Last updated: March 2021" makes it useless for a claim about today\'s free tier. Stale info is one of AI research\'s biggest traps. Find a current pricing page, or check the vendor\'s live signup flow, before repeating the 5 GB figure.'}
+    ]
+  },
+  C: {
+    correct: 0,
+    opts: [
+      {t:'Trustworthy — primary source, current, exact figure, and corroborated by a second firm', ex:'Correct. This is what a good citation looks like: the research firm\'s own release (primary, not a blog quoting it), dated this quarter, stating the exact 3.2% with a methodology note — and a second independent firm reports a similar decline. Primary + current + corroborated is the gold standard. Capture the quote and link, and you can rely on it.'},
+      {t:'Not trustworthy — a press release is just PR spin', ex:'No — for the firm\'s own research findings, its press release IS the primary source of that data. Here it\'s dated, specific, has a methodology note, and a second firm corroborates it. Dismissing it as "PR" would make you drop your best citation.'},
+      {t:'Not enough — you should never trust a single source no matter what', ex:'Almost, but read again: it\'s not a single source. A second independent firm reports a similar decline, which is exactly the corroboration you want. Combined with a dated, methodologically-noted primary source, this clears the bar.'}
+    ]
+  }
+};
+let clinicAnswered = {};
+function renderChecks(){
+  ['A','B','C'].forEach(p => {
+    const data = PATIENTS[p];
+    $('checks' + p).innerHTML = data.opts.map((o, i) =>
+      `<button class="err-opt" data-p="${p}" data-i="${i}" onclick="answerClinic('${p}', ${i}, this)">${o.t}</button>`
+    ).join('');
+  });
+}
+function answerClinic(p, i, btn){
+  if (clinicAnswered[p]) return;
+  clinicAnswered[p] = true;
+  const data = PATIENTS[p];
+  const wrap = $('checks' + p);
+  wrap.querySelectorAll('.err-opt').forEach((b, bi) => {
+    b.disabled = true;
+    if (bi === data.correct) b.classList.add('right');
+  });
+  if (i !== data.correct) btn.classList.add('wrong');
+  const note = $('note' + p);
+  note.innerHTML = (i === data.correct ? '<strong>Correct read.</strong> ' : '<strong>Read it again.</strong> ') + data.opts[i].ex;
+  note.classList.add('show');
+  checkClinicDone();
+}
+function checkClinicDone(){
+  if (Object.keys(clinicAnswered).length === 3) {
+    const right = ['A','B','C'].filter(p => {
+      const chosen = $('checks'+p).querySelector('.err-opt.wrong');
+      return !chosen;
+    }).length;
+    const fb = $('feedback3');
+    if (right === 3) {
+      fb.className = 'activity-feedback show success';
+      fb.innerHTML = `<strong>3/3 — you read citations like an editor.</strong> The checklist to keep: <em>Who published it?</em> (primary source beats a blog quoting a blog). <em>When?</em> (a stale date sinks a "current" claim). <em>Why?</em> (a commercial motive next to a number is a warning). <em>And does anyone else agree?</em> (independent corroboration). Run every footnote through those four questions before you repeat the claim.`;
+    } else {
+      fb.className = 'activity-feedback show partial';
+      fb.innerHTML = `<strong>You nailed ${right} of 3.</strong> Re-read the notes on the ones you missed. The two traps that catch most people: assuming a precise number must be real (affiliate blogs invent precise numbers), and trusting the right kind of source without checking its date (a 2021 vendor page is useless for a 2026 fact). Hit <em>Reset clinic</em> to run the cases again.`;
+    }
+    $('prog3').classList.add('done');
+  }
+}
+function resetActivity3(){
+  clinicAnswered = {};
+  ['A','B','C'].forEach(p => $('note'+p).classList.remove('show'));
+  $('feedback3').className = 'activity-feedback';
+  renderChecks();
+  $('prog3').classList.remove('done');
+}
+
+/* ─── ACTIVITY 4: Verify-First Quiz ─── */
+const QUIZ = [
+  {
+    q:'An answer engine gives you a clean, confident summary with three footnotes. What should you do before using the key figure in your work?',
+    opts:[
+      {t:'Trust the summary — the footnotes prove it\'s sourced', ok:false, ex:'A footnote proves a page exists, not that it says what the summary claims. Answer engines sometimes paraphrase loosely or cite a page that doesn\'t actually contain the number. Open the source and confirm the exact figure is really there.'},
+      {t:'Open each cited source and confirm the exact claim appears in it, and check the date', ok:true, ex:'This is the whole discipline. The summary is a starting point; the source is the evidence. Click through, find the specific claim, confirm the wording and the date, and note whether it\'s a primary source. If the source doesn\'t back the claim, don\'t use it.'},
+      {t:'Ask the engine "are you sure?" and go with its answer', ok:false, ex:'The tool will confidently reassure you — self-certification isn\'t verification. It can be wrong in exactly the same way twice. Only an independent look at the source (and ideally a second source) actually confirms a claim.'}
+    ]
+  },
+  {
+    q:'You need the current price of a subscription. Where should the question go?',
+    opts:[
+      {t:'A plain chatbot with no web access — it\'s fastest', ok:false, ex:'A plain model has a training cutoff and no live web. It may hand you a confident price that was true two years ago — or one it essentially made up. Time-sensitive facts don\'t belong in an offline model.'},
+      {t:'An answer engine, then open the linked pricing page to confirm the number', ok:true, ex:'Prices change and have a live, sourced answer. An answer engine searches the current pricing page and links it — and you finish the job by opening that link and reading the number yourself, because even good engines can grab a cached or regional price.'},
+      {t:'Whichever tool you used last — it doesn\'t really matter', ok:false, ex:'It matters a lot. The wrong tool for a live fact is exactly how stale or invented numbers slip into your work. Match the tool to the job: current fact → answer engine → confirm at the source.'}
+    ]
+  },
+  {
+    q:'Two sources disagree: one says a market grew 5%, another says it shrank 2%. What\'s the best move?',
+    opts:[
+      {t:'Pick the number you like better and move on', ok:false, ex:'Cherry-picking the convenient figure is how bias creeps in. A disagreement is a signal to dig, not a menu to choose from.'},
+      {t:'Trace each to its primary source, compare dates, regions, and methods — the gap usually has a reason', ok:true, ex:'Contradictions are information. Follow each number to its original source and you\'ll often find they measured different periods, regions, or definitions. Reconcile the difference (or report both with their scope) instead of silently picking one.'},
+      {t:'Average the two numbers to get 1.5% growth', ok:false, ex:'Averaging incompatible figures invents a number that describes nothing real — especially when one is growth and one is decline. Understand why they differ before you combine anything.'}
+    ]
+  },
+  {
+    q:'You ask a plain chatbot (no web) about a product that launched last month. It gives a detailed, confident answer. What\'s the most likely problem?',
+    opts:[
+      {t:'The answer is fine — detail and confidence mean it\'s accurate', ok:false, ex:'Detail and confidence are not accuracy. A model with no live web can produce a fluent, specific-sounding answer about something it has never seen — and be entirely wrong. Tone is not evidence.'},
+      {t:'It\'s past the model\'s training cutoff, so the answer may be guessed or hallucinated', ok:true, ex:'A last-month launch is beyond an offline model\'s knowledge. Rather than say "I don\'t know," models often fill the gap with a confident, plausible-sounding invention. For anything recent, use an answer engine and check the sources.'},
+      {t:'You need to rephrase the question more politely', ok:false, ex:'Wording isn\'t the issue — the model simply doesn\'t have the information. No phrasing conjures facts that postdate its training. Switch to a tool that can see the live web.'}
+    ]
+  },
+  {
+    q:'What\'s the single most reliable habit that separates people who trust AI research from people who get burned by it?',
+    opts:[
+      {t:'Using the most powerful deep-research agent for every question', ok:false, ex:'Power isn\'t the point — a deep agent can still surface a weak source or a stale page. It gathers more, but you still have to read the citations. Sophistication is not verification.'},
+      {t:'Always following claims to a primary source and confirming them before relying on them', ok:true, ex:'This is the throughline of the whole lesson. Ask a sharp question, read the summary AND the sources, follow citations to the primary source, capture the exact quote and link, and verify in a second independent source. A summary is a hypothesis; a confirmed primary source is a fact.'},
+      {t:'Writing longer, more detailed prompts every time', ok:false, ex:'A strong prompt raises your odds of good sources — but it never guarantees a claim is true. The prompt gets you candidates; following and confirming the citations is what makes the answer trustworthy. Prompt well, then verify.'}
+    ]
+  }
+];
+let quizAnswered = 0, quizScore = 0;
+function renderQuiz(){
+  quizAnswered = 0; quizScore = 0;
+  $('quizWrap').innerHTML = QUIZ.map((q, qi) => {
+    const order = q.opts.map((_, i) => i).sort(()=>Math.random()-0.5);
+    return `<div class="quiz-q" id="q${qi}">
+      <div class="quiz-q-num">Question ${qi+1} of ${QUIZ.length}</div>
+      <div class="quiz-q-text">${q.q}</div>
+      <div class="quiz-opts">${order.map(oi =>
+        `<button class="quiz-opt" onclick="answerQuiz(${qi}, ${oi}, this)">${q.opts[oi].t}</button>`).join('')}
+      </div>
+      <div class="quiz-explain" id="qx${qi}"></div>
+    </div>`;
+  }).join('');
+  $('feedback4').className = 'activity-feedback';
+}
+function answerQuiz(qi, oi, btn){
+  const q = QUIZ[qi];
+  const box = $('q' + qi);
+  if (box.dataset.done) return;
+  box.dataset.done = '1';
+  const opt = q.opts[oi];
+  const rightText = q.opts.find(o => o.ok).t;
+  box.querySelectorAll('.quiz-opt').forEach(b => {
+    b.disabled = true;
+    if (b.textContent === rightText) b.classList.add('right');
+  });
+  if (!opt.ok) btn.classList.add('wrong');
+  const ex = $('qx' + qi);
+  ex.className = 'quiz-explain show ' + (opt.ok ? 'ok' : 'no');
+  ex.innerHTML = (opt.ok ? '<strong>Right.</strong> ' : '<strong>Not quite.</strong> ') + opt.ex;
+  quizAnswered++;
+  if (opt.ok) quizScore++;
+  if (quizAnswered === QUIZ.length) finishQuiz();
+}
+function finishQuiz(){
+  const fb = $('feedback4');
+  if (quizScore === QUIZ.length) {
+    fb.className = 'activity-feedback show success';
+    fb.innerHTML = `<strong>5/5 — you've got the one habit that matters.</strong> AI is a superb researcher and a superb summarizer, but it can\'t vouch for its own sources and it will state a wrong fact with total confidence. So the loop is always the same: ask sharp, read the summary AND the citations, follow claims to a primary source, and verify in a second one. Do that and AI multiplies your research speed without multiplying your mistakes.`;
+  } else {
+    fb.className = 'activity-feedback show partial';
+    fb.innerHTML = `<strong>You scored ${quizScore}/5.</strong> Re-read the explanations — the wrong options are the exact traps ("footnotes prove it", "just ask the engine if it\'s sure", "detail means accuracy"). The thread through all five: a summary is a hypothesis, not a fact. Only following the citation to a primary source — and checking a second — turns it into something you can rely on. Retake for a clean 5/5.`;
+  }
+  $('prog4').classList.add('done');
+}
+function resetQuiz(){
+  renderQuiz();
+  $('prog4').classList.remove('done');
+}
+
+/* ─── INIT ─── */
+window.addEventListener('DOMContentLoaded', () => {
+  renderScenarios();
+  setupBuckets();
+  renderFragments();
+  renderChecks();
+  renderQuiz();
+});
+</script>
+</body>
+</html>
