@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 2 · Building Decks with AI — MokshPath</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=JetBrains+Mono:wght@400;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --orange:#E87A2E;--orange-dark:#D06A20;--orange-light:#F5943E;--orange-glow:rgba(232,122,46,0.12);
+  --navy:#2B2D42;--navy-dark:#1A1B2E;
+  --bg:#F3EDE7;--bg-card:#FFFFFF;--bg-light:#F9F5F0;
+  --text-primary:#2B2D42;--text-secondary:#6B6D7B;--text-muted:#9597A6;
+  --border:#E5DDD4;--green:#4CAF50;--green-light:#E8F5E9;--red:#E04E3C;--red-light:#FDECEA;
+  --shadow-sm:0 2px 8px rgba(43,45,66,0.06);--shadow-md:0 8px 24px rgba(43,45,66,0.08);
+  --shadow-lg:0 16px 48px rgba(43,45,66,0.12);
+  --radius:14px;--radius-sm:8px;
+  --mono:'JetBrains Mono',monospace;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text-primary);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+
+/* ── NAV ── */
+.nav{position:sticky;top:0;z-index:100;background:var(--bg-card);border-bottom:1px solid var(--border);padding:0 2rem;height:64px;display:flex;align-items:center;justify-content:space-between;box-shadow:var(--shadow-sm)}
+.nav-left{display:flex;align-items:center;gap:.7rem}
+.lesson-badge{font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--orange);background:var(--orange-glow);padding:.3rem .7rem;border-radius:50px}
+.nav-logo{display:flex;align-items:center;gap:.7rem;text-decoration:none}
+.nav-logo-icon{width:auto;height:48px;display:block;object-fit:contain}
+.nav-logo-text{display:flex;flex-direction:column;line-height:1.15}
+.nav-logo-name{font-family:'DM Serif Display',serif;font-size:1.25rem;color:var(--navy)}
+.nav-logo-name span{color:var(--orange)}
+.nav-logo-tag{font-size:.62rem;color:var(--text-muted);font-weight:500;letter-spacing:.02em}
+
+/* ── HERO ── */
+.hero{padding:3.5rem 2rem 2.5rem;text-align:center;position:relative}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:.45rem;padding:.4rem 1rem;border-radius:50px;background:var(--orange-glow);color:var(--orange);font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:1.2rem}
+.hero-eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--orange);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.hero h1{font-family:'DM Serif Display',serif;font-size:clamp(2rem,4vw,3rem);line-height:1.13;color:var(--navy);margin-bottom:1rem;max-width:780px;margin-left:auto;margin-right:auto}
+.hero h1 em{font-style:normal;color:var(--orange)}
+.hero-sub{font-size:1.02rem;color:var(--text-secondary);line-height:1.7;max-width:620px;margin:0 auto}
+
+/* ── PROGRESS RAIL ── */
+.progress-rail{max-width:760px;margin:1.8rem auto 0;display:flex;align-items:center;gap:.5rem}
+.progress-dot{flex:1;height:6px;background:var(--border);border-radius:3px;transition:background .3s}
+.progress-dot.done{background:linear-gradient(90deg,var(--orange),var(--orange-light))}
+.progress-label{font-size:.7rem;color:var(--text-muted);font-weight:600;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+
+/* ── SECTIONS ── */
+section.lesson{padding:3rem 2rem}
+.container{max-width:1080px;margin:0 auto}
+.lesson-num{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;background:var(--orange);color:#fff;font-family:'DM Serif Display',serif;font-size:1.1rem;margin-bottom:.9rem}
+.lesson-title{font-family:'DM Serif Display',serif;font-size:clamp(1.6rem,2.5vw,2.1rem);color:var(--navy);margin-bottom:.55rem;line-height:1.2}
+.lesson-intro{font-size:.95rem;color:var(--text-secondary);line-height:1.7;max-width:680px;margin-bottom:2rem}
+.lesson-card{background:var(--bg-card);border-radius:var(--radius);box-shadow:var(--shadow-sm);border:1px solid var(--border);padding:2rem;margin-top:1.5rem}
+
+/* ── ACTIVITY 1: SORTER ── */
+.classify-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:1rem}
+@media (max-width:760px){.classify-grid{grid-template-columns:1fr}}
+.classify-scenarios{display:flex;flex-direction:column;gap:.7rem}
+.scenario-card{background:var(--bg-card);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:1rem 1.1rem;cursor:grab;transition:all .25s;position:relative;user-select:none}
+.scenario-card:hover{border-color:var(--orange);box-shadow:var(--shadow-sm);transform:translateY(-1px)}
+.scenario-card.dragging{opacity:.4}
+.scenario-card.placed{opacity:.35;cursor:not-allowed;pointer-events:none}
+.scenario-card.placed.correct{border-color:var(--green);background:var(--green-light)}
+.scenario-card.placed.wrong{border-color:var(--red);background:var(--red-light)}
+.scenario-text{font-size:.86rem;color:var(--text-primary);line-height:1.5;font-weight:500}
+.scenario-hint{font-size:.72rem;color:var(--text-muted);margin-top:.3rem;font-style:italic}
+.bucket-stack{display:flex;flex-direction:column;gap:1rem}
+.bucket{border:2px dashed var(--border);border-radius:var(--radius-sm);padding:1rem;min-height:88px;transition:all .25s;background:rgba(255,255,255,0.5)}
+.bucket.drag-over{border-color:var(--orange);background:var(--orange-glow);border-style:solid}
+.bucket-title{font-family:'DM Serif Display',serif;font-size:1rem;color:var(--navy);margin-bottom:.25rem}
+.bucket-sub{font-size:.7rem;color:var(--text-muted);margin-bottom:.6rem;letter-spacing:.04em;text-transform:uppercase;font-weight:600}
+.bucket-drop{display:flex;flex-wrap:wrap;gap:.4rem;min-height:32px}
+.dropped-pill{background:var(--bg-card);border:1px solid var(--border);border-radius:50px;padding:.3rem .7rem;font-size:.72rem;font-weight:500;color:var(--text-primary)}
+.dropped-pill.correct{background:var(--green-light);border-color:var(--green);color:#256B29}
+.dropped-pill.wrong{background:var(--red-light);border-color:var(--red);color:#933}
+.activity-feedback{margin-top:1.2rem;padding:1rem 1.2rem;border-radius:var(--radius-sm);font-size:.85rem;line-height:1.5;display:none}
+.activity-feedback.show{display:block;animation:fadeIn .4s ease}
+.activity-feedback.success{background:var(--green-light);color:#1F5723;border-left:3px solid var(--green)}
+.activity-feedback.partial{background:#FFF4E5;color:#7A4A0A;border-left:3px solid #E89B2E}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+
+.activity-toolbar{display:flex;gap:.6rem;margin-top:1.2rem;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:.4rem;padding:.6rem 1.2rem;border-radius:8px;font-size:.82rem;font-weight:600;border:none;cursor:pointer;transition:all .2s;font-family:inherit}
+.btn-primary{background:var(--orange);color:#fff}.btn-primary:hover{background:var(--orange-dark);transform:translateY(-1px);box-shadow:0 4px 12px rgba(232,122,46,0.3)}
+.btn-ghost{background:transparent;border:1.5px solid var(--border);color:var(--text-secondary)}.btn-ghost:hover{border-color:var(--orange);color:var(--orange)}
+
+/* ── COMPARE CARDS ── */
+.compare-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:1.2rem}
+@media (max-width:760px){.compare-grid{grid-template-columns:1fr}}
+.compare-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:1.2rem;transition:all .3s}
+.compare-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-md);border-color:transparent}
+.compare-icon{width:38px;height:38px;border-radius:8px;display:flex;align-items:center;justify-content:center;margin-bottom:.7rem;font-size:1.05rem;font-weight:700;font-family:'DM Serif Display',serif;color:#fff}
+.compare-card:nth-child(1) .compare-icon{background:linear-gradient(135deg,#66BB6A,#4CAF50)}
+.compare-card:nth-child(2) .compare-icon{background:linear-gradient(135deg,var(--orange),var(--orange-light))}
+.compare-card:nth-child(3) .compare-icon{background:linear-gradient(135deg,#5B8FE0,#3F6FC0)}
+.compare-card h4{font-family:'DM Serif Display',serif;font-size:1.05rem;color:var(--navy);margin-bottom:.3rem}
+.compare-card p{font-size:.82rem;color:var(--text-secondary);line-height:1.55}
+.compare-card ul{list-style:none;padding:0;margin-top:.6rem;border-top:1px dashed var(--border);padding-top:.55rem}
+.compare-card li{font-size:.74rem;color:var(--text-secondary);padding:.15rem 0;display:flex;gap:.4rem;align-items:flex-start;line-height:1.45}
+.compare-card li::before{content:'✓';color:var(--green);font-weight:700;flex-shrink:0}
+
+/* ── ACTIVITY 2: PROMPT BUILDER ── */
+.prompt-pool{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1rem}
+.frag-chip{background:var(--bg-card);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:.65rem .9rem;font-size:.8rem;line-height:1.45;cursor:pointer;transition:all .2s;max-width:340px;user-select:none;font-weight:500}
+.frag-chip:hover{border-color:var(--orange);box-shadow:var(--shadow-sm);transform:translateY(-1px)}
+.frag-chip.used{opacity:0;pointer-events:none;position:absolute;visibility:hidden}
+.frag-chip.shake{animation:shake .35s ease;border-color:var(--red);background:var(--red-light)}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.prompt-slots{margin-top:1.4rem;border:2px dashed var(--border);border-radius:var(--radius-sm);padding:1rem;min-height:90px;background:rgba(255,255,255,0.5)}
+.slot-line{display:flex;align-items:flex-start;gap:.6rem;padding:.45rem .2rem;font-size:.83rem;line-height:1.5;animation:fadeIn .35s ease}
+.slot-tag{font-family:var(--mono);font-size:.62rem;font-weight:600;letter-spacing:.05em;color:#fff;background:var(--navy);padding:.18rem .5rem;border-radius:4px;flex-shrink:0;margin-top:.1rem;text-transform:uppercase}
+.slot-line.t-aud .slot-tag{background:#5B8FE0}
+.slot-line.t-goal .slot-tag{background:var(--orange)}
+.slot-line.t-struct .slot-tag{background:#66BB6A}
+.slot-line.t-output .slot-tag{background:#8E6BC0}
+.prompt-hint{margin-top:.8rem;padding:.7rem .9rem;background:var(--red-light);border-left:3px solid var(--red);border-radius:4px;font-size:.78rem;color:#7A2A1E;line-height:1.55;display:none}
+.prompt-hint.show{display:block;animation:fadeIn .3s ease}
+.prompt-preview{margin-top:1.2rem;background:#1A1B2E;border-radius:var(--radius-sm);padding:1.2rem 1.4rem;font-family:var(--mono);font-size:.78rem;line-height:1.75;color:#E8E8EC;display:none;border:1px solid var(--navy)}
+.prompt-preview.show{display:block;animation:fadeIn .4s ease}
+.prompt-preview .pp-label{color:var(--orange-light);font-weight:600;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;display:block;margin-bottom:.6rem}
+.structure-bar{display:flex;gap:.4rem;margin-top:1rem;flex-wrap:wrap}
+.structure-step{font-size:.68rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:.3rem .7rem;border-radius:50px;color:#fff}
+.structure-step:nth-child(1){background:#5B8FE0}.structure-step:nth-child(3){background:var(--orange)}
+.structure-step:nth-child(5){background:#66BB6A}.structure-step:nth-child(7){background:#8E6BC0}
+.structure-arrow{color:var(--text-muted);font-weight:700;align-self:center;font-size:.75rem}
+
+/* ── SLIDE STRIP ── */
+.formula-strip{margin-top:1.2rem;background:#1A1B2E;border-radius:var(--radius-sm);padding:1rem 1.2rem;font-family:var(--mono);font-size:.8rem;line-height:1.7;color:#E8E8EC;border:1px solid var(--navy);overflow-x:auto}
+.formula-strip .fn{color:var(--orange-light);font-weight:600}
+.formula-strip .cm{color:#7E8AA0;display:block;font-size:.72rem;margin-top:.35rem}
+
+/* ── ACTIVITY 3: SLIDE REWRITE CLINIC ── */
+.validate-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:1rem}
+@media (max-width:760px){.validate-grid{grid-template-columns:1fr}}
+.product-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:1.4rem;box-shadow:var(--shadow-sm)}
+.product-card h4{font-family:'DM Serif Display',serif;font-size:1.15rem;color:var(--navy);margin-bottom:.2rem}
+.product-tag{font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--orange);margin-bottom:.8rem;display:block}
+.wordy-slide{font-size:.82rem;color:var(--text-secondary);line-height:1.6;background:var(--bg-light);border:1px solid var(--border);border-left:3px solid var(--red);border-radius:6px;padding:.7rem .85rem;margin-bottom:.9rem}
+.check-block{margin-top:1rem;padding-top:.9rem;border-top:2px solid var(--border)}
+.check-block h5{font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-muted);margin-bottom:.6rem}
+.err-opt{display:block;width:100%;text-align:left;background:var(--bg-light);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:.6rem .8rem;font-size:.8rem;line-height:1.45;cursor:pointer;transition:all .2s;font-family:inherit;color:var(--text-primary);margin-bottom:.45rem}
+.err-opt:hover:not(:disabled){border-color:var(--orange);transform:translateX(2px)}
+.err-opt:disabled{cursor:default}
+.err-opt.right{background:var(--green-light);border-color:var(--green);color:#1F5723;font-weight:600}
+.err-opt.wrong{background:var(--red-light);border-color:var(--red);color:#7A2A1E}
+.err-note{font-size:.74rem;color:var(--text-secondary);margin-top:.5rem;line-height:1.55;padding:.55rem .7rem;background:var(--bg-light);border-radius:6px;border-left:3px solid var(--orange);display:none}
+.err-note.show{display:block;animation:fadeIn .3s ease}
+
+/* ── ACTIVITY 4: QUIZ ── */
+.quiz-q{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:1.3rem 1.4rem;margin-top:1rem}
+.quiz-q-num{font-family:var(--mono);font-size:.68rem;font-weight:600;color:var(--orange);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.4rem}
+.quiz-q-text{font-size:.92rem;font-weight:600;color:var(--navy);line-height:1.55;margin-bottom:.9rem}
+.quiz-opts{display:grid;gap:.5rem}
+.quiz-opt{text-align:left;background:var(--bg-light);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:.7rem .9rem;font-size:.83rem;line-height:1.5;cursor:pointer;transition:all .2s;font-family:inherit;color:var(--text-primary)}
+.quiz-opt:hover:not(:disabled){border-color:var(--orange);transform:translateX(2px)}
+.quiz-opt:disabled{cursor:default;opacity:.75}
+.quiz-opt.right{background:var(--green-light);border-color:var(--green);color:#1F5723;opacity:1;font-weight:600}
+.quiz-opt.wrong{background:var(--red-light);border-color:var(--red);color:#7A2A1E;opacity:1}
+.quiz-explain{margin-top:.7rem;padding:.7rem .9rem;border-radius:6px;font-size:.78rem;line-height:1.6;display:none}
+.quiz-explain.show{display:block;animation:fadeIn .3s ease}
+.quiz-explain.ok{background:var(--green-light);color:#1F5723;border-left:3px solid var(--green)}
+.quiz-explain.no{background:#FFF4E5;color:#7A4A0A;border-left:3px solid #E89B2E}
+
+/* ── REFLECTION ── */
+.reflect-prompt{display:grid;grid-template-columns:1fr;gap:.8rem;margin-top:1rem}
+.reflect-q{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:1rem 1.2rem}
+.reflect-q-text{font-size:.88rem;font-weight:600;color:var(--navy);margin-bottom:.5rem}
+.reflect-q textarea{width:100%;border:1px solid var(--border);border-radius:6px;padding:.6rem .8rem;font-family:inherit;font-size:.85rem;color:var(--text-primary);background:var(--bg-light);resize:vertical;min-height:60px}
+.reflect-q textarea:focus{outline:none;border-color:var(--orange)}
+
+/* ── FOOTER NEXT ── */
+.next-up{background:linear-gradient(135deg,var(--navy-dark),var(--navy));border-radius:var(--radius);padding:2.4rem;color:#fff;margin-top:2rem;text-align:center;position:relative;overflow:hidden}
+.next-up::before{content:'';position:absolute;top:-50px;right:-50px;width:180px;height:180px;border-radius:50%;background:rgba(232,122,46,0.12)}
+.next-up h3{font-family:'DM Serif Display',serif;font-size:1.5rem;margin-bottom:.5rem;position:relative}
+.next-up p{font-size:.92rem;color:rgba(255,255,255,0.75);margin-bottom:1.2rem;position:relative}
+.next-up .btn-primary{position:relative}
+
+@media (max-width:760px){
+  .nav{padding:0 1rem}
+  .nav-logo-tag{display:none}
+  .hero{padding:2.5rem 1.2rem 2rem}
+  section.lesson{padding:2rem 1.2rem}
+  .lesson-card{padding:1.4rem}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-left">
+    <span class="lesson-badge">Lesson 2 of 4</span>
+  </div>
+  <a href="https://mokshpath.org/" class="nav-logo">
+    <img class="nav-logo-icon" src="hero.svg" alt="MokshPath logo">
+    <div class="nav-logo-text">
+      <span class="nav-logo-name">Moksh<span>Path</span></span>
+      <span class="nav-logo-tag">Guided Path to True Learning</span>
+    </div>
+  </a>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-eyebrow"><span class="dot"></span> Week 4 · AI PowerPoint</div>
+  <h1>Building Decks with AI — <em>describe the talk, let AI draft the slides</em></h1>
+  <p class="hero-sub">Four hands-on activities. Match each starting point to the right generation method, assemble a strong deck prompt block by block, run a rewrite clinic that turns three wordy slides into tight ones, and drill the story-first habits that separate a real presentation from an AI bullet-dump.</p>
+  <div class="progress-rail">
+    <span class="progress-label">Progress</span>
+    <div class="progress-dot" id="prog1"></div>
+    <div class="progress-dot" id="prog2"></div>
+    <div class="progress-dot" id="prog3"></div>
+    <div class="progress-dot" id="prog4"></div>
+  </div>
+</header>
+
+<!-- ── ACTIVITY 1: PICK THE GENERATION METHOD ── -->
+<section class="lesson" id="activity-1">
+  <div class="container">
+    <span class="lesson-num">1</span>
+    <h2 class="lesson-title">Match the starting point to the right way in</h2>
+    <p class="lesson-intro">AI tools (Copilot in PowerPoint, Gemini in Slides, Gamma, and chat assistants) can build a deck three ways: <em>from a prompt</em>, <em>from a document</em>, or <em>from an outline</em>. Each fits a different starting point. Study the three below, then drag each situation into the method that fits it best. Guess freely — wrong answers explain themselves on hover.</p>
+
+    <div class="compare-grid">
+      <div class="compare-card">
+        <div class="compare-icon">P</div>
+        <h4>From a prompt</h4>
+        <p>"I have an idea in my head, no draft." You describe audience, goal and topic; AI invents the structure and first-draft content.</p>
+        <ul>
+          <li>Fastest way from a blank page to a rough deck</li>
+          <li>Best when you're still shaping the idea</li>
+          <li>Needs the most editing — AI guesses the specifics</li>
+        </ul>
+      </div>
+      <div class="compare-card">
+        <div class="compare-icon">D</div>
+        <h4>From a document</h4>
+        <p>"I already wrote it up." Point AI at a report, memo, or notes and ask it to turn that source into slides.</p>
+        <ul>
+          <li>Best when the facts already live in a file</li>
+          <li>Keeps you anchored to real, verifiable content</li>
+          <li>You still trim — a 5-page memo is not 5 slides</li>
+        </ul>
+      </div>
+      <div class="compare-card">
+        <div class="compare-icon">O</div>
+        <h4>From an outline</h4>
+        <p>"I know the flow, not the words." You hand AI a slide-by-slide outline; it expands each line into a drafted slide.</p>
+        <ul>
+          <li>Best when you already own the narrative arc</li>
+          <li>You control order; AI fills in phrasing</li>
+          <li>Most predictable — least likely to wander off-topic</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="lesson-card" style="margin-top:1.5rem">
+      <div class="classify-grid">
+        <div class="classify-scenarios" id="scenarioList"></div>
+        <div class="bucket-stack">
+          <div class="bucket" data-bucket="prompt">
+            <div class="bucket-title">From a prompt</div>
+            <div class="bucket-sub">Idea only · no draft yet</div>
+            <div class="bucket-drop" data-drop="prompt"></div>
+          </div>
+          <div class="bucket" data-bucket="document">
+            <div class="bucket-title">From a document</div>
+            <div class="bucket-sub">Source file already written</div>
+            <div class="bucket-drop" data-drop="document"></div>
+          </div>
+          <div class="bucket" data-bucket="outline">
+            <div class="bucket-title">From an outline</div>
+            <div class="bucket-sub">Flow known · words not</div>
+            <div class="bucket-drop" data-drop="outline"></div>
+          </div>
+        </div>
+      </div>
+      <div class="activity-feedback" id="feedback1"></div>
+      <div class="activity-toolbar">
+        <button class="btn btn-ghost" onclick="resetActivity1()">↻ Try again</button>
+        <button class="btn btn-primary" onclick="showAnswers1()">Show me the answers</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 2: BUILD-A-DECK-PROMPT ── -->
+<section class="lesson" id="activity-2" style="background:var(--bg-light)">
+  <div class="container">
+    <span class="lesson-num" style="background:#5B8FE0">2</span>
+    <h2 class="lesson-title">Build the deck prompt — one block at a time</h2>
+    <p class="lesson-intro">"Make me a presentation about our sales" gets you generic filler AI could have written for anyone. A deck prompt that actually works names five things: <strong>AUDIENCE → GOAL → STRUCTURE → SOURCE → OUTPUT</strong>. The eight blocks of a strong deck prompt are scrambled below — click them in the order they should appear. A wrong click tells you why it doesn't fit yet.</p>
+
+    <div class="structure-bar">
+      <span class="structure-step">1 · Audience</span><span class="structure-arrow">→</span>
+      <span class="structure-step">2 · Goal</span><span class="structure-arrow">→</span>
+      <span class="structure-step">3 · Structure</span><span class="structure-arrow">→</span>
+      <span class="structure-step">4 · Output</span>
+    </div>
+
+    <div class="lesson-card">
+      <h4 style="font-family:'DM Serif Display',serif;font-size:1.05rem;color:var(--navy)">Click the next block of the prompt</h4>
+      <div class="prompt-pool" id="fragPool"></div>
+      <div class="prompt-hint" id="promptHint"></div>
+      <div class="prompt-slots" id="promptSlots">
+        <div style="font-size:.75rem;color:var(--text-muted);font-style:italic" id="slotPlaceholder">Your assembled prompt will build up here, block by block…</div>
+      </div>
+      <div class="prompt-preview" id="promptPreview"></div>
+      <div class="activity-feedback" id="feedback2"></div>
+      <div class="activity-toolbar">
+        <button class="btn btn-ghost" onclick="resetActivity2()">↻ Start over</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 3: SLIDE REWRITE CLINIC ── -->
+<section class="lesson" id="activity-3">
+  <div class="container">
+    <span class="lesson-num" style="background:#4CAF50">3</span>
+    <h2 class="lesson-title">The rewrite clinic — turn three wordy slides tight</h2>
+    <p class="lesson-intro">AI's biggest deck sin is wordiness: it happily dumps a paragraph onto every slide. Your job is one idea per slide, tight text, and a story the audience can follow. Each patient below shows a bloated AI-generated slide. Pick the single best fix. Every choice explains itself, so wrong guesses teach too.</p>
+
+    <div class="lesson-card">
+      <div class="validate-grid">
+        <div class="product-card" id="cardA">
+          <span class="product-tag">Slide A</span>
+          <h4>The wall of text</h4>
+          <div class="wordy-slide"><strong>Title:</strong> Our Q3 Results<br><strong>Body:</strong> In the third quarter of this fiscal year, our team achieved a number of important milestones across several key areas including revenue, which grew, as well as customer retention, which also improved, and we onboarded new clients too.</div>
+          <div class="check-block">
+            <h5>What's the strongest rewrite?</h5>
+            <div id="checksA"></div>
+          </div>
+          <div class="err-note" id="noteA"></div>
+        </div>
+        <div class="product-card" id="cardB">
+          <span class="product-tag">Slide B</span>
+          <h4>Three ideas fighting for one slide</h4>
+          <div class="wordy-slide"><strong>Title:</strong> Strategy, Hiring &amp; Budget<br><strong>Bullets:</strong> New market-entry plan for APAC · We're hiring 12 engineers · Marketing budget cut by 15% · Also our office is relocating in March</div>
+          <div class="check-block">
+            <h5>What's the strongest fix?</h5>
+            <div id="checksB"></div>
+          </div>
+          <div class="err-note" id="noteB"></div>
+        </div>
+        <div class="product-card" id="cardC" style="grid-column:1/-1">
+          <span class="product-tag">Slide C</span>
+          <h4>The bullet-dump with no point</h4>
+          <div class="wordy-slide"><strong>Title:</strong> Customer Feedback<br><strong>Bullets:</strong> 40% mentioned onboarding · 35% mentioned pricing · 30% mentioned support wait times · 25% mentioned the mobile app · 20% mentioned reporting · <em>(…and six more bullets)</em></div>
+          <div class="check-block">
+            <h5>What's the strongest fix?</h5>
+            <div id="checksC"></div>
+          </div>
+          <div class="err-note" id="noteC"></div>
+        </div>
+      </div>
+      <div class="activity-feedback" id="feedback3"></div>
+      <div class="activity-toolbar">
+        <button class="btn btn-ghost" onclick="resetActivity3()">↻ Reset clinic</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 4: STORY-FIRST QUIZ ── -->
+<section class="lesson" id="activity-4" style="background:var(--bg-light)">
+  <div class="container">
+    <span class="lesson-num" style="background:#8E6BC0">4</span>
+    <h2 class="lesson-title">The story-first quiz — draft fast, then make it yours</h2>
+    <p class="lesson-intro">AI writes a deck that <em>looks</em> finished. Looking finished is not the same as being ready to present. This quiz drills the habits that turn a generic first draft into a talk that lands: one idea per slide, a real narrative, speaker notes, and honest fact-checking. Five situations, one honest answer each — the misconceptions are where the real learning is.</p>
+
+    <div id="quizWrap"></div>
+    <div class="activity-feedback" id="feedback4"></div>
+    <div class="activity-toolbar">
+      <button class="btn btn-ghost" onclick="resetQuiz()">↻ Retake quiz</button>
+    </div>
+  </div>
+</section>
+
+<!-- ── REFLECT ── -->
+<section class="lesson" style="padding-bottom:1.5rem">
+  <div class="container">
+    <h2 class="lesson-title" style="font-size:1.5rem">Quick reflect — make it stick</h2>
+    <p class="lesson-intro" style="margin-bottom:1rem">A sentence each is enough. Writing it in your own words is what moves it into memory. (Nothing is saved or sent.)</p>
+    <div class="reflect-prompt">
+      <div class="reflect-q">
+        <div class="reflect-q-text">You have a 4-page project update memo and need a 6-slide deck for your leadership team by tomorrow. Write the prompt you'd give AI — name the audience, goal, length, and source — and one thing you'd check in the draft before trusting it.</div>
+        <textarea placeholder="'Turn the attached memo into a 6-slide deck for our leadership team. Goal: get approval for phase 2. One idea per slide, concise text, story arc problem→insight→action...' — then I'd verify..."></textarea>
+      </div>
+      <div class="reflect-q">
+        <div class="reflect-q-text">AI hands you a clean, confident 10-slide draft. It reads well. Describe the exact pass you'd make before presenting it — what you'd cut, what you'd verify, and what you'd add.</div>
+        <textarea placeholder="I'd go slide by slide: cut any slide with more than one idea, verify every number and named fact against the source, and add speaker notes so the slides stay sparse..."></textarea>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NEXT UP -->
+<section class="lesson" style="padding-top:0">
+  <div class="container">
+    <div class="next-up">
+      <h3>Lesson 3 · AI Design &amp; Visuals</h3>
+      <p>You can draft a deck with a clear story and tight text. Next: let AI handle the look — layouts, consistent themes, icons, and visuals — so your well-written slides also read as polished and professional, without a designer.</p>
+      <a href="03-ai-design-visuals.html" class="btn btn-primary">Continue to Lesson 3 →</a>
+    </div>
+  </div>
+</section>
+
+<script>
+const $ = id => document.getElementById(id);
+
+/* ─── ACTIVITY 1: Generation Method Sorter ─── */
+const NEEDS = [
+  {id:'n1', text:'You have a rough idea for a lunch-and-learn on "AI at work" but nothing written down yet', hint:'Just an idea in your head — no source, no outline.', bucket:'prompt', why:'Pure idea, no draft. Generating from a prompt is the fastest way from a blank page to a rough deck you can then shape.'},
+  {id:'n2', text:'Your manager wrote a 3-page strategy memo and wants it as a short deck for the board', hint:'The content already exists in a written file.', bucket:'document', why:'The facts already live in a document. Point AI at that memo so the deck stays anchored to real, verifiable content — not invented specifics.'},
+  {id:'n3', text:'You already sketched the 8 slide titles in order and just need each one drafted out', hint:'You own the flow; you only need the words.', bucket:'outline', why:'You control the narrative order via the outline; AI just expands each line into slide text. Most predictable — least likely to wander off-topic.'},
+  {id:'n4', text:'You brainstormed a new product pitch verbally but have zero notes and no set structure', hint:'No file, no order decided — just a concept.', bucket:'prompt', why:'No source and no fixed structure yet. Prompt-generation lets AI propose an arc you can react to and refine.'},
+  {id:'n5', text:'You have a detailed quarterly report PDF and need the highlights as slides for a review', hint:'A finished file exists; you want its highlights.', bucket:'document', why:'A finished source file. Generating from the document keeps every number traceable — you just verify and trim, since a report is not a deck.'},
+  {id:'n6', text:'You wrote a bullet list of the exact talking points in the exact sequence you want', hint:'Sequence is fixed; only phrasing is missing.', bucket:'outline', why:'A fixed sequence of talking points is an outline. Hand it to AI to phrase each point into a slide while you keep full control of the order.'}
+];
+const BUCKET_NAMES = {prompt:'From a prompt', document:'From a document', outline:'From an outline'};
+
+let placed = {};
+function renderScenarios(){
+  const list = $('scenarioList');
+  const shuffled = [...NEEDS].sort(()=>Math.random()-0.5);
+  list.innerHTML = shuffled.map(p => `
+    <div class="scenario-card" draggable="true" data-id="${p.id}">
+      <div class="scenario-text">${p.text}</div>
+      <div class="scenario-hint">${p.hint}</div>
+    </div>`).join('');
+  list.querySelectorAll('.scenario-card').forEach(card => {
+    card.addEventListener('dragstart', e => {
+      e.dataTransfer.setData('id', card.dataset.id);
+      card.classList.add('dragging');
+    });
+    card.addEventListener('dragend', () => card.classList.remove('dragging'));
+  });
+}
+function setupBuckets(){
+  document.querySelectorAll('.bucket').forEach(b => {
+    b.addEventListener('dragover', e => { e.preventDefault(); b.classList.add('drag-over'); });
+    b.addEventListener('dragleave', () => b.classList.remove('drag-over'));
+    b.addEventListener('drop', e => {
+      e.preventDefault();
+      b.classList.remove('drag-over');
+      handleDrop(e.dataTransfer.getData('id'), b.dataset.bucket);
+    });
+  });
+}
+function handleDrop(id, bucket){
+  const need = NEEDS.find(p => p.id === id);
+  if (!need || placed[id]) return;
+  const correct = need.bucket === bucket;
+  placed[id] = {bucket, correct};
+  const card = document.querySelector(`.scenario-card[data-id="${id}"]`);
+  card.classList.add('placed', correct ? 'correct' : 'wrong');
+  const pill = document.createElement('span');
+  pill.className = 'dropped-pill ' + (correct ? 'correct' : 'wrong');
+  pill.textContent = (correct ? '✓ ' : '✗ ') + need.text.substring(0, 34) + (need.text.length > 34 ? '…' : '');
+  pill.title = correct ? need.why : `Best method: ${BUCKET_NAMES[need.bucket]}. ${need.why}`;
+  document.querySelector(`[data-drop="${bucket}"]`).appendChild(pill);
+  checkActivity1Done();
+}
+function checkActivity1Done(){
+  if (Object.keys(placed).length === NEEDS.length) {
+    const right = Object.values(placed).filter(p => p.correct).length;
+    const fb = $('feedback1');
+    if (right === NEEDS.length) {
+      fb.className = 'activity-feedback show success';
+      fb.innerHTML = `<strong>All six correct — you're reading the starting point, not guessing.</strong> If you only have an idea, generate <em>from a prompt</em>. If the content already lives in a file, generate <em>from a document</em> so nothing gets invented. If you already own the running order, generate <em>from an outline</em> and let AI just phrase it. Pick the method that matches what you already have.`;
+    } else {
+      fb.className = 'activity-feedback show partial';
+      fb.innerHTML = `<strong>You got ${right} of 6.</strong> Hover any red pill for the right method and the reasoning. The usual mix-up: a finished report <em>feels</em> like "just prompt it," but when a source file exists you should generate <em>from the document</em> — that's what keeps AI from inventing numbers. Click <em>Try again</em> for a fresh shuffle.`;
+    }
+    $('prog1').classList.add('done');
+  }
+}
+function resetActivity1(){
+  placed = {};
+  $('feedback1').className = 'activity-feedback';
+  document.querySelectorAll('.bucket-drop').forEach(d => d.innerHTML = '');
+  renderScenarios();
+  $('prog1').classList.remove('done');
+}
+function showAnswers1(){
+  NEEDS.forEach(p => { if (!placed[p.id]) handleDrop(p.id, p.bucket); });
+}
+
+/* ─── ACTIVITY 2: Build-a-Deck-Prompt ─── */
+const FRAGMENTS = [
+  {order:1, tag:'aud',    text:'The audience is my company\'s senior leadership team — busy, non-technical, they want the bottom line fast.'},
+  {order:2, tag:'aud',    text:'Keep the tone confident and plain-spoken, no jargon; assume 5 minutes of their attention.'},
+  {order:3, tag:'goal',   text:'The goal is to win approval to fund Phase 2 of the project — every slide should build toward that ask.'},
+  {order:4, tag:'goal',   text:'Make it a 6-slide deck, one clear idea per slide, no walls of text.'},
+  {order:5, tag:'struct', text:'Structure it as a story: the problem we face, the insight from our pilot, then the action I\'m asking for.'},
+  {order:6, tag:'struct', text:'Base every slide only on the attached project memo — do not invent statistics or add filler.'},
+  {order:7, tag:'output', text:'Give me a slide-by-slide draft: a short title and 2–3 concise lines of body text per slide.'},
+  {order:8, tag:'output', text:'For each slide, also draft speaker notes so I can keep the slide text sparse and say the detail out loud.'}
+];
+const STAGE_HINTS = {
+  aud:'Start with the AUDIENCE — who they are, what they care about, and the tone that fits them shapes every other choice.',
+  goal:'The GOAL comes after the audience: what should this deck get done, and how long/tight should it be?',
+  struct:'STRUCTURE comes next — the narrative arc (problem → insight → action) and the source AI must stick to.',
+  output:'OUTPUT comes last — the exact format you want back: slide-by-slide draft plus speaker notes you can verify against.'
+};
+let promptStep = 0, promptMistakes = 0;
+function renderFragments(){
+  const shuffled = [...FRAGMENTS].sort(()=>Math.random()-0.5);
+  $('fragPool').innerHTML = shuffled.map(f =>
+    `<div class="frag-chip" data-order="${f.order}" onclick="pickFragment(${f.order}, this)">${f.text}</div>`
+  ).join('');
+}
+function pickFragment(order, chip){
+  const hint = $('promptHint');
+  if (order !== promptStep + 1) {
+    promptMistakes++;
+    chip.classList.remove('shake'); void chip.offsetWidth;
+    chip.classList.add('shake');
+    const expected = FRAGMENTS.find(f => f.order === promptStep + 1);
+    const label = {aud:'AUDIENCE', goal:'GOAL', struct:'STRUCTURE', output:'OUTPUT'}[expected.tag];
+    hint.innerHTML = `<strong>Not yet.</strong> ${STAGE_HINTS[expected.tag]} (Block ${promptStep + 1} of 8 — you're building the <strong>${label}</strong> section.)`;
+    hint.classList.add('show');
+    return;
+  }
+  hint.classList.remove('show');
+  promptStep++;
+  chip.classList.add('used');
+  const frag = FRAGMENTS.find(f => f.order === order);
+  const ph = $('slotPlaceholder');
+  if (ph) ph.remove();
+  const line = document.createElement('div');
+  line.className = 'slot-line t-' + frag.tag;
+  const tagLabel = {aud:'audience', goal:'goal', struct:'structure', output:'output'}[frag.tag];
+  line.innerHTML = `<span class="slot-tag">${tagLabel}</span><span>${frag.text}</span>`;
+  $('promptSlots').appendChild(line);
+  if (promptStep === FRAGMENTS.length) finishPrompt();
+}
+function finishPrompt(){
+  const preview = $('promptPreview');
+  preview.innerHTML = `<span class="pp-label">Your assembled prompt — copy this pattern for any deck</span>` +
+    FRAGMENTS.map(f => f.text).join(' ');
+  preview.classList.add('show');
+  const fb = $('feedback2');
+  const whys = `<ul style="margin:.6rem 0 0 1.1rem;line-height:1.7">
+    <li><strong>Audience</strong> comes first — a board deck and a team stand-up need different tone, depth, and length. Name who's watching and you steer every later choice.</li>
+    <li><strong>Goal</strong> stated as an outcome ("win approval for Phase 2") plus a slide count keeps AI from padding a decision deck into a lecture.</li>
+    <li><strong>Structure</strong> — a real arc (problem → insight → action) plus "use only the attached memo" — is what stops the generic filler and invented stats AI reaches for by default.</li>
+    <li><strong>Output</strong> as a slide-by-slide draft <em>plus speaker notes</em> gives you sparse slides you can present and a place for the detail you'll say out loud.</li></ul>`;
+  if (promptMistakes === 0) {
+    fb.className = 'activity-feedback show success';
+    fb.innerHTML = `<strong>Perfect assembly — zero wrong clicks.</strong> You've internalized AUDIENCE → GOAL → STRUCTURE → OUTPUT. Why each block earns its place:${whys}`;
+  } else {
+    fb.className = 'activity-feedback show partial';
+    fb.innerHTML = `<strong>Assembled — with ${promptMistakes} wrong click${promptMistakes > 1 ? 's' : ''} on the way.</strong> That's fine: the order <em>is</em> the lesson — say who it's for before what it must do, and pin the structure and source before you ask for output. Why each block matters:${whys} Hit <em>Start over</em> and try for a clean run.`;
+  }
+  $('prog2').classList.add('done');
+}
+function resetActivity2(){
+  promptStep = 0; promptMistakes = 0;
+  $('promptHint').classList.remove('show');
+  $('promptPreview').className = 'prompt-preview';
+  $('feedback2').className = 'activity-feedback';
+  $('promptSlots').innerHTML = '<div style="font-size:.75rem;color:var(--text-muted);font-style:italic" id="slotPlaceholder">Your assembled prompt will build up here, block by block…</div>';
+  renderFragments();
+  $('prog2').classList.remove('done');
+}
+
+/* ─── ACTIVITY 3: Slide Rewrite Clinic ─── */
+const PATIENTS = {
+  A: {
+    correct: 1,
+    opts: [
+      {t:'Keep the paragraph but make the font smaller so it all fits neatly', ex:'No — shrinking text to cram in a paragraph is the classic mistake. Small dense text just guarantees nobody reads it. The problem is the paragraph itself, not the font size.'},
+      {t:'Cut to a headline + three tight lines: "Q3: Revenue +12%, Retention +5%, 8 new clients"', ex:'Correct. One idea per slide, and the idea is a claim, not a paragraph. A punchy title plus three concrete numbers is scannable in two seconds — and you say the narrative out loud. Prompt AI: "rewrite this slide as a headline plus 3 concise data points, no full sentences."'},
+      {t:'Split the paragraph across five separate slides so each sentence gets its own slide', ex:'No — that swaps one bloated slide for five thin ones and buries a simple update in a slide-flip marathon. The fix is compression to one tight slide, not fragmentation.'}
+    ]
+  },
+  B: {
+    correct: 0,
+    opts: [
+      {t:'Split it: strategy, hiring, and budget each become their own slide — one idea per slide', ex:'Correct. The title literally lists three unrelated topics. One idea per slide means strategy, hiring, and budget each get their own slide (the office move likely belongs somewhere else entirely). Ask AI: "each of these is a separate idea — give me one slide per topic."'},
+      {t:'Keep all four on one slide but bold the most important one', ex:'No — bolding one item doesn\'t rescue a slide juggling four ideas. The audience still has to track four topics at once. Bolding is polish; the structural problem is too many ideas per slide.'},
+      {t:'Merge them into a single dense paragraph so it feels more complete', ex:'No — that\'s the wall-of-text trap from Slide A. Combining unrelated ideas into prose makes it harder to follow, not easier. Separate ideas need separate slides.'}
+    ]
+  },
+  C: {
+    correct: 2,
+    opts: [
+      {t:'Add every remaining bullet so the data is complete', ex:'No — completeness is not the goal of a slide; a point is. A slide isn\'t a spreadsheet. Eleven bullets with no takeaway leaves the audience to do the thinking you should have done for them.'},
+      {t:'Turn all the percentages into a big colorful table', ex:'No — a table is still a data-dump; it just looks tidier. The slide still says nothing. The audience needs the <em>insight</em>, not a prettier version of every number.'},
+      {t:'Lead with the takeaway: "Onboarding is our #1 pain point (40%)" and show only the top 3', ex:'Correct. A good slide makes a point, then supports it. State the insight in the title, show the top 2–3 drivers, and move the full breakdown to an appendix or speaker notes. Ask AI: "what\'s the single takeaway here? Give me a title that states it, then the 3 strongest supporting numbers."'}
+    ]
+  }
+};
+let clinicAnswered = {};
+function renderChecks(){
+  ['A','B','C'].forEach(p => {
+    const data = PATIENTS[p];
+    $('checks' + p).innerHTML = data.opts.map((o, i) =>
+      `<button class="err-opt" data-p="${p}" data-i="${i}" onclick="answerClinic('${p}', ${i}, this)">${o.t}</button>`
+    ).join('');
+  });
+}
+function answerClinic(p, i, btn){
+  if (clinicAnswered[p]) return;
+  clinicAnswered[p] = true;
+  const data = PATIENTS[p];
+  const wrap = $('checks' + p);
+  wrap.querySelectorAll('.err-opt').forEach((b, bi) => {
+    b.disabled = true;
+    if (bi === data.correct) b.classList.add('right');
+  });
+  if (i !== data.correct) btn.classList.add('wrong');
+  const note = $('note' + p);
+  note.innerHTML = (i === data.correct ? '<strong>Best fix.</strong> ' : '<strong>Not the strongest fix.</strong> ') + data.opts[i].ex;
+  note.classList.add('show');
+  checkClinicDone();
+}
+function checkClinicDone(){
+  if (Object.keys(clinicAnswered).length === 3) {
+    const right = ['A','B','C'].filter(p => {
+      const chosen = $('checks'+p).querySelector('.err-opt.wrong');
+      return !chosen;
+    }).length;
+    const fb = $('feedback3');
+    if (right === 3) {
+      fb.className = 'activity-feedback show success';
+      fb.innerHTML = `<strong>3/3 — you rewrite like a presenter, not a note-taker.</strong> The rules to keep: <em>compress</em> a paragraph into a headline plus a few concrete points; <em>split</em> a slide that carries more than one idea; <em>lead with the takeaway</em> instead of dumping every number. The slide carries the point; you carry the detail out loud. Tell AI exactly this and it rewrites in one round.`;
+    } else {
+      fb.className = 'activity-feedback show partial';
+      fb.innerHTML = `<strong>You nailed ${right} of 3.</strong> Re-read the notes on the ones you missed — every wordy slide has a signature. The trap most people hit: trying to fit <em>more</em> onto a slide (smaller font, a table, extra bullets) when the real fix is always to say <em>less</em> and let one idea land. Hit <em>Reset clinic</em> to run the cases again.`;
+    }
+    $('prog3').classList.add('done');
+  }
+}
+function resetActivity3(){
+  clinicAnswered = {};
+  ['A','B','C'].forEach(p => $('note'+p).classList.remove('show'));
+  $('feedback3').className = 'activity-feedback';
+  renderChecks();
+  $('prog3').classList.remove('done');
+}
+
+/* ─── ACTIVITY 4: Story-First Quiz ─── */
+const QUIZ = [
+  {
+    q:'AI generates a clean 10-slide deck from your prompt in seconds. It reads well and has no obvious errors. What should you do before presenting it?',
+    opts:[
+      {t:'Present it as-is — it read well and had no errors', ok:false, ex:'"Reads well" only means the writing is fluent. AI writes confident, polished slides even when the story is generic and the facts are unchecked. Fluent is not the same as ready.'},
+      {t:'Do a slide-by-slide pass: verify every fact, cut filler, and confirm each slide makes one clear point', ok:true, ex:'This is the whole discipline. The draft is a starting point, not a finished talk. Go slide by slide — is each claim true? Is there exactly one idea per slide? Does the arc actually build to your point? That edit is where a generic draft becomes your presentation.'},
+      {t:'Ask AI "is this good?" and go with its answer', ok:false, ex:'AI will confidently say yes — it can\'t see your audience, your real data, or the meeting stakes. Self-certification from the tool that wrote it isn\'t review. You are the editor.'}
+    ]
+  },
+  {
+    q:'Your AI-drafted slide has a title and six bullet points, each a full sentence. What\'s the best move?',
+    opts:[
+      {t:'Leave it — more bullets means more information for the audience', ok:false, ex:'Six full-sentence bullets is a document, not a slide. The audience reads instead of listening to you, and no single point stands out. Density is not value.'},
+      {t:'Cut to one idea and a few short phrases; push the detail into your speaker notes', ok:true, ex:'Right. One idea per slide, short phrases not sentences, and the supporting detail lives in speaker notes you say out loud. Sparse slides keep eyes on you; speaker notes make sure you don\'t lose the substance.'},
+      {t:'Make the bullets smaller and add a second column to fit even more', ok:false, ex:'Cramming more onto the slide is the wrong direction. If it doesn\'t fit comfortably, that\'s the slide telling you it holds too many ideas — split or cut, don\'t shrink.'}
+    ]
+  },
+  {
+    q:'You ask AI to "make a presentation about our new product." It returns polished slides. What\'s the biggest risk in that output?',
+    opts:[
+      {t:'The slides will have spelling mistakes', ok:false, ex:'Spelling is rarely AI\'s problem — its writing is fluent. The real risk is subtler and more dangerous: content that sounds right but is generic or invented.'},
+      {t:'Generic filler and possibly invented facts — because your prompt gave AI nothing specific to work from', ok:true, ex:'Exactly. With no audience, goal, or source, AI fills the gap with plausible-sounding boilerplate and sometimes fabricated stats or claims. That\'s why a strong prompt names the audience, goal, and source — and why you verify every fact against something real.'},
+      {t:'The slides will be too short', ok:false, ex:'A vague prompt rarely produces something too short — it produces something generic and padded. The danger is filler that looks substantive, not a lack of length.'}
+    ]
+  },
+  {
+    q:'What\'s the most reliable way to keep an AI-built deck from wandering off-topic or inventing details?',
+    opts:[
+      {t:'Ask for as many slides as possible so nothing gets left out', ok:false, ex:'More slides gives AI more room to pad and drift. Length is not accuracy — a longer deck just means more filler and more claims to check.'},
+      {t:'Point it at a real source and iterate slide by slide, correcting each one', ok:true, ex:'Right. Anchoring AI to a real document keeps content traceable, and reviewing slide by slide — "tighten slide 3, that stat on slide 5 is wrong, cut slide 7" — steers the draft toward what you actually mean. Building and refining in small steps beats one giant prompt.'},
+      {t:'Trust the first draft — regenerating just wastes time', ok:false, ex:'The first draft is a rough cut, not a final. Slide-by-slide iteration is exactly how you catch drift and invented details. Skipping it is how the errors reach your audience.'}
+    ]
+  },
+  {
+    q:'What\'s the single habit that separates people who present great AI-built decks from people who present generic ones?',
+    opts:[
+      {t:'Using the fanciest AI presentation tool available', ok:false, ex:'The tool doesn\'t write your story. A fancy generator still needs a clear audience, a real narrative, and human editing — otherwise it produces polished generic slides faster.'},
+      {t:'Treating the AI draft as a first draft: shaping a real story, tightening every slide, and verifying the facts', ok:true, ex:'This is the throughline of the whole lesson. AI drafts fast; you make it a talk. Give it a clear audience and goal, anchor it to a source, then edit for one-idea-per-slide, a real problem→insight→action arc, and truthful facts. The draft is the tool\'s job; the presentation is yours.'},
+      {t:'Writing one enormous prompt and never touching the output again', ok:false, ex:'Even a great prompt only produces a candidate draft. Never editing it guarantees generic filler and unverified claims reach the room. Prompt well, then shape and check.'}
+    ]
+  }
+];
+let quizAnswered = 0, quizScore = 0;
+function renderQuiz(){
+  quizAnswered = 0; quizScore = 0;
+  $('quizWrap').innerHTML = QUIZ.map((q, qi) => {
+    const order = q.opts.map((_, i) => i).sort(()=>Math.random()-0.5);
+    return `<div class="quiz-q" id="q${qi}">
+      <div class="quiz-q-num">Question ${qi+1} of ${QUIZ.length}</div>
+      <div class="quiz-q-text">${q.q}</div>
+      <div class="quiz-opts">${order.map(oi =>
+        `<button class="quiz-opt" onclick="answerQuiz(${qi}, ${oi}, this)">${q.opts[oi].t}</button>`).join('')}
+      </div>
+      <div class="quiz-explain" id="qx${qi}"></div>
+    </div>`;
+  }).join('');
+  $('feedback4').className = 'activity-feedback';
+}
+function answerQuiz(qi, oi, btn){
+  const q = QUIZ[qi];
+  const box = $('q' + qi);
+  if (box.dataset.done) return;
+  box.dataset.done = '1';
+  const opt = q.opts[oi];
+  const rightText = q.opts.find(o => o.ok).t;
+  box.querySelectorAll('.quiz-opt').forEach(b => {
+    b.disabled = true;
+    if (b.textContent === rightText) b.classList.add('right');
+  });
+  if (!opt.ok) btn.classList.add('wrong');
+  const ex = $('qx' + qi);
+  ex.className = 'quiz-explain show ' + (opt.ok ? 'ok' : 'no');
+  ex.innerHTML = (opt.ok ? '<strong>Right.</strong> ' : '<strong>Not quite.</strong> ') + opt.ex;
+  quizAnswered++;
+  if (opt.ok) quizScore++;
+  if (quizAnswered === QUIZ.length) finishQuiz();
+}
+function finishQuiz(){
+  const fb = $('feedback4');
+  if (quizScore === QUIZ.length) {
+    fb.className = 'activity-feedback show success';
+    fb.innerHTML = `<strong>5/5 — you've got the habit that matters.</strong> AI is a superb first-drafter, but it can't see your audience, your data, or your point. So the loop is always the same: name the audience and goal, anchor it to a real source, then edit for one idea per slide, a true story, and verified facts. Do that and AI multiplies your speed without flattening your message into generic filler.`;
+  } else {
+    fb.className = 'activity-feedback show partial';
+    fb.innerHTML = `<strong>You scored ${quizScore}/5.</strong> Re-read the explanations — the wrong options are the exact traps ("reads well, so ship it", "more bullets is more value", "trust the first draft"). The thread through all five: an AI deck is a first draft, not a finished talk. Only your editing — story, tight slides, checked facts — turns it into something worth presenting. Retake for a clean 5/5.`;
+  }
+  $('prog4').classList.add('done');
+}
+function resetQuiz(){
+  renderQuiz();
+  $('prog4').classList.remove('done');
+}
+
+/* ─── INIT ─── */
+window.addEventListener('DOMContentLoaded', () => {
+  renderScenarios();
+  setupBuckets();
+  renderFragments();
+  renderChecks();
+  renderQuiz();
+});
+</script>
+</body>
+</html>
