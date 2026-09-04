@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Productivity Week 5 — Priya Runs Her First Project: The AI Project Management Capstone</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --orange:#E87A2E;--orange-dark:#D06A20;--orange-light:#F5943E;--orange-glow:rgba(232,122,46,0.12);
+  --navy:#2B2D42;--navy-dark:#1A1B2E;
+  --bg:#F3EDE7;--bg-card:#FFFFFF;--bg-light:#F9F5F0;
+  --text-primary:#2B2D42;--text-secondary:#6B6D7B;--text-muted:#9597A6;
+  --border:#E5DDD4;
+  --green:#4CAF50;--green-light:#E8F5E9;
+  --blue:#3F88C5;--purple:#8B5CF6;--pink:#EC4899;--red:#E74C3C;
+  --shadow-sm:0 2px 8px rgba(43,45,66,0.06);
+  --shadow-md:0 8px 24px rgba(43,45,66,0.08);
+  --shadow-lg:0 16px 48px rgba(43,45,66,0.12);
+  --radius:14px;--radius-sm:8px;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text-primary);overflow-x:hidden;-webkit-font-smoothing:antialiased;line-height:1.6}
+
+/* ─── HEADER ─── */
+.header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:.8rem 2rem;display:flex;align-items:center;justify-content:space-between}
+.header-left{display:flex;align-items:center;gap:.7rem}
+.header-title{font-family:'DM Serif Display',serif;font-size:1.15rem;color:var(--navy);line-height:1.2}
+.header-title span{color:var(--orange)}
+.header-tag{font-size:.65rem;color:var(--text-muted);font-weight:500;letter-spacing:.04em;text-transform:uppercase}
+.logo-mascot{width:44px;height:44px;flex-shrink:0}
+.progress-pill{display:flex;align-items:center;gap:.6rem;padding:.4rem .9rem;background:var(--orange-glow);border-radius:50px;font-size:.72rem;color:var(--orange);font-weight:700}
+.progress-pill .dot{width:7px;height:7px;border-radius:50%;background:var(--orange);animation:pulse 2s infinite}
+
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.9)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes popIn{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:scale(1)}}
+@keyframes shimmer{0%{background-position:-400px 0}100%{background-position:400px 0}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes confettiFall{0%{transform:translateY(-10px) rotate(0);opacity:1}100%{transform:translateY(120px) rotate(360deg);opacity:0}}
+
+/* ─── HERO ─── */
+.hero{padding:3.5rem 2rem 2.5rem;background:linear-gradient(180deg,var(--bg) 0%,var(--bg-light) 100%);position:relative;overflow:hidden}
+.hero-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1.4fr 1fr;gap:2.5rem;align-items:center}
+.hero-badge{display:inline-flex;align-items:center;gap:.45rem;padding:.4rem 1rem;border-radius:50px;background:var(--orange-glow);color:var(--orange);font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:1rem;animation:fadeUp .7s ease}
+.hero h1{font-family:'DM Serif Display',serif;font-size:clamp(1.9rem,4vw,2.8rem);line-height:1.15;color:var(--navy);margin-bottom:.9rem;animation:fadeUp .7s ease .1s both}
+.hero h1 em{font-style:normal;color:var(--orange)}
+.hero-sub{font-size:.95rem;color:var(--text-secondary);line-height:1.7;margin-bottom:1.4rem;animation:fadeUp .7s ease .2s both}
+.usecase-banner{background:#fff;border-radius:var(--radius);padding:1rem 1.2rem;border:1px solid var(--border);box-shadow:var(--shadow-sm);display:flex;align-items:center;gap:1rem;animation:fadeUp .7s ease .3s both}
+.usecase-icon{width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,#8B5CF6,#3F88C5);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.4rem}
+.usecase-text{font-size:.82rem;color:var(--text-secondary);line-height:1.5}
+.usecase-text strong{color:var(--navy);font-weight:700}
+.hero-visual{display:flex;justify-content:center;align-items:center;animation:fadeUp .8s ease .2s both}
+.hero-mascot{width:230px;height:auto;animation:float 3.5s ease-in-out infinite;filter:drop-shadow(0 12px 40px rgba(232,122,46,0.22))}
+.budget-strip{max-width:1100px;margin:1.6rem auto 0;display:grid;grid-template-columns:repeat(4,1fr);gap:.8rem;animation:fadeUp .8s ease .35s both}
+.budget-chip{background:#fff;border:1px solid var(--border);border-radius:10px;padding:.75rem .9rem;text-align:center;box-shadow:var(--shadow-sm)}
+.budget-chip .bv{font-family:'DM Serif Display',serif;font-size:1.25rem;color:var(--orange)}
+.budget-chip .bl{font-size:.64rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;font-weight:700;margin-top:.15rem}
+
+/* ─── SECTION SHELL ─── */
+.section{padding:3rem 2rem;scroll-margin-top:80px}
+.section.alt{background:var(--bg-light)}
+.container{max-width:1100px;margin:0 auto}
+.section-header{margin-bottom:2rem}
+.section-num{display:inline-flex;align-items:center;gap:.5rem;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--orange);margin-bottom:.5rem}
+.section-num .num{width:24px;height:24px;border-radius:50%;background:var(--orange);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.7rem}
+.section-title{font-family:'DM Serif Display',serif;font-size:clamp(1.5rem,2.8vw,2rem);color:var(--navy);line-height:1.25;margin-bottom:.4rem}
+.section-sub{font-size:.92rem;color:var(--text-secondary);line-height:1.65;max-width:720px}
+.story-beat{background:#fff;border-left:4px solid var(--orange);border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:1rem 1.2rem;font-size:.88rem;color:var(--text-primary);line-height:1.65;box-shadow:var(--shadow-sm);margin-bottom:1.6rem}
+.story-beat .sb-tag{display:inline-block;font-size:.62rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--orange);margin-bottom:.3rem}
+.story-beat em{color:var(--text-secondary)}
+
+/* ─── TAB NAV ─── */
+.tab-nav{display:flex;gap:.4rem;overflow-x:auto;padding:.4rem;background:rgba(255,255,255,0.7);backdrop-filter:blur(8px);border-radius:50px;border:1px solid var(--border);box-shadow:var(--shadow-sm);position:sticky;top:72px;z-index:50;margin:0 auto 2rem;max-width:fit-content;flex-wrap:nowrap;-ms-overflow-style:none;scrollbar-width:none}
+.tab-nav::-webkit-scrollbar{display:none}
+.tab-btn{padding:.55rem 1.1rem;border-radius:50px;border:none;background:transparent;color:var(--text-secondary);font-size:.78rem;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap;transition:all .2s}
+.tab-btn:hover{color:var(--orange)}
+.tab-btn.active{background:var(--orange);color:#fff;box-shadow:0 3px 12px rgba(232,122,46,0.35)}
+
+/* ─── GENERIC CARDS/GRIDS ─── */
+.pick-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;margin-bottom:1.5rem}
+.pick-grid.four{grid-template-columns:repeat(4,1fr)}
+.pick-card{background:#fff;border-radius:var(--radius);padding:1.4rem;border:2px solid var(--border);cursor:pointer;transition:all .3s;position:relative;overflow:hidden}
+.pick-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;transition:height .3s}
+.pick-card:nth-child(1)::before{background:linear-gradient(90deg,var(--green),#7BC67E)}
+.pick-card:nth-child(2)::before{background:linear-gradient(90deg,var(--blue),#5DADE2)}
+.pick-card:nth-child(3)::before{background:linear-gradient(90deg,var(--purple),#B39DDB)}
+.pick-card:nth-child(4)::before{background:linear-gradient(90deg,var(--pink),#F48FB1)}
+.pick-card:nth-child(5)::before{background:linear-gradient(90deg,var(--orange),var(--orange-light))}
+.pick-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-md)}
+.pick-card.active{border-color:var(--orange);box-shadow:var(--shadow-md)}
+.pick-card.active::before{height:6px}
+.pick-icon{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;margin-bottom:.8rem;background:var(--bg-light)}
+.pick-card h4{font-family:'DM Serif Display',serif;font-size:1.05rem;color:var(--navy);margin-bottom:.3rem}
+.pick-card .pc-tag{font-size:.66rem;color:var(--orange);font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:.6rem}
+.pick-card p{font-size:.78rem;color:var(--text-secondary);line-height:1.5}
+.pick-detail{background:#fff;border-radius:var(--radius);padding:1.3rem 1.5rem;border:1px solid var(--border);box-shadow:var(--shadow-sm);font-size:.86rem;line-height:1.65;display:none}
+.pick-detail.show{display:block;animation:fadeUp .4s ease}
+.pick-detail strong{color:var(--navy)}
+.pick-detail .verdict-pill{display:inline-block;padding:.2rem .7rem;border-radius:50px;font-size:.68rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;margin-bottom:.5rem}
+.vp-good{background:var(--green-light);color:#2E7D32}
+.vp-mid{background:#FFF3CD;color:#856404}
+.vp-bad{background:#FEE;color:#C62828}
+
+/* ─── SCENARIO QUIZ ─── */
+.scenario-panel{background:#fff;border-radius:var(--radius);padding:1.5rem;border:1px solid var(--border);box-shadow:var(--shadow-sm);margin-top:1.4rem}
+.scenario-title{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-muted);margin-bottom:.6rem}
+.scenario-q{font-size:1rem;color:var(--navy);margin-bottom:1rem;font-weight:600;line-height:1.5}
+.scenario-options{display:grid;grid-template-columns:1fr;gap:.6rem;margin-bottom:1rem}
+.scenario-btn{padding:.75rem .9rem;border-radius:8px;border:1.5px solid var(--border);background:#fff;font-size:.82rem;font-weight:600;color:var(--text-primary);cursor:pointer;font-family:inherit;transition:all .2s;text-align:left;line-height:1.45}
+.scenario-btn:hover{border-color:var(--orange);color:var(--orange)}
+.scenario-btn.correct{background:var(--green-light);border-color:var(--green);color:#2E7D32}
+.scenario-btn.wrong{background:#FEE;border-color:var(--red);color:#C62828}
+.scenario-feedback{padding:.9rem;border-radius:8px;font-size:.83rem;line-height:1.55;display:none}
+.scenario-feedback.show{display:block;animation:fadeUp .4s ease}
+.scenario-feedback.success{background:var(--green-light);color:#2E7D32;border-left:3px solid var(--green)}
+.scenario-feedback.fail{background:#FEE;color:#C62828;border-left:3px solid var(--red)}
+.btn-action{padding:.55rem 1.1rem;border-radius:8px;background:var(--orange);color:#fff;border:none;font-size:.82rem;font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s}
+.btn-action:hover{background:var(--orange-dark);transform:translateY(-1px);box-shadow:0 4px 12px rgba(232,122,46,0.3)}
+.btn-secondary{background:transparent;color:var(--text-primary);border:1.5px solid var(--border);padding:.55rem 1.1rem;border-radius:8px;font-size:.82rem;font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s}
+.btn-secondary:hover{border-color:var(--orange);color:var(--orange)}
+
+/* ─── CHAT MOCK ─── */
+.chat-mock{background:#fff;border-radius:var(--radius);border:1px solid var(--border);box-shadow:var(--shadow-sm);overflow:hidden;margin-top:1rem}
+.chat-head{background:var(--navy-dark);color:#fff;padding:.6rem 1rem;font-size:.78rem;font-weight:600;display:flex;align-items:center;gap:.5rem}
+.chat-head .cdot{width:8px;height:8px;border-radius:50%;background:var(--green)}
+.chat-body{padding:1.1rem;display:flex;flex-direction:column;gap:.8rem;min-height:150px}
+.chat-msg{max-width:88%;padding:.8rem 1rem;border-radius:12px;font-size:.83rem;line-height:1.55}
+.chat-msg.user{align-self:flex-end;background:var(--orange-glow);color:var(--text-primary);border:1px solid rgba(232,122,46,0.25);border-bottom-right-radius:3px}
+.chat-msg.ai{align-self:flex-start;background:var(--bg-light);border:1px solid var(--border);border-bottom-left-radius:3px}
+.chat-msg.ai strong{color:var(--orange)}
+.chat-msg .who{display:block;font-size:.62rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--text-muted);margin-bottom:.3rem}
+
+/* ─── PLAN / BOARD MOCK ─── */
+.sheet-wrap{background:#fff;border-radius:var(--radius);border:1px solid var(--border);box-shadow:var(--shadow-md);overflow:hidden;margin-top:1rem}
+.sheet-chrome{background:#8B5CF6;color:#fff;padding:.5rem 1rem;font-size:.75rem;font-weight:700;display:flex;align-items:center;gap:.5rem}
+.sheet-chrome .xicon{width:18px;height:18px;background:#fff;color:#8B5CF6;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:800}
+.sheet-tabs{background:#F3F2F1;border-bottom:1px solid var(--border);display:flex;font-size:.7rem}
+.sheet-tabs .stab{padding:.4rem .9rem;color:var(--text-secondary);border-right:1px solid var(--border)}
+.sheet-tabs .stab.on{background:#fff;color:#8B5CF6;font-weight:700;border-bottom:2px solid #8B5CF6}
+.sheet-scroll{overflow-x:auto}
+table.sheet{border-collapse:collapse;width:100%;font-size:.74rem;min-width:560px}
+table.sheet th,table.sheet td{border:1px solid #E5E5E5;padding:.35rem .55rem;text-align:left;white-space:nowrap}
+table.sheet thead th{background:#F3F2F1;color:var(--text-secondary);font-weight:700;text-align:center}
+table.sheet tbody th{background:#F3F2F1;color:var(--text-muted);font-weight:600;text-align:center;width:28px}
+table.sheet td.hl-bad{background:#FEE;color:#C62828;font-weight:600}
+table.sheet td.hl-good{background:var(--green-light);color:#2E7D32;font-weight:600}
+table.sheet td.hl-fix{background:var(--orange-glow);color:var(--orange-dark);font-weight:600}
+.sheet-cap{font-size:.76rem;color:var(--text-muted);padding:.6rem 1rem;background:var(--bg-light);border-top:1px solid var(--border)}
+
+/* ─── GANTT ─── */
+.gantt-wrap{background:#fff;border-radius:var(--radius);border:1px solid var(--border);box-shadow:var(--shadow-md);overflow:hidden;margin-top:1.4rem}
+.gantt-head{background:#F5F5F7;padding:.55rem 1rem;border-bottom:1px solid var(--border);font-size:.72rem;color:var(--text-muted);font-weight:700}
+.gantt-body{padding:1.1rem 1.2rem}
+.gantt-week-lbls{display:grid;grid-template-columns:150px repeat(6,1fr);gap:0;font-size:.62rem;color:var(--text-muted);font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:.4rem}
+.gantt-week-lbls span:first-child{text-align:left}
+.gantt-week-lbls span{text-align:center}
+.gantt-row{display:grid;grid-template-columns:150px repeat(6,1fr);align-items:center;gap:0;padding:.28rem 0;border-top:1px solid var(--bg-light)}
+.gantt-task{font-size:.74rem;font-weight:600;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-right:.5rem}
+.gantt-cell{height:16px;position:relative}
+.gantt-bar{position:absolute;top:2px;bottom:2px;border-radius:4px;background:linear-gradient(90deg,var(--orange-light),var(--orange));transform:scaleX(0);transform-origin:left;transition:transform .7s cubic-bezier(.2,.8,.2,1)}
+.gantt-bar.dep{background:linear-gradient(90deg,#5DADE2,var(--blue))}
+.gantt-bar.crit{background:linear-gradient(90deg,#F48FB1,var(--pink))}
+.gantt-bar.show{transform:scaleX(1)}
+.gantt-legend{display:flex;gap:1rem;flex-wrap:wrap;margin-top:.8rem;font-size:.68rem;color:var(--text-secondary)}
+.gantt-legend .lg{display:inline-flex;align-items:center;gap:.35rem}
+.gantt-legend .sw{width:14px;height:10px;border-radius:3px}
+
+/* ─── FORMULA/PROMPT LAB ─── */
+.formula-lab{background:#fff;border-radius:var(--radius);padding:1.4rem;border:1px solid var(--border);box-shadow:var(--shadow-sm);margin-top:1.4rem}
+.fl-tabs{display:flex;gap:.4rem;margin-bottom:1rem;flex-wrap:wrap}
+.fl-tab{padding:.45rem .9rem;border-radius:50px;border:1.5px solid var(--border);background:#fff;font-size:.74rem;font-weight:600;color:var(--text-secondary);cursor:pointer;font-family:inherit;transition:all .2s}
+.fl-tab:hover{border-color:var(--orange);color:var(--orange)}
+.fl-tab.active{background:var(--orange);border-color:var(--orange);color:#fff}
+.fl-prompt{background:var(--orange-glow);border:1px solid rgba(232,122,46,0.25);border-radius:8px;padding:.8rem 1rem;font-size:.83rem;line-height:1.5;margin-bottom:.9rem}
+.fl-prompt .who{display:block;font-size:.62rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--orange);margin-bottom:.3rem}
+.fl-code{background:var(--navy-dark);border-radius:8px;padding:.85rem 1rem;font-family:'Consolas','Courier New',monospace;font-size:.8rem;color:#D8DAE5;overflow-x:auto;line-height:1.5;margin-bottom:.9rem}
+.fl-code .kw{color:#F5943E}.fl-code .st{color:#8BD49C}.fl-code .rf{color:#82AAFF}
+.fl-explain{font-size:.83rem;line-height:1.6;color:var(--text-secondary)}
+.fl-explain strong{color:var(--navy)}
+
+/* review-style two column */
+.review-mine{background:#fff;border-radius:var(--radius);padding:1.4rem;border:1px solid var(--border);box-shadow:var(--shadow-sm);margin-top:1.4rem}
+.review-cols{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:.9rem}
+.review-col{border-radius:var(--radius-sm);padding:1rem 1.1rem}
+.review-col.love{background:var(--green-light)}
+.review-col.hate{background:#FEE}
+.review-col h5{font-size:.72rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.6rem}
+.review-col.love h5{color:#2E7D32}
+.review-col.hate h5{color:#C62828}
+.review-col li{font-size:.8rem;line-height:1.5;margin-left:1.1rem;margin-bottom:.35rem;color:var(--text-primary)}
+
+/* ─── STATUS/BLOCKER PANEL ─── */
+.err-panel{background:#fff;border-radius:var(--radius);padding:1.5rem;border:1px solid var(--border);box-shadow:var(--shadow-sm);margin-top:1.4rem}
+.err-badge{display:inline-flex;align-items:center;gap:.4rem;background:#FEE;color:#C62828;font-weight:800;font-size:.85rem;padding:.35rem .8rem;border-radius:7px}
+.err-cell{background:var(--bg-light);border:1px solid var(--border);border-radius:6px;padding:.6rem .8rem;font-size:.82rem;margin:.8rem 0;color:var(--text-primary);line-height:1.55}
+.err-cell b{color:#C62828}
+
+/* ─── STATUS TOGGLE (exec vs team) ─── */
+.status-toggle{display:flex;gap:.5rem;margin:1rem 0 .9rem}
+.status-toggle .st-btn{flex:1;padding:.6rem;border-radius:8px;border:1.5px solid var(--border);background:#fff;font-size:.8rem;font-weight:700;color:var(--text-secondary);cursor:pointer;font-family:inherit;transition:all .2s}
+.status-toggle .st-btn.active{background:var(--navy-dark);color:#fff;border-color:var(--navy-dark)}
+.status-out{background:var(--bg-light);border-radius:8px;border-left:3px solid var(--orange);padding:1rem 1.1rem;font-size:.84rem;line-height:1.6;min-height:120px}
+.status-out h6{font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;color:var(--orange-dark);font-weight:800;margin-bottom:.5rem}
+.status-out strong{color:var(--navy)}
+.status-out .meta{font-size:.7rem;color:var(--text-muted);margin-top:.6rem;font-style:italic}
+
+/* ─── STANDUP → TASKS ─── */
+.standup-wrap{background:#fff;border-radius:var(--radius);padding:1.4rem;border:1px solid var(--border);box-shadow:var(--shadow-sm);margin-top:1.4rem}
+.standup-note{background:var(--navy-dark);color:#D8DAE5;border-radius:8px;padding:.9rem 1.1rem;font-size:.82rem;line-height:1.6;font-style:italic}
+.standup-note .who{display:block;font-size:.62rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--orange-light);margin-bottom:.35rem;font-style:normal}
+.task-extract{list-style:none;margin-top:1rem;padding:0;display:flex;flex-direction:column;gap:.5rem}
+.task-extract li{display:flex;align-items:center;gap:.7rem;background:var(--bg-light);border-radius:8px;padding:.6rem .9rem;font-size:.82rem;opacity:.35;transform:translateX(-8px);transition:all .4s}
+.task-extract li.on{opacity:1;transform:translateX(0)}
+.task-extract li .owner{margin-left:auto;font-size:.68rem;font-weight:800;background:var(--orange-glow);color:var(--orange-dark);padding:.2rem .55rem;border-radius:50px;white-space:nowrap}
+.task-extract li .tk{width:20px;height:20px;border-radius:5px;background:var(--purple);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.7rem;flex-shrink:0;font-weight:800}
+
+/* ─── AUTOMATION FLOW ─── */
+.auto-flow{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;align-items:center;gap:.6rem;margin-top:1.4rem}
+.auto-node{background:#fff;border-radius:var(--radius);border:2px solid var(--border);padding:1rem;text-align:center;box-shadow:var(--shadow-sm);transition:all .3s}
+.auto-node.lit{border-color:var(--orange);box-shadow:var(--shadow-md);transform:translateY(-3px)}
+.auto-node .an-icon{font-size:1.5rem;margin-bottom:.4rem}
+.auto-node .an-tag{font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--orange);margin-bottom:.25rem}
+.auto-node h5{font-size:.82rem;color:var(--navy);font-family:'DM Serif Display',serif;margin-bottom:.3rem}
+.auto-node p{font-size:.72rem;color:var(--text-secondary);line-height:1.45}
+.auto-arrow{font-size:1.3rem;color:var(--orange);font-weight:800}
+.auto-guard{margin-top:1rem;background:#FFF3CD;border-left:3px solid #856404;border-radius:8px;padding:.8rem 1rem;font-size:.81rem;line-height:1.55;color:#856404;display:none}
+.auto-guard.show{display:block;animation:fadeUp .4s ease}
+.auto-guard strong{color:#5c4700}
+
+/* checklist + feed */
+.build-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1.5rem}
+.build-card{background:#fff;border-radius:var(--radius);padding:1.3rem;border:1px solid var(--border);box-shadow:var(--shadow-sm)}
+.build-card h4{font-size:.95rem;color:var(--navy);margin-bottom:.7rem;display:flex;align-items:center;gap:.5rem}
+.build-card h4::before{content:'';width:10px;height:10px;border-radius:50%;background:var(--orange)}
+.checklist{list-style:none;padding:0}
+.checklist li{display:flex;align-items:flex-start;gap:.6rem;padding:.42rem 0;font-size:.84rem;color:var(--text-primary);cursor:pointer;line-height:1.45}
+.checklist li .check{width:18px;height:18px;border-radius:5px;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;transition:all .2s}
+.checklist li.done .check{background:var(--green);border-color:var(--green)}
+.checklist li.done .check::after{content:'✓';color:#fff;font-size:.7rem;font-weight:800}
+.checklist li.done{color:var(--text-muted);text-decoration:line-through}
+.feed{background:var(--navy-dark);border-radius:10px;padding:1rem 1.1rem;min-height:220px;max-height:280px;overflow-y:auto}
+.feed-line{display:flex;gap:.6rem;font-size:.78rem;line-height:1.55;padding:.3rem 0;color:#D8DAE5;animation:fadeUp .4s ease}
+.feed-line .ft{color:var(--orange-light);font-weight:700;flex-shrink:0}
+.feed-line.hint-line{color:#8B8DA0;font-style:italic}
+.done-note{margin-top:1rem;padding:.8rem;background:var(--green-light);border-radius:7px;font-size:.78rem;color:#2E7D32;display:none}
+
+/* ─── CAPSTONE 5-MODULE RELAY ─── */
+.relay-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:.7rem;margin-top:1.4rem}
+.relay-card{background:#fff;border-radius:var(--radius);border:2px solid var(--border);padding:1rem .8rem;text-align:center;cursor:pointer;transition:all .3s;position:relative;overflow:hidden}
+.relay-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;transition:height .3s;background:var(--orange)}
+.relay-card:nth-child(1)::before{background:linear-gradient(90deg,var(--blue),#5DADE2)}
+.relay-card:nth-child(2)::before{background:linear-gradient(90deg,var(--purple),#B39DDB)}
+.relay-card:nth-child(3)::before{background:linear-gradient(90deg,var(--green),#7BC67E)}
+.relay-card:nth-child(4)::before{background:linear-gradient(90deg,var(--orange),var(--orange-light))}
+.relay-card:nth-child(5)::before{background:linear-gradient(90deg,var(--pink),#F48FB1)}
+.relay-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-md)}
+.relay-card.active{border-color:var(--orange);box-shadow:var(--shadow-md)}
+.relay-card.active::before{height:6px}
+.relay-card .rc-wk{font-size:.6rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--text-muted);margin-bottom:.3rem}
+.relay-card .rc-ico{font-size:1.6rem;margin-bottom:.35rem}
+.relay-card h5{font-family:'DM Serif Display',serif;font-size:.9rem;color:var(--navy);line-height:1.15}
+.relay-detail{background:#fff;border-radius:var(--radius);padding:1.3rem 1.5rem;border:1px solid var(--border);box-shadow:var(--shadow-sm);font-size:.86rem;line-height:1.65;margin-top:1rem;display:none}
+.relay-detail.show{display:block;animation:fadeUp .4s ease}
+.relay-detail strong{color:var(--navy)}
+.relay-detail .rd-tag{display:inline-block;font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--orange);margin-bottom:.4rem}
+
+/* ─── VERDICT ─── */
+.week-verdict{display:none;margin-top:1.4rem;background:var(--navy-dark);border-radius:var(--radius);padding:1.6rem;color:#fff;animation:popIn .5s ease}
+.week-verdict.show{display:block}
+.week-verdict h4{font-family:'DM Serif Display',serif;font-size:1.35rem;margin-bottom:.8rem}
+.week-verdict h4 em{font-style:normal;color:var(--orange-light)}
+.wv-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.7rem;margin-bottom:1rem}
+.wv-tile{background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.14);border-radius:9px;padding:.8rem;text-align:center}
+.wv-tile .v{font-family:'DM Serif Display',serif;font-size:1.3rem;color:var(--orange-light)}
+.wv-tile .l{font-size:.62rem;text-transform:uppercase;letter-spacing:.05em;color:rgba(255,255,255,0.55);font-weight:700;margin-top:.25rem}
+.week-verdict p{font-size:.87rem;line-height:1.65;color:rgba(255,255,255,0.85)}
+.week-verdict p strong{color:var(--orange-light)}
+
+/* ─── FOOTER / RECAP ─── */
+.footer-cta{text-align:center;padding:3rem 2rem 5.5rem;background:var(--navy-dark);color:#fff;position:relative;overflow:hidden}
+.footer-cta h2{font-family:'DM Serif Display',serif;font-size:1.9rem;margin-bottom:.6rem}
+.footer-cta h2 em{color:var(--orange);font-style:normal}
+.footer-cta>p{font-size:.92rem;color:rgba(255,255,255,0.7);max-width:640px;margin:0 auto 1.8rem}
+.recap-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:.8rem;max-width:1080px;margin:0 auto 1.8rem;text-align:left}
+.recap-card{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.13);border-radius:var(--radius);padding:1.1rem 1.15rem}
+.recap-card .rn{font-size:.62rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--orange-light);margin-bottom:.35rem}
+.recap-card h4{font-family:'DM Serif Display',serif;font-size:.98rem;margin-bottom:.35rem;color:#fff}
+.recap-card p{font-size:.74rem;color:rgba(255,255,255,0.65);line-height:1.5}
+.footer-note{font-size:.72rem;color:rgba(255,255,255,0.4);margin-top:1.6rem;max-width:660px;margin-left:auto;margin-right:auto;line-height:1.6}
+.cert-badge{display:inline-block;background:linear-gradient(135deg,var(--orange),var(--orange-light));border-radius:var(--radius);padding:1.2rem 2rem;margin:0 auto 1.8rem;box-shadow:0 8px 30px rgba(232,122,46,0.4)}
+.cert-badge .cb-top{font-size:.66rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,0.85)}
+.cert-badge .cb-main{font-family:'DM Serif Display',serif;font-size:1.4rem;color:#fff;margin:.2rem 0}
+.cert-badge .cb-sub{font-size:.72rem;color:rgba(255,255,255,0.9)}
+
+/* ─── COMPLETION BAR ─── */
+.completion-bar{position:fixed;bottom:0;left:0;right:0;background:rgba(255,255,255,0.95);backdrop-filter:blur(10px);border-top:1px solid var(--border);padding:.7rem 2rem;display:flex;align-items:center;justify-content:space-between;z-index:90;box-shadow:0 -2px 12px rgba(0,0,0,0.05)}
+.completion-info{display:flex;align-items:center;gap:.8rem;font-size:.82rem;color:var(--text-primary);font-weight:600}
+.completion-track{flex:1;max-width:280px;height:8px;background:var(--bg-light);border-radius:4px;overflow:hidden;margin:0 1rem}
+.completion-fill{height:100%;background:linear-gradient(90deg,var(--orange),var(--orange-light));border-radius:4px;transition:width .5s ease}
+.completion-percent{font-family:'DM Serif Display',serif;color:var(--orange);font-size:1.15rem}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:880px){
+  .hero-inner{grid-template-columns:1fr;text-align:center}
+  .hero-mascot{width:170px;margin:0 auto}
+  .usecase-banner{text-align:left}
+  .budget-strip{grid-template-columns:repeat(2,1fr)}
+  .pick-grid,.pick-grid.four{grid-template-columns:1fr}
+  .calc-grid,.build-grid,.review-cols{grid-template-columns:1fr}
+  .wv-grid{grid-template-columns:repeat(2,1fr)}
+  .recap-grid{grid-template-columns:repeat(2,1fr)}
+  .relay-grid{grid-template-columns:repeat(2,1fr)}
+  .auto-flow{grid-template-columns:1fr;gap:.4rem}
+  .auto-arrow{transform:rotate(90deg)}
+  .gantt-week-lbls,.gantt-row{grid-template-columns:110px repeat(6,1fr)}
+  .header{padding:.7rem 1rem}
+  .section{padding:2.2rem 1rem}
+  .hero{padding:2.5rem 1rem 2rem}
+}
+</style>
+</head>
+<body>
+
+<!-- ─── HEADER ─── -->
+<header class="header">
+  <div class="header-left">
+    <svg class="logo-mascot" viewBox="0 0 955 1486" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="477" cy="380" rx="285" ry="324" fill="#EBE3D6"/>
+      <ellipse cx="477" cy="380" rx="240" ry="270" fill="#412C23"/>
+      <circle cx="389" cy="430" r="36" fill="#fff"/>
+      <circle cx="565" cy="430" r="36" fill="#fff"/>
+      <circle cx="389" cy="430" r="14" fill="#2B2D42"/>
+      <circle cx="565" cy="430" r="14" fill="#2B2D42"/>
+      <path d="M380 1180c30 28 65 42 97 42s67-14 97-42" stroke="#A34E1C" stroke-width="14" stroke-linecap="round" fill="none"/>
+      <ellipse cx="477" cy="1350" rx="430" ry="100" fill="#EF7F1A"/>
+      <ellipse cx="477" cy="1350" rx="380" ry="78" fill="#FF9429"/>
+    </svg>
+    <div>
+      <div class="header-title">MokshPath · <span>AI Project Management</span></div>
+      <div class="header-tag">Week 5 · Course Capstone · Fun While You Learn</div>
+    </div>
+  </div>
+  <div class="progress-pill"><span class="dot"></span> <span id="headerProgressText">0 of 5 chapters explored</span></div>
+</header>
+
+<!-- ─── HERO ─── -->
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-badge"><span style="width:7px;height:7px;border-radius:50%;background:var(--orange);display:inline-block"></span> Final Week · The Capstone Project</div>
+      <h1>Priya Runs Her First Project — Launch the <em>Company Newsletter</em> Solo, On a Tight Deadline</h1>
+      <p class="hero-sub">Priya just got tapped for her first real project as lead: <strong>launch Northwind's brand-new customer newsletter</strong> in 6 weeks, with a team of three and a nervous VP watching. She has never run a project end-to-end. But she has finished four weeks of AI Productivity — Research, PM, Excel, Office, and PowerPoint — and now it all comes together. Across four chapters you'll help her pick her PM stack, turn a vague goal into a real plan (and catch AI's over-optimistic timeline), survive a mid-project blocker with honest status updates, and automate the busywork. Then the finale: the launch succeeds because she used <strong>all five modules</strong>. This is your graduation project. Choose like a project lead.</p>
+      <div class="usecase-banner">
+        <div class="usecase-icon">🚀</div>
+        <div class="usecase-text"><strong>The Mission:</strong> Ship the first newsletter on time, on scope, with a stakeholder deck the VP can present — using AI to plan, track and communicate, while Priya owns the commitments. Win or lose, you'll leave with the full AI-PM playbook and the whole course tied into one story.</div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <svg class="hero-mascot" viewBox="0 0 955 1486" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="bodyGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#EBE3D6"/><stop offset="1" stop-color="#D1D0CC"/></linearGradient>
+          <linearGradient id="faceGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7A6A48"/><stop offset="1" stop-color="#412C23"/></linearGradient>
+          <linearGradient id="feetGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FF9429"/><stop offset="1" stop-color="#EF7F1A"/></linearGradient>
+        </defs>
+        <ellipse cx="210" cy="408" rx="68" ry="82" fill="#D9DADA"/>
+        <ellipse cx="740" cy="408" rx="68" ry="82" fill="#D9DADA"/>
+        <ellipse cx="477" cy="380" rx="285" ry="324" fill="url(#bodyGrad)"/>
+        <ellipse cx="477" cy="392" rx="240" ry="225" fill="url(#faceGrad)"/>
+        <circle cx="389" cy="430" r="38" fill="#fff"/>
+        <circle cx="565" cy="430" r="38" fill="#fff"/>
+        <circle cx="389" cy="430" r="15" fill="#2B2D42"/>
+        <circle cx="565" cy="430" r="15" fill="#2B2D42"/>
+        <circle cx="395" cy="424" r="5" fill="#fff"/>
+        <circle cx="571" cy="424" r="5" fill="#fff"/>
+        <path d="M380 1180c30 28 65 42 97 42s67-14 97-42" stroke="#A34E1C" stroke-width="16" stroke-linecap="round" fill="none"/>
+        <ellipse cx="477" cy="1350" rx="430" ry="105" fill="url(#feetGrad)"/>
+        <ellipse cx="477" cy="1320" rx="380" ry="78" fill="#FF9429"/>
+      </svg>
+    </div>
+  </div>
+  <div class="budget-strip">
+    <div class="budget-chip"><div class="bv">6 weeks</div><div class="bl">To first launch</div></div>
+    <div class="budget-chip"><div class="bv">Team of 3</div><div class="bl">Priya coordinates</div></div>
+    <div class="budget-chip"><div class="bv">1 VP</div><div class="bl">Watching closely</div></div>
+    <div class="budget-chip"><div class="bv">5 modules</div><div class="bl">Woven into the finale</div></div>
+  </div>
+</section>
+
+<!-- ─── TAB NAVIGATION ─── -->
+<div class="tab-nav" id="tabNav">
+  <button class="tab-btn active" data-target="s1">Ch 1 · Pick the Stack</button>
+  <button class="tab-btn" data-target="s2">Ch 2 · Plan &amp; Tasks</button>
+  <button class="tab-btn" data-target="s3">Ch 3 · Track &amp; Status</button>
+  <button class="tab-btn" data-target="s4">Ch 4 · Automate</button>
+  <button class="tab-btn" data-target="s5">Capstone · Launch Day</button>
+</div>
+
+<!-- ═══════════ CHAPTER 1: PICK THE PM STACK ═══════════ -->
+<section class="section" id="s1">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-num"><div class="num">1</div> Chapter One · The AI PM Landscape</div>
+      <h2 class="section-title">Pick Your Stack — And Decide What AI Owns vs. What You Own</h2>
+      <p class="section-sub">Rule one of AI project management: the AI is your project coordinator, not your project lead. There's no single "PM AI" — there are tools built into the suite you already use, each with a plan tier and a sweet spot. Today Priya matches the tool to her team, then draws the line between what AI drafts and what she commits to.</p>
+    </div>
+
+    <div class="story-beat">
+      <span class="sb-tag">📖 The story so far</span>
+      Monday, 9:00 a.m. The VP forwards Priya one line: <em>"Own the newsletter launch. First issue live in six weeks. You've got Sam (design), Aisha (copy), and Dev (email platform). Go."</em> No plan, no tool, no template. Before Priya panics, she does the professional thing: <em>she picks the PM stack her team will actually use, and decides which decisions she'll never delegate to AI.</em> Click each tool to inspect it, then commit.
+    </div>
+
+    <div class="pick-grid four">
+      <div class="pick-card" data-tool="asana" onclick="pickTool('asana')">
+        <div class="pick-icon">🟣</div>
+        <div class="pc-tag">Paid AI add-on</div>
+        <h4>Asana AI</h4>
+        <p>"AI teammates" and Smart features inside Asana — drafts project plans, summarises status, flags risks. Strong for cross-team work, but the best AI features sit on higher paid tiers.</p>
+      </div>
+      <div class="pick-card" data-tool="clickup" onclick="pickTool('clickup')">
+        <div class="pick-icon">🧠</div>
+        <div class="pc-tag">Add-on per seat</div>
+        <h4>ClickUp Brain</h4>
+        <p>ClickUp's built-in AI: generate subtasks, summarise threads, write updates. All-in-one and cheap to start — Brain is a paid add-on billed per user on top of your plan.</p>
+      </div>
+      <div class="pick-card" data-tool="notion" onclick="pickTool('notion')">
+        <div class="pick-icon">📝</div>
+        <div class="pc-tag">Docs + light PM</div>
+        <h4>Notion AI</h4>
+        <p>Great when your project lives in docs and databases. Notion AI drafts plans, meeting notes and briefs beautifully — but it's a flexible workspace, not a dedicated tracker.</p>
+      </div>
+      <div class="pick-card" data-tool="planner" onclick="pickTool('planner')">
+        <div class="pick-icon">🟦</div>
+        <div class="pc-tag">Already in Microsoft 365</div>
+        <h4>Planner + Copilot</h4>
+        <p>If your company runs Microsoft 365, Planner (now blended with Project + To Do) with Copilot can draft a plan and tasks from a goal — no new tool, no new bill for many orgs.</p>
+      </div>
+    </div>
+    <div class="pick-detail" id="toolDetail"></div>
+
+    <div class="chat-mock">
+      <div class="chat-head"><span class="cdot"></span> AI PM Assistant · The brief showdown — vague vs. specific</div>
+      <div class="chat-body" id="promptChat">
+        <div class="chat-msg ai"><span class="who">Narrator</span>An AI PM tool is only as good as the brief you give it. Below are three ways Priya could ask AI to draft her launch plan. <strong>Pick the one you think produces a plan she can actually run</strong> — then see what comes back.</div>
+      </div>
+    </div>
+    <div class="scenario-panel">
+      <div class="scenario-title">🎯 Checkpoint · Pick Priya's brief</div>
+      <div class="scenario-q">Which brief does Priya give her AI PM assistant?</div>
+      <div class="scenario-options">
+        <button class="scenario-btn" onclick="pickPrompt(0)">"Plan my project."</button>
+        <button class="scenario-btn" onclick="pickPrompt(1)">"Give me a plan that guarantees we launch in six weeks no matter what."</button>
+        <button class="scenario-btn" onclick="pickPrompt(2)">"Draft a project plan to launch a monthly customer newsletter in 6 weeks. Goal: first issue live by [date]. Team: designer, copywriter, email-platform dev. Break it into phases and tasks with owners and rough estimates, and flag any dependency that could delay launch. I'll adjust the estimates."</button>
+      </div>
+      <div class="scenario-feedback" id="promptFb"></div>
+    </div>
+
+    <div class="scenario-panel">
+      <div class="scenario-title">🧠 Pop Quiz · What AI owns vs. what you own (3 rounds)</div>
+      <div class="scenario-q" id="toolQ">Loading…</div>
+      <div class="scenario-options" id="toolOpts"></div>
+      <div class="scenario-feedback" id="toolFb"></div>
+      <button class="btn-secondary" id="toolNext" onclick="nextToolQ()" style="margin-top:.5rem;display:none">Next round →</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ CHAPTER 2: PLAN + TASKS ═══════════ -->
+<section class="section alt" id="s2">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-num"><div class="num">2</div> Chapter Two · AI Planning &amp; Task Management</div>
+      <h2 class="section-title">Turn the Goal Into a Plan — Scope, WBS, Estimates, Dependencies</h2>
+      <p class="section-sub">A goal isn't a plan. Today Priya asks AI to break the launch into a <strong>work breakdown structure</strong>, estimate each task, and map dependencies. AI drafts fast — but its timeline is suspiciously rosy. Her job: turn the draft into a schedule the team can actually hit.</p>
+    </div>
+
+    <div class="story-beat">
+      <span class="sb-tag">📖 The story so far</span>
+      Tuesday. Priya types her brief and AI returns a clean plan in seconds: phases, tasks, owners, estimates. Impressive — until she reads the estimates. AI assumed <em>zero review cycles, no approvals, and everyone working in parallel with no handoffs.</em> That's the classic AI-planner trap: it's an optimist that has never missed a deadline. She remembers Chapter 1's line: <em>AI drafts the plan, you own the commitment.</em> Inspect the WBS, then catch the timeline.
+    </div>
+
+    <div class="sheet-wrap">
+      <div class="sheet-chrome"><span class="xicon">P</span> Newsletter Launch — Work Breakdown Structure (AI's first draft)</div>
+      <div class="sheet-tabs"><span class="stab on">WBS &amp; Tasks</span><span class="stab">Dependencies</span><span class="stab">Timeline</span></div>
+      <div class="sheet-scroll">
+        <table class="sheet">
+          <thead><tr><th></th><th>A · Task</th><th>B · Owner</th><th>C · AI estimate</th><th>D · Priya's real estimate</th><th>E · Depends on</th></tr></thead>
+          <tbody>
+            <tr><th>2</th><td>Define audience &amp; content pillars</td><td>Priya</td><td>1 day</td><td class="hl-good">2 days</td><td>—</td></tr>
+            <tr><th>3</th><td>Design newsletter template</td><td>Sam</td><td class="hl-bad">1 day</td><td class="hl-fix">4 days (+2 review)</td><td>Content pillars</td></tr>
+            <tr><th>4</th><td>Write launch issue copy</td><td>Aisha</td><td class="hl-bad">1 day</td><td class="hl-fix">3 days (+VP approval)</td><td>Template + pillars</td></tr>
+            <tr><th>5</th><td>Build &amp; test email in platform</td><td>Dev</td><td>2 days</td><td class="hl-fix">3 days (needs final copy)</td><td>Copy + template</td></tr>
+            <tr><th>6</th><td>Legal / unsubscribe compliance check</td><td class="hl-bad">— (AI forgot)</td><td class="hl-bad">missing</td><td class="hl-good">1 day · Legal</td><td>Final email</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="sheet-cap">⚠️ AI estimated the whole build at <em>5 days</em> — but it left out review cycles, VP approval, and a legal compliance step entirely. Add those and the real critical path is closer to <strong>3 weeks of work</strong>. This is why a human owns the estimates.</div>
+    </div>
+
+    <div class="formula-lab">
+      <div style="font-family:'DM Serif Display',serif;font-size:1.1rem;color:var(--navy);margin-bottom:.9rem">🧪 The Planning Lab — describe the goal, AI structures it, you correct it</div>
+      <div class="fl-tabs">
+        <button class="fl-tab active" data-fl="scope" onclick="setFormula('scope')">Scope · define done</button>
+        <button class="fl-tab" data-fl="wbs" onclick="setFormula('wbs')">WBS · break it down</button>
+        <button class="fl-tab" data-fl="estimate" onclick="setFormula('estimate')">Estimate · catch the optimism</button>
+        <button class="fl-tab" data-fl="deps" onclick="setFormula('deps')">Dependencies · the critical path</button>
+      </div>
+      <div class="fl-prompt" id="flPrompt"><span class="who">You → AI</span></div>
+      <div class="fl-code" id="flCode"></div>
+      <div class="fl-explain" id="flExplain"></div>
+    </div>
+
+    <div class="gantt-wrap">
+      <div class="gantt-head">📅 Priya's corrected mini-Gantt — after she added reviews, approval &amp; compliance</div>
+      <div class="gantt-body">
+        <div class="gantt-week-lbls"><span>Task</span><span>W1</span><span>W2</span><span>W3</span><span>W4</span><span>W5</span><span>W6</span></div>
+        <div class="gantt-row"><span class="gantt-task">Audience &amp; pillars</span>
+          <span class="gantt-cell"><span class="gantt-bar" data-w="1" style="left:2%;right:52%"></span></span><span></span><span></span><span></span><span></span><span></span></div>
+        <div class="gantt-row"><span class="gantt-task">Template design</span>
+          <span></span><span class="gantt-cell"><span class="gantt-bar dep" data-w="2" style="left:2%;right:8%"></span></span><span></span><span></span><span></span><span></span></div>
+        <div class="gantt-row"><span class="gantt-task">Launch copy</span>
+          <span></span><span></span><span class="gantt-cell"><span class="gantt-bar dep" data-w="3" style="left:5%;right:5%"></span></span><span></span><span></span><span></span></div>
+        <div class="gantt-row"><span class="gantt-task">Build &amp; test email</span>
+          <span></span><span></span><span></span><span class="gantt-cell"><span class="gantt-bar crit" data-w="4" style="left:5%;right:20%"></span></span><span></span><span></span></div>
+        <div class="gantt-row"><span class="gantt-task">Legal / compliance</span>
+          <span></span><span></span><span></span><span></span><span class="gantt-cell"><span class="gantt-bar" data-w="5" style="left:5%;right:55%"></span></span><span></span></div>
+        <div class="gantt-row"><span class="gantt-task">Buffer + LAUNCH 🚀</span>
+          <span></span><span></span><span></span><span></span><span></span><span class="gantt-cell"><span class="gantt-bar crit" data-w="6" style="left:5%;right:5%"></span></span></div>
+        <div class="gantt-legend">
+          <span class="lg"><span class="sw" style="background:var(--orange)"></span>Priya-owned</span>
+          <span class="lg"><span class="sw" style="background:var(--blue)"></span>Has a dependency</span>
+          <span class="lg"><span class="sw" style="background:var(--pink)"></span>Critical path</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="scenario-panel">
+      <div class="scenario-title">🧠 Pop Quiz · Planning instincts (3 rounds)</div>
+      <div class="scenario-q" id="formQ">Loading…</div>
+      <div class="scenario-options" id="formOpts"></div>
+      <div class="scenario-feedback" id="formFb"></div>
+      <button class="btn-secondary" id="formNext" onclick="nextFormQ()" style="margin-top:.5rem;display:none">Next round →</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ CHAPTER 3: TRACK + STATUS ═══════════ -->
+<section class="section" id="s3">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-num"><div class="num">3</div> Chapter Three · Tracking, Status &amp; Communication</div>
+      <h2 class="section-title">A Blocker Appears — Now Communicate Like a Pro</h2>
+      <p class="section-sub">Week 4. A blocker hits. This is the real test of a project lead: not that nothing went wrong, but how honestly and clearly you handle it. Today Priya uses AI to draft two very different status updates, turn a messy standup into tasks — and catch a "watermelon" status that's green on the outside, red on the inside.</p>
+    </div>
+
+    <div class="story-beat">
+      <span class="sb-tag">📖 The story so far</span>
+      Thursday of week 4. Dev messages: <em>"The email platform's API changed — the send integration is broken. Might be 3 days to fix."</em> That's on the critical path. Priya's instinct isn't to hide it; it's to <em>communicate it well.</em> The VP needs a one-line, decision-ready summary. The team needs specifics and next steps. Same truth, two audiences. And she has to make sure nobody's status is quietly lying.
+    </div>
+
+    <div class="err-panel">
+      <div style="font-family:'DM Serif Display',serif;font-size:1.1rem;color:var(--navy);margin-bottom:.5rem">🚨 The Blocker — <span class="err-badge">Critical path at risk</span></div>
+      <div class="err-cell">Dev's update: "<b>Email send integration broken</b> — the platform changed its API. Estimated 3 days to fix. This blocks the build &amp; test task, which the launch date depends on."</div>
+      <p style="font-size:.83rem;color:var(--text-secondary);line-height:1.6">Priya asks AI: <em>"Turn this blocker into a status update — one for the VP, one for the team."</em> Same facts, two very different drafts. Toggle between them, then judge whether the framing is right.</p>
+
+      <div class="status-toggle">
+        <button class="st-btn active" id="stExec" onclick="setStatus('exec')">📊 Exec update (VP)</button>
+        <button class="st-btn" id="stTeam" onclick="setStatus('team')">🛠️ Team update</button>
+      </div>
+      <div class="status-out" id="statusOut"></div>
+    </div>
+
+    <div class="standup-wrap">
+      <div style="font-family:'DM Serif Display',serif;font-size:1.1rem;color:var(--navy);margin-bottom:.6rem">🎙️ Standup → Tasks — click "Extract" to watch AI pull action items</div>
+      <div class="standup-note"><span class="who">Monday standup · raw notes pasted into AI</span>"Sam finished the template but the header logo is low-res, needs the vector file from brand. Aisha's copy is done except the CTA — waiting on Priya to confirm the offer. Dev is blocked on the API thing, opened a ticket with the vendor. Someone needs to tell Legal we'll send them the final email Friday. Oh and we should A/B test the subject line."</div>
+      <button class="btn-action" style="margin-top:1rem" id="extractBtn" onclick="extractTasks()">✨ Extract action items with AI</button>
+      <ul class="task-extract" id="taskExtract">
+        <li><span class="tk">1</span> <span>Get vector logo file from brand team → fix template header</span> <span class="owner">Sam</span></li>
+        <li><span class="tk">2</span> <span>Confirm the launch offer so Aisha can finish the CTA</span> <span class="owner">Priya</span></li>
+        <li><span class="tk">3</span> <span>Chase vendor ticket on the API break; get an ETA</span> <span class="owner">Dev</span></li>
+        <li><span class="tk">4</span> <span>Send Legal a heads-up: final email for review Friday</span> <span class="owner">Priya</span></li>
+        <li><span class="tk">5</span> <span>Set up A/B test on the subject line before send</span> <span class="owner">Dev</span></li>
+      </ul>
+      <p style="font-size:.78rem;color:var(--text-muted);line-height:1.55;margin-top:.9rem">💡 AI is excellent at turning a rambling standup into owned, trackable tasks — but notice Priya still <strong>assigns owners and confirms them</strong>. AI extracts; the lead commits.</p>
+    </div>
+
+    <div class="err-panel" style="margin-top:1.4rem">
+      <div style="font-family:'DM Serif Display',serif;font-size:1.1rem;color:var(--navy);margin-bottom:.5rem">🍉 Catch the Watermelon — green on top, red inside</div>
+      <p style="font-size:.83rem;color:var(--text-secondary);line-height:1.6">Priya's dashboard shows the "Build &amp; Test Email" task as <strong style="color:#2E7D32">🟢 GREEN — on track</strong>. But she knows Dev is blocked by the API break with no vendor ETA. A status that reports green while the work is actually stuck is a <em>watermelon</em> — and it's how projects fail on the day everyone thought they were fine.</p>
+      <div class="scenario-panel" style="margin-top:1rem">
+        <div class="scenario-title">🎯 Checkpoint · The status says green. You know it's not. Now what?</div>
+        <div class="scenario-q">The task is marked 🟢 GREEN but you know it's blocked with no ETA. What does a real project lead do?</div>
+        <div class="scenario-options">
+          <button class="scenario-btn" onclick="sanityQ(0)">Leave it green — it'll probably get fixed before anyone notices, and green keeps the VP calm.</button>
+          <button class="scenario-btn" onclick="sanityQ(1)">Change it to 🟡 AMBER / 🔴 RED, name the blocker, state the impact on launch, and propose an option — surface it early while there's still time to act.</button>
+          <button class="scenario-btn" onclick="sanityQ(2)">Wait for the next weekly report so it's not a surprise mid-week.</button>
+        </div>
+        <div class="scenario-feedback" id="sanityFb"></div>
+      </div>
+    </div>
+
+    <div class="review-mine">
+      <div style="font-family:'DM Serif Display',serif;font-size:1.1rem;color:var(--navy)">✍️ AI drafts the comms — Priya owns the commitments</div>
+      <p style="font-size:.82rem;color:var(--text-secondary);margin-top:.3rem">The honest beat of the whole chapter: AI can write the update in seconds, but every promise in it is Priya's to keep. Here's the line she never crosses.</p>
+      <div class="review-cols">
+        <div class="review-col love">
+          <h5>💚 Great uses of AI here</h5>
+          <ul>
+            <li>Draft the exec vs. team versions of the same news</li>
+            <li>Summarise a 40-minute meeting into decisions &amp; owners</li>
+            <li>Extract action items from messy standup notes</li>
+            <li>Suggest a re-plan when a task slips</li>
+          </ul>
+        </div>
+        <div class="review-col hate">
+          <h5>💔 What stays human</h5>
+          <ul>
+            <li>Deciding the <strong>real</strong> RAG status (green/amber/red)</li>
+            <li>Making the commitment / promise to the VP</li>
+            <li>Choosing which trade-off to make on the blocker</li>
+            <li>Owning the bad news — you deliver it, not the bot</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ CHAPTER 4: AUTOMATE + CAPSTONE SETUP ═══════════ -->
+<section class="section alt" id="s4">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-num"><div class="num">4</div> Chapter Four · Automation &amp; Capstone</div>
+      <h2 class="section-title">Automate the Busywork — Then Assemble the Whole Course</h2>
+      <p class="section-sub">Priya keeps getting the same request: "Where are we?" A pro automates the recurring ask — with a <strong>trigger → action</strong> flow and <em>guardrails</em>, so the automation never lies on her behalf. Then the capstone setup: the five modules that will carry launch day.</p>
+    </div>
+
+    <div class="story-beat">
+      <span class="sb-tag">📖 The story so far</span>
+      Week 5. Every Friday the VP, Legal, and two stakeholders each ping "status?" separately. Priya answers the same thing four times. So she asks AI to design an automation: <em>a trigger that fires every Friday, pulls task status from the board, drafts a status summary, and sends it — but pauses for her review before anything goes out.</em> Automation removes the busywork; the guardrail keeps her name honest. Build the flow, then set up the capstone.
+    </div>
+
+    <div class="scenario-panel">
+      <div class="scenario-title">🎯 Checkpoint · The golden rule of PM automation</div>
+      <div class="scenario-q">AI can auto-generate and auto-send the weekly status. Should Priya let it send with no human step?</div>
+      <div class="scenario-options">
+        <button class="scenario-btn" onclick="autoQ(0)">Yes — full auto-send saves the most time, and the AI reads the board so it's accurate.</button>
+        <button class="scenario-btn" onclick="autoQ(1)">Automate the gathering &amp; drafting, but add a guardrail: it drafts and pings Priya to review &amp; approve before sending. She still owns what goes out.</button>
+        <button class="scenario-btn" onclick="autoQ(2)">Don't automate anything — typing the same update four times a week is safest.</button>
+      </div>
+      <div class="scenario-feedback" id="autoFb"></div>
+    </div>
+
+    <div class="auto-flow">
+      <div class="auto-node" id="an0">
+        <div class="an-icon">⏰</div>
+        <div class="an-tag">Trigger</div>
+        <h5>Every Friday, 2 p.m.</h5>
+        <p>A scheduled trigger fires — no one has to remember to run it.</p>
+      </div>
+      <div class="auto-arrow">→</div>
+      <div class="auto-node" id="an1">
+        <div class="an-icon">⚙️</div>
+        <div class="an-tag">Action</div>
+        <h5>Gather + draft</h5>
+        <p>AI pulls task status from the board and drafts the weekly summary.</p>
+      </div>
+      <div class="auto-arrow">→</div>
+      <div class="auto-node" id="an2">
+        <div class="an-icon">🛡️</div>
+        <div class="an-tag">Guardrail</div>
+        <h5>Priya reviews</h5>
+        <p>It pings Priya to approve/edit before anything sends. Human in the loop.</p>
+      </div>
+    </div>
+    <button class="btn-action" style="margin-top:1rem" id="runFlowBtn" onclick="runFlow()">▶ Run the automation once</button>
+    <div class="auto-guard" id="autoGuard"><strong>Why the guardrail matters:</strong> If the board had a stale "green" left over from Chapter 3's watermelon, a fully-automatic send would have blasted a wrong status to the VP with Priya's name on it. The review step is one click — and it's the difference between automation that helps and automation that embarrasses you. <em>Automate the busywork; never automate the accountability.</em></div>
+
+    <div class="build-grid">
+      <div class="build-card">
+        <h4>Capstone build checklist — the launch runbook</h4>
+        <ul class="checklist" id="buildList">
+          <li data-step="0" onclick="runBuildStep(0)"><span class="check"></span><strong>&nbsp;Frame the launch&nbsp;</strong> — research the audience &amp; competitor newsletters <em>(Wk 1)</em></li>
+          <li data-step="1" onclick="runBuildStep(1)"><span class="check"></span><strong>&nbsp;Plan &amp; coordinate&nbsp;</strong> — WBS, owners, tracked board, weekly status <em>(Wk 5)</em></li>
+          <li data-step="2" onclick="runBuildStep(2)"><span class="check"></span><strong>&nbsp;Track the metrics&nbsp;</strong> — Excel sheet for open/click targets &amp; budget <em>(Wk 2)</em></li>
+          <li data-step="3" onclick="runBuildStep(3)"><span class="check"></span><strong>&nbsp;Docs &amp; email&nbsp;</strong> — brief, approval emails, meeting recaps <em>(Wk 3)</em></li>
+          <li data-step="4" onclick="runBuildStep(4)"><span class="check"></span><strong>&nbsp;Stakeholder deck&nbsp;</strong> — the launch-readiness presentation <em>(Wk 4)</em></li>
+          <li data-step="5" onclick="runBuildStep(5)"><span class="check"></span><strong>&nbsp;Automate the status&nbsp;</strong> — Friday flow with a review guardrail <em>(Wk 5)</em></li>
+        </ul>
+        <div class="done-note" id="buildDone">✅ <strong>The runbook is complete.</strong> Every module you learned has a job on launch day. Priya isn't doing five people's work — she's conducting five AI-powered instruments, and she owns every note. Head to the Capstone.</div>
+      </div>
+      <div class="build-card">
+        <h4>Capstone assembly feed (click checklist items)</h4>
+        <div class="feed" id="buildFeed">
+          <div class="feed-line hint-line"><span class="ft">--:--</span>Waiting for you to start… tick items on the left to assemble the runbook.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ CAPSTONE: LAUNCH DAY ═══════════ -->
+<section class="section" id="s5">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-num"><div class="num">5</div> The Capstone · Launch Day</div>
+      <h2 class="section-title">Launch Day — Five Modules, One Project, One Priya</h2>
+      <p class="section-sub">Six weeks in. The newsletter goes live at 10 a.m. It works — not by luck, but because Priya wove <strong>all five course modules</strong> into one project. Click each module to see exactly where it carried the launch, then judge her final calls and take your graduation.</p>
+    </div>
+
+    <div class="story-beat">
+      <span class="sb-tag">📖 The story so far</span>
+      Launch day, 9:55 a.m. Priya's finger hovers over "send to 12,000 subscribers." She's calm — because nothing here is a surprise. Research told her what subscribers want. PM kept the team coordinated and honest through a blocker. Excel is tracking the metrics the moment sends land. Office produced every doc and approval email. PowerPoint is the deck the VP will present at 2 p.m. <em>This is the capstone: the five weeks weren't five separate tools — they were one professional's toolkit.</em> Click each to relive it.
+    </div>
+
+    <div class="relay-grid">
+      <div class="relay-card" data-mod="research" onclick="pickRelay('research')">
+        <div class="rc-wk">Week 1</div><div class="rc-ico">🔎</div><h5>Research</h5>
+      </div>
+      <div class="relay-card" data-mod="excel" onclick="pickRelay('excel')">
+        <div class="rc-wk">Week 2</div><div class="rc-ico">📊</div><h5>Excel</h5>
+      </div>
+      <div class="relay-card" data-mod="office" onclick="pickRelay('office')">
+        <div class="rc-wk">Week 3</div><div class="rc-ico">📄</div><h5>Office</h5>
+      </div>
+      <div class="relay-card" data-mod="ppt" onclick="pickRelay('ppt')">
+        <div class="rc-wk">Week 4</div><div class="rc-ico">📽️</div><h5>PowerPoint</h5>
+      </div>
+      <div class="relay-card" data-mod="pm" onclick="pickRelay('pm')">
+        <div class="rc-wk">Week 5</div><div class="rc-ico">🚀</div><h5>Project Mgmt</h5>
+      </div>
+    </div>
+    <div class="relay-detail" id="relayDetail"></div>
+
+    <div class="err-panel" style="margin-top:1.4rem">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:.6rem">
+        <div>
+          <div style="font-family:'DM Serif Display',serif;font-size:1.15rem;color:var(--navy)">Launch Readiness — Priya's final sign-off</div>
+          <div style="font-size:.78rem;color:var(--text-muted)">Newsletter live · 12,000 subscribers · VP deck at 2 p.m. · judge each call</div>
+        </div>
+      </div>
+
+      <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted);margin:.4rem 0 .8rem">Judge each call the way a project lead would</div>
+
+      <div class="scenario-panel" style="margin-top:0">
+        <div class="scenario-q" style="font-size:.92rem">📽️ Call 1 — AI drafted the VP's launch deck. Priya rehearses it and checks every number against the Excel tracker before the 2 p.m. meeting.</div>
+        <div class="scenario-options" style="grid-template-columns:1fr 1fr 1fr;gap:.5rem">
+          <button class="scenario-btn" style="text-align:center" onclick="judge('A','verify',this)">Right call ✓</button>
+          <button class="scenario-btn" style="text-align:center" onclick="judge('A','flag',this)">Flag it</button>
+          <button class="scenario-btn" style="text-align:center" onclick="judge('A','trust',this)">Send unread</button>
+        </div>
+        <div class="scenario-feedback" id="fbA"></div>
+      </div>
+
+      <div class="scenario-panel">
+        <div class="scenario-q" style="font-size:.92rem">🤖 Call 2 — The AI status draft claims "open rate 68% — best in the industry." The real sends went out 5 minutes ago; there's no data yet.</div>
+        <div class="scenario-options" style="grid-template-columns:1fr 1fr 1fr;gap:.5rem">
+          <button class="scenario-btn" style="text-align:center" onclick="judge('B','verify',this)">Right call ✓</button>
+          <button class="scenario-btn" style="text-align:center" onclick="judge('B','flag',this)">Flag it</button>
+          <button class="scenario-btn" style="text-align:center" onclick="judge('B','trust',this)">Send unread</button>
+        </div>
+        <div class="scenario-feedback" id="fbB"></div>
+      </div>
+
+      <div class="scenario-panel">
+        <div class="scenario-q" style="font-size:.92rem">🚀 Call 3 — Everything is verified: copy approved, email tested, Legal signed off, deck rehearsed, tracker live. Priya hits send at 10:00 a.m. sharp.</div>
+        <div class="scenario-options" style="grid-template-columns:1fr 1fr 1fr;gap:.5rem">
+          <button class="scenario-btn" style="text-align:center" onclick="judge('C','verify',this)">Right call ✓</button>
+          <button class="scenario-btn" style="text-align:center" onclick="judge('C','flag',this)">Flag it</button>
+          <button class="scenario-btn" style="text-align:center" onclick="judge('C','trust',this)">Hold, don't ship</button>
+        </div>
+        <div class="scenario-feedback" id="fbC"></div>
+      </div>
+
+      <div class="week-verdict" id="weekVerdict">
+        <h4>📜 The Launch Verdict: <em>shipped on time, on scope — with Priya's name on it, honestly.</em></h4>
+        <div class="wv-grid">
+          <div class="wv-tile"><div class="v">On time</div><div class="l">6-week deadline met</div></div>
+          <div class="wv-tile"><div class="v">1 blocker</div><div class="l">Surfaced early, survived</div></div>
+          <div class="wv-tile"><div class="v">5 modules</div><div class="l">Woven into one launch</div></div>
+          <div class="wv-tile"><div class="v">10:00 a.m.</div><div class="l">Sent · on the dot</div></div>
+        </div>
+        <p>Priya <strong>rehearsed the deck</strong> and checked its numbers (Call 1), <strong>deleted the fake "68% open rate"</strong> the AI invented before any data existed (Call 2), and <strong>shipped the launch</strong> once every item was genuinely verified (Call 3). The newsletter went to 12,000 subscribers at 10:00 a.m. The VP's 2 p.m. deck landed. Her secret wasn't working harder or trusting AI blindly — it was <strong>AI as leverage, a human who owns the commitments.</strong> She ran her first project solo. And she used everything the course taught her. 🎉</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FOOTER RECAP ─── -->
+<div class="footer-cta">
+  <div class="cert-badge">
+    <div class="cb-top">MokshPath · AI Productivity: Zero to Efficient</div>
+    <div class="cb-main">🎓 Course Complete</div>
+    <div class="cb-sub">You're now an AI-augmented professional</div>
+  </div>
+  <h2>Six weeks ago, Priya had never run a project. Today she <em>launched</em> one.</h2>
+  <p>And so did you. Here's the whole journey — five weeks, one professional's toolkit. Each module drafted the busywork; you owned the decisions. That's the entire course in one sentence.</p>
+  <div class="recap-grid">
+    <div class="recap-card">
+      <div class="rn">Week 1</div>
+      <h4>🔎 AI Research</h4>
+      <p>Frame the question, gather sources, verify claims. Priya used it to understand what subscribers actually want before a single word was written.</p>
+    </div>
+    <div class="recap-card">
+      <div class="rn">Week 2</div>
+      <h4>📊 AI Excel</h4>
+      <p>Clean data, formulas, analysis, automated reports. The tracker that turns "did it work?" into open-rate and click numbers she can defend.</p>
+    </div>
+    <div class="recap-card">
+      <div class="rn">Week 3</div>
+      <h4>📄 AI Office</h4>
+      <p>Docs, emails, meeting recaps drafted fast. The brief, the approvals, and the summaries that kept everyone aligned without endless typing.</p>
+    </div>
+    <div class="recap-card">
+      <div class="rn">Week 4</div>
+      <h4>📽️ AI PowerPoint</h4>
+      <p>Slide decks from an outline, on-brand and fast. The launch-readiness deck the VP presented — rehearsed and fact-checked by Priya.</p>
+    </div>
+    <div class="recap-card">
+      <div class="rn">Week 5</div>
+      <h4>🚀 AI Project Mgmt</h4>
+      <p>Pick the stack, plan, track, communicate, automate. The thread that tied all four other modules into one shipped project. The capstone.</p>
+    </div>
+  </div>
+  <button class="btn-action" style="font-size:.9rem;padding:.8rem 1.8rem" onclick="celebrate();document.getElementById('s1').scrollIntoView({behavior:'smooth'})">🎉 Take a bow &amp; replay Priya's launch</button>
+  <div class="footer-note">Northwind is a teaching scenario. Real AI PM tools, plan tiers and features change constantly — Asana AI, ClickUp Brain, Notion AI and Copilot in Planner all sit on paid tiers that shift, so always confirm what your workplace has enabled and what its data policy allows. And remember the golden rule that ran through all five weeks: <strong>AI drafts the plan, the report, the deck and the update — but a human who reads the output, owns the commitments, and ships the work.</strong> Congratulations, graduate.</div>
+</div>
+
+<!-- ─── COMPLETION BAR ─── -->
+<div class="completion-bar">
+  <div class="completion-info"><span style="font-size:1.1rem">🚀</span><span>Priya's Launch Progress</span></div>
+  <div class="completion-track"><div class="completion-fill" id="completionFill" style="width:0%"></div></div>
+  <div class="completion-percent" id="completionPct">0%</div>
+</div>
+
+<script>
+/* ───────── PROGRESS TRACKING ───────── */
+const visited = new Set();
+function markVisited(id){
+  visited.add(id);
+  const pct = Math.round((visited.size / 5) * 100);
+  document.getElementById('completionFill').style.width = pct + '%';
+  document.getElementById('completionPct').textContent = pct + '%';
+  document.getElementById('headerProgressText').textContent = `${visited.size} of 5 chapters explored`;
+}
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.target).scrollIntoView({behavior:'smooth', block:'start'});
+    markVisited(btn.dataset.target);
+  });
+});
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting && e.intersectionRatio > 0.3) {
+      markVisited(e.target.id);
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.target === e.target.id));
+    }
+  });
+}, {threshold:[0.3]});
+document.querySelectorAll('.section').forEach(s => observer.observe(s));
+
+/* ───────── CHAPTER 1: TOOL PICK ───────── */
+const toolInfo = {
+  asana: `<span class="verdict-pill vp-mid">Powerful cross-team · paid AI tiers</span><br><strong>Asana AI</strong> layers "AI teammates" and smart features onto a mature project tracker — it can draft a project plan from a goal, summarise status across tasks, and flag at-risk work. It shines when several teams touch one project. The honest catch: the most useful AI capabilities live on <strong>higher paid tiers</strong>, and like any AI it drafts plans an optimist would love — you still own the estimates. <em>Great for coordinating a real team; check which tier your org pays for.</em>`,
+  clickup: `<span class="verdict-pill vp-good">All-in-one · cheap to start</span><br><strong>ClickUp Brain</strong> is ClickUp's built-in AI: generate subtasks from a task, summarise long comment threads, and write status updates in your voice. ClickUp bundles docs, tasks, goals and whiteboards, so a small team can run everything in one place. Note that <strong>Brain is a paid add-on billed per user</strong> on top of your plan — the base tool is affordable, the AI is an upsell. <em>Strong pick for a lean team that wants one tool.</em>`,
+  notion: `<span class="verdict-pill vp-mid">Docs-first · light on tracking</span><br><strong>Notion AI</strong> is brilliant when your project lives in documents and databases — it drafts project briefs, meeting notes, and plans, and answers questions across your workspace. But Notion is a flexible workspace, not a dedicated project tracker; timelines, dependencies and board views exist but aren't its core strength. For a content project like a newsletter (lots of docs and copy) it's a lovely fit, paired with a lightweight board. <em>Perfect for doc-heavy work; less so for complex schedules.</em>`,
+  planner: `<span class="verdict-pill vp-good">No new tool if you're on Microsoft 365</span><br><strong>Planner + Copilot</strong> is Microsoft's answer: the new Planner blends To Do, Planner and Project, and <strong>Copilot can draft a plan and tasks from a plain-English goal</strong>. If your company already pays for Microsoft 365, this may mean no new tool and no new bill — the data stays inside your tenant, which IT usually prefers. Copilot's PM features often need a Copilot licence, so confirm what's switched on. <em>Priya's team is on Microsoft 365, so this is her natural home base — paired with a simple board.</em>`
+};
+function pickTool(k){
+  document.querySelectorAll('#s1 .pick-card').forEach(c => c.classList.toggle('active', c.dataset.tool === k));
+  const d = document.getElementById('toolDetail');
+  d.innerHTML = toolInfo[k];
+  d.classList.add('show');
+}
+
+/* brief showdown */
+const promptResults = [
+  {ok:false, fb:'✗ Too vague. "Plan my project" tells the AI nothing — no goal, no deadline, no team, no scope. You\'ll get a generic template that fits no real project. A PM brief needs the specifics only you know. Try the detailed one.',
+   chat:`<div class="chat-msg user"><span class="who">Priya</span>Plan my project.</div><div class="chat-msg ai"><span class="who">AI</span>Happy to help! To build a useful plan I need a few things: what's the goal and deadline? Who's on the team? What's in and out of scope? <strong>(A polite request for the details you didn't give — because a plan is only as good as its brief.)</strong></div>`},
+  {ok:false, fb:'✗ No plan can "guarantee" a launch "no matter what" — that\'s asking AI to promise away risk it can\'t control. You\'ll get a confident, unrealistic timeline with no buffers and no dependencies. Optimism isn\'t a plan; a critical path with buffers is.',
+   chat:`<div class="chat-msg user"><span class="who">Priya</span>Give me a plan that guarantees we launch in six weeks no matter what.</div><div class="chat-msg ai"><span class="who">AI</span>I can build an aggressive 6-week plan, but I can't guarantee outcomes — real projects have dependencies, approvals and blockers. <strong>A realistic plan names the risks and adds buffer</strong> rather than pretending they don't exist. Want me to flag the dependencies most likely to slip?</div>`},
+  {ok:true, fb:'✓ Exactly. Goal + deadline + team + a request to <strong>break it into phases with owners, estimates, and flagged dependencies</strong> — plus the crucial closer, "<em>I\'ll adjust the estimates.</em>" That last line is the whole course: AI drafts the plan, you own the commitment. This becomes Chapter 2\'s WBS.',
+   chat:`<div class="chat-msg user"><span class="who">Priya</span>Draft a project plan to launch a monthly newsletter in 6 weeks. Team: designer, copywriter, email dev. Break into phases with owners &amp; rough estimates, and flag dependencies that could delay launch. I'll adjust the estimates.</div><div class="chat-msg ai"><span class="who">AI</span>Here's a phased plan: <strong>1) Foundations</strong> (audience, pillars — Priya), <strong>2) Build</strong> (template — Sam; copy — Aisha; email — Dev), <strong>3) Review &amp; ship</strong> (approvals, test, launch). ⚠️ Key dependencies: copy waits on template + pillars; the email build waits on final copy. <strong>These estimates assume no review cycles — please add your real approval time.</strong> ← It even told you to correct it.</div>`}
+];
+let promptAnswered = false;
+function pickPrompt(i){
+  const r = promptResults[i];
+  const btns = document.querySelectorAll('#s1 .scenario-panel:first-of-type .scenario-btn');
+  if (!promptAnswered){
+    btns.forEach((b,j) => { if (j===2) b.classList.add('correct'); else if (j===i && !r.ok) b.classList.add('wrong'); });
+    if (r.ok) promptAnswered = true;
+  }
+  const fb = document.getElementById('promptFb');
+  fb.className = 'scenario-feedback show ' + (r.ok ? 'success' : 'fail');
+  fb.innerHTML = r.fb;
+  document.getElementById('promptChat').innerHTML = r.chat;
+}
+
+/* what AI owns vs you own quiz */
+const toolQs = [
+  {q:"AI drafts a full project plan in 10 seconds. What should Priya do with the estimates?", opts:["Accept them — AI has seen thousands of projects","Treat them as a starting draft and adjust with real review/approval time before committing","Double every number automatically"], correct:1, explain:"AI planners are optimists — they routinely omit review cycles, approvals and handoffs. The estimates are a draft; the project lead owns the numbers she'll actually promise the VP."},
+  {q:"Which of these should a project lead NEVER delegate to AI?", opts:["Summarising a long status thread","Drafting a first-pass task list","The commitment made to stakeholders and the real go/no-go call"], correct:2, explain:"AI is fantastic at summarising, drafting and extracting. But the commitment, the trade-off decisions and the accountability stay with the human. AI drafts; you own."},
+  {q:"You're on Microsoft 365 with a small team and no budget for a new tool. Reasonable first choice?", opts:["Buy a brand-new dedicated PM platform immediately","Start with Planner + Copilot (already in the suite) plus a simple board, then upgrade only if you outgrow it","Run the whole project over email"], correct:1, explain:"Match the tool to what your org already has and pays for. Planner + Copilot keeps data in your tenant and adds no new bill for many M365 orgs. Add a dedicated tool later only if complexity demands it."}
+];
+let tqIdx = 0;
+function renderToolQ(){
+  const s = toolQs[tqIdx];
+  document.getElementById('toolQ').textContent = `Round ${tqIdx+1}/3 — ${s.q}`;
+  document.getElementById('toolOpts').innerHTML = s.opts.map((o,i)=>`<button class="scenario-btn" onclick="answerToolQ(${i})">${o}</button>`).join('');
+  const fb = document.getElementById('toolFb');
+  fb.className = 'scenario-feedback'; fb.innerHTML = '';
+  document.getElementById('toolNext').style.display = 'none';
+}
+function answerToolQ(i){
+  const s = toolQs[tqIdx];
+  document.querySelectorAll('#toolOpts .scenario-btn').forEach((b,j)=>{
+    b.disabled = true;
+    if (j===s.correct) b.classList.add('correct'); else if (j===i) b.classList.add('wrong');
+  });
+  const fb = document.getElementById('toolFb');
+  fb.className = 'scenario-feedback show ' + (i===s.correct ? 'success' : 'fail');
+  fb.innerHTML = (i===s.correct ? '✓ Spot on! ' : '✗ Not quite. ') + s.explain + (tqIdx===toolQs.length-1 ? '<br><br>🎉 Chapter 1 complete — Priya picks Planner + Copilot with a simple board, and draws her line: AI drafts, she commits. Tomorrow: turn the goal into a real plan.' : '');
+  document.getElementById('toolNext').style.display = tqIdx < toolQs.length-1 ? 'inline-block' : 'none';
+}
+function nextToolQ(){ tqIdx++; if (tqIdx < toolQs.length) renderToolQ(); }
+renderToolQ();
+
+/* ───────── CHAPTER 2: PLANNING LAB ───────── */
+const formulas = {
+  scope: {
+    prompt:'Before we build tasks, help me define scope. What does "the newsletter launch is done" actually mean — and what\'s explicitly out of scope for v1?',
+    code:`<span class="kw">SCOPE</span>(<span class="st">"Newsletter launch v1"</span>)
+  <span class="rf">IN</span>  → 1 issue, on-brand template, 1 segment, send + basic tracking
+  <span class="rf">OUT</span> → automation series, A/B on content, personalization (v2)`,
+    explain:`<strong>Defining "done" first</strong> is what stops scope creep before it starts. AI is great at proposing an in-scope / out-of-scope split, but <strong>you</strong> decide the line — here Priya keeps v1 to a single well-made issue and pushes fancy automation to v2. A crisp scope is the fence every later estimate stands inside. <strong>Own it:</strong> the VP will try to add "just one more thing" — a written scope is how you say a kind, firm no.`
+  },
+  wbs: {
+    prompt:'Break the launch into a work breakdown structure: phases, then the tasks under each, with an owner for every task.',
+    code:`<span class="kw">WBS</span>
+  1. Foundations  → audience &amp; pillars <span class="st">(Priya)</span>
+  2. Build        → template <span class="st">(Sam)</span> · copy <span class="st">(Aisha)</span> · email <span class="st">(Dev)</span>
+  3. Review &amp; ship → VP approval · legal · test · <span class="rf">LAUNCH</span>`,
+    explain:`A <strong>work breakdown structure</strong> turns one scary goal ("launch a newsletter") into small, ownable pieces. AI drafts the hierarchy in seconds — phases at the top, concrete tasks underneath, one clear owner each. <strong>The human move:</strong> Priya noticed AI's draft had <em>no review or legal phase at all</em>, so she added phase 3. AI structures the obvious work; you add the work it forgets.`
+  },
+  estimate: {
+    prompt:'Estimate each task in days. Be realistic — include review cycles and approvals, not just hands-on-keyboard time.',
+    code:`AI's first pass:  template <span class="rf">1d</span> · copy <span class="rf">1d</span> · email <span class="rf">2d</span>   → <span class="rf">~5 days</span> 🌈
+Priya's reality:  template <span class="st">4d (+2 review)</span> · copy <span class="st">3d (+VP)</span>
+                  email <span class="st">3d</span> · legal <span class="st">1d</span>      → <span class="st">~3 weeks</span> ✅`,
+    explain:`This is the <strong>catch-the-optimism</strong> beat. AI estimated the build at 5 days because it assumed zero review, instant approvals, and perfect parallel work. Real projects have <strong>review cycles, approval waits, and a legal step AI forgot entirely</strong>. Priya multiplies hands-on-keyboard time to include the waiting — and the honest number is 3 weeks, not 5 days. <strong>The rule:</strong> AI drafts estimates; the lead who'll be held to the deadline owns them.`
+  },
+  deps: {
+    prompt:'Which tasks depend on which? Show me the critical path — the chain that determines the launch date.',
+    code:`pillars → template → copy → email build → test → <span class="rf">LAUNCH</span>
+                    ↑ (legal review runs before send)
+<span class="kw">CRITICAL PATH</span> = the longest dependent chain = your true deadline`,
+    explain:`<strong>Dependencies</strong> are why you can't just add up task times. Copy can't start until the template and pillars exist; the email build waits on final copy. The <strong>critical path</strong> is the longest chain of dependent tasks — it, not the sum of all work, sets the launch date. AI maps dependencies well from a good WBS. <strong>Own it:</strong> Priya protects the critical path with buffer and watches it like a hawk — that's exactly the chain the Chapter 3 blocker will threaten.`
+  }
+};
+function setFormula(k){
+  document.querySelectorAll('.fl-tab').forEach(t => t.classList.toggle('active', t.dataset.fl === k));
+  const f = formulas[k];
+  document.getElementById('flPrompt').innerHTML = '<span class="who">Priya → AI</span>' + f.prompt;
+  document.getElementById('flCode').innerHTML = f.code;
+  document.getElementById('flExplain').innerHTML = f.explain;
+}
+setFormula('scope');
+
+/* animate gantt bars */
+const ganttObserver = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      const bars = document.querySelectorAll('.gantt-bar');
+      bars.forEach((b,i)=>{ setTimeout(()=>b.classList.add('show'), i*180); });
+      ganttObserver.disconnect();
+    }
+  });
+},{threshold:0.3});
+const ganttEl = document.querySelector('.gantt-wrap');
+if(ganttEl) ganttObserver.observe(ganttEl);
+
+/* planning quiz */
+const formQs = [
+  {q:"AI's plan estimates the whole build at 5 days. You know approvals alone take a week. What's the right response?", opts:["Trust AI — it's faster than my gut","Add the review, approval and handoff time AI omitted, then commit to the realistic date","Keep 5 days and hope for the best"], correct:1, explain:"AI planners systematically underestimate because they ignore the waiting: reviews, approvals, handoffs. The lead adds that real time back before promising a date. Optimism you can't hit is worse than a longer date you can."},
+  {q:"What is the 'critical path' in a project plan?", opts:["The most expensive task","The longest chain of dependent tasks — it determines the launch date","The task the VP cares about most"], correct:1, explain:"The critical path is the longest sequence of dependent tasks; delay any task on it and the whole launch slips. It's the chain you protect with buffer and watch most closely — not the sum of all work."},
+  {q:"AI's WBS skipped the legal/compliance step entirely. What does that teach you?", opts:["AI is useless for planning","AI structures the obvious work fast, but you must add the steps it forgets — you own completeness","Legal isn't really needed for a newsletter"], correct:1, explain:"AI drafts the visible 80% quickly; the missing 20% (compliance, edge cases, approvals) is where the human adds value. A newsletter genuinely needs an unsubscribe/consent check — never ship what AI silently left out."}
+];
+let fqIdx = 0;
+function renderFormQ(){
+  const s = formQs[fqIdx];
+  document.getElementById('formQ').textContent = `Round ${fqIdx+1}/3 — ${s.q}`;
+  document.getElementById('formOpts').innerHTML = s.opts.map((o,i)=>`<button class="scenario-btn" onclick="answerFormQ(${i})">${o}</button>`).join('');
+  const fb = document.getElementById('formFb');
+  fb.className = 'scenario-feedback'; fb.innerHTML = '';
+  document.getElementById('formNext').style.display = 'none';
+}
+function answerFormQ(i){
+  const s = formQs[fqIdx];
+  document.querySelectorAll('#formOpts .scenario-btn').forEach((b,j)=>{
+    b.disabled = true;
+    if (j===s.correct) b.classList.add('correct'); else if (j===i) b.classList.add('wrong');
+  });
+  const fb = document.getElementById('formFb');
+  fb.className = 'scenario-feedback show ' + (i===s.correct ? 'success' : 'fail');
+  fb.innerHTML = (i===s.correct ? '✓ Spot on! ' : '✗ Not quite. ') + s.explain + (fqIdx===formQs.length-1 ? '<br><br>🎉 Chapter 2 complete — the plan is real, the critical path is protected, and the buffer is in. Then week 4 arrives, and something breaks.' : '');
+  document.getElementById('formNext').style.display = fqIdx < formQs.length-1 ? 'inline-block' : 'none';
+}
+function nextFormQ(){ fqIdx++; if (fqIdx < formQs.length) renderFormQ(); }
+renderFormQ();
+
+/* ───────── CHAPTER 3: STATUS + STANDUP ───────── */
+const statusText = {
+  exec:`<h6>To: VP · Subject: Newsletter launch — status &amp; ask</h6><strong>Status: 🟡 AMBER.</strong> The email platform changed its API, breaking our send integration. Impact: puts the launch date at risk by up to 3 days. <strong>Options:</strong> (a) hold the date and absorb Dev's fix; (b) slip launch 2 business days for safety. <strong>My recommendation:</strong> option (b) — a 2-day slip protects quality. <strong>Decision needed by Thu.</strong><div class="meta">Notice: one line of status, clear impact, options, a recommendation, and exactly one ask. Execs want a decision, not a diary. AI drafted this; Priya set the recommendation.</div>`,
+  team:`<h6>To: Sam, Aisha, Dev · Subject: API blocker — plan &amp; owners</h6><strong>What happened:</strong> the platform's API changed; the send integration is down (Dev, vendor ticket open). <strong>What it affects:</strong> "Build &amp; test email" on the critical path. <strong>Plan:</strong> Dev chases the vendor for an ETA by EOD; Aisha &amp; Sam keep working — copy and template aren't blocked. If no fix by Wed, we trigger the backup send method. <strong>Standup moved to 9:30 so we're all synced.</strong><div class="meta">Same facts, more detail: specifics, owners, next steps, a contingency. Teams need to know exactly what to do next. AI drafted this; Priya confirmed the owners.</div>`
+};
+function setStatus(k){
+  document.getElementById('stExec').classList.toggle('active', k==='exec');
+  document.getElementById('stTeam').classList.toggle('active', k==='team');
+  document.getElementById('statusOut').innerHTML = statusText[k];
+}
+setStatus('exec');
+
+/* standup extract */
+let extracted = false;
+function extractTasks(){
+  if(extracted) return;
+  extracted = true;
+  document.getElementById('extractBtn').textContent = '✓ 5 action items extracted & owned';
+  document.getElementById('extractBtn').disabled = true;
+  const items = document.querySelectorAll('#taskExtract li');
+  items.forEach((li,i)=>{ setTimeout(()=>li.classList.add('on'), i*350); });
+}
+
+/* watermelon sanity check */
+const sanityFbs = [
+  {ok:false, fb:'✗ <strong>The watermelon trap.</strong> Green-on-top, red-inside status is how projects "suddenly" fail on the day everyone thought they were fine. Hiding a known blocker to keep the VP calm just removes their chance to help while there\'s still time. Green should mean "actually on track," never "please don\'t ask."'},
+  {ok:true, fb:'✓ <strong>This is what a real project lead does.</strong> Move it to amber/red, <em>name the blocker</em>, state the <em>impact on the launch date</em>, and offer an option or ask. Surfacing bad news early — while there\'s runway to act — is a strength, not a failure. An honest amber today prevents a shocking red on launch day. AI can draft the update; you own the true status.'},
+  {ok:false, fb:'✗ <strong>Too slow.</strong> Waiting for the weekly report on a critical-path blocker burns days you don\'t have. Status is a living signal, not a Friday ritual — the moment a task on the critical path is at risk, you flag it. Early honesty is cheap; a launch-day surprise is not.'}
+];
+function sanityQ(i){
+  const btns = document.querySelectorAll('#s3 .err-panel:last-of-type .scenario-btn');
+  btns.forEach((b,j)=>{ b.disabled = true; if (sanityFbs[j].ok) b.classList.add('correct'); else if (j===i) b.classList.add('wrong'); });
+  const fb = document.getElementById('sanityFb');
+  fb.className = 'scenario-feedback show ' + (sanityFbs[i].ok ? 'success' : 'fail');
+  fb.innerHTML = sanityFbs[i].fb;
+}
+
+/* ───────── CHAPTER 4: AUTOMATE ───────── */
+const autoFbs = [
+  {ok:false, fb:'✗ <strong>Never auto-send status with no human check.</strong> The board can hold a stale status (remember Chapter 3\'s watermelon), and AI can phrase things wrong or invent a metric. A fully-automatic send blasts that to the VP with your name on it — with no chance to catch it. Automate the gathering; keep a human on the send.'},
+  {ok:true, fb:'✓ <strong>The golden rule of PM automation.</strong> Automate the tedious part — gathering status and drafting the summary on a schedule — but add a <em>guardrail</em>: it drafts and pings you to review and approve before anything sends. You reclaim the hours; you keep the accountability. Trigger → action → human-in-the-loop. That\'s automation you can trust with your reputation.'},
+  {ok:false, fb:'✗ Doing it by hand four times a week isn\'t "safe," it\'s just wasteful — and repetitive typing is exactly where humans introduce errors and lose time. The professional move isn\'t "no automation," it\'s "automation with a review step." Let AI gather and draft; you approve.'}
+];
+function autoQ(i){
+  const btns = document.querySelectorAll('#s4 .scenario-panel:first-of-type .scenario-btn');
+  btns.forEach((b,j)=>{ b.disabled = true; if (autoFbs[j].ok) b.classList.add('correct'); else if (j===i) b.classList.add('wrong'); });
+  const fb = document.getElementById('autoFb');
+  fb.className = 'scenario-feedback show ' + (autoFbs[i].ok ? 'success' : 'fail');
+  fb.innerHTML = autoFbs[i].fb;
+}
+
+/* run the flow animation */
+function runFlow(){
+  const nodes = ['an0','an1','an2'];
+  nodes.forEach((id,i)=>{
+    setTimeout(()=>{
+      document.querySelectorAll('.auto-node').forEach(n=>n.classList.remove('lit'));
+      document.getElementById(id).classList.add('lit');
+      if(i===nodes.length-1){
+        setTimeout(()=>{
+          document.querySelectorAll('.auto-node').forEach(n=>n.classList.add('lit'));
+          document.getElementById('autoGuard').classList.add('show');
+          document.getElementById('runFlowBtn').textContent = '✓ Flow ran — draft awaiting Priya\'s approval';
+          document.getElementById('runFlowBtn').disabled = true;
+        }, 700);
+      }
+    }, i*700);
+  });
+}
+
+/* build checklist + feed */
+const buildEvents = [
+  {t:'Wk1 · Research', msg:'Framed the launch: researched 8 competitor newsletters and surveyed 200 subscribers. Insight — readers want tips, not sales pitches. This shaped the content pillars. (Module 1: AI Research.)'},
+  {t:'Wk1-6 · PM', msg:'Built the WBS, assigned owners, tracked the board, ran weekly status and survived the API blocker with an honest amber. The thread holding it all together. (Module 5: AI Project Management.)'},
+  {t:'Ongoing · Excel', msg:'Set up a metrics tracker: target open rate, click rate, unsubscribe budget, cost per issue — with formulas that flag if a number goes out of range. Numbers she can defend. (Module 2: AI Excel.)'},
+  {t:'Ongoing · Office', msg:'Drafted the project brief, the VP approval emails, and every meeting recap in minutes — then edited for accuracy. Alignment without endless typing. (Module 3: AI Office.)'},
+  {t:'Wk6 · PowerPoint', msg:'Turned the launch-readiness outline into an on-brand deck for the VP to present — rehearsed, with every figure checked against the Excel tracker. (Module 4: AI PowerPoint.)'},
+  {t:'Wk5 · Automate', msg:'Built the Friday status flow: trigger → gather + draft → Priya reviews → send. Reclaimed hours, kept the accountability. The runbook is complete. 🎉'}
+];
+const buildSteps = new Set();
+function runBuildStep(i){
+  if (buildSteps.has(i)) return;
+  buildSteps.add(i);
+  document.querySelector(`#buildList li[data-step="${i}"]`).classList.add('done');
+  const feed = document.getElementById('buildFeed');
+  if (buildSteps.size === 1) feed.innerHTML = '';
+  const e = buildEvents[i];
+  feed.innerHTML += `<div class="feed-line"><span class="ft">${e.t}</span><span>${e.msg}</span></div>`;
+  feed.scrollTop = feed.scrollHeight;
+  if (buildSteps.size === buildEvents.length) document.getElementById('buildDone').style.display = 'block';
+}
+
+/* ───────── CAPSTONE: 5-MODULE RELAY ───────── */
+const relayInfo = {
+  research:`<span class="rd-tag">Week 1 · AI Research</span><br><strong>Where it carried the launch:</strong> Before a single word was written, Priya used AI research to frame the project — scanning competitor newsletters and synthesising subscriber survey responses into three content pillars. She verified the AI's summary against the raw survey rows (never trust a synthesis blindly). <strong>The lesson that transferred:</strong> a project starts with a well-framed question, and AI accelerates the research but the human confirms the sources. This is what stopped the newsletter from being a guess.`,
+  excel:`<span class="rd-tag">Week 2 · AI Excel</span><br><strong>Where it carried the launch:</strong> The metrics tracker. Priya built an Excel sheet with AI-written formulas for target open rate, click rate, unsubscribe cap and cost-per-issue — with conditional formatting that flags any number drifting out of range. When the deck needed figures, they came from a sheet she could defend. <strong>The lesson that transferred:</strong> clean data + formulas you understand + a sanity check. She caught one AI-inflated total by summing the column herself — exactly Week 2's core habit.`,
+  office:`<span class="rd-tag">Week 3 · AI Office</span><br><strong>Where it carried the launch:</strong> Every document and email. AI drafted the project brief, the VP approval requests, the Legal heads-up, and every meeting recap — turning 40-minute meetings into decisions-and-owners in seconds. <strong>The lesson that transferred:</strong> AI drafts polished prose fast, but Priya edits for accuracy and tone before sending — because her name is on every message. Fast drafting, human ownership.`,
+  ppt:`<span class="rd-tag">Week 4 · AI PowerPoint</span><br><strong>Where it carried the launch:</strong> The launch-readiness deck. Priya fed AI her outline and got an on-brand slide deck the VP presented at 2 p.m. She <strong>rehearsed it and checked every number against the Excel tracker</strong> — catching one figure the AI had rounded wrong. <strong>The lesson that transferred:</strong> AI builds the deck structure and design in minutes, but the presenter owns the story and verifies the facts. A deck is only as trustworthy as its checked numbers.`,
+  pm:`<span class="rd-tag">Week 5 · AI Project Management</span><br><strong>Where it carried the launch:</strong> Everything above needed a conductor — that's PM. Priya picked the stack (Ch 1), turned the goal into a real plan and caught AI's optimistic timeline (Ch 2), survived the API blocker with an honest amber status and a watermelon caught in time (Ch 3), and automated the weekly status with a review guardrail (Ch 4). <strong>The lesson that transferred:</strong> project management is the thread that ties Research, Excel, Office and PowerPoint into one shipped result — with a human owning every commitment. This week is the capstone.`
+};
+function pickRelay(k){
+  document.querySelectorAll('.relay-card').forEach(c => c.classList.toggle('active', c.dataset.mod === k));
+  const d = document.getElementById('relayDetail');
+  d.innerHTML = relayInfo[k];
+  d.classList.add('show');
+}
+
+/* ───────── CAPSTONE: LAUNCH-DAY JUDGE ───────── */
+const judgeKey = {
+  A: {right:'verify', fb:{
+    verify:'✓ Correct — <strong>RIGHT CALL.</strong> AI can build the deck fast, but the presenter owns the story and the facts. Rehearsing it and checking every figure against the Excel tracker before the VP presents is exactly the Week 4 + Week 2 habit combined. She even caught one rounded number. Ship the deck — verified.',
+    flag:'△ No flag needed — a rehearsed, fact-checked deck built from an outline is a perfect use of AI. You verify the numbers, not distrust the whole tool. Verdict: <strong>RIGHT CALL</strong>.',
+    trust:'✗ Never present an AI deck unread. It might contain a wrong figure or an off-brand claim — with the VP delivering it live. Rehearsing and checking is what makes it safe. Verdict: <strong>RIGHT CALL was to verify, not send blind.</strong>'}},
+  B: {right:'flag', fb:{
+    flag:'✓ Correct — <strong>FLAG IT.</strong> The sends went out five minutes ago; there is no open-rate data yet, so "68% — best in industry" is a hallucination the AI invented from nothing. Priya deletes it and writes "results tracked from Monday." Reporting a metric that can\'t exist yet is exactly the trap the whole course warns about.',
+    verify:'✗ You can\'t verify a number that can\'t exist yet — there\'s been no time for opens to register. "68%" isn\'t a fact to confirm, it\'s a fabrication to remove. Verdict: <strong>FLAG IT</strong>.',
+    trust:'✗ This is the exact hallucination trap. A confident AI metric with no data behind it, sent unread, is how a wrong number reaches the VP with your name on it. Verdict: <strong>FLAG &amp; delete it</strong>.'}},
+  C: {right:'verify', fb:{
+    verify:'✓ Correct — <strong>RIGHT CALL.</strong> Copy approved, email tested, Legal signed off, deck rehearsed, tracker live — every item genuinely verified. This is what "ready to ship" actually looks like: not a feeling, but a checklist of confirmed truths. Hit send at 10:00. 🚀',
+    flag:'△ Nothing left to flag — every dependency is verified and signed off. Endless caution when the work is genuinely done just means missing the deadline you fought to protect. Verdict: <strong>RIGHT CALL — ship it</strong>.',
+    trust:'✗ Holding a fully-verified, approved, tested launch would waste six weeks of honest work and miss the date. When everything is truly confirmed, shipping <em>is</em> the professional move. Verdict: <strong>RIGHT CALL — send</strong>.'}}
+};
+const judged = {};
+function judge(line, verdict, btn){
+  if (judged[line]) return;
+  const k = judgeKey[line];
+  judged[line] = true;
+  const panel = btn.closest('.scenario-panel');
+  panel.querySelectorAll('.scenario-btn').forEach(b => {
+    b.disabled = true;
+    if (b.getAttribute('onclick').includes("'"+k.right+"'")) b.classList.add('correct');
+    else if (b === btn) b.classList.add('wrong');
+  });
+  const fb = document.getElementById('fb'+line);
+  fb.className = 'scenario-feedback show ' + (verdict===k.right ? 'success' : 'fail');
+  fb.innerHTML = k.fb[verdict];
+  if (judged.A && judged.B && judged.C){
+    setTimeout(()=>{
+      document.getElementById('weekVerdict').classList.add('show');
+      document.getElementById('weekVerdict').scrollIntoView({behavior:'smooth', block:'center'});
+      celebrate();
+    }, 600);
+  }
+}
+
+/* ───────── CONFETTI CELEBRATION ───────── */
+function celebrate(){
+  const colors = ['#E87A2E','#F5943E','#4CAF50','#3F88C5','#8B5CF6','#EC4899','#FF9429'];
+  const host = document.querySelector('.footer-cta') || document.body;
+  for(let i=0;i<50;i++){
+    const c = document.createElement('div');
+    const size = 6 + Math.random()*8;
+    c.style.cssText = `position:absolute;top:-10px;left:${Math.random()*100}%;width:${size}px;height:${size}px;background:${colors[i%colors.length]};border-radius:${Math.random()>0.5?'50%':'2px'};z-index:200;pointer-events:none;animation:confettiFall ${1+Math.random()*1.5}s ease-in ${Math.random()*0.6}s forwards`;
+    host.appendChild(c);
+    setTimeout(()=>c.remove(), 3200);
+  }
+}
+</script>
+</body>
+</html>
