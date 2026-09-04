@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 4 · Polish, Delivery &amp; Practice — MokshPath</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=JetBrains+Mono:wght@400;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --orange:#E87A2E;--orange-dark:#D06A20;--orange-light:#F5943E;--orange-glow:rgba(232,122,46,0.12);
+  --navy:#2B2D42;--navy-dark:#1A1B2E;
+  --bg:#F3EDE7;--bg-card:#FFFFFF;--bg-light:#F9F5F0;
+  --text-primary:#2B2D42;--text-secondary:#6B6D7B;--text-muted:#9597A6;
+  --border:#E5DDD4;--green:#4CAF50;--green-light:#E8F5E9;--red:#E04E3C;--red-light:#FDECEA;
+  --shadow-sm:0 2px 8px rgba(43,45,66,0.06);--shadow-md:0 8px 24px rgba(43,45,66,0.08);
+  --shadow-lg:0 16px 48px rgba(43,45,66,0.12);
+  --radius:14px;--radius-sm:8px;
+  --mono:'JetBrains Mono',monospace;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text-primary);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+
+/* ── NAV ── */
+.nav{position:sticky;top:0;z-index:100;background:var(--bg-card);border-bottom:1px solid var(--border);padding:0 2rem;height:64px;display:flex;align-items:center;justify-content:space-between;box-shadow:var(--shadow-sm)}
+.nav-left{display:flex;align-items:center;gap:.7rem}
+.lesson-badge{font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--orange);background:var(--orange-glow);padding:.3rem .7rem;border-radius:50px}
+.nav-logo{display:flex;align-items:center;gap:.7rem;text-decoration:none}
+.nav-logo-icon{width:auto;height:48px;display:block;object-fit:contain}
+.nav-logo-text{display:flex;flex-direction:column;line-height:1.15}
+.nav-logo-name{font-family:'DM Serif Display',serif;font-size:1.25rem;color:var(--navy)}
+.nav-logo-name span{color:var(--orange)}
+.nav-logo-tag{font-size:.62rem;color:var(--text-muted);font-weight:500;letter-spacing:.02em}
+
+/* ── HERO ── */
+.hero{padding:3.5rem 2rem 2.5rem;text-align:center;position:relative}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:.45rem;padding:.4rem 1rem;border-radius:50px;background:var(--orange-glow);color:var(--orange);font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:1.2rem}
+.hero-eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--orange);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.hero h1{font-family:'DM Serif Display',serif;font-size:clamp(2rem,4vw,3rem);line-height:1.13;color:var(--navy);margin-bottom:1rem;max-width:780px;margin-left:auto;margin-right:auto}
+.hero h1 em{font-style:normal;color:var(--orange)}
+.hero-sub{font-size:1.02rem;color:var(--text-secondary);line-height:1.7;max-width:620px;margin:0 auto}
+
+/* ── PROGRESS RAIL ── */
+.progress-rail{max-width:760px;margin:1.8rem auto 0;display:flex;align-items:center;gap:.5rem}
+.progress-dot{flex:1;height:6px;background:var(--border);border-radius:3px;transition:background .3s}
+.progress-dot.done{background:linear-gradient(90deg,var(--orange),var(--orange-light))}
+.progress-label{font-size:.7rem;color:var(--text-muted);font-weight:600;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+
+/* ── SECTIONS ── */
+section.lesson{padding:3rem 2rem}
+.container{max-width:1080px;margin:0 auto}
+.lesson-num{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;background:var(--orange);color:#fff;font-family:'DM Serif Display',serif;font-size:1.1rem;margin-bottom:.9rem}
+.lesson-title{font-family:'DM Serif Display',serif;font-size:clamp(1.6rem,2.5vw,2.1rem);color:var(--navy);margin-bottom:.55rem;line-height:1.2}
+.lesson-intro{font-size:.95rem;color:var(--text-secondary);line-height:1.7;max-width:680px;margin-bottom:2rem}
+.lesson-card{background:var(--bg-card);border-radius:var(--radius);box-shadow:var(--shadow-sm);border:1px solid var(--border);padding:2rem;margin-top:1.5rem}
+
+.activity-feedback{margin-top:1.2rem;padding:1rem 1.2rem;border-radius:var(--radius-sm);font-size:.85rem;line-height:1.55;display:none}
+.activity-feedback.show{display:block;animation:fadeIn .4s ease}
+.activity-feedback.success{background:var(--green-light);color:#1F5723;border-left:3px solid var(--green)}
+.activity-feedback.partial{background:#FFF4E5;color:#7A4A0A;border-left:3px solid #E89B2E}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.activity-toolbar{display:flex;gap:.6rem;margin-top:1.2rem;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:.4rem;padding:.6rem 1.2rem;border-radius:8px;font-size:.82rem;font-weight:600;border:none;cursor:pointer;transition:all .2s;font-family:inherit}
+.btn-primary{background:var(--orange);color:#fff}.btn-primary:hover{background:var(--orange-dark);transform:translateY(-1px);box-shadow:0 4px 12px rgba(232,122,46,0.3)}
+.btn-ghost{background:transparent;border:1.5px solid var(--border);color:var(--text-secondary)}.btn-ghost:hover{border-color:var(--orange);color:var(--orange)}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+
+/* ── ACTIVITY 1: EDIT PASS (clean up the slide) ── */
+.aud-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+@media (max-width:760px){.aud-grid{grid-template-columns:1fr}}
+.aud-card{background:var(--bg-card);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:1rem 1.1rem;transition:border-color .25s}
+.aud-card.correct{border-color:var(--green);background:var(--green-light)}
+.aud-card.wrong{border-color:var(--red);background:var(--red-light)}
+.aud-name{font-family:'DM Serif Display',serif;font-size:1rem;color:var(--navy)}
+.aud-pain{font-size:.74rem;color:var(--text-muted);margin:.2rem 0 .6rem;font-style:italic}
+.aud-select{width:100%;padding:.55rem .7rem;border:1.5px solid var(--border);border-radius:6px;font-family:inherit;font-size:.8rem;color:var(--text-primary);background:var(--bg-light);cursor:pointer}
+.aud-select:focus{outline:none;border-color:var(--orange)}
+.aud-why{font-size:.74rem;line-height:1.5;margin-top:.55rem;display:none}
+.aud-why.show{display:block}
+.aud-why.good{color:#1F5723}.aud-why.bad{color:#8B2E22}
+
+/* ── ACTIVITY 2: POLISH PIPELINE SEQUENCE ── */
+.seq-wrap{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+@media (max-width:760px){.seq-wrap{grid-template-columns:1fr}}
+.seq-pool{display:flex;flex-direction:column;gap:.6rem}
+.seq-block{background:var(--bg-card);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:.8rem 1rem;cursor:pointer;transition:all .2s;user-select:none}
+.seq-block:hover{border-color:var(--orange);transform:translateX(3px)}
+.seq-block.used{opacity:.3;pointer-events:none}
+.seq-block.shake{animation:shake .35s ease;border-color:var(--red);background:var(--red-light)}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.seq-block-text{font-size:.84rem;font-weight:500;line-height:1.45}
+.seq-slots{display:flex;flex-direction:column;gap:.5rem}
+.seq-slot{border:2px dashed var(--border);border-radius:var(--radius-sm);padding:.7rem .9rem;min-height:52px;font-size:.8rem;color:var(--text-muted);transition:all .3s;background:rgba(255,255,255,.5)}
+.seq-slot.filled{border-style:solid;border-color:var(--green);background:var(--green-light);color:var(--text-primary)}
+.seq-tag{display:inline-block;font-family:var(--mono);font-size:.64rem;font-weight:600;letter-spacing:.06em;color:var(--orange);background:var(--orange-glow);padding:.1rem .45rem;border-radius:4px;margin-bottom:.3rem}
+.seq-hint{margin-top:.8rem;padding:.7rem .9rem;background:#FFF4E5;border-left:3px solid #E89B2E;border-radius:4px;font-size:.78rem;color:#7A4A0A;line-height:1.5;display:none}
+.seq-hint.show{display:block;animation:fadeIn .3s ease}
+.phone{max-width:340px;margin:1.4rem auto 0;background:var(--navy-dark);border-radius:14px;padding:1.1rem .9rem;border:5px solid var(--navy);box-shadow:var(--shadow-lg);display:none}
+.phone.show{display:block;animation:fadeIn .5s ease}
+.phone-notch{width:80px;height:5px;background:rgba(255,255,255,.25);border-radius:3px;margin:0 auto .8rem}
+.phone-line{margin-bottom:.6rem;padding:.55rem .7rem;background:rgba(255,255,255,.07);border-radius:8px}
+.phone-line .seq-tag{background:rgba(232,122,46,.22)}
+.phone-line p{font-size:.76rem;color:#E8E8EC;line-height:1.5;font-family:var(--mono)}
+
+/* ── ACTIVITY 3: FIX THE ACCESSIBILITY ISSUES ── */
+.kos-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+@media (max-width:760px){.kos-grid{grid-template-columns:1fr}}
+.kos-card{background:var(--bg-card);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:1.1rem 1.2rem}
+.kos-title{font-family:'DM Serif Display',serif;font-size:.98rem;color:var(--navy);margin-bottom:.6rem}
+.kos-metrics{display:grid;grid-template-columns:1fr;gap:.35rem .8rem;margin-bottom:.8rem}
+.kos-metric{font-size:.74rem;color:var(--text-secondary)}
+.kos-metric b{font-family:var(--mono);color:var(--navy);font-weight:600}
+.kos-btns{display:flex;gap:.45rem;flex-wrap:wrap}
+.kos-btn{flex:1;padding:.5rem .4rem;border-radius:6px;border:1.5px solid var(--border);background:var(--bg-light);font-family:inherit;font-size:.74rem;font-weight:700;cursor:pointer;transition:all .2s;color:var(--text-secondary)}
+.kos-btn:hover{border-color:var(--orange);color:var(--orange)}
+.kos-btn.picked-right{background:var(--green-light);border-color:var(--green);color:#1F5723}
+.kos-btn.picked-wrong{background:var(--red-light);border-color:var(--red);color:#8B2E22}
+.kos-btn.reveal-right{border-color:var(--green);color:#1F5723}
+.kos-btn:disabled{cursor:not-allowed;opacity:.75}
+.kos-verdict{font-size:.74rem;line-height:1.55;margin-top:.7rem;padding:.6rem .75rem;border-radius:6px;display:none}
+.kos-verdict.show{display:block;animation:fadeIn .3s ease}
+.kos-verdict.good{background:var(--green-light);color:#1F5723}
+.kos-verdict.bad{background:#FFF4E5;color:#7A4A0A}
+
+/* ── ACTIVITY 4: REHEARSAL TIME BUDGET ── */
+.budget-row{display:grid;grid-template-columns:1fr auto;gap:1rem;align-items:center;margin-bottom:.3rem;margin-top:1.1rem}
+.budget-name{font-size:.86rem;font-weight:700;color:var(--navy)}
+.budget-desc{font-size:.74rem;color:var(--text-muted);margin-top:.1rem}
+.budget-val{font-family:var(--mono);font-size:1.05rem;color:var(--orange);font-weight:600;min-width:64px;text-align:right}
+input[type="range"].budget-slider{-webkit-appearance:none;appearance:none;width:100%;height:6px;border-radius:3px;background:linear-gradient(90deg,var(--border),var(--orange-light));outline:none;cursor:pointer;margin-top:.35rem}
+input[type="range"].budget-slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:20px;height:20px;border-radius:50%;background:#fff;border:3px solid var(--orange);cursor:grab;box-shadow:0 2px 6px rgba(0,0,0,.15)}
+input[type="range"].budget-slider::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:#fff;border:3px solid var(--orange);cursor:grab}
+.budget-total{margin-top:1.4rem;padding:.9rem 1.1rem;border-radius:var(--radius-sm);background:var(--bg-light);border:1.5px solid var(--border);display:flex;justify-content:space-between;align-items:center;font-size:.9rem;font-weight:700;color:var(--navy)}
+.budget-total .tv{font-family:var(--mono);font-size:1.15rem}
+.budget-total.ok{border-color:var(--green);background:var(--green-light)}
+.budget-total.over{border-color:var(--red);background:var(--red-light)}
+.budget-note{font-size:.74rem;color:var(--text-muted);margin-top:.4rem}
+
+/* ── QUIZ ── */
+.quiz-q{background:var(--bg-card);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:1.1rem 1.3rem;margin-bottom:.9rem;transition:border-color .3s}
+.quiz-q.right{border-color:var(--green)}
+.quiz-q.miss{border-color:var(--red)}
+.quiz-q-head{display:flex;gap:.7rem;align-items:baseline;margin-bottom:.7rem}
+.quiz-q-num{font-family:var(--mono);font-size:.7rem;font-weight:600;color:var(--orange);background:var(--orange-glow);padding:.15rem .5rem;border-radius:4px;flex-shrink:0}
+.quiz-q-text{font-size:.9rem;font-weight:600;color:var(--navy);line-height:1.5}
+.quiz-opt{display:flex;align-items:flex-start;gap:.55rem;padding:.5rem .6rem;border-radius:6px;cursor:pointer;font-size:.83rem;color:var(--text-secondary);line-height:1.45;transition:background .15s}
+.quiz-opt:hover{background:var(--bg-light)}
+.quiz-opt input{margin-top:.25rem;accent-color:var(--orange);cursor:pointer}
+.quiz-review{font-size:.76rem;line-height:1.55;margin-top:.6rem;padding:.6rem .8rem;border-radius:6px;display:none}
+.quiz-review.show{display:block;animation:fadeIn .3s ease}
+.quiz-review.good{background:var(--green-light);color:#1F5723}
+.quiz-review.bad{background:#FFF4E5;color:#7A4A0A}
+.quiz-lesson{display:inline-block;font-family:var(--mono);font-size:.64rem;color:var(--text-muted);margin-left:.4rem}
+
+/* ── CHECKLIST ── */
+.check-list{list-style:none;margin-top:1rem}
+.check-item{display:flex;gap:.8rem;align-items:flex-start;padding:.85rem 1rem;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);margin-bottom:.6rem;cursor:pointer;transition:all .2s}
+.check-item:hover{border-color:var(--orange)}
+.check-item.on{border-color:var(--green);background:var(--green-light)}
+.check-box{flex-shrink:0;width:22px;height:22px;border-radius:6px;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.8rem;color:#fff;transition:all .2s;margin-top:.1rem}
+.check-item.on .check-box{background:var(--green);border-color:var(--green)}
+.check-text{font-size:.85rem;line-height:1.5;color:var(--text-secondary)}
+.check-text b{color:var(--navy)}
+.check-count{margin-top:1rem;font-size:.8rem;font-weight:700;color:var(--orange);font-family:var(--mono)}
+
+/* ── REFLECT / FOOTER ── */
+.reflect-prompt{display:grid;grid-template-columns:1fr;gap:.8rem;margin-top:1rem}
+.reflect-q{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:1rem 1.2rem}
+.reflect-q-text{font-size:.88rem;font-weight:600;color:var(--navy);margin-bottom:.5rem}
+.reflect-q textarea{width:100%;border:1px solid var(--border);border-radius:6px;padding:.6rem .8rem;font-family:inherit;font-size:.85rem;color:var(--text-primary);background:var(--bg-light);resize:vertical;min-height:60px}
+.reflect-q textarea:focus{outline:none;border-color:var(--orange)}
+.next-up{background:linear-gradient(135deg,var(--navy-dark),var(--navy));border-radius:var(--radius);padding:2.4rem;color:#fff;margin-top:2rem;text-align:center;position:relative;overflow:hidden}
+.next-up::before{content:'';position:absolute;top:-50px;right:-50px;width:180px;height:180px;border-radius:50%;background:rgba(232,122,46,0.12)}
+.next-up h3{font-family:'DM Serif Display',serif;font-size:1.5rem;margin-bottom:.5rem;position:relative}
+.next-up p{font-size:.92rem;color:rgba(255,255,255,0.75);margin-bottom:1.2rem;position:relative}
+.next-up .btn-primary{position:relative}
+
+/* ── BEFORE/AFTER PANEL ── */
+.ba-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1rem}
+@media (max-width:760px){.ba-grid{grid-template-columns:1fr}}
+.ba-col{border-radius:var(--radius-sm);padding:1rem 1.1rem;border:1.5px solid var(--border)}
+.ba-col.before{background:var(--red-light);border-color:#F3B4AC}
+.ba-col.after{background:var(--green-light);border-color:#A7D3A9}
+.ba-label{font-family:var(--mono);font-size:.66rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:.5rem}
+.ba-col.before .ba-label{color:#8B2E22}
+.ba-col.after .ba-label{color:#1F5723}
+.ba-col p{font-size:.82rem;line-height:1.55;color:var(--text-primary)}
+.ba-col .ba-slide{background:rgba(255,255,255,.6);border-radius:6px;padding:.7rem .8rem;font-size:.8rem;line-height:1.5}
+
+@media (max-width:760px){
+  .nav{padding:0 1rem}
+  .nav-logo-tag{display:none}
+  .hero{padding:2.5rem 1.2rem 2rem}
+  section.lesson{padding:2rem 1.2rem}
+  .lesson-card{padding:1.4rem}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-left">
+    <span class="lesson-badge">Lesson 4 of 4</span>
+  </div>
+  <a href="https://mokshpath.org/" class="nav-logo">
+    <img class="nav-logo-icon" src="hero.svg" alt="MokshPath logo">
+    <div class="nav-logo-text">
+      <span class="nav-logo-name">Moksh<span>Path</span></span>
+      <span class="nav-logo-tag">Guided Path to True Learning</span>
+    </div>
+  </a>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-eyebrow"><span class="dot"></span> Week 4 · AI PowerPoint</div>
+  <h1>Polish, Delivery &amp; Practice — <em>the deck is done; now make it land in the room</em></h1>
+  <p class="hero-sub">AI built your slides fast. The last mile is human: cutting the words nobody reads, verifying the facts you'll be asked about, generating speaker notes, using the Speaker Coach as a mirror (not a judge), and making the deck accessible to everyone. Then you rehearse — because AI can build the slides, but it can't stand up and own the room. That part is yours. Clean up a slide, fix the accessibility issues, order the polish pipeline, budget your rehearsal, then prove the whole week with an 8-question knowledge check.</p>
+  <div class="progress-rail">
+    <span class="progress-label">Progress</span>
+    <div class="progress-dot" id="prog1"></div>
+    <div class="progress-dot" id="prog2"></div>
+    <div class="progress-dot" id="prog3"></div>
+    <div class="progress-dot" id="prog4"></div>
+    <div class="progress-dot" id="prog5"></div>
+  </div>
+</header>
+
+<!-- ── THE EDIT PASS: BEFORE / AFTER ── -->
+<section class="lesson" id="edit-pass">
+  <div class="container">
+    <span class="lesson-num">✎</span>
+    <h2 class="lesson-title">The edit pass — before &amp; after</h2>
+    <p class="lesson-intro">AI writes slides that <em>look</em> finished but read like a first draft: too many words, hedged phrasing, claims it can't back up. The polish pass is where a good deck becomes a great one. The rule is simple — a slide is a <strong>headline your audience reads in three seconds</strong>, not a paragraph they squint at while you talk over it. Here is the same slide before and after one honest edit pass.</p>
+    <div class="lesson-card">
+      <div class="ba-grid">
+        <div class="ba-col before">
+          <div class="ba-label">✗ Before — AI's first draft</div>
+          <div class="ba-slide">
+            <strong>Our Q3 Performance Results and Key Takeaways</strong><br>
+            In the third quarter of this year, our team was able to achieve a significant increase in overall revenue, growing by approximately 24% when compared to the same period in the previous year, which was largely driven by strong performance across all of our major regional markets and product categories.
+          </div>
+          <p style="margin-top:.6rem"><em>Full sentences. A title that says nothing. A number buried in a wall of hedging ("approximately", "largely"). The audience reads instead of listening to you.</em></p>
+        </div>
+        <div class="ba-col after">
+          <div class="ba-label">✓ After — one edit pass</div>
+          <div class="ba-slide">
+            <strong>Q3 revenue up 24% year-over-year</strong><br>
+            • Growth across every region<br>
+            • Led by [Product X] and [Region Y]<br>
+            • Verified against the finance close
+          </div>
+          <p style="margin-top:.6rem"><em>Headline states the point. Bullets are scannable. The hedge words are gone, and the number is flagged as verified. The <strong>detail lives in your mouth</strong>, not on the slide.</em></p>
+        </div>
+      </div>
+      <p style="font-size:.8rem;color:var(--text-muted);margin-top:1rem;line-height:1.6">The five moves of every polish pass, in order: <strong>cut words</strong> (headline + bullets, not sentences) → <strong>fix flow</strong> (does slide 4 follow from slide 3?) → <strong>verify facts</strong> (every number AI wrote is a number you must be able to defend) → <strong>generate speaker notes</strong> (the detail, off the slide) → <strong>rehearse out loud</strong>. You'll practise each below.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 1: CLEAN UP THE SLIDE ── -->
+<section class="lesson" id="activity-1" style="background:var(--bg-light)">
+  <div class="container">
+    <span class="lesson-num">1</span>
+    <h2 class="lesson-title">Clean up the AI slide — diagnose each flaw</h2>
+    <p class="lesson-intro">AI handed you five slides, each with one thing wrong. For each, pick the polish move that fixes it. This is the exact triage you run on every AI-generated deck before it leaves your hands — the difference between "the AI made this" and "I own this."</p>
+    <div class="lesson-card">
+      <div class="aud-grid" id="audGrid"></div>
+      <div class="activity-feedback" id="feedback1"></div>
+      <div class="activity-toolbar">
+        <button class="btn btn-primary" onclick="checkTools()">Check my fixes</button>
+        <button class="btn btn-ghost" onclick="resetTools()">↻ Reset</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 2: ORDER THE POLISH PIPELINE ── -->
+<section class="lesson" id="activity-2">
+  <div class="container">
+    <span class="lesson-num" style="background:#66BB6A">2</span>
+    <h2 class="lesson-title">Order the polish pipeline — from raw deck to ready</h2>
+    <p class="lesson-intro">The polish steps have a right order, and skipping ahead wastes work — there's no point rehearsing a slide you're about to cut, or generating notes for facts you haven't verified. Click the five stages in the sequence a pro runs them. A wrong click gets you a nudge, not a scolding.</p>
+    <div class="lesson-card">
+      <div class="seq-wrap">
+        <div>
+          <h4 style="font-family:'DM Serif Display',serif;font-size:1.05rem;color:var(--navy);margin-bottom:.6rem">Polish stages (shuffled)</h4>
+          <div class="seq-pool" id="seqPool"></div>
+          <div class="seq-hint" id="seqHint"></div>
+        </div>
+        <div>
+          <h4 style="font-family:'DM Serif Display',serif;font-size:1.05rem;color:var(--navy);margin-bottom:.6rem">Your pipeline, in order</h4>
+          <div class="seq-slots" id="seqSlots"></div>
+        </div>
+      </div>
+      <div class="phone" id="phonePreview"><div class="phone-notch"></div><div id="phoneLines"></div></div>
+      <div class="activity-feedback" id="feedback2"></div>
+      <div class="activity-toolbar">
+        <button class="btn btn-ghost" onclick="resetSeq()">↻ Start over</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 3: FIX THE ACCESSIBILITY ISSUES ── -->
+<section class="lesson" id="activity-3" style="background:var(--bg-light)">
+  <div class="container">
+    <span class="lesson-num" style="background:#5B8FE0">3</span>
+    <h2 class="lesson-title">Fix the accessibility issues</h2>
+    <p class="lesson-intro">A deck that only some people can follow isn't finished. Accessibility isn't a nice-to-have box — it's how you make sure the person using a screen reader, the colour-blind manager, and the viewer at the back all get the same message. Here are four real slides with an accessibility problem each. Pick the correct fix. PowerPoint's built-in <strong>Accessibility Checker</strong> flags most of these automatically — but you have to know what "fixed" looks like.</p>
+    <div class="lesson-card">
+      <div class="kos-grid" id="kosGrid"></div>
+      <div class="activity-feedback" id="feedback3"></div>
+      <div class="activity-toolbar">
+        <button class="btn btn-ghost" onclick="resetKos()">↻ Reset all four</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 4: REHEARSAL TIME BUDGET ── -->
+<section class="lesson" id="activity-4">
+  <div class="container">
+    <span class="lesson-num" style="background:#4CAF50">4</span>
+    <h2 class="lesson-title">Budget the hour before you present</h2>
+    <p class="lesson-intro">You have <strong>60 minutes</strong> before a 10-minute talk and a finished deck. Where those minutes go decides whether you sound like you know it or like you're reading it. Split your time across three activities so they total exactly 100%, then check your split against how experienced presenters spend that last hour. AI gave you a head start — this hour is the part only you can do.</p>
+    <div class="lesson-card">
+      <div class="budget-row">
+        <div><div class="budget-name">Rehearse out loud — full run-throughs</div><div class="budget-desc">Stand up and say it, start to finish, at least twice. This is where nerves turn into fluency and you find the sentences that don't actually make sense out loud.</div></div>
+        <div class="budget-val" id="valA">50%</div>
+      </div>
+      <input type="range" class="budget-slider" id="sliderA" min="0" max="100" step="5" value="50">
+      <div class="budget-row">
+        <div><div class="budget-name">Verify facts &amp; tighten speaker notes</div><div class="budget-desc">Re-check every number AI wrote and trim your notes to keywords, not scripts. You want prompts to glance at, not a paragraph to read.</div></div>
+        <div class="budget-val" id="valB">30%</div>
+      </div>
+      <input type="range" class="budget-slider" id="sliderB" min="0" max="100" step="5" value="30">
+      <div class="budget-row">
+        <div><div class="budget-name">Final visual polish &amp; tech check</div><div class="budget-desc">Fix the one ugly slide, run the Accessibility Checker, test Presenter View and the projector/screen-share. Necessary — but the smallest slice.</div></div>
+        <div class="budget-val" id="valC">20%</div>
+      </div>
+      <input type="range" class="budget-slider" id="sliderC" min="0" max="100" step="5" value="20">
+
+      <div class="budget-total" id="budgetTotal"><span>Total of your final hour (must equal 100%)</span><span class="tv" id="totalVal">100%</span></div>
+      <div class="budget-note">Honest note: the temptation is to keep polishing pixels because it feels productive and safe. But nobody remembers a slightly nicer gradient — they remember whether you were fluent and calm. When in doubt, close the laptop and rehearse out loud.</div>
+
+      <div class="activity-feedback" id="feedback4"></div>
+      <div class="activity-toolbar">
+        <button class="btn btn-primary" id="checkBudgetBtn" onclick="checkBudget()">Check my split</button>
+        <button class="btn btn-ghost" onclick="resetBudget()">↻ Reset sliders</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PRE-PRESENTATION CHECKLIST ── -->
+<section class="lesson" id="checklist" style="background:var(--bg-light)">
+  <div class="container">
+    <span class="lesson-num" style="background:#E04E3C">✓</span>
+    <h2 class="lesson-title">The pre-presentation checklist</h2>
+    <p class="lesson-intro">The last things to tick before you walk in — the ones that, when skipped, produce the classic disasters: the un-verified number you get challenged on, the slide the projector can't render, the Presenter View you've never opened. Tick each as you internalise it; the goal is that this list runs in your head before every talk.</p>
+    <div class="lesson-card">
+      <ul class="check-list" id="checkList"></ul>
+      <div class="check-count" id="checkCount">0 of 6 locked in</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SPEAKER COACH NOTE ── -->
+<section class="lesson" id="coach">
+  <div class="container">
+    <span class="lesson-num" style="background:#9C6ADE">🎤</span>
+    <h2 class="lesson-title">Speaker Coach &amp; Presenter View — the tools that help you rehearse</h2>
+    <p class="lesson-intro">PowerPoint has two features made for this last mile. Use them as instruments, not verdicts.</p>
+    <div class="lesson-card">
+      <div class="ba-grid">
+        <div class="ba-col after" style="background:var(--bg-light);border-color:var(--border)">
+          <div class="ba-label" style="color:var(--orange)">Speaker Coach</div>
+          <p><strong>What it does:</strong> you rehearse into your mic and it gives private feedback — <strong>pace</strong> (too fast when nervous), <strong>filler words</strong> ("um", "basically", "so"), <strong>monotone</strong>, and reading straight off your slides.</p>
+          <p style="margin-top:.6rem"><strong>How to hold it:</strong> it's a <em>mirror</em>, not a judge. Its counts are guidance, not a grade — a few "ums" are human, and passion sometimes reads as "too fast." Use it to notice patterns, then decide what actually matters for <em>your</em> room.</p>
+        </div>
+        <div class="ba-col after" style="background:var(--bg-light);border-color:var(--border)">
+          <div class="ba-label" style="color:var(--orange)">Presenter View</div>
+          <p><strong>What it does:</strong> on your screen you see the current slide, the <strong>next slide</strong>, your <strong>speaker notes</strong>, and a timer — while the audience sees only the clean slide.</p>
+          <p style="margin-top:.6rem"><strong>How to hold it:</strong> this is why your notes belong in the notes pane, not on the slide. Rehearse <em>with</em> Presenter View at least once so it isn't a surprise live. And still know your opening cold — the tech can fail; you shouldn't.</p>
+        </div>
+      </div>
+      <p style="font-size:.82rem;color:var(--text-secondary);margin-top:1rem;line-height:1.6"><strong>The honest limit:</strong> AI can generate your speaker notes, and Speaker Coach can count your fillers — but neither can rehearse for you, read the room, or answer the hard question from the back. The deck is a tool. <strong>You own the room.</strong> The only way past nerves is reps out loud, and no software does those for you.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 5: WEEK 4 KNOWLEDGE CHECK ── -->
+<section class="lesson" id="activity-5" style="background:var(--bg-light)">
+  <div class="container">
+    <span class="lesson-num" style="background:var(--navy)">5</span>
+    <h2 class="lesson-title">Week 4 knowledge check — 8 questions, whole week</h2>
+    <p class="lesson-intro">The final gate of Week 4, spanning all four lessons: getting started with AI in PowerPoint, generating slides &amp; structure, design &amp; visuals, and today's polish, delivery &amp; practice. Answer all eight, then submit for a per-question review — and if you miss any, you'll see exactly which lesson to revisit.</p>
+    <div class="lesson-card">
+      <div id="quizWrap"></div>
+      <div class="activity-feedback" id="feedback5"></div>
+      <div class="activity-toolbar">
+        <button class="btn btn-primary" onclick="submitQuiz()">Submit answers</button>
+        <button class="btn btn-ghost" onclick="resetQuiz()">↻ Reset quiz</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── REFLECT ── -->
+<section class="lesson" style="padding-bottom:1.5rem">
+  <div class="container">
+    <h2 class="lesson-title" style="font-size:1.5rem">Quick reflect — make it stick</h2>
+    <p class="lesson-intro" style="margin-bottom:1rem">A sentence each is enough. Writing it in your own words moves it from "seen" to "known". (Nothing is saved or sent.)</p>
+    <div class="reflect-prompt">
+      <div class="reflect-q">
+        <div class="reflect-q-text">Think of the last deck you presented (or one you'll give soon). Which polish step did you skip — cut words, fix flow, verify facts, notes, or rehearse — and what did (or could) it cost you?</div>
+        <textarea placeholder="I never rehearse out loud — I read the slides live and lose the room in the first two minutes. Next time I'll do two full run-throughs..."></textarea>
+      </div>
+      <div class="reflect-q">
+        <div class="reflect-q-text">Speaker Coach flagged you as "too fast" and full of fillers. How would you decide which of those to actually change — and which to let go?</div>
+        <textarea placeholder="Fillers I'll trim because they undercut the point, but 'fast' is partly my energy — I'd rather sound alive than robotic, so I'll just add pauses after the key numbers..."></textarea>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NEXT UP -->
+<section class="lesson" style="padding-top:0">
+  <div class="container">
+    <div class="next-up">
+      <h3>Week 4 complete — your project: the boardroom-ready deck</h3>
+      <p>You can now use AI in PowerPoint, generate slides and structure, design clean visuals, and polish, deliver &amp; own a presentation. Put it all together in the Week 4 wrap-up project: take one real topic, build the deck with AI, run the full polish pipeline, make it accessible, and rehearse it with Presenter View until you can deliver it without reading a single slide — the exact skill that makes people trust you in the room.</p>
+      <a href="#" class="btn btn-primary">Start the Week 4 project →</a>
+    </div>
+  </div>
+</section>
+
+<script>
+/* ═══ ACTIVITY 1: Clean up the AI slide — flaw ↔ fix ═══ */
+const AUDIENCES = [
+  {id:'a1', name:'"Our Comprehensive Overview of the Situation"', pain:'A title slide whose headline says nothing about what the audience will actually learn.'},
+  {id:'a2', name:'A slide with a 60-word paragraph in full sentences', pain:'The audience is reading a wall of text while you talk over them — they hear neither.'},
+  {id:'a3', name:'"Revenue grew roughly 30%-ish last quarter"', pain:'A confident number AI wrote that you have never checked against the real figures.'},
+  {id:'a4', name:'The nuance and detail behind each bullet', pain:'Context you must SAY but that would clutter the slide if you put it on there.'},
+  {id:'a5', name:'The finished, verified deck the night before', pain:'It looks done. But you have never said any of it out loud, standing up.'}
+];
+const HOOKS = [
+  {id:'h1', text:'Cut words: rewrite as a headline', aud:'a1', signal:'A slide title should state the point, not the topic. "Our Comprehensive Overview" → "Q3: revenue up, costs flat, one risk to watch." The audience should get the takeaway from the headline alone.'},
+  {id:'h2', text:'Cut words: turn into 3-4 bullets', aud:'a2', signal:'Sentences are for speaking; bullets are for slides. Break the paragraph into 3-4 scannable fragments and put the full sentences in your mouth, not on screen. Three-second readability is the target.'},
+  {id:'h3', text:'Verify the fact against the source', aud:'a3', signal:'Every number AI writes is a claim you will be asked to defend. "Roughly 30%-ish" is a red flag — pull the real figure, state it precisely, and know where it came from. AI hallucinates numbers confidently.'},
+  {id:'h4', text:'Move it into the speaker notes', aud:'a4', signal:'The detail is real and worth saying — it just doesn\'t belong on the slide. Generate speaker notes (AI is great at this), keep the slide clean, and let Presenter View feed you the nuance while the audience sees the headline.'},
+  {id:'h5', text:'Rehearse it out loud, standing up', aud:'a5', signal:'A deck you\'ve never spoken is a deck you don\'t actually know. Saying it out loud is where you catch the awkward transitions, the number you can\'t explain, and the slide you don\'t need. AI can\'t do this rep for you.'}
+];
+const AUD_BY_ID = Object.fromEntries(AUDIENCES.map(a=>[a.id,a]));
+function shuffle(arr){return [...arr].sort(()=>Math.random()-0.5);}
+
+function renderTools(){
+  const toolNames = [...new Set(HOOKS.map(h=>h.text))];
+  const shuffled = shuffle(toolNames);
+  document.getElementById('audGrid').innerHTML = AUDIENCES.map(a=>`
+    <div class="aud-card" data-aud="${a.id}">
+      <div class="aud-name">${a.name}</div>
+      <div class="aud-pain">${a.pain}</div>
+      <select class="aud-select" data-aud="${a.id}">
+        <option value="">— choose the polish move that fixes this —</option>
+        ${shuffled.map(t=>`<option value="${t}">${t}</option>`).join('')}
+      </select>
+      <div class="aud-why" data-why="${a.id}"></div>
+    </div>`).join('');
+}
+function checkTools(){
+  let right = 0, unanswered = 0;
+  AUDIENCES.forEach(a=>{
+    const sel = document.querySelector(`.aud-select[data-aud="${a.id}"]`);
+    const card = document.querySelector(`.aud-card[data-aud="${a.id}"]`);
+    const why = document.querySelector(`.aud-why[data-why="${a.id}"]`);
+    card.classList.remove('correct','wrong');
+    why.className = 'aud-why';
+    if(!sel.value){ unanswered++; return; }
+    const wanted = HOOKS.find(h=>h.aud===a.id);
+    if(sel.value===wanted.text){
+      right++;
+      card.classList.add('correct');
+      why.className='aud-why show good';
+      why.textContent='✓ Right — '+wanted.signal;
+    } else {
+      card.classList.add('wrong');
+      why.className='aud-why show bad';
+      why.textContent=`✗ The best fix here is "${wanted.text}". ${wanted.signal}`;
+    }
+  });
+  const fb = document.getElementById('feedback1');
+  if(unanswered>0){
+    fb.className='activity-feedback show partial';
+    fb.innerHTML=`<strong>${unanswered} slide${unanswered>1?'s':''} still without a fix.</strong> Pick a move for every card, then check again.`;
+    return;
+  }
+  if(right===5){
+    fb.className='activity-feedback show success';
+    fb.innerHTML='<strong>5 of 5 — you polish like an owner, not a passenger.</strong> The map you just used is the whole pass: vague titles → <strong>headline the point</strong>; paragraphs → <strong>bullets, sentences in your mouth</strong>; every AI number → <strong>verify against the source</strong>; important detail → <strong>speaker notes, off the slide</strong>; and a finished deck → <strong>rehearse out loud</strong>. AI gets you to a draft fast; these five moves are how you make it yours.';
+  } else {
+    fb.className='activity-feedback show partial';
+    fb.innerHTML=`<strong>You fixed ${right} of 5.</strong> Read the red notes — each is a rule you'll reuse on every deck: <em>vague title → headline it</em>, <em>paragraph → bullets</em>, <em>AI number → verify it</em>, <em>detail → speaker notes</em>, <em>done deck → rehearse it</em>. Fix the reds and check again.`;
+  }
+  document.getElementById('prog1').classList.add('done');
+}
+function resetTools(){
+  renderTools();
+  document.getElementById('feedback1').className='activity-feedback';
+  document.getElementById('prog1').classList.remove('done');
+}
+
+/* ═══ ACTIVITY 2: Order the polish pipeline ═══ */
+const SCRIPT = [
+  {tag:'CUT WORDS', text:'Strip each slide to a headline + 3-4 bullets. Full sentences move into your speaking, not the screen.', note:'Do this first — there\'s no point polishing words you\'re about to delete.', hint:'Start by CUTTING WORDS. Before you fix flow, verify, or rehearse anything, get rid of the text that shouldn\'t be there. Everything downstream is faster on a lean deck.'},
+  {tag:'FIX FLOW', text:'Read the deck top to bottom. Does each slide follow from the last? Reorder, merge, or cut to make one clean story.', note:'Now that slides are lean, check they tell a story in the right order.', hint:'After trimming, FIX THE FLOW — check the slides tell one story in the right order. Do this before verifying facts, so you\'re only verifying slides that survive.'},
+  {tag:'VERIFY FACTS', text:'Check every number and claim AI wrote against the real source. Fix or flag anything you can\'t defend.', note:'Only the slides that survived reordering are worth fact-checking.', hint:'Once the story is set, VERIFY THE FACTS. Every AI-written number is a claim you\'ll be challenged on. Do this before writing notes — your notes should reference verified figures.'},
+  {tag:'GENERATE NOTES', text:'Have AI draft speaker notes for the detail you cut, then trim them to keyword prompts you can glance at.', note:'Notes capture the detail you removed from the slides — using verified facts.', hint:'With facts verified, GENERATE SPEAKER NOTES — the detail you cut from slides now lives in the notes pane. This has to come after verifying, or you\'ll be rehearsing wrong numbers.'},
+  {tag:'REHEARSE', text:'Stand up and say it out loud, start to finish, with Presenter View. Twice. Then use Speaker Coach if you can.', note:'The final rep — and the one AI can never do for you.', hint:'REHEARSE last. There\'s no point saying it out loud until the words, order, facts, and notes are all locked. This is the step only you can do — and the one you must not skip.'}
+];
+let seqNext = 0;
+function renderSeq(){
+  seqNext = 0;
+  const order = shuffle(SCRIPT.map((_,i)=>i));
+  document.getElementById('seqPool').innerHTML = order.map(i=>`
+    <div class="seq-block" data-idx="${i}" onclick="pickBlock(${i},this)">
+      <div class="seq-block-text">${SCRIPT[i].text}</div>
+    </div>`).join('');
+  document.getElementById('seqSlots').innerHTML = SCRIPT.map((s,i)=>`
+    <div class="seq-slot" id="slot${i}">Stage ${i+1} — waiting…</div>`).join('');
+  document.getElementById('seqHint').className='seq-hint';
+  document.getElementById('phonePreview').className='phone';
+  document.getElementById('feedback2').className='activity-feedback';
+}
+function pickBlock(idx, el){
+  const hint = document.getElementById('seqHint');
+  if(idx!==seqNext){
+    el.classList.add('shake');
+    setTimeout(()=>el.classList.remove('shake'),380);
+    hint.className='seq-hint show';
+    hint.textContent='Not that one yet. '+SCRIPT[seqNext].hint;
+    return;
+  }
+  el.classList.add('used');
+  hint.className='seq-hint';
+  const slot = document.getElementById('slot'+idx);
+  slot.classList.add('filled');
+  slot.innerHTML = `<span class="seq-tag">${SCRIPT[idx].tag}</span><div>${SCRIPT[idx].text}</div><div style="font-size:.7rem;color:var(--text-muted);margin-top:.25rem;font-style:italic">${SCRIPT[idx].note}</div>`;
+  seqNext++;
+  if(seqNext===SCRIPT.length) finishSeq();
+}
+function finishSeq(){
+  document.getElementById('phoneLines').innerHTML = SCRIPT.map(s=>`
+    <div class="phone-line"><span class="seq-tag">${s.tag}</span><p>${s.text}</p></div>`).join('');
+  document.getElementById('phonePreview').className='phone show';
+  const fb=document.getElementById('feedback2');
+  fb.className='activity-feedback show success';
+  fb.innerHTML='<strong>Pipeline assembled — CUT WORDS → FIX FLOW → VERIFY FACTS → GENERATE NOTES → REHEARSE.</strong> Why this order: each step assumes the one before is done. You cut first so you only ever polish slides that survive; you fix the flow so you only verify slides that made the cut; you verify facts before writing notes so your notes reference real numbers; you write notes before rehearsing so you rehearse the final words. And rehearsing comes last because it\'s the reality check on everything above — and the one step AI genuinely cannot do for you. Run this pass on every deck and you\'ll never again present something you\'ve merely seen but never owned.';
+  document.getElementById('prog2').classList.add('done');
+}
+function resetSeq(){
+  renderSeq();
+  document.getElementById('prog2').classList.remove('done');
+}
+
+/* ═══ ACTIVITY 3: Fix the accessibility issues ═══ */
+const KOS = [
+  {title:'Slide with a chart image and no description', metrics:['Problem: <b>A screen reader hits the chart and says only "image"</b>','Who it affects: <b>Anyone using a screen reader</b>'], answer:'alt', labels:{alt:'Add alt text',contrast:'Recolour it',order:'Fix reading order'},
+   correctLabel:'Add alt text',
+   why:'<strong>Add alt text.</strong> A screen reader can\'t interpret a picture — it needs a written description of what the chart shows ("Bar chart: Q3 revenue up 24% across all regions"). Right-click the image → Edit Alt Text. AI can even draft the description for you; you just verify it\'s accurate. Without it, that slide is silent to a blind viewer.'},
+  {title:'Light-grey text on a white background', metrics:['Problem: <b>The text is technically there but nearly invisible</b>','Who it affects: <b>Low-vision viewers, and everyone at the back of the room</b>'], answer:'contrast', labels:{alt:'Add alt text',contrast:'Increase colour contrast',order:'Add captions'},
+   correctLabel:'Increase colour contrast',
+   why:'<strong>Increase the contrast.</strong> Text needs enough contrast against its background to be readable — the standard target is a 4.5:1 ratio for body text. Light grey on white fails badly. Darken the text (or lighten the background). This helps low-vision viewers <em>and</em> the person squinting from the back row — accessibility fixes usually help everyone.'},
+  {title:'A slide built by dragging boxes on top of each other', metrics:['Problem: <b>A screen reader reads the elements in a jumbled, illogical order</b>','Who it affects: <b>Screen-reader users following the slide</b>'], answer:'order', labels:{contrast:'Recolour it',order:'Set the reading order',alt:'Add alt text'},
+   correctLabel:'Set the reading order',
+   why:'<strong>Fix the reading order.</strong> Screen readers announce elements in the order they were added, not the order they appear visually — so a slide assembled out of sequence gets read as nonsense. Use the Selection Pane (or the Accessibility Checker\'s "Reading Order" fix) to set a logical top-to-bottom sequence, so the narration matches what a sighted viewer sees.'},
+  {title:'A video embedded in the deck with spoken narration', metrics:['Problem: <b>A deaf or hard-of-hearing viewer gets none of the audio content</b>','Who it affects: <b>Deaf/hard-of-hearing viewers, and anyone with the sound off</b>'], answer:'captions', labels:{captions:'Add captions',contrast:'Recolour it',alt:'Add alt text'},
+   correctLabel:'Add captions',
+   why:'<strong>Add captions.</strong> Spoken content in a video is lost to anyone who can\'t hear it — or anyone watching with sound off in an open-plan office. Captions put the words on screen. PowerPoint can also auto-generate live captions/subtitles as <em>you</em> speak — turn that on for your own narration too. Sound should never be the only way to get the message.'}
+];
+let kosAnswered = {};
+function renderKos(){
+  kosAnswered = {};
+  document.getElementById('kosGrid').innerHTML = KOS.map((k,i)=>{
+    const opts = shuffle(Object.entries(k.labels));
+    return `
+    <div class="kos-card" data-kos="${i}">
+      <div class="kos-title">${k.title}</div>
+      <div class="kos-metrics">${k.metrics.map(m=>`<div class="kos-metric">${m}</div>`).join('')}</div>
+      <div class="kos-btns">
+        ${opts.map(([key,label])=>`<button class="kos-btn" onclick="answerKos(${i},'${key}',this)">${label}</button>`).join('')}
+      </div>
+      <div class="kos-verdict" id="kosV${i}"></div>
+    </div>`;
+  }).join('');
+  document.getElementById('feedback3').className='activity-feedback';
+}
+function answerKos(i, choice, btn){
+  if(kosAnswered[i]!==undefined) return;
+  const k = KOS[i];
+  const correct = choice===k.answer;
+  kosAnswered[i]=correct;
+  const card = document.querySelector(`.kos-card[data-kos="${i}"]`);
+  card.querySelectorAll('.kos-btn').forEach(b=>{
+    b.disabled=true;
+    if(b===btn) b.classList.add(correct?'picked-right':'picked-wrong');
+    else if(!correct && b.textContent.trim()===k.correctLabel) b.classList.add('reveal-right');
+  });
+  const v = document.getElementById('kosV'+i);
+  v.className='kos-verdict show '+(correct?'good':'bad');
+  v.innerHTML=(correct?'✓ Correct fix. ':'✗ The right fix is <em>'+k.correctLabel+'</em>. ')+k.why;
+  if(Object.keys(kosAnswered).length===KOS.length){
+    const score = Object.values(kosAnswered).filter(Boolean).length;
+    const fb=document.getElementById('feedback3');
+    if(score===4){
+      fb.className='activity-feedback show success';
+      fb.innerHTML='<strong>4 of 4 — you build decks everyone can follow.</strong> The four pillars: <em>alt text</em> so images speak to screen readers, <em>contrast</em> so text is readable by low-vision viewers (and the back row), <em>reading order</em> so narration matches the layout, and <em>captions</em> so sound is never the only channel. Run PowerPoint\'s <strong>Accessibility Checker</strong> (Review tab) before every talk — it flags most of these automatically. Accessible design isn\'t extra work bolted on; it\'s just finished work.';
+    } else {
+      fb.className='activity-feedback show partial';
+      fb.innerHTML=`<strong>You got ${score} of 4.</strong> Re-read the ones you missed — each maps to one accessibility pillar: <em>images need alt text</em>, <em>text needs contrast</em>, <em>layered slides need a reading order</em>, <em>audio needs captions</em>. The Accessibility Checker on the Review tab will catch these for you — reset and run all four again.`;
+    }
+    document.getElementById('prog3').classList.add('done');
+  }
+}
+function resetKos(){
+  renderKos();
+  document.getElementById('prog3').classList.remove('done');
+}
+
+/* ═══ ACTIVITY 4: Final-hour rehearsal budget ═══ */
+function updateBudget(){
+  const a=+document.getElementById('sliderA').value;
+  const b=+document.getElementById('sliderB').value;
+  const c=+document.getElementById('sliderC').value;
+  document.getElementById('valA').textContent=a+'%';
+  document.getElementById('valB').textContent=b+'%';
+  document.getElementById('valC').textContent=c+'%';
+  const total=a+b+c;
+  document.getElementById('totalVal').textContent=total+'%';
+  const box=document.getElementById('budgetTotal');
+  box.className='budget-total'+(total===100?' ok':(total>100?' over':''));
+  document.getElementById('checkBudgetBtn').disabled = total!==100;
+  return {a,b,c,total};
+}
+function checkBudget(){
+  const {a,b,c,total}=updateBudget();
+  const fb=document.getElementById('feedback4');
+  if(total!==100){
+    fb.className='activity-feedback show partial';
+    fb.innerHTML='<strong>Your split totals '+total+'%.</strong> Adjust until the sliders sum to exactly 100%, then check again.';
+    return;
+  }
+  if(a>=45 && c<=25){
+    fb.className='activity-feedback show success';
+    fb.innerHTML=`<strong>That's how a presenter spends the last hour (${a}% / ${b}% / ${c}%).</strong> Rehearsing out loud gets the biggest share because <em>fluency is what the audience actually experiences</em> — not your gradients. Verifying facts and tightening notes earns solid time because getting caught out on a number, or reading a paragraph off your notes, breaks trust instantly. And visual/tech polish stays small (but non-zero — you still run the Accessibility Checker and test Presenter View). The trap is spending the hour making slides prettier because it feels safe; the payoff lives in the reps out loud.`;
+  } else {
+    fb.className='activity-feedback show partial';
+    let notes=[];
+    if(a<45) notes.push(`<strong>Rehearsing at ${a}% is underfunded.</strong> This is the part only you can do and the part the audience actually feels. Experienced presenters put ~50% of the final hour into saying it out loud — twice, standing up. AI built the deck; it can\'t build your fluency.`);
+    if(c>25) notes.push(`<strong>${c}% on visual &amp; tech polish is too much for the last hour.</strong> Fixing gradients feels productive and safe, but nobody remembers a slightly nicer slide — they remember whether you were fluent. Keep this slice small; move the hours into rehearsal.`);
+    if(b<15) notes.push(`<strong>Verifying facts at ${b}% is thin.</strong> Every AI-written number is a question waiting to be asked. Give it enough time to re-check the figures and trim your notes to prompts, not scripts.`);
+    if(notes.length===0) notes.push('You are close — shift a little more into rehearsing out loud and keep visual/tech polish to a quarter or less.');
+    fb.innerHTML='<strong>Not a presenter\'s split yet ('+a+'% / '+b+'% / '+c+'%).</strong><br><br>'+notes.join('<br><br>')+'<br><br>Target shape: rehearse out loud ≥ 45% (the part only you can do), verify &amp; notes in the middle, visual/tech polish ≤ 25%. Adjust and re-check.';
+  }
+  document.getElementById('prog4').classList.add('done');
+}
+function resetBudget(){
+  document.getElementById('sliderA').value=50;
+  document.getElementById('sliderB').value=30;
+  document.getElementById('sliderC').value=20;
+  updateBudget();
+  document.getElementById('feedback4').className='activity-feedback';
+  document.getElementById('prog4').classList.remove('done');
+}
+['sliderA','sliderB','sliderC'].forEach(id=>document.getElementById(id).addEventListener('input',updateBudget));
+
+/* ═══ PRE-PRESENTATION CHECKLIST ═══ */
+const CHECKS = [
+  {t:'<b>Every number is verified.</b> Each figure AI wrote has been checked against the real source, and you know where it came from. If you can\'t defend it, cut it or flag it — a challenged number you can\'t back up sinks the whole talk.'},
+  {t:'<b>Slides are headlines, not paragraphs.</b> Each slide reads in three seconds. The detail lives in your speaker notes and your mouth — not on screen where it competes with you for attention.'},
+  {t:'<b>Speaker notes are prompts, not scripts.</b> Keywords you glance at, not paragraphs you read aloud. Reading your notes verbatim is as flat as reading your slides.'},
+  {t:'<b>You\'ve rehearsed out loud — at least twice.</b> Standing up, start to finish, with Presenter View on. Reps are the only cure for nerves, and the only way you catch what doesn\'t work until you say it.'},
+  {t:'<b>Accessibility Checker is green.</b> Alt text on images, readable contrast, logical reading order, captions on any audio. Run it from the Review tab and clear the flags — a deck only some people can follow isn\'t finished.'},
+  {t:'<b>You\'ve tested the tech and know your opening cold.</b> Presenter View works, the file opens on the room\'s screen, share/projector is tested — and you can deliver your first 30 seconds even if all of it fails.'}
+];
+let checkOn = new Set();
+function renderChecks(){
+  checkOn = new Set();
+  document.getElementById('checkList').innerHTML = CHECKS.map((c,i)=>`
+    <li class="check-item" data-c="${i}" onclick="toggleCheck(${i})">
+      <div class="check-box">✓</div>
+      <div class="check-text">${c.t}</div>
+    </li>`).join('');
+  updateCheckCount();
+}
+function toggleCheck(i){
+  const item=document.querySelector(`.check-item[data-c="${i}"]`);
+  if(checkOn.has(i)){checkOn.delete(i);item.classList.remove('on');}
+  else{checkOn.add(i);item.classList.add('on');}
+  updateCheckCount();
+}
+function updateCheckCount(){
+  document.getElementById('checkCount').textContent=`${checkOn.size} of ${CHECKS.length} locked in`;
+}
+
+/* ═══ ACTIVITY 5: Week 4 knowledge check ═══ */
+const QUIZ = [
+  {lesson:'Lesson 1 · Getting Started with AI in PowerPoint', q:'What is the most reliable way to get a useful first draft of a deck from an AI assistant?',
+   opts:['Ask "make me a presentation" and accept whatever comes','Give it your topic, audience, key points, and how many slides you want','Only let it choose colours, never content','Paste a document and give no instructions'], ans:1,
+   why:'AI builds from your brief. The clearer you are about topic, audience, the points that must appear, and the length, the closer the draft lands. A vague prompt produces a generic deck you\'ll rebuild anyway.'},
+  {lesson:'Lesson 1 · Getting Started with AI in PowerPoint', q:'Why must you always review a deck the AI generated before presenting it?',
+   opts:['It\'s against the rules to use AI slides','AI can invent facts, mislabel data, and pad slides — you own whatever you present','PowerPoint deletes AI slides after 24 hours','Review is only needed for decks over 20 slides'], ans:1,
+   why:'AI is confidently wrong sometimes — a made-up statistic, a wrong label, filler text. Whatever you stand up and present is your responsibility, so every AI deck needs a human verification pass.'},
+  {lesson:'Lesson 2 · Generating Slides & Structure', q:'AI gave you a 30-slide deck for a 10-minute talk. What\'s the right move?',
+   opts:['Present all 30 quickly','Cut ruthlessly to the few slides that carry the story','Add more slides so it looks thorough','Read faster to fit them all in'], ans:1,
+   why:'A strong talk is a clear story, not a slide count. Cut to the slides that each earn their place; the detail you remove goes into your speaking and your notes, not back onto more slides.'},
+  {lesson:'Lesson 2 · Generating Slides & Structure', q:'What makes a slide title effective?',
+   opts:['It names the general topic, like "Overview"','It states the actual takeaway, like "Q3 revenue up 24%"','It\'s as long and detailed as possible','It matches the filename'], ans:1,
+   why:'A title should deliver the point, not just label the topic. "Overview" tells the audience nothing; "Q3 revenue up 24%" lets them get the message from the headline alone.'},
+  {lesson:'Lesson 3 · Design & Visuals', q:'AI put a 60-word paragraph on a slide. Why fix it, and how?',
+   opts:['Leave it — more words look thorough','Cut it to a headline plus 3-4 bullets; the sentences belong in your speaking','Make the font smaller so it fits','Add more text to balance the slide'], ans:1,
+   why:'A slide is read in three seconds, not studied. Paragraphs make the audience read instead of listen. Break it into scannable bullets and say the full sentences yourself.'},
+  {lesson:'Lesson 3 · Design & Visuals', q:'A slide has light-grey text on a white background. What\'s the problem?',
+   opts:['Nothing — grey looks modern','Poor contrast makes it unreadable for low-vision viewers and the back row','It uses too much ink','Grey is a banned colour'], ans:1,
+   why:'Text needs enough contrast (aim for 4.5:1 for body text) to be readable. Light grey on white fails that, hurting low-vision viewers and anyone far from the screen. Accessibility fixes usually help everyone.'},
+  {lesson:'Lesson 4 · Polish, Delivery & Practice', q:'In the polish pipeline, why does rehearsing out loud come last?',
+   opts:['Because it\'s optional','Because there\'s no point rehearsing until the words, order, facts, and notes are locked — and it\'s the one step AI can\'t do for you','Because AI rehearses it first','Because it\'s the fastest step'], ans:1,
+   why:'You cut, fix flow, verify, and write notes first so you\'re rehearsing the final version. Rehearsing is last because it reality-checks everything above — and it\'s the rep only you can do. AI can\'t stand up for you.'},
+  {lesson:'Lesson 4 · Polish, Delivery & Practice', q:'How should you treat PowerPoint\'s Speaker Coach feedback on pace and fillers?',
+   opts:['As a final grade you must obey exactly','As a mirror and guidance — notice the patterns, then decide what matters for your room','Ignore it completely; software knows nothing','As proof you shouldn\'t present at all'], ans:1,
+   why:'Speaker Coach counts fillers, pace, and monotone privately so you can improve — but its numbers are guidance, not a verdict. A few "ums" are human, and energy can read as "fast." Use it to spot patterns, then judge what actually needs changing.'}
+];
+function renderQuiz(){
+  document.getElementById('quizWrap').innerHTML = QUIZ.map((item,i)=>`
+    <div class="quiz-q" id="qq${i}">
+      <div class="quiz-q-head"><span class="quiz-q-num">Q${i+1}</span><span class="quiz-q-text">${item.q}<span class="quiz-lesson">${item.lesson}</span></span></div>
+      ${item.opts.map((o,j)=>`
+        <label class="quiz-opt"><input type="radio" name="quiz${i}" value="${j}"><span>${o}</span></label>`).join('')}
+      <div class="quiz-review" id="qr${i}"></div>
+    </div>`).join('');
+}
+function submitQuiz(){
+  const fb=document.getElementById('feedback5');
+  const answers = QUIZ.map((_,i)=>{
+    const sel=document.querySelector(`input[name="quiz${i}"]:checked`);
+    return sel? +sel.value : null;
+  });
+  const blank = answers.filter(a=>a===null).length;
+  if(blank>0){
+    fb.className='activity-feedback show partial';
+    fb.innerHTML=`<strong>${blank} question${blank>1?'s':''} unanswered.</strong> Guessing is allowed, blank is not — answer everything and submit again.`;
+    return;
+  }
+  let score=0; const missedLessons=[];
+  QUIZ.forEach((item,i)=>{
+    const card=document.getElementById('qq'+i);
+    const rev=document.getElementById('qr'+i);
+    card.classList.remove('right','miss');
+    const correct = answers[i]===item.ans;
+    if(correct){
+      score++;
+      card.classList.add('right');
+      rev.className='quiz-review show good';
+      rev.innerHTML='✓ Correct. '+item.why;
+    } else {
+      card.classList.add('miss');
+      missedLessons.push(`Q${i+1} → ${item.lesson}`);
+      rev.className='quiz-review show bad';
+      rev.innerHTML=`✗ The answer is "<strong>${item.opts[item.ans]}</strong>". ${item.why}`;
+    }
+  });
+  if(score===8){
+    fb.className='activity-feedback show success';
+    fb.innerHTML='<strong>8 of 8 — Week 4 mastery.</strong> You hold the full chain: briefing AI to draft a deck, generating slides and a clear structure, designing clean and accessible visuals, and polishing, delivering &amp; owning the room. The through-line is the same as every week — let AI do the fast draft, then <em>verify, cut, and rehearse</em> to make it yours. Take that into the Week 4 project.';
+  } else if(score>=6){
+    fb.className='activity-feedback show success';
+    fb.innerHTML=`<strong>${score} of 8 — solid grasp of the week.</strong> The misses are patchable in minutes — read the review notes on: <em>${missedLessons.join(' · ')}</em>, then reset and aim for 8. The questions people miss are usually the "verify the number" and "rehearse it yourself" habits — exactly the ones that separate an AI deck from your deck.`;
+  } else {
+    fb.className='activity-feedback show partial';
+    fb.innerHTML=`<strong>${score} of 8 — worth a revisit before the project.</strong> No judgment — this week packed four lessons of PowerPoint-with-AI into your head. Your misses map to: <em>${missedLessons.join(' · ')}</em>. Reopen those lessons, skim their activities, then reset this quiz. Ten minutes of review now saves real stumbling in the project.`;
+  }
+  document.getElementById('prog5').classList.add('done');
+}
+function resetQuiz(){
+  renderQuiz();
+  document.getElementById('feedback5').className='activity-feedback';
+  document.getElementById('prog5').classList.remove('done');
+}
+
+/* ═══ INIT ═══ */
+window.addEventListener('DOMContentLoaded',()=>{
+  renderTools();
+  renderSeq();
+  renderKos();
+  updateBudget();
+  renderChecks();
+  renderQuiz();
+});
+</script>
+</body>
+</html>
