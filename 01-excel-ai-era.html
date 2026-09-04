@@ -1,584 +1,670 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lesson 1 · Excel in the AI Era — MokshPath</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=JetBrains+Mono:wght@400;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Excel in the AI Era · Lesson 01</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,0,400;9..144,0,600;9..144,0,800;9..144,1,600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
 :root{
-  --orange:#E87A2E;--orange-dark:#D06A20;--orange-light:#F5943E;--orange-glow:rgba(232,122,46,0.12);
-  --navy:#2B2D42;--navy-dark:#1A1B2E;
-  --bg:#F3EDE7;--bg-card:#FFFFFF;--bg-light:#F9F5F0;
-  --text-primary:#2B2D42;--text-secondary:#6B6D7B;--text-muted:#9597A6;
-  --border:#E5DDD4;--green:#4CAF50;--green-light:#E8F5E9;--red:#E04E3C;--red-light:#FDECEA;
-  --shadow-sm:0 2px 8px rgba(43,45,66,0.06);--shadow-md:0 8px 24px rgba(43,45,66,0.08);
-  --shadow-lg:0 16px 48px rgba(43,45,66,0.12);
-  --radius:14px;--radius-sm:8px;
-  --mono:'JetBrains Mono',monospace;
+  --orange:#EF7F1A; --orange-light:#FF9429; --orange-dark:#D55222;
+  --brown:#412C23; --brown-dark:#2F1D19; --tan:#A34E1C;
+  --yellow:#FECC00; --cream:#FBF6EE; --paper:#FFFCF6;
+  --ink:#1C1410; --muted:#6E5C50; --line:#E8DCC8; --accent:#008DD2;
+  --sheet-green:#217346;
 }
+*{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text-primary);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body{
+  font-family:'Inter',system-ui,sans-serif;
+  background:var(--paper); color:var(--ink); line-height:1.6; overflow-x:hidden;
+}
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:radial-gradient(circle at 1px 1px,rgba(65,44,35,0.05) 1px,transparent 0);
+  background-size:24px 24px;
+}
+.topbar{
+  position:sticky;top:0;z-index:100;
+  background:rgba(255,252,246,0.92); backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+  padding:14px 40px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.brand{font-family:'Fraunces',serif;font-weight:800;font-size:17px;letter-spacing:-0.01em;color:var(--brown-dark)}
+.brand .dot{color:var(--orange)}
+.brand .sub{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.15em;color:var(--muted);font-weight:500;text-transform:uppercase;margin-left:8px}
+.logo-slot{width:44px;height:44px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.logo-slot svg{width:100%;height:100%;display:block}
+.page{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:50px 40px 100px}
+.hero{padding:30px 0 50px;border-bottom:1px solid var(--line)}
+.eyebrow{
+  font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.18em;
+  text-transform:uppercase;color:var(--orange-dark);font-weight:600;
+  display:inline-flex;align-items:center;gap:10px;
+}
+.eyebrow::before{content:"";width:24px;height:2px;background:var(--orange)}
+h1{
+  font-family:'Fraunces',serif;font-weight:800;
+  font-size:clamp(38px,7vw,80px);line-height:0.98;letter-spacing:-0.03em;
+  margin:18px 0 20px;color:var(--brown-dark);
+}
+h1 em{font-style:italic;color:var(--orange-dark);font-weight:600}
+.lede{font-size:19px;max-width:680px;color:var(--muted)}
+section{padding:70px 0;border-bottom:1px solid var(--line)}
+section:last-of-type{border-bottom:none}
+.section-num{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--orange);font-weight:600;letter-spacing:0.08em}
+h2{
+  font-family:'Fraunces',serif;font-weight:700;
+  font-size:clamp(28px,4.5vw,48px);line-height:1.05;letter-spacing:-0.02em;
+  margin:10px 0 22px;color:var(--brown-dark);max-width:720px;
+}
+h3{font-family:'Fraunces',serif;font-weight:600;font-size:24px;color:var(--brown-dark);margin:28px 0 12px}
+p{max-width:680px;margin-bottom:14px;color:var(--ink)}
+.lead{font-size:17px;color:var(--muted);max-width:680px;margin-bottom:26px}
+code{font-family:'JetBrains Mono',monospace;font-size:0.92em;background:var(--cream);padding:2px 6px;border-radius:4px;color:var(--brown-dark)}
+.illus{
+  background:var(--cream);border:1px solid var(--line);border-radius:18px;
+  padding:32px;margin:24px 0;position:relative;overflow:hidden;
+}
+.illus-title{
+  font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);
+  letter-spacing:0.12em;text-transform:uppercase;
+  margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:10px;
+}
+.controls{display:flex;gap:8px;flex-wrap:wrap}
+.controls button{
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  background:var(--paper);border:1px solid var(--line);color:var(--brown);
+  padding:6px 12px;border-radius:6px;cursor:pointer;
+  text-transform:uppercase;letter-spacing:0.1em;transition:all .2s;
+}
+.controls button:hover{background:var(--orange);color:#fff;border-color:var(--orange)}
+.controls button.active{background:var(--brown-dark);color:#fff;border-color:var(--brown-dark)}
+.takeaway{
+  background:var(--brown-dark);color:var(--paper);
+  border-radius:18px;padding:44px;margin-top:50px;position:relative;overflow:hidden;
+}
+.takeaway::after{
+  content:"";position:absolute;top:-40px;right:-40px;width:180px;height:180px;
+  border-radius:50%;background:radial-gradient(circle,var(--orange),transparent 70%);opacity:0.4;
+}
+.takeaway h2{color:var(--paper);margin-bottom:16px}
+.takeaway p{color:#E8D9C5;font-size:16px;max-width:680px}
+.takeaway ul{list-style:none;margin-top:18px;display:grid;gap:8px}
+.takeaway li{font-family:'JetBrains Mono',monospace;font-size:13px;padding-left:22px;position:relative;color:#FBE7CB}
+.takeaway li::before{content:"→";position:absolute;left:0;color:var(--orange);font-weight:bold}
+footer{text-align:center;padding:36px;color:var(--muted);font-size:12px;font-family:'JetBrains Mono',monospace;letter-spacing:0.1em}
+@media(max-width:700px){
+  .topbar{padding:12px 18px}
+  .page{padding:30px 18px 70px}
+  .illus{padding:20px}
+  .takeaway{padding:28px}
+  .logo-slot{width:38px;height:38px}
+}
 
-/* ── NAV ── */
-.nav{position:sticky;top:0;z-index:100;background:var(--bg-card);border-bottom:1px solid var(--border);padding:0 2rem;height:64px;display:flex;align-items:center;justify-content:space-between;box-shadow:var(--shadow-sm)}
-.nav-left{display:flex;align-items:center;gap:.7rem}
-.lesson-badge{font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--orange);background:var(--orange-glow);padding:.3rem .7rem;border-radius:50px}
-.nav-logo{display:flex;align-items:center;gap:.7rem;text-decoration:none}
-.nav-logo-icon{width:auto;height:48px;display:block;object-fit:contain}
-.nav-logo-text{display:flex;flex-direction:column;line-height:1.15}
-.nav-logo-name{font-family:'DM Serif Display',serif;font-size:1.25rem;color:var(--navy)}
-.nav-logo-name span{color:var(--orange)}
-.nav-logo-tag{font-size:.62rem;color:var(--text-muted);font-weight:500;letter-spacing:.02em}
+/* ============ Figure 1 · from cell to answer flow ============ */
+.flow{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:30px 22px 22px;position:relative}
+.flow-row{display:flex;align-items:stretch;gap:0}
+.fnode{
+  flex:0 0 auto;width:150px;text-align:center;padding:16px 10px 13px;
+  background:var(--cream);border:2px solid var(--line);border-radius:12px;
+  transition:border-color .3s,background .3s,transform .3s,box-shadow .3s;
+}
+.fnode h5{font-family:'Fraunces',serif;font-size:16px;color:var(--brown-dark);line-height:1.15;margin-bottom:4px}
+.fnode .fsub{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);line-height:1.4;display:block}
+.fnode .fmark{width:34px;height:34px;border-radius:50%;background:var(--brown-dark);color:var(--paper);font-family:'Fraunces',serif;font-weight:700;font-size:16px;display:flex;align-items:center;justify-content:center;margin:0 auto 8px;transition:background .3s}
+.fnode.on{border-color:var(--orange);background:#FDEBD7;transform:translateY(-4px);box-shadow:0 8px 18px rgba(239,127,26,0.22)}
+.fnode.on .fmark{background:var(--orange)}
+.fconn{flex:1;min-width:26px;align-self:center;height:3px;background:var(--line);position:relative;border-radius:2px}
+.fdot{
+  position:absolute;top:50%;left:0;width:15px;height:15px;border-radius:50%;
+  transform:translate(-50%,-50%);opacity:0;z-index:2;
+}
+.fdot.data{background:var(--yellow);border:2px solid var(--tan);box-shadow:0 0 0 4px rgba(254,204,0,0.25)}
+.fdot.answer{background:var(--sheet-green);border:2px solid var(--brown-dark);box-shadow:0 0 0 4px rgba(33,115,70,0.18)}
+.fconn.go .fdot,.frail.go .fdot{animation:dotR 1.35s ease-in-out forwards}
+.fconn.go.rev .fdot,.frail.go.rev .fdot{animation:dotL 1.35s ease-in-out forwards}
+@keyframes dotR{0%{left:0%;opacity:0}14%{opacity:1}86%{opacity:1}100%{left:100%;opacity:0}}
+@keyframes dotL{0%{left:100%;opacity:0}14%{opacity:1}86%{opacity:1}100%{left:0%;opacity:0}}
+.frail{margin:30px 10px 6px;height:3px;background:var(--line);position:relative;border-radius:2px}
+.frail-label{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);text-align:center;margin-top:8px}
+.fcap-wrap{display:flex;gap:14px;align-items:flex-start;margin-top:20px;background:var(--cream);border:1px solid var(--line);border-radius:10px;padding:14px 16px;min-height:74px}
+.fstep{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;letter-spacing:0.08em;color:#fff;background:var(--orange);border-radius:6px;padding:4px 9px;white-space:nowrap;flex-shrink:0;margin-top:2px}
+.fcap{font-size:14.5px;color:var(--brown-dark);line-height:1.5}
+.fkey{display:flex;gap:22px;margin-top:14px;font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted)}
+.fkey span{display:inline-flex;align-items:center;gap:7px}
+.fkey i{width:12px;height:12px;border-radius:50%;display:inline-block}
+.fkey .km{background:var(--yellow);border:2px solid var(--tan)}
+.fkey .kp{background:var(--sheet-green);border:2px solid var(--brown-dark)}
+@media(max-width:700px){
+  .flow{padding:18px 10px 14px}
+  .fnode{width:96px;padding:10px 5px 9px}
+  .fnode h5{font-size:12.5px}
+  .fnode .fsub{font-size:8px}
+  .fnode .fmark{width:26px;height:26px;font-size:13px}
+}
 
-/* ── HERO ── */
-.hero{padding:3.5rem 2rem 2.5rem;text-align:center;position:relative}
-.hero-eyebrow{display:inline-flex;align-items:center;gap:.45rem;padding:.4rem 1rem;border-radius:50px;background:var(--orange-glow);color:var(--orange);font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:1.2rem}
-.hero-eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--orange);animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-.hero h1{font-family:'DM Serif Display',serif;font-size:clamp(2rem,4vw,3rem);line-height:1.13;color:var(--navy);margin-bottom:1rem;max-width:780px;margin-left:auto;margin-right:auto}
-.hero h1 em{font-style:normal;color:var(--orange)}
-.hero-sub{font-size:1.02rem;color:var(--text-secondary);line-height:1.7;max-width:620px;margin:0 auto}
+/* ============ Figure 2 · tool comparison matrix ============ */
+.mcalc{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:26px}
+.toolgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.tcard{
+  background:var(--cream);border:2px solid var(--line);border-radius:12px;
+  padding:18px 15px;cursor:pointer;transition:all .25s;position:relative;
+}
+.tcard:hover{border-color:var(--orange);transform:translateY(-3px);box-shadow:0 8px 18px rgba(239,127,26,0.16)}
+.tcard.active{border-color:var(--brown-dark);background:#FDEBD7}
+.tcard .tname{font-family:'Fraunces',serif;font-weight:700;font-size:17px;color:var(--brown-dark);line-height:1.1;margin-bottom:8px}
+.tcard .ttag{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;padding:3px 7px;border-radius:5px;display:inline-block;margin-bottom:12px}
+.ttag.paid{background:#F6E3C8;color:var(--tan)}
+.ttag.free{background:#D9EEDF;color:var(--sheet-green)}
+.ttag.ext{background:#DCEAF4;color:var(--accent)}
+.tcard .tmeta{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--muted);line-height:1.7}
+.tcard .tmeta b{color:var(--brown-dark)}
+.tdetail{
+  margin-top:20px;background:var(--cream);border:1px solid var(--line);
+  border-radius:12px;padding:22px;min-height:130px;
+}
+.tdetail.swap{animation:panelIn .4s ease}
+.tdetail h4{font-family:'Fraunces',serif;font-size:20px;color:var(--brown-dark);margin-bottom:4px}
+.tdetail .dtag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--orange-dark);font-weight:600;display:block;margin-bottom:12px}
+.tdetail .drow{display:flex;gap:10px;align-items:baseline;font-size:14px;color:var(--ink);margin-bottom:8px;line-height:1.45}
+.tdetail .dk{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);font-weight:600;flex:0 0 92px}
+.tdetail .warn{background:#FCEBD6;border-left:3px solid var(--orange);border-radius:0 8px 8px 0;padding:10px 14px;font-size:13px;color:var(--brown);margin-top:6px;line-height:1.5}
+@media(max-width:700px){
+  .toolgrid{grid-template-columns:1fr 1fr}
+  .tdetail .drow{flex-direction:column;gap:2px}
+  .tdetail .dk{flex-basis:auto}
+}
 
-/* ── PROGRESS RAIL ── */
-.progress-rail{max-width:760px;margin:1.8rem auto 0;display:flex;align-items:center;gap:.5rem}
-.progress-dot{flex:1;height:6px;background:var(--border);border-radius:3px;transition:background .3s}
-.progress-dot.done{background:linear-gradient(90deg,var(--orange),var(--orange-light))}
-.progress-label{font-size:.7rem;color:var(--text-muted);font-weight:600;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+/* ============ Figure 3 · 4 places AI helps ============ */
+.aimap-chain{display:flex;align-items:center;gap:0;margin-bottom:20px}
+.ainode{
+  flex:1;text-align:center;padding:16px 8px;background:var(--paper);
+  border:2px solid var(--line);border-radius:12px;cursor:pointer;
+  transition:all .25s;font-family:'JetBrains Mono',monospace;
+  font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--brown);font-weight:600;
+}
+.ainode .aidx{display:block;font-family:'Fraunces',serif;font-size:24px;font-weight:800;color:var(--line);margin-bottom:4px;transition:color .25s;text-transform:none;letter-spacing:0}
+.ainode:hover{border-color:var(--orange);transform:translateY(-2px)}
+.ainode.active{background:var(--brown-dark);border-color:var(--brown-dark);color:var(--paper)}
+.ainode.active .aidx{color:var(--orange)}
+.ailink{width:26px;height:3px;background:var(--line);flex-shrink:0;position:relative}
+.ailink::after{content:"";position:absolute;right:-1px;top:50%;transform:translateY(-50%);border-left:7px solid var(--line);border-top:5px solid transparent;border-bottom:5px solid transparent}
+.aipanel{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:26px;min-height:250px}
+.aipanel.swap{animation:panelIn .4s ease}
+@keyframes panelIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.aipanel h4{font-family:'Fraunces',serif;font-size:22px;color:var(--brown-dark);margin-bottom:4px}
+.aipanel .aitag{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:0.12em;text-transform:uppercase;color:var(--orange-dark);font-weight:600;display:block;margin-bottom:14px}
+.aipanel ul{list-style:none;display:grid;gap:9px;margin-bottom:18px}
+.aipanel li{font-size:14.5px;color:var(--ink);padding-left:24px;position:relative;line-height:1.5}
+.aipanel li::before{content:"✦";position:absolute;left:0;color:var(--orange);font-size:13px}
+.ai-human{
+  background:var(--cream);border-left:3px solid var(--brown);border-radius:0 10px 10px 0;
+  padding:13px 16px;font-size:13.5px;color:var(--brown);line-height:1.5;
+}
+.ai-human strong{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--brown-dark);display:block;margin-bottom:3px}
+.aiprompt{font-family:'JetBrains Mono',monospace;font-size:12px;background:var(--brown-dark);color:#F3E7D5;border-radius:8px;padding:12px 14px;margin-bottom:16px;line-height:1.55;overflow-x:auto}
+.aiprompt .plab{color:var(--yellow);font-size:9.5px;letter-spacing:0.12em;text-transform:uppercase;display:block;margin-bottom:6px}
+@media(max-width:700px){
+  .aimap-chain{flex-wrap:wrap;gap:8px}
+  .ainode{flex:1 1 42%}
+  .ailink{display:none}
+}
 
-/* ── SECTIONS ── */
-section.lesson{padding:3rem 2rem}
-.container{max-width:1080px;margin:0 auto}
-.lesson-num{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;background:var(--orange);color:#fff;font-family:'DM Serif Display',serif;font-size:1.1rem;margin-bottom:.9rem}
-.lesson-title{font-family:'DM Serif Display',serif;font-size:clamp(1.6rem,2.5vw,2.1rem);color:var(--navy);margin-bottom:.55rem;line-height:1.2}
-.lesson-intro{font-size:.95rem;color:var(--text-secondary);line-height:1.7;max-width:680px;margin-bottom:2rem}
-.lesson-card{background:var(--bg-card);border-radius:var(--radius);box-shadow:var(--shadow-sm);border:1px solid var(--border);padding:2rem;margin-top:1.5rem}
-
-/* ── COMPARE CARDS ── */
-.compare-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-top:1.2rem}
-@media (max-width:900px){.compare-grid{grid-template-columns:1fr 1fr}}
-@media (max-width:560px){.compare-grid{grid-template-columns:1fr}}
-.compare-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:1.2rem;transition:all .3s}
-.compare-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-md);border-color:transparent}
-.compare-icon{width:38px;height:38px;border-radius:8px;display:flex;align-items:center;justify-content:center;margin-bottom:.7rem;font-size:1.05rem;font-weight:700;font-family:'DM Serif Display',serif;color:#fff}
-.compare-card:nth-child(1) .compare-icon{background:linear-gradient(135deg,var(--orange),var(--orange-light))}
-.compare-card:nth-child(2) .compare-icon{background:linear-gradient(135deg,#5B8FE0,#3D72C9)}
-.compare-card:nth-child(3) .compare-icon{background:linear-gradient(135deg,#66BB6A,#4CAF50)}
-.compare-card:nth-child(4) .compare-icon{background:linear-gradient(135deg,#9C6ADE,#7A4CC0)}
-.compare-card h4{font-family:'DM Serif Display',serif;font-size:1.02rem;color:var(--navy);margin-bottom:.3rem}
-.compare-card p{font-size:.8rem;color:var(--text-secondary);line-height:1.55}
-.compare-pros{margin-top:.6rem;font-size:.73rem;line-height:1.6;border-top:1px dashed var(--border);padding-top:.55rem}
-.compare-pros .pro{color:#2E6B30;display:block}
-.compare-pros .con{color:#A03A2C;display:block}
-.tip-note{margin-top:.9rem;padding:.7rem .9rem;background:var(--orange-glow);border-left:3px solid var(--orange);border-radius:4px;font-size:.78rem;color:var(--text-primary);line-height:1.55}
-
-/* ── 4 PLACES MODEL ── */
-.places-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-top:1rem}
-@media (max-width:900px){.places-grid{grid-template-columns:1fr 1fr}}
-@media (max-width:560px){.places-grid{grid-template-columns:1fr}}
-.place-card{background:var(--bg-light);border:1px solid var(--border);border-radius:var(--radius-sm);padding:1.1rem;transition:all .25s}
-.place-card:hover{border-color:var(--orange);box-shadow:var(--shadow-sm);transform:translateY(-2px)}
-.place-num{font-family:var(--mono);font-size:.72rem;font-weight:600;color:var(--orange);letter-spacing:.08em}
-.place-card h4{font-family:'DM Serif Display',serif;font-size:1rem;color:var(--navy);margin:.25rem 0 .35rem}
-.place-card p{font-size:.78rem;color:var(--text-secondary);line-height:1.55}
-.place-card code{font-family:var(--mono);font-size:.72rem;background:var(--bg-card);border:1px solid var(--border);border-radius:4px;padding:.1rem .35rem;color:var(--navy)}
-
-/* ── ACTIVITY: DRAG CLASSIFIER ── */
-.classify-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:1rem}
-@media (max-width:760px){.classify-grid{grid-template-columns:1fr}}
-.classify-scenarios{display:flex;flex-direction:column;gap:.7rem}
-.scenario-card{background:var(--bg-card);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:1rem 1.1rem;cursor:grab;transition:all .25s;position:relative;user-select:none}
-.scenario-card:hover{border-color:var(--orange);box-shadow:var(--shadow-sm);transform:translateY(-1px)}
-.scenario-card.dragging{opacity:.4}
-.scenario-card.placed{opacity:.35;cursor:not-allowed;pointer-events:none}
-.scenario-card.placed.correct{border-color:var(--green);background:var(--green-light)}
-.scenario-card.placed.wrong{border-color:var(--red);background:var(--red-light)}
-.scenario-text{font-size:.84rem;color:var(--text-primary);line-height:1.5;font-weight:500}
-.bucket-stack{display:flex;flex-direction:column;gap:1rem}
-.bucket{border:2px dashed var(--border);border-radius:var(--radius-sm);padding:1rem;min-height:80px;transition:all .25s;background:rgba(255,255,255,0.5)}
-.bucket.drag-over{border-color:var(--orange);background:var(--orange-glow);border-style:solid}
-.bucket-title{font-family:'DM Serif Display',serif;font-size:1rem;color:var(--navy);margin-bottom:.25rem}
-.bucket-sub{font-size:.7rem;color:var(--text-muted);margin-bottom:.6rem;letter-spacing:.04em;text-transform:uppercase;font-weight:600}
-.bucket-drop{display:flex;flex-wrap:wrap;gap:.4rem;min-height:28px}
-.dropped-pill{background:var(--bg-card);border:1px solid var(--border);border-radius:50px;padding:.3rem .7rem;font-size:.72rem;font-weight:500;color:var(--text-primary)}
-.dropped-pill.correct{background:var(--green-light);border-color:var(--green);color:#256B29}
-.dropped-pill.wrong{background:var(--red-light);border-color:var(--red);color:#933}
-.activity-feedback{margin-top:1.2rem;padding:1rem 1.2rem;border-radius:var(--radius-sm);font-size:.85rem;line-height:1.5;display:none}
-.activity-feedback.show{display:block;animation:fadeIn .4s ease}
-.activity-feedback.success{background:var(--green-light);color:#1F5723;border-left:3px solid var(--green)}
-.activity-feedback.partial{background:#FFF4E5;color:#7A4A0A;border-left:3px solid #E89B2E}
-@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
-
-.activity-toolbar{display:flex;gap:.6rem;margin-top:1.2rem;flex-wrap:wrap}
-.btn{display:inline-flex;align-items:center;gap:.4rem;padding:.6rem 1.2rem;border-radius:8px;font-size:.82rem;font-weight:600;border:none;cursor:pointer;transition:all .2s;font-family:inherit}
-.btn-primary{background:var(--orange);color:#fff}.btn-primary:hover{background:var(--orange-dark);transform:translateY(-1px);box-shadow:0 4px 12px rgba(232,122,46,0.3)}
-.btn-ghost{background:transparent;border:1.5px solid var(--border);color:var(--text-secondary)}.btn-ghost:hover{border-color:var(--orange);color:var(--orange)}
-
-/* ── ACTIVITY: PRIVACY SCENARIOS (SAFE / RISKY) ── */
-.mf-grid{display:grid;gap:.8rem;margin-top:.5rem}
-.mf-card{background:var(--bg-card);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:1rem 1.2rem;transition:all .25s}
-.mf-card.right{border-color:var(--green);background:var(--green-light)}
-.mf-card.miss{border-color:var(--red);background:var(--red-light)}
-.mf-statement{font-size:.88rem;font-weight:600;color:var(--navy);line-height:1.55;margin-bottom:.7rem}
-.mf-buttons{display:flex;gap:.5rem}
-.mf-btn{padding:.4rem 1.1rem;border-radius:50px;border:1.5px solid var(--border);background:var(--bg-card);font-size:.76rem;font-weight:700;letter-spacing:.03em;cursor:pointer;transition:all .2s;font-family:inherit;color:var(--text-secondary)}
-.mf-btn:hover{border-color:var(--orange);color:var(--orange)}
-.mf-btn:disabled{cursor:not-allowed;opacity:.55}
-.mf-btn.picked-right{background:var(--green);border-color:var(--green);color:#fff;opacity:1}
-.mf-btn.picked-wrong{background:var(--red);border-color:var(--red);color:#fff;opacity:1}
-.mf-explain{display:none;margin-top:.7rem;font-size:.8rem;line-height:1.6;color:var(--text-secondary);border-top:1px dashed var(--border);padding-top:.6rem}
-.mf-explain.show{display:block;animation:fadeIn .3s ease}
-.mf-verdict{font-weight:700;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase}
-.mf-verdict.v-right{color:#256B29}
-.mf-verdict.v-miss{color:#A03A2C}
-
-/* ── QUIZ ── */
-.math-options{display:grid;gap:.6rem;margin-top:1rem}
-.math-option{display:flex;align-items:flex-start;gap:.7rem;background:var(--bg-card);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:.85rem 1rem;cursor:pointer;transition:all .2s;font-size:.86rem;line-height:1.5}
-.math-option:hover{border-color:var(--orange)}
-.math-option input{margin-top:.25rem;accent-color:var(--orange)}
-.math-option.reveal-right{border-color:var(--green);background:var(--green-light)}
-.math-option.reveal-wrong{border-color:var(--red);background:var(--red-light)}
-.prompt-box{background:var(--navy-dark);border-radius:var(--radius-sm);padding:1rem 1.1rem;margin:1rem 0;font-family:var(--mono);font-size:.82rem;line-height:1.6;color:#E8E6F0;position:relative;overflow-x:auto}
-.prompt-box .lbl{position:absolute;top:.5rem;right:.7rem;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--orange-light);font-family:'Plus Jakarta Sans',sans-serif;font-weight:700}
-
-/* ── REFLECTION ── */
-.reflect-prompt{display:grid;grid-template-columns:1fr;gap:.8rem;margin-top:1rem}
-.reflect-q{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:1rem 1.2rem}
-.reflect-q-text{font-size:.88rem;font-weight:600;color:var(--navy);margin-bottom:.5rem}
-.reflect-q textarea{width:100%;border:1px solid var(--border);border-radius:6px;padding:.6rem .8rem;font-family:inherit;font-size:.85rem;color:var(--text-primary);background:var(--bg-light);resize:vertical;min-height:60px}
-.reflect-q textarea:focus{outline:none;border-color:var(--orange)}
-
-/* ── FOOTER NEXT ── */
-.next-up{background:linear-gradient(135deg,var(--navy-dark),var(--navy));border-radius:var(--radius);padding:2.4rem;color:#fff;margin-top:2rem;text-align:center;position:relative;overflow:hidden}
-.next-up::before{content:'';position:absolute;top:-50px;right:-50px;width:180px;height:180px;border-radius:50%;background:rgba(232,122,46,0.12)}
-.next-up h3{font-family:'DM Serif Display',serif;font-size:1.5rem;margin-bottom:.5rem;position:relative}
-.next-up p{font-size:.92rem;color:rgba(255,255,255,0.75);margin-bottom:1.2rem;position:relative}
-.next-up .btn-primary{position:relative}
-
-@media (max-width:760px){
-  .nav{padding:0 1rem}
-  .nav-logo-tag{display:none}
-  .hero{padding:2.5rem 1.2rem 2rem}
-  section.lesson{padding:2rem 1.2rem}
-  .lesson-card{padding:1.4rem}
+/* ============ Figure 4 · hype cards ============ */
+.hgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.hcard{height:225px;perspective:1100px;cursor:pointer;opacity:0;transform:translateY(12px)}
+.hgrid.show .hcard{animation:hIn .5s forwards}
+.hgrid.show .hcard:nth-child(1){animation-delay:.05s}
+.hgrid.show .hcard:nth-child(2){animation-delay:.2s}
+.hgrid.show .hcard:nth-child(3){animation-delay:.35s}
+.hgrid.show .hcard:nth-child(4){animation-delay:.5s}
+@keyframes hIn{to{opacity:1;transform:translateY(0)}}
+.hinner{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .65s cubic-bezier(.4,.1,.2,1)}
+.hcard.flipped .hinner{transform:rotateY(180deg)}
+.hface{
+  position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;
+  border-radius:14px;padding:22px;display:flex;flex-direction:column;justify-content:center;
+}
+.hfront{background:linear-gradient(135deg,var(--orange) 0%,var(--orange-dark) 100%);color:#fff;text-align:center;align-items:center}
+.hfront .hclaim{font-family:'Fraunces',serif;font-weight:800;font-size:25px;line-height:1.1;margin-bottom:8px}
+.hfront .hsub{font-size:13px;opacity:.92;max-width:260px}
+.hfront .hhint{position:absolute;bottom:12px;left:0;right:0;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:0.15em;text-transform:uppercase;opacity:.75}
+.hback{background:var(--brown-dark);color:#F3E7D5;transform:rotateY(180deg);border:1px solid var(--brown)}
+.hback .hlab{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--yellow);font-weight:600;margin-bottom:8px}
+.hback p{font-size:13px;line-height:1.5;color:#F3E7D5;margin:0;max-width:none}
+@media(max-width:700px){
+  .hgrid{grid-template-columns:1fr}
+  .hcard{height:210px}
+  .hfront .hclaim{font-size:22px}
 }
 </style>
 </head>
 <body>
-
-<!-- NAV -->
-<nav class="nav">
-  <div class="nav-left">
-    <span class="lesson-badge">Lesson 1 of 4</span>
+<div class="topbar">
+  <div class="brand">MokshPath <span class="dot">·</span> <span class="sub">Lesson 01 · Excel · AI Era</span></div>
+  <div class="logo-slot" aria-label="MokshPath logo">
+    <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="4" y="13" width="36" height="27" rx="6" fill="#412C23"/>
+      <path d="M14 13 C14 4.5 30 4.5 30 13" stroke="#EF7F1A" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+      <path d="M12 32 L12 22 L17 28 L22 21 L27 28 L32 22 L32 32" stroke="#FECC00" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="36" cy="9" r="4.5" fill="#EF7F1A"/>
+    </svg>
   </div>
-  <a href="https://mokshpath.org/" class="nav-logo">
-    <img class="nav-logo-icon" src="hero.svg" alt="MokshPath logo">
-    <div class="nav-logo-text">
-      <span class="nav-logo-name">Moksh<span>Path</span></span>
-      <span class="nav-logo-tag">Guided Path to True Learning</span>
-    </div>
-  </a>
-</nav>
+</div>
+<div class="page">
 
-<!-- HERO -->
-<header class="hero">
-  <div class="hero-eyebrow"><span class="dot"></span> Week 1 · AI Excel</div>
-  <h1>Excel in the AI Era — <em>turn the spreadsheet you already know into an assistant</em></h1>
-  <p class="hero-sub">Four hands-on activities. Meet the real AI-in-Excel landscape, learn the "4 places AI helps" model, match each task to the right tool, spot which data is safe to paste — then take a quick honest quiz on where AI still needs you to check its work.</p>
-  <div class="progress-rail">
-    <span class="progress-label">Progress</span>
-    <div class="progress-dot" id="prog1"></div>
-    <div class="progress-dot" id="prog2"></div>
-    <div class="progress-dot" id="prog3"></div>
-    <div class="progress-dot" id="prog4"></div>
-  </div>
-</header>
-
-<!-- ── SECTION 1: THE LANDSCAPE ── -->
-<section class="lesson" id="activity-1">
-  <div class="container">
-    <span class="lesson-num">1</span>
-    <h2 class="lesson-title">What "AI in Excel" actually means today</h2>
-    <p class="lesson-intro">"Excel has AI now" is a headline, not a single button. In 2026 there are really <strong>four different doors</strong> into AI-assisted spreadsheets, and they differ on one thing that matters most to you: <strong>cost and where your data goes.</strong> Study the four cards, then in the drag activity below you'll match real tasks to the right door.</p>
-
-    <div class="compare-grid">
-      <div class="compare-card">
-        <div class="compare-icon">C</div>
-        <h4>Microsoft 365 Copilot</h4>
-        <p>A paid add-on that lives <strong>inside</strong> Excel. Ask it in plain English; it writes formulas, summarizes, and suggests charts. Works best on data formatted as an Excel <strong>Table</strong>.</p>
-        <div class="compare-pros">
-          <span class="pro">+ Never leaves your Excel file</span>
-          <span class="pro">+ Understands your actual sheet</span>
-          <span class="con">− Extra paid licence on top of 365</span>
-          <span class="con">− Not on the free/web-only tiers</span>
-        </div>
-      </div>
-      <div class="compare-card">
-        <div class="compare-icon">AD</div>
-        <h4>Analyze Data</h4>
-        <p>A <strong>free</strong> button already in Excel (Home tab). Click your Table and it auto-suggests trends, charts, and pivot summaries — no typing, no AI account.</p>
-        <div class="compare-pros">
-          <span class="pro">+ Free, built in, no setup</span>
-          <span class="pro">+ Great first look at any dataset</span>
-          <span class="con">− Suggestions only; can't write formulas</span>
-          <span class="con">− No open-ended "ask a question"</span>
-        </div>
-      </div>
-      <div class="compare-card">
-        <div class="compare-icon">CB</div>
-        <h4>External chatbots</h4>
-        <p>ChatGPT, Claude, or Gemini in a browser. You <strong>paste or upload</strong> data (or just describe it) and copy the answer back. Powerful, but your data leaves Excel.</p>
-        <div class="compare-pros">
-          <span class="pro">+ Free tiers; extremely flexible</span>
-          <span class="pro">+ Best at explaining & drafting formulas</span>
-          <span class="con">− Data leaves your machine — privacy risk</span>
-          <span class="con">− Can't see your live sheet; you copy back</span>
-        </div>
-      </div>
-      <div class="compare-card">
-        <div class="compare-icon">G</div>
-        <h4>Google Sheets + Gemini</h4>
-        <p>Google's spreadsheet with <strong>Gemini</strong> built into the side panel. Ask it to build formulas, tables, or summaries — the Sheets equivalent of Copilot.</p>
-        <div class="compare-pros">
-          <span class="pro">+ Works right inside Sheets</span>
-          <span class="pro">+ Good if your team lives in Google</span>
-          <span class="con">− Needs the right Google/Workspace plan</span>
-          <span class="con">− Different formulas than Excel</span>
-        </div>
-      </div>
-    </div>
-    <div class="tip-note">💡 <strong>The one rule that ties them together:</strong> tools <em>inside</em> your app (Copilot, Analyze Data, Sheets+Gemini) keep data where it is. <em>External</em> chatbots are the most flexible but your data leaves the building — so you decide what's safe to share. Activity 3 drills exactly this.</div>
-  </div>
+<section class="hero">
+  <div class="eyebrow">Week 1 · Lesson 01 · AI Excel</div>
+  <h1>Excel in the <em>AI era</em>.</h1>
+  <p class="lede">Excel isn't going anywhere — it still runs the world's budgets, models and reports. What's changed is that you can now describe what you want in plain English and let AI draft the formula, spot the pattern, or build the chart. This lesson gives you the honest map: what "AI in Excel" really means, which tools exist, where AI genuinely helps — and where you still have to check its work.</p>
 </section>
 
-<!-- ── SECTION 2: THE 4 PLACES MODEL ── -->
-<section class="lesson" id="activity-2" style="background:var(--bg-light)">
-  <div class="container">
-    <span class="lesson-num" style="background:#5B8FE0">2</span>
-    <h2 class="lesson-title">The "4 places AI helps" model</h2>
-    <p class="lesson-intro">Whatever door you use, AI helps a spreadsheet in exactly four ways. Learn these four verbs and you'll always know <em>what to ask for</em>. This is the mental map for the whole week.</p>
+<section>
+  <div class="section-num">01 / 04</div>
+  <h2>Why Excel still matters</h2>
+  <p class="lead">Every few years someone declares spreadsheets dead. They never die. Excel is the world's most common data tool because it's a blank grid that bends to any shape — invoices, forecasts, trackers, dashboards. AI doesn't replace that grid. It sits beside it as a helper you can talk to.</p>
 
-    <div class="places-grid">
-      <div class="place-card">
-        <div class="place-num">01</div>
-        <h4>Understand data</h4>
-        <p>"What's in this sheet? Any duplicates, blanks, or weird outliers?" AI reads your columns and describes what you actually have before you analyze it.</p>
-      </div>
-      <div class="place-card">
-        <div class="place-num">02</div>
-        <h4>Write formulas</h4>
-        <p>Describe the result in words — <em>"average sales per region, ignoring blanks"</em> — and AI drafts the <code>=AVERAGEIF(...)</code> for you to paste and verify.</p>
-      </div>
-      <div class="place-card">
-        <div class="place-num">03</div>
-        <h4>Analyze</h4>
-        <p>"Which month grew fastest? Summarize the top 3 customers." AI turns rows of numbers into trends, comparisons, and a plain-English story.</p>
-      </div>
-      <div class="place-card">
-        <div class="place-num">04</div>
-        <h4>Automate</h4>
-        <p>Clean text, split columns, or draft a macro/Office Script for a repetitive task you do every week — so next month it's one click.</p>
+  <p>Before AI, the wall for most people was the same: you knew <em>what</em> you wanted — "sum last quarter's sales for the North region" — but not the exact formula syntax to get there. You'd search the web, copy a <code>SUMIFS</code> example, and fiddle until it worked. The knowledge gap between the idea and the working cell was where hours disappeared.</p>
+  <p>"AI in Excel" simply means closing that gap. You describe the outcome in plain language, and an AI assistant turns it into a formula, a chart, a summary or a PivotTable draft. The data flows from your cells into the AI, and a suggested answer flows back for you to accept or reject. Crucially, it's a <strong>round trip</strong> — the AI proposes, you verify. Press the buttons below to watch how a question actually travels through an AI-assisted spreadsheet.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 1 · How a question moves through AI-assisted Excel</span>
+      <div class="controls">
+        <button id="btnAsk" class="active" onclick="runFlow('ask')">▶ Ask in plain English</button>
+        <button id="btnOld" onclick="runFlow('old')">▶ The old manual way</button>
+        <button onclick="resetFlow(true)">↺ Reset</button>
       </div>
     </div>
+    <div class="flow ask" id="flow">
+      <div class="flow-row">
+        <div class="fnode" id="fnYou">
+          <div class="fmark">Q</div>
+          <h5>You</h5>
+          <span class="fsub">Ask a question</span>
+        </div>
+        <div class="fconn" id="fc1"><div class="fdot data"></div></div>
+        <div class="fnode" id="fnData">
+          <div class="fmark">D</div>
+          <h5>Your Data</h5>
+          <span class="fsub">Rows in a Table</span>
+        </div>
+        <div class="fconn" id="fc2"><div class="fdot data"></div></div>
+        <div class="fnode" id="fnSearch">
+          <div class="fmark">?</div>
+          <h5>Web / Trial</h5>
+          <span class="fsub">Search · guess syntax</span>
+        </div>
+        <div class="fconn" id="fc3"><div class="fdot answer"></div></div>
+        <div class="fnode" id="fnAI">
+          <div class="fmark">AI</div>
+          <h5>AI Assistant</h5>
+          <span class="fsub">Drafts the answer</span>
+        </div>
+      </div>
+      <div class="frail" id="frail"><div class="fdot answer"></div></div>
+      <div class="frail-label" id="frailLabel">← the suggested formula travels back to you along this rail</div>
+      <div class="fcap-wrap">
+        <div class="fstep" id="fstep">— / —</div>
+        <div class="fcap" id="fcap">Press ▶ Ask in plain English or ▶ The old manual way to run the sequence.</div>
+      </div>
+      <div class="fkey">
+        <span><i class="km"></i> your data / question</span>
+        <span><i class="kp"></i> the answer coming back</span>
+      </div>
+    </div>
+  </div>
 
-    <div class="lesson-card">
-      <h4 style="font-family:'DM Serif Display',serif;font-size:1.05rem;color:var(--navy);margin-bottom:.4rem">Match the task to the right tool</h4>
-      <p style="font-size:.85rem;color:var(--text-secondary);line-height:1.6;margin-bottom:.4rem">Six real jobs, three tools. Drag each job into the tool you'd reach for first. There's often more than one workable answer — we're grading the <em>most sensible</em> first choice. Wrong pills carry a hover hint with the reasoning.</p>
-      <div class="classify-grid">
-        <div class="classify-scenarios" id="scenarioList"></div>
-        <div class="bucket-stack">
-          <div class="bucket" data-bucket="copilot">
-            <div class="bucket-title">Copilot / Sheets+Gemini</div>
-            <div class="bucket-sub">Inside the app · sees your live data</div>
-            <div class="bucket-drop" data-drop="copilot"></div>
+  <h3>What you still own</h3>
+  <p>Notice that in the AI run, the answer always returns to <em>you</em> — it never gets applied on its own. The AI reads your data and drafts a response, but you decide whether it's right, whether the range is correct, and whether to paste it into the sheet. That final checkpoint is the whole skill: AI removes the syntax lookup, not the judgment. A wrong formula that <em>looks</em> right is more dangerous than no formula at all.</p>
+</section>
+
+<section>
+  <div class="section-num">02 / 04</div>
+  <h2>The AI-in-Excel landscape</h2>
+  <p class="lead">"AI in Excel" isn't one product — it's a small family of tools with very different prices, privacy trade-offs and abilities. Confusing them is the most common beginner mistake. Click each card to see exactly what it is, what it costs, and what to watch out for.</p>
+
+  <p>There are four practical options today. <strong>Microsoft 365 Copilot</strong> lives inside Excel itself but needs a paid add-on license and works best on data formatted as a Table. <strong>Analyze Data</strong> is a free, older feature already in your ribbon. <strong>External chatbots</strong> like ChatGPT, Claude and Gemini can reason about spreadsheet data you paste or upload — powerful, but your data leaves the file. And <strong>Google Sheets with Gemini</strong> brings the same idea to Google's spreadsheet. Same goal, four different doors.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 2 · Four doors into AI · click a tool</span>
+      <div class="controls">
+        <button onclick="toolStep(-1)">◀ Prev</button>
+        <button onclick="toolStep(1)">Next ▶</button>
+      </div>
+    </div>
+    <div class="mcalc">
+      <div class="toolgrid" id="toolGrid">
+        <div class="tcard" data-k="copilot" onclick="pickTool('copilot')">
+          <div class="tname">Microsoft 365 Copilot</div>
+          <span class="ttag paid">Paid license</span>
+          <div class="tmeta"><b>Where:</b> inside Excel<br><b>Best on:</b> Tables</div>
+        </div>
+        <div class="tcard" data-k="analyze" onclick="pickTool('analyze')">
+          <div class="tname">Analyze Data</div>
+          <span class="ttag free">Free · built in</span>
+          <div class="tmeta"><b>Where:</b> Home ribbon<br><b>Best on:</b> clean tables</div>
+        </div>
+        <div class="tcard" data-k="chatbot" onclick="pickTool('chatbot')">
+          <div class="tname">ChatGPT / Claude / Gemini</div>
+          <span class="ttag ext">External</span>
+          <div class="tmeta"><b>Where:</b> browser / app<br><b>Best on:</b> pasted data</div>
+        </div>
+        <div class="tcard" data-k="sheets" onclick="pickTool('sheets')">
+          <div class="tname">Google Sheets + Gemini</div>
+          <span class="ttag ext">Google</span>
+          <div class="tmeta"><b>Where:</b> Sheets sidebar<br><b>Best on:</b> Sheets data</div>
+        </div>
+      </div>
+      <div class="tdetail" id="toolDetail"></div>
+    </div>
+  </div>
+
+  <h3>The privacy line you should never forget</h3>
+  <p>There's one dividing line across all four: does your data <em>stay inside the file</em>, or does it <em>leave</em>? Copilot and Analyze Data process your data within Microsoft's environment tied to your account. External chatbots require you to paste or upload the data, which means it travels to a third party. For anything confidential — salaries, client lists, health or financial records — never paste real data into a public chatbot. Anonymize it, use dummy numbers, or stick to the in-app tools your organization has approved.</p>
+</section>
+
+<section>
+  <div class="section-num">03 / 04</div>
+  <h2>The four places AI actually helps</h2>
+  <p class="lead">Whatever tool you pick, AI in a spreadsheet helps in the same four ways. Learn this map and you'll always know what to ask for. Click each stage to see concrete tasks — and the check that stays your job.</p>
+
+  <p>The honest framing for this whole course: treat AI as a <strong>fast, tireless assistant</strong> who has read every Excel manual but has never seen <em>your</em> data before. It's brilliant at turning intent into syntax and at spotting patterns you'd miss — but it can't know that "Q3" in your sheet secretly excludes September, or that a column is text when it looks numeric. At each stage below, AI produces the draft; you supply the context and the verification.</p>
+  <p>Click through the four places AI plugs in — with a sample prompt you can copy for each.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 3 · The four places AI helps in Excel</span>
+      <div class="controls">
+        <button onclick="stageStep(-1)">◀ Prev stage</button>
+        <button onclick="stageStep(1)">Next stage ▶</button>
+      </div>
+    </div>
+    <div class="aimap-chain" id="aiChain">
+      <div class="ainode" data-k="understand" onclick="pickStage('understand')"><span class="aidx">1</span>Understand</div>
+      <div class="ailink"></div>
+      <div class="ainode" data-k="formulas" onclick="pickStage('formulas')"><span class="aidx">2</span>Formulas</div>
+      <div class="ailink"></div>
+      <div class="ainode" data-k="analyze" onclick="pickStage('analyze')"><span class="aidx">3</span>Analyze</div>
+      <div class="ailink"></div>
+      <div class="ainode" data-k="automate" onclick="pickStage('automate')"><span class="aidx">4</span>Automate</div>
+    </div>
+    <div class="aipanel" id="aiPanel"></div>
+  </div>
+
+  <h3>The pattern under all four</h3>
+  <p>Read the four stages back to back and the shape is always the same: <strong>you bring intent and context, AI brings syntax and speed, and then you verify.</strong> That last step is not optional. The most productive Excel-plus-AI users aren't the ones who trust the output blindly — they're the ones who use the time AI saves to sanity-check results, test edge cases, and build one more view of the data than they had time for before.</p>
+</section>
+
+<section>
+  <div class="section-num">04 / 04</div>
+  <h2>Hype vs. reality: four claims, flipped</h2>
+  <p class="lead">The internet is full of "AI will do your whole spreadsheet" promises. Before you lean on it, flip each card and read what the claim looks like once you've actually used these tools on real work. Honest expectations now save you from a wrong number in a report later.</p>
+
+  <p>None of this means "don't use AI in Excel." It means use it as leverage, not as an oracle. The realistic workflow is boring and reliable: describe what you want, read what AI drafts, check it against a value you already know, then apply it. AI makes each loop faster. It does not remove your responsibility for what ends up in the cell.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 4 · Flip the claim</span>
+      <div class="controls">
+        <button onclick="allReal()">Show all realities</button>
+        <button onclick="allHype()">↺ Back to hype</button>
+      </div>
+    </div>
+    <div class="hgrid" id="hgrid">
+      <div class="hcard" onclick="this.classList.toggle('flipped')">
+        <div class="hinner">
+          <div class="hface hfront">
+            <div class="hclaim">"AI never gets formulas wrong"</div>
+            <div class="hsub">Just trust whatever it hands you.</div>
+            <div class="hhint">tap to flip</div>
           </div>
-          <div class="bucket" data-bucket="analyze">
-            <div class="bucket-title">Analyze Data (free)</div>
-            <div class="bucket-sub">One click · fast first look · no typing</div>
-            <div class="bucket-drop" data-drop="analyze"></div>
-          </div>
-          <div class="bucket" data-bucket="chatbot">
-            <div class="bucket-title">External chatbot</div>
-            <div class="bucket-sub">Paste / describe · best at explaining</div>
-            <div class="bucket-drop" data-drop="chatbot"></div>
+          <div class="hface hback">
+            <div class="hlab">Reality</div>
+            <p>AI can hallucinate — invent a function that doesn't exist, misread which range you meant, or assume your dates are in a format they aren't. It sounds confident either way. Always test a suggested formula against a number you can check by hand.</p>
           </div>
         </div>
       </div>
-      <div class="activity-feedback" id="feedback1"></div>
-      <div class="activity-toolbar">
-        <button class="btn btn-ghost" onclick="resetActivity1()">↻ Try again</button>
-        <button class="btn btn-primary" onclick="showAnswers1()">Show me the answers</button>
+      <div class="hcard" onclick="this.classList.toggle('flipped')">
+        <div class="hinner">
+          <div class="hface hfront">
+            <div class="hclaim">"Copilot is free in Excel"</div>
+            <div class="hsub">It's just there, right?</div>
+            <div class="hhint">tap to flip</div>
+          </div>
+          <div class="hface hback">
+            <div class="hlab">Reality</div>
+            <p>Microsoft 365 Copilot needs a paid add-on license on top of your Office subscription. The free AI already in Excel is "Analyze Data" in the Home ribbon — useful, but more limited. Know which one you actually have before you plan around it.</p>
+          </div>
+        </div>
+      </div>
+      <div class="hcard" onclick="this.classList.toggle('flipped')">
+        <div class="hinner">
+          <div class="hface hfront">
+            <div class="hclaim">"Paste anything into ChatGPT"</div>
+            <div class="hsub">Data in, answers out.</div>
+            <div class="hhint">tap to flip</div>
+          </div>
+          <div class="hface hback">
+            <div class="hlab">Reality</div>
+            <p>External chatbots are powerful, but pasting a spreadsheet sends it outside your file to a third party. Never do that with salaries, client data or anything confidential. Anonymize it first, or use the in-app tools your workplace has approved.</p>
+          </div>
+        </div>
+      </div>
+      <div class="hcard" onclick="this.classList.toggle('flipped')">
+        <div class="hinner">
+          <div class="hface hfront">
+            <div class="hclaim">"AI replaces Excel skills"</div>
+            <div class="hsub">No need to learn formulas now.</div>
+            <div class="hhint">tap to flip</div>
+          </div>
+          <div class="hface hback">
+            <div class="hlab">Reality</div>
+            <p>The opposite. You still need to read a formula to know if it's right, structure data as a clean Table so AI can use it, and phrase a clear request. AI rewards people who understand spreadsheets — it just removes the tedious syntax lookup.</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
+
+  <h3>Your getting-started path</h3>
+  <p>Start small and safe. <strong>First,</strong> clean one real spreadsheet and format it as a Table (<code>Ctrl+T</code>) so any AI tool can read it clearly. <strong>Second,</strong> try the free <code>Analyze Data</code> button in the Home ribbon and see what it surfaces. <strong>Third,</strong> practice describing a formula you want in plain English — to Copilot if you have it, or to a chatbot using <em>dummy</em> data. <strong>Always,</strong> verify the result against one value you already know before you trust it. Do that ten times and AI becomes a genuine part of how you work.</p>
 </section>
 
-<!-- ── SECTION 3: PRIVACY SCENARIOS ── -->
-<section class="lesson" id="activity-3">
-  <div class="container">
-    <span class="lesson-num" style="background:#66BB6A">3</span>
-    <h2 class="lesson-title">Spot the privacy risk — safe to paste, or not?</h2>
-    <p class="lesson-intro">The moment you paste data into an <strong>external</strong> chatbot, it leaves your computer and may be stored or used to improve the model. So before you paste, ask: <em>"Would I be comfortable if this ended up outside my company?"</em> Judge each scenario — click <strong>Safe</strong> or <strong>Risky</strong> for instant feedback. Answer all six for your score.</p>
+<div class="takeaway">
+  <h2>What to carry forward</h2>
+  <p>You now have the honest map of AI in Excel. The grid still matters; AI just lets you talk to it in plain English. "AI in Excel" is a round trip — it drafts, you verify. There are four doors (Copilot, Analyze Data, external chatbots, Google Sheets Gemini) with real price and privacy differences, and AI helps in exactly four places: understanding data, writing formulas, analyzing and visualizing, and automating. It can be wrong, so you check. Next lesson: writing Excel formulas with AI, step by step.</p>
+  <ul>
+    <li>Excel endures — AI is a helper beside the grid, not a replacement for it</li>
+    <li>AI in Excel = round trip: it proposes, you verify before applying</li>
+    <li>Four doors: Copilot (paid), Analyze Data (free), chatbots (external), Sheets Gemini</li>
+    <li>Never paste confidential data into a public chatbot — mind privacy</li>
+    <li>Four uses: understand · write formulas · analyze/visualize · automate</li>
+    <li>AI can hallucinate formulas and misread ranges — always check a known value</li>
+  </ul>
+</div>
 
-    <div class="lesson-card">
-      <div class="mf-grid" id="mfGrid"></div>
-      <div class="activity-feedback" id="feedback3"></div>
-      <div class="activity-toolbar">
-        <button class="btn btn-ghost" onclick="resetMF()">↻ Try again</button>
-      </div>
-      <div class="tip-note">💡 <strong>The safe habit:</strong> before pasting into ChatGPT/Claude/Gemini, <em>anonymize</em> — replace names, IDs, and emails with "Customer 1, 2, 3", or paste only the columns you need. Better still, for sensitive data use a tool <em>inside</em> your app (Copilot, Analyze Data) so nothing leaves. Many chatbots also have a setting to turn off training on your chats.</div>
-    </div>
-  </div>
-</section>
-
-<!-- ── SECTION 4: HONEST LIMITS QUIZ ── -->
-<section class="lesson" id="activity-4" style="background:var(--bg-light)">
-  <div class="container">
-    <span class="lesson-num" style="background:#9C6ADE">4</span>
-    <h2 class="lesson-title">Do it now — and then check AI's work</h2>
-    <p class="lesson-intro">AI is fast and confident — and sometimes confidently wrong. It can invent a function that doesn't exist, mix up which column is which, or give a formula that runs but computes the wrong thing. Here's a real drafted formula. Your job isn't to write it — it's to <strong>verify</strong> it, the single most important AI-Excel skill.</p>
-
-    <div class="lesson-card">
-      <p style="font-size:.88rem;color:var(--navy);font-weight:600;margin-bottom:.2rem">You asked a chatbot:</p>
-      <div class="prompt-box"><span class="lbl">your prompt</span>"In my sales Table, give me the total revenue for the <b>West</b> region only. Region is in column B, Revenue is in column D."</div>
-      <p style="font-size:.88rem;color:var(--navy);font-weight:600;margin-bottom:.2rem">It replied with this formula. What should you do <em>before</em> trusting it?</p>
-
-      <div class="math-options" id="mathOptions">
-        <label class="math-option" data-opt="a"><input type="radio" name="mathQ" value="a"><span>Paste it in, see a number appear, and move on. If Excel doesn't throw an error, the formula must be right.</span></label>
-        <label class="math-option" data-opt="b"><input type="radio" name="mathQ" value="b"><span>Assume it's wrong and rewrite it by hand — never trust anything an AI produces.</span></label>
-        <label class="math-option" data-opt="c"><input type="radio" name="mathQ" value="c"><span>Sanity-check it: confirm the ranges (B and D), that "West" is spelled/cased as in the data, and spot-check the total against a filter or a couple of rows.</span></label>
-        <label class="math-option" data-opt="d"><input type="radio" name="mathQ" value="d"><span>Ask the AI "are you sure?" and take its yes as proof it's correct.</span></label>
-      </div>
-
-      <div class="prompt-box" style="margin-top:1.2rem"><span class="lbl">AI's formula</span>=SUMIF(B:B, "West", D:D)</div>
-
-      <div class="activity-feedback" id="feedback4"></div>
-
-      <div class="activity-toolbar">
-        <button class="btn btn-primary" onclick="checkMath()">Check my answer</button>
-        <button class="btn btn-ghost" onclick="resetMath()">↻ Reset</button>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ── REFLECT ── -->
-<section class="lesson" style="padding-bottom:1.5rem">
-  <div class="container">
-    <h2 class="lesson-title" style="font-size:1.5rem">Quick reflect — make it stick</h2>
-    <p class="lesson-intro" style="margin-bottom:1rem">Type a sentence each. Writing it down helps the idea settle. (Nothing is saved or sent.)</p>
-    <div class="reflect-prompt">
-      <div class="reflect-q">
-        <div class="reflect-q-text">Of the four doors (Copilot, Analyze Data, external chatbot, Sheets+Gemini), which is easiest for <em>you</em> to try today, and why?</div>
-        <textarea placeholder="Analyze Data is free and already in my Excel, so I'll start by clicking it on a real sheet because..."></textarea>
-      </div>
-      <div class="reflect-q">
-        <div class="reflect-q-text">Name one dataset at your work or study you would NOT paste into an external chatbot — and how you'd anonymize it if you needed AI's help.</div>
-        <textarea placeholder="Our customer contact list — I'd replace names and emails with Customer 1, 2, 3 before asking..."></textarea>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- NEXT UP -->
-<section class="lesson" style="padding-top:0">
-  <div class="container">
-    <div class="next-up">
-      <h3>Lesson 2 · Ask AI for the Right Formula</h3>
-      <p>You know the landscape and the four jobs. Next: write prompts that get you correct formulas the first time — describing your data clearly, and reading what AI hands back so you can trust it.</p>
-      <a href="02-ai-excel-formulas.html" class="btn btn-primary">Continue to Lesson 2 →</a>
-    </div>
-  </div>
-</section>
-
+</div>
+<footer>MokshPath · Lesson 01 of Week 1 · Next up: Writing Formulas with AI →</footer>
 <script>
-/* ─── ACTIVITY 1: Drag & Drop — Match task to tool ─── */
-const SCENARIOS = [
-  {id:'s1', text:'You have a paid 365 Copilot licence and want it to write a formula ranking your products by margin — reading your actual Table.', bucket:'copilot', hint:'A tool inside Excel that sees your live Table and writes formulas = Copilot (or Sheets+Gemini).'},
-  {id:'s2', text:'You just opened a messy new sales file and want a quick, free first look at trends and charts — without typing a thing.', bucket:'analyze', hint:'Free, one-click, auto-suggested charts on a Table = the Analyze Data button.'},
-  {id:'s3', text:'You do NOT have a Copilot licence, and you paste a small sample of made-up numbers to ask "explain what this VLOOKUP does".', bucket:'chatbot', hint:'No paid tool + explaining/teaching a formula with safe sample data = an external chatbot.'},
-  {id:'s4', text:'Your team works entirely in Google Sheets and you want AI in the side panel to build a summary table for you.', bucket:'copilot', hint:'AI built into your spreadsheet app on live data — here Google Sheets + Gemini, same bucket as Copilot.'},
-  {id:'s5', text:'You want Excel to instantly surface "which region grew fastest?" as a suggested insight on your Table, no account needed.', bucket:'analyze', hint:'Auto-generated insights and suggestions, free and built-in = Analyze Data.'},
-  {id:'s6', text:'You want to paste an ugly error message and ask "why does my formula return #N/A and how do I fix it?"', bucket:'chatbot', hint:'Open-ended troubleshooting and explanation with no sensitive data = an external chatbot is perfect.'}
-];
-const BUCKET_NAMES = {copilot:'Copilot / Sheets+Gemini', analyze:'Analyze Data', chatbot:'External chatbot'};
 
-let placed = {};
-function renderScenarios(){
-  const list = document.getElementById('scenarioList');
-  const shuffled = [...SCENARIOS].sort(()=>Math.random()-0.5);
-  list.innerHTML = shuffled.map(s => `
-    <div class="scenario-card" draggable="true" data-id="${s.id}">
-      <div class="scenario-text">${s.text}</div>
-    </div>`).join('');
-  list.querySelectorAll('.scenario-card').forEach(card => {
-    card.addEventListener('dragstart', (e) => {
-      e.dataTransfer.setData('id', card.dataset.id);
-      card.classList.add('dragging');
-    });
-    card.addEventListener('dragend', () => card.classList.remove('dragging'));
-  });
-}
-function setupBuckets(){
-  document.querySelectorAll('.bucket').forEach(b => {
-    b.addEventListener('dragover', e => { e.preventDefault(); b.classList.add('drag-over'); });
-    b.addEventListener('dragleave', () => b.classList.remove('drag-over'));
-    b.addEventListener('drop', e => {
-      e.preventDefault();
-      b.classList.remove('drag-over');
-      const id = e.dataTransfer.getData('id');
-      handleDrop(id, b.dataset.bucket);
-    });
-  });
-}
-function handleDrop(id, bucket){
-  const scenario = SCENARIOS.find(s => s.id === id);
-  if (!scenario || placed[id]) return;
-  const correct = scenario.bucket === bucket;
-  placed[id] = {bucket, correct};
-  const card = document.querySelector(`.scenario-card[data-id="${id}"]`);
-  card.classList.add('placed', correct ? 'correct' : 'wrong');
-  const dropZone = document.querySelector(`[data-drop="${bucket}"]`);
-  const pill = document.createElement('span');
-  pill.className = 'dropped-pill ' + (correct ? 'correct' : 'wrong');
-  pill.textContent = (correct ? '✓ ' : '✗ ') + scenario.text.substring(0, 40) + (scenario.text.length > 40 ? '…' : '');
-  pill.title = correct ? scenario.hint : `Better fit: ${BUCKET_NAMES[scenario.bucket]}. ${scenario.hint}`;
-  dropZone.appendChild(pill);
-  checkActivity1Done();
-}
-function checkActivity1Done(){
-  if (Object.keys(placed).length === SCENARIOS.length) {
-    const right = Object.values(placed).filter(p => p.correct).length;
-    const fb = document.getElementById('feedback1');
-    if (right === SCENARIOS.length) {
-      fb.className = 'activity-feedback show success';
-      fb.innerHTML = `<strong>All six matched.</strong> The pattern: reach <em>inside the app</em> (Copilot / Sheets+Gemini) when AI needs to see and act on your live data; use <em>Analyze Data</em> for a free, instant look; use an <em>external chatbot</em> for explaining, troubleshooting, and drafting — with safe or anonymized data only.`;
-    } else {
-      fb.className = 'activity-feedback show partial';
-      fb.innerHTML = `<strong>You got ${right} of 6.</strong> Hover any red pill for the reasoning. Quick test: <em>Does AI need to see my real sheet?</em> → inside-the-app tool. <em>Just a fast free glance?</em> → Analyze Data. <em>Explaining or troubleshooting with safe data?</em> → external chatbot. Hit <em>Try again</em> for a fresh shuffle.`;
-    }
-    document.getElementById('prog1').classList.add('done');
-    document.getElementById('prog2').classList.add('done');
-  }
-}
-function resetActivity1(){
-  placed = {};
-  document.getElementById('feedback1').className = 'activity-feedback';
-  document.querySelectorAll('.bucket-drop').forEach(d => d.innerHTML = '');
-  renderScenarios();
-  document.getElementById('prog1').classList.remove('done');
-  document.getElementById('prog2').classList.remove('done');
-}
-function showAnswers1(){
-  SCENARIOS.forEach(s => { if (!placed[s.id]) handleDrop(s.id, s.bucket); });
-}
+function el(id){return document.getElementById(id)}
 
-/* ─── ACTIVITY 3: Privacy — Safe vs Risky ─── */
-const MF = [
-  {s:'Pasting a table of last month\'s sales totals by region — no names, no customer info — into ChatGPT to ask for a summary.', a:'safe',
-   e:'Aggregated, anonymous numbers carry little risk. There\'s nothing here that identifies a person or leaks a secret, so an external chatbot is a fine, flexible choice.'},
-  {s:'Uploading your full customer list — names, emails, and phone numbers — to a free chatbot to "clean up the formatting".', a:'risky',
-   e:'This is personal data about real people. It leaves your machine and may be stored. Anonymize it first (Customer 1, 2, 3…), do the cleanup inside Excel, or use an in-app tool like Copilot instead.'},
-  {s:'Describing your problem in words — "I have a column of dates and a column of amounts" — and asking for a formula, pasting no real data at all.', a:'safe',
-   e:'Describing the shape of your data without the data itself is the safest habit of all. You get the formula and share nothing sensitive. Make this your default.'},
-  {s:'Copying a company financial forecast marked "Confidential — Internal Only" into a public chatbot to reword the summary.', a:'risky',
-   e:'If a document is labelled confidential, treat pasting it into an external tool as a potential data-leak — and possibly a policy breach. Use an approved in-app or enterprise tool, or don\'t paste it.'},
-  {s:'Pasting an anonymized 10-row sample (values changed to fake numbers) to figure out why a pivot table looks wrong.', a:'safe',
-   e:'A small, faked sample that mirrors the structure but not the real values lets AI help you troubleshoot with essentially zero exposure. Great technique.'},
-  {s:'Uploading a spreadsheet of employee salaries and national ID numbers to get "quick statistics".', a:'risky',
-   e:'Salaries and government IDs are highly sensitive personal data. This should never go to an external chatbot. Compute the stats inside Excel, or use Analyze Data — nothing leaves the file.'}
-];
-let mfAnswered = {};
-function renderMF(){
-  const grid = document.getElementById('mfGrid');
-  grid.innerHTML = MF.map((m, i) => `
-    <div class="mf-card" id="mfCard${i}">
-      <div class="mf-statement">${i+1}. ${m.s}</div>
-      <div class="mf-buttons">
-        <button class="mf-btn" id="mfM${i}" onclick="answerMF(${i},'safe')">SAFE TO PASTE</button>
-        <button class="mf-btn" id="mfF${i}" onclick="answerMF(${i},'risky')">RISKY</button>
-      </div>
-      <div class="mf-explain" id="mfEx${i}"></div>
-    </div>`).join('');
-}
-function answerMF(i, choice){
-  if (mfAnswered[i] !== undefined) return;
-  const m = MF[i];
-  const right = choice === m.a;
-  mfAnswered[i] = right;
-  const card = document.getElementById('mfCard' + i);
-  const pickedBtn = document.getElementById(choice === 'safe' ? 'mfM'+i : 'mfF'+i);
-  const otherBtn = document.getElementById(choice === 'safe' ? 'mfF'+i : 'mfM'+i);
-  card.classList.add(right ? 'right' : 'miss');
-  pickedBtn.classList.add(right ? 'picked-right' : 'picked-wrong');
-  pickedBtn.disabled = true; otherBtn.disabled = true;
-  const ex = document.getElementById('mfEx' + i);
-  ex.className = 'mf-explain show';
-  const label = m.a === 'safe' ? 'SAFE' : 'RISKY';
-  ex.innerHTML = `<span class="mf-verdict ${right ? 'v-right' : 'v-miss'}">${right ? '✓ Correct' : '✗ Not quite'} — this is ${label}.</span><br>${m.e}`;
-  if (Object.keys(mfAnswered).length === MF.length) {
-    const score = Object.values(mfAnswered).filter(Boolean).length;
-    const fb = document.getElementById('feedback3');
-    if (score === MF.length) {
-      fb.className = 'activity-feedback show success';
-      fb.innerHTML = `<strong>6 of 6 — you've got the privacy instinct.</strong> The rule you just practised: aggregated or faked data is safe; real people, IDs, salaries, and anything marked confidential are not. When in doubt, anonymize first or stay inside your app.`;
-    } else {
-      fb.className = 'activity-feedback show partial';
-      fb.innerHTML = `<strong>You scored ${score} of 6.</strong> Re-read the red cards. The dividing line: does the data identify a real person, or is it labelled confidential? If yes, it\'s risky for an external chatbot — anonymize it or use an in-app tool. Hit <em>Try again</em> to retake it.`;
-    }
-    document.getElementById('prog3').classList.add('done');
-  }
-}
-function resetMF(){
-  mfAnswered = {};
-  document.getElementById('feedback3').className = 'activity-feedback';
-  renderMF();
-  document.getElementById('prog3').classList.remove('done');
-}
-
-/* ─── ACTIVITY 4: Verify AI's work ─── */
-const MATH_FEEDBACK = {
-  a:`<strong>"No error = correct" is the trap.</strong> This formula runs fine and returns a number — but a formula can run <em>and still be wrong</em>. If "West" is stored as "west" or "West " (with a space), or if Revenue is actually column E, you'd get a silently wrong total and never know. Try again.`,
-  b:`<strong>Too far the other way.</strong> Rewriting everything by hand throws away AI's speed — and your hand-written version can be just as wrong. The goal isn't distrust; it's <em>verification</em>. Trust, then check. Try again.`,
-  c:`<strong>Correct — verify, don't just paste.</strong> <code>=SUMIF(B:B,"West",D:D)</code> looks right, but you confirm the ranges match your columns, that "West" is spelled and cased exactly as in the data, and you spot-check the result against a quick filter or a couple of rows. That five-second check is the real AI-Excel skill.`,
-  d:`<strong>"Are you sure?" proves nothing.</strong> A chatbot will often say "yes, that's correct" even when it isn't — it can't see your actual sheet. Confidence is not correctness. You still have to check the formula against your real data yourself. Try again.`
+/* ===== Figure 1 · question flow ===== */
+const flowEl=el('flow'),fcap=el('fcap'),fstep=el('fstep');
+let flowTimers=[];
+const FLOWS={
+  ask:[
+    {n:['fnYou','fnData'],c:[['fc1','data',false]],cap:'You type a plain-English question — "sum North region sales for Q3" — pointing at your data. No formula syntax required to start.'},
+    {n:['fnData','fnAI'],c:[['fc2','data',false],['fc3','data',false]],cap:'Your data (ideally formatted as a Table) is read by the AI assistant. It sees the columns, the headers and the shape of your sheet.'},
+    {n:['fnAI'],c:[],cap:'The AI drafts an answer: a suggested formula like =SUMIFS(Sales,Region,"North",Quarter,"Q3"), or a chart, summary or PivotTable idea.'},
+    {n:['fnAI','fnYou'],c:[['frail','answer',true]],cap:'That suggestion travels straight back to YOU. Nothing is applied automatically — it lands as a proposal for you to read.'},
+    {n:['fnYou'],c:[],cap:'You verify it against a value you already know, then accept or reject. The round trip is done: AI removed the lookup, you kept the judgment.'}
+  ],
+  old:[
+    {n:['fnYou','fnData'],c:[['fc1','data',false]],cap:'You know WHAT you want, but not the exact syntax. You stare at your data trying to remember how SUMIFS is spelled.'},
+    {n:['fnData','fnSearch'],c:[['fc2','data',false]],cap:'You open a browser and search "sum if two conditions Excel", scrolling forums and old answers for a template that fits.'},
+    {n:['fnSearch'],c:[],cap:'You copy an example formula and paste it into your sheet — but the ranges and column names are someone else’s, not yours.'},
+    {n:['fnSearch','fnData'],c:[['fc2','answer',true]],cap:'You edit, get a #REF or #VALUE error, tweak again, and repeat. Trial and error, one attempt at a time.'},
+    {n:['fnYou'],c:[],cap:'Eventually it works. The answer is the same as the AI route — it just cost you fifteen minutes of syntax hunting instead of one.'}
+  ]
 };
-function checkMath(){
-  const picked = document.querySelector('input[name="mathQ"]:checked');
-  const fb = document.getElementById('feedback4');
-  if (!picked) {
-    fb.className = 'activity-feedback show partial';
-    fb.innerHTML = `<strong>Pick one of the four options first</strong> — then hit "Check my answer".`;
-    return;
-  }
-  const val = picked.value;
-  document.querySelectorAll('.math-option').forEach(o => o.classList.remove('reveal-right','reveal-wrong'));
-  if (val === 'c') {
-    document.querySelector('.math-option[data-opt="c"]').classList.add('reveal-right');
-    fb.className = 'activity-feedback show success';
-    fb.innerHTML = MATH_FEEDBACK.c;
-    document.getElementById('prog4').classList.add('done');
-  } else {
-    document.querySelector(`.math-option[data-opt="${val}"]`).classList.add('reveal-wrong');
-    fb.className = 'activity-feedback show partial';
-    fb.innerHTML = MATH_FEEDBACK[val];
+function clearFlowState(){
+  ['fnYou','fnData','fnSearch','fnAI'].forEach(id=>el(id).classList.remove('on'));
+  ['fc1','fc2','fc3','frail'].forEach(id=>el(id).classList.remove('go','rev'));
+}
+function applyFlowStep(s,i,total){
+  clearFlowState();
+  s.n.forEach(id=>el(id).classList.add('on'));
+  s.c.forEach(pair=>{
+    const c=el(pair[0]),d=c.querySelector('.fdot');
+    d.className='fdot '+pair[1];
+    void c.offsetWidth;
+    if(pair[2])c.classList.add('rev');
+    c.classList.add('go');
+  });
+  fstep.textContent=(i+1)+' / '+total;
+  fcap.textContent=s.cap;
+}
+function runFlow(mode){
+  resetFlow(false);
+  el('btnAsk').classList.toggle('active',mode==='ask');
+  el('btnOld').classList.toggle('active',mode==='old');
+  flowEl.classList.remove('ask','old');
+  flowEl.classList.add(mode);
+  el('frailLabel').textContent = mode==='ask'
+    ? '← the AI’s suggested answer travels back to you along this rail'
+    : '← you carry a copied example back to your data, trial and error';
+  const steps=FLOWS[mode];
+  steps.forEach((s,i)=>{
+    flowTimers.push(setTimeout(()=>applyFlowStep(s,i,steps.length), 300+i*2100));
+  });
+}
+function resetFlow(full){
+  flowTimers.forEach(t=>clearTimeout(t));
+  flowTimers=[];
+  clearFlowState();
+  if(full){
+    fstep.textContent='— / —';
+    fcap.textContent='Press ▶ Ask in plain English or ▶ The old manual way to run the sequence.';
   }
 }
-function resetMath(){
-  document.querySelectorAll('input[name="mathQ"]').forEach(r => r.checked = false);
-  document.querySelectorAll('.math-option').forEach(o => o.classList.remove('reveal-right','reveal-wrong'));
-  document.getElementById('feedback4').className = 'activity-feedback';
-  document.getElementById('prog4').classList.remove('done');
-}
+new IntersectionObserver((es,o)=>es.forEach(e=>{if(e.isIntersecting){runFlow('ask');o.unobserve(e.target)}}),{threshold:0.35}).observe(flowEl);
 
-/* ─── INIT ─── */
-window.addEventListener('DOMContentLoaded', () => {
-  renderScenarios();
-  setupBuckets();
-  renderMF();
-});
+/* ===== Figure 2 · tool comparison ===== */
+const TOOLS={
+  copilot:{t:'Microsoft 365 Copilot',tag:'Inside Excel · paid add-on license',rows:[
+    ['Cost','A paid Copilot license on top of your Microsoft 365 subscription — not included by default.'],
+    ['Where','Lives in the Excel ribbon; you chat with it in a side pane while looking at your sheet.'],
+    ['Needs','Data formatted as an Excel Table works best — it reads columns and headers reliably.'],
+    ['Great at','Suggesting formulas, surfacing insights, drafting charts and PivotTables from your data.']
+  ],warn:'Check whether your organization has actually enabled the Copilot license before planning around it.'},
+  analyze:{t:'Analyze Data',tag:'Free · already in your ribbon',rows:[
+    ['Cost','Free — it ships with Excel. No extra license, no sign-up.'],
+    ['Where','Home tab → "Analyze Data" button (older versions call it "Ideas").'],
+    ['Needs','A clean table of data with clear headers and no blank rows in the middle.'],
+    ['Great at','Auto-suggesting charts, trends, rankings and summary PivotTables in one click.']
+  ],warn:'It is more limited and less conversational than Copilot, but it costs nothing to try today.'},
+  chatbot:{t:'ChatGPT / Claude / Gemini',tag:'External · browser or app',rows:[
+    ['Cost','Free tiers exist; paid tiers add file uploads and stronger reasoning.'],
+    ['Where','A separate browser tab or app — not inside Excel. You paste or upload data.'],
+    ['Needs','You copy cells or upload a file, then describe what you want in plain English.'],
+    ['Great at','Explaining formulas, generating them, and reasoning about messy or unusual data.']
+  ],warn:'Your data leaves the file. Never paste confidential data — anonymize or use dummy values.'},
+  sheets:{t:'Google Sheets + Gemini',tag:'Google’s spreadsheet AI',rows:[
+    ['Cost','Available through Google Workspace plans that include Gemini features.'],
+    ['Where','A side panel inside Google Sheets, similar in spirit to Copilot in Excel.'],
+    ['Needs','Your data living in a Google Sheet; works best with tidy, labelled columns.'],
+    ['Great at','Formula help, summaries and charts if your team already works in Google Sheets.']
+  ],warn:'Same privacy principle applies — know your org’s Workspace data settings before trusting it.'}
+};
+const TOOLORDER=['copilot','analyze','chatbot','sheets'];
+let toolCurrent='copilot';
+function pickTool(k){
+  toolCurrent=k;
+  document.querySelectorAll('#toolGrid .tcard').forEach(c=>c.classList.toggle('active',c.dataset.k===k));
+  const d=TOOLS[k],box=el('toolDetail');
+  let html='<span class="dtag">'+d.tag+'</span><h4>'+d.t+'</h4>';
+  d.rows.forEach(r=>{html+='<div class="drow"><span class="dk">'+r[0]+'</span><span>'+r[1]+'</span></div>'});
+  html+='<div class="warn">'+d.warn+'</div>';
+  box.innerHTML=html;
+  box.classList.remove('swap');void box.offsetWidth;box.classList.add('swap');
+}
+function toolStep(dir){
+  let i=TOOLORDER.indexOf(toolCurrent)+dir;
+  if(i<0)i=TOOLORDER.length-1;
+  if(i>=TOOLORDER.length)i=0;
+  pickTool(TOOLORDER[i]);
+}
+pickTool('copilot');
+new IntersectionObserver((es,o)=>es.forEach(e=>{if(e.isIntersecting){pickTool('copilot');o.unobserve(e.target)}}),{threshold:0.3}).observe(el('toolGrid'));
+
+/* ===== Figure 3 · four places AI helps ===== */
+const AIMAP={
+  understand:{t:'Understand your data',tag:'Place 1 · make sense of the sheet',prompt:'"Look at this data and tell me what each column means, any obvious errors, and three questions I could answer with it."',tasks:[
+    'Explain what a messy inherited spreadsheet actually contains, column by column',
+    'Flag likely problems: blank rows, mixed text/number columns, duplicate entries',
+    'Summarise a thousand rows into a plain-English paragraph of what’s going on',
+    'Suggest which questions this dataset can and cannot honestly answer'
+  ],h:'AI describes what it sees, but it doesn’t know your business context — that "Q3" excludes September, or a code means "returned". You supply the meaning behind the numbers.'},
+  formulas:{t:'Write & explain formulas',tag:'Place 2 · intent into syntax',prompt:'"Write an Excel formula that sums the Amount column only for rows where Region is North and Status is Paid."',tasks:[
+    'Turn a plain-English request into a working formula like SUMIFS, XLOOKUP or IF',
+    'Explain what an existing formula does, in words, line by line',
+    'Debug a formula that returns #REF!, #VALUE! or the wrong number',
+    'Rewrite a fragile nested formula into something cleaner and easier to read'
+  ],h:'AI can invent a function that doesn’t exist or point at the wrong range with total confidence. You read the formula and test it against one value you can check by hand.'},
+  analyze:{t:'Analyze & visualize',tag:'Place 3 · from rows to insight',prompt:'"Suggest three charts that would best show the trend in monthly sales, and build a PivotTable summarising sales by region."',tasks:[
+    'Recommend the right chart type for the story in your data',
+    'Draft a PivotTable that summarises by category, region or month',
+    'Spot trends, outliers and rankings you might have missed scrolling rows',
+    'Draft a short written summary of what the numbers say for a report'
+  ],h:'AI proposes the view and the summary, but it can over-claim a "trend" from noise. You decide what’s actually meaningful and what’s just a small sample talking.'},
+  automate:{t:'Automate repetitive work',tag:'Place 4 · stop doing it by hand',prompt:'"Give me the steps (or a macro) to split the Full Name column into First and Last across the whole sheet."',tasks:[
+    'Draft the steps to clean, split or reformat columns in bulk',
+    'Generate a simple macro or script for a repetitive monthly task',
+    'Suggest Power Query or formula approaches to reshape data automatically',
+    'Turn "I do this every Monday" into a repeatable, documented process'
+  ],h:'AI writes the automation, but you run it on a COPY first. An automation applied to the wrong column at scale breaks a lot of cells fast — test small before you trust it.'}
+};
+const AIORDER=['understand','formulas','analyze','automate'];
+let aiCurrent='understand';
+function pickStage(k){
+  aiCurrent=k;
+  document.querySelectorAll('#aiChain .ainode').forEach(n=>{
+    n.classList.toggle('active',n.dataset.k===k);
+  });
+  const d=AIMAP[k],panel=el('aiPanel');
+  let html='<span class="aitag">'+d.tag+'</span><h4>'+d.t+'</h4>';
+  html+='<div class="aiprompt"><span class="plab">Try this prompt</span>'+d.prompt+'</div><ul>';
+  d.tasks.forEach(t=>{html+='<li>'+t+'</li>'});
+  html+='</ul><div class="ai-human"><strong>You still decide</strong>'+d.h+'</div>';
+  panel.innerHTML=html;
+  panel.classList.remove('swap');
+  void panel.offsetWidth;
+  panel.classList.add('swap');
+}
+function stageStep(dir){
+  let i=AIORDER.indexOf(aiCurrent)+dir;
+  if(i<0)i=AIORDER.length-1;
+  if(i>=AIORDER.length)i=0;
+  pickStage(AIORDER[i]);
+}
+pickStage('understand');
+new IntersectionObserver((es,o)=>es.forEach(e=>{if(e.isIntersecting){pickStage('understand');o.unobserve(e.target)}}),{threshold:0.3}).observe(el('aiChain'));
+
+/* ===== Figure 4 · hype vs reality ===== */
+const hgrid=el('hgrid');
+function allReal(){document.querySelectorAll('.hcard').forEach(c=>c.classList.add('flipped'))}
+function allHype(){document.querySelectorAll('.hcard').forEach(c=>c.classList.remove('flipped'))}
+new IntersectionObserver((es,o)=>es.forEach(e=>{if(e.isIntersecting){hgrid.classList.add('show');o.unobserve(e.target)}}),{threshold:0.25}).observe(hgrid);
+
 </script>
 </body>
 </html>
