@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 3 · AI Tracking, Status &amp; Communication — MokshPath</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=JetBrains+Mono:wght@400;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --orange:#E87A2E;--orange-dark:#D06A20;--orange-light:#F5943E;--orange-glow:rgba(232,122,46,0.12);
+  --navy:#2B2D42;--navy-dark:#1A1B2E;
+  --bg:#F3EDE7;--bg-card:#FFFFFF;--bg-light:#F9F5F0;
+  --text-primary:#2B2D42;--text-secondary:#6B6D7B;--text-muted:#9597A6;
+  --border:#E5DDD4;--green:#4CAF50;--green-light:#E8F5E9;--red:#E04E3C;--red-light:#FDECEA;
+  --amber:#E89B2E;--amber-light:#FFF4E5;
+  --shadow-sm:0 2px 8px rgba(43,45,66,0.06);--shadow-md:0 8px 24px rgba(43,45,66,0.08);
+  --shadow-lg:0 16px 48px rgba(43,45,66,0.12);
+  --radius:14px;--radius-sm:8px;
+  --mono:'JetBrains Mono',monospace;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text-primary);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+
+/* ── NAV ── */
+.nav{position:sticky;top:0;z-index:100;background:var(--bg-card);border-bottom:1px solid var(--border);padding:0 2rem;height:64px;display:flex;align-items:center;justify-content:space-between;box-shadow:var(--shadow-sm)}
+.nav-left{display:flex;align-items:center;gap:.7rem}
+.lesson-badge{font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--orange);background:var(--orange-glow);padding:.3rem .7rem;border-radius:50px}
+.nav-logo{display:flex;align-items:center;gap:.7rem;text-decoration:none}
+.nav-logo-icon{width:auto;height:48px;display:block;object-fit:contain}
+.nav-logo-text{display:flex;flex-direction:column;line-height:1.15}
+.nav-logo-name{font-family:'DM Serif Display',serif;font-size:1.25rem;color:var(--navy)}
+.nav-logo-name span{color:var(--orange)}
+.nav-logo-tag{font-size:.62rem;color:var(--text-muted);font-weight:500;letter-spacing:.02em}
+
+/* ── HERO ── */
+.hero{padding:3.5rem 2rem 2.5rem;text-align:center;position:relative}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:.45rem;padding:.4rem 1rem;border-radius:50px;background:var(--orange-glow);color:var(--orange);font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:1.2rem}
+.hero-eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--orange);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.hero h1{font-family:'DM Serif Display',serif;font-size:clamp(2rem,4vw,3rem);line-height:1.13;color:var(--navy);margin-bottom:1rem;max-width:780px;margin-left:auto;margin-right:auto}
+.hero h1 em{font-style:normal;color:var(--orange)}
+.hero-sub{font-size:1.02rem;color:var(--text-secondary);line-height:1.7;max-width:620px;margin:0 auto}
+
+/* ── PROGRESS RAIL ── */
+.progress-rail{max-width:760px;margin:1.8rem auto 0;display:flex;align-items:center;gap:.5rem}
+.progress-dot{flex:1;height:6px;background:var(--border);border-radius:3px;transition:background .3s}
+.progress-dot.done{background:linear-gradient(90deg,var(--orange),var(--orange-light))}
+.progress-label{font-size:.7rem;color:var(--text-muted);font-weight:600;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+
+/* ── SECTIONS ── */
+section.lesson{padding:3rem 2rem}
+.container{max-width:1080px;margin:0 auto}
+.lesson-num{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;background:var(--orange);color:#fff;font-family:'DM Serif Display',serif;font-size:1.1rem;margin-bottom:.9rem}
+.lesson-title{font-family:'DM Serif Display',serif;font-size:clamp(1.6rem,2.5vw,2.1rem);color:var(--navy);margin-bottom:.55rem;line-height:1.2}
+.lesson-intro{font-size:.95rem;color:var(--text-secondary);line-height:1.7;max-width:680px;margin-bottom:2rem}
+.lesson-card{background:var(--bg-card);border-radius:var(--radius);box-shadow:var(--shadow-sm);border:1px solid var(--border);padding:2rem;margin-top:1.5rem}
+.lesson-card.alt{background:var(--bg-light)}
+
+/* ── PIPELINE STRIP ── */
+.pipeline{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1.4rem}
+.pipe-step{flex:1 1 150px;background:var(--bg-light);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:.9rem 1rem;position:relative}
+.pipe-step .pipe-n{font-family:var(--mono);font-size:.68rem;font-weight:600;color:var(--orange);letter-spacing:.06em}
+.pipe-step .pipe-t{font-family:'DM Serif Display',serif;font-size:1.05rem;color:var(--navy);margin:.2rem 0 .3rem}
+.pipe-step .pipe-d{font-size:.76rem;color:var(--text-secondary);line-height:1.5}
+.pipe-arrow{align-self:center;color:var(--orange);font-weight:700;font-size:1.1rem}
+@media (max-width:760px){.pipe-arrow{display:none}.pipe-step{flex:1 1 100%}}
+
+/* ── RAG LEGEND ── */
+.rag-legend{display:flex;flex-wrap:wrap;gap:.7rem;margin-top:1.3rem}
+.rag-chip{flex:1 1 200px;border-radius:var(--radius-sm);padding:.9rem 1.1rem;border:1.5px solid;position:relative}
+.rag-chip .rag-dot{width:12px;height:12px;border-radius:50%;display:inline-block;margin-right:.5rem;vertical-align:middle}
+.rag-chip .rag-name{font-family:'DM Serif Display',serif;font-size:1.05rem;color:var(--navy)}
+.rag-chip .rag-desc{font-size:.78rem;color:var(--text-secondary);line-height:1.5;margin-top:.35rem}
+.rag-green{background:var(--green-light);border-color:var(--green)}.rag-green .rag-dot{background:var(--green)}
+.rag-amber{background:var(--amber-light);border-color:var(--amber)}.rag-amber .rag-dot{background:var(--amber)}
+.rag-red{background:var(--red-light);border-color:var(--red)}.rag-red .rag-dot{background:var(--red)}
+
+/* ── DRAG CARDS + FEEDBACK (shared) ── */
+.classify-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:1.5rem;margin-top:1rem}
+@media (max-width:760px){.classify-grid{grid-template-columns:1fr}}
+.classify-scenarios{display:flex;flex-direction:column;gap:.7rem}
+.scenario-card{background:var(--bg-card);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:.8rem 1rem;cursor:grab;transition:all .25s;position:relative;user-select:none}
+.scenario-card:hover{border-color:var(--orange);box-shadow:var(--shadow-sm);transform:translateY(-1px)}
+.scenario-card.dragging{opacity:.4}
+.scenario-card.placed{opacity:.35;cursor:not-allowed;pointer-events:none}
+.scenario-card.placed.correct{border-color:var(--green);background:var(--green-light)}
+.scenario-card.placed.wrong{border-color:var(--red);background:var(--red-light)}
+.scenario-text{font-size:.85rem;color:var(--text-primary);line-height:1.45;font-weight:500}
+.dropped-pill{background:var(--bg-card);border:1px solid var(--border);border-radius:50px;padding:.3rem .7rem;font-size:.72rem;font-weight:500;color:var(--text-primary);cursor:help}
+.dropped-pill.correct{background:var(--green-light);border-color:var(--green);color:#256B29}
+.dropped-pill.wrong{background:var(--red-light);border-color:var(--red);color:#933}
+.activity-feedback{margin-top:1.2rem;padding:1rem 1.2rem;border-radius:var(--radius-sm);font-size:.85rem;line-height:1.55;display:none}
+.activity-feedback.show{display:block;animation:fadeIn .4s ease}
+.activity-feedback.success{background:var(--green-light);color:#1F5723;border-left:3px solid var(--green)}
+.activity-feedback.partial{background:#FFF4E5;color:#7A4A0A;border-left:3px solid #E89B2E}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.activity-toolbar{display:flex;gap:.6rem;margin-top:1.2rem;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:.4rem;padding:.6rem 1.2rem;border-radius:8px;font-size:.82rem;font-weight:600;border:none;cursor:pointer;transition:all .2s;font-family:inherit;text-decoration:none}
+.btn-primary{background:var(--orange);color:#fff}.btn-primary:hover{background:var(--orange-dark);transform:translateY(-1px);box-shadow:0 4px 12px rgba(232,122,46,0.3)}
+.btn-ghost{background:transparent;border:1.5px solid var(--border);color:var(--text-secondary)}.btn-ghost:hover{border-color:var(--orange);color:var(--orange)}
+
+/* ── ACTIVITY: TASK EXTRACTION (wireframe-style zones) ── */
+.wireframe{border:1.5px solid var(--border);border-radius:var(--radius-sm);overflow:hidden;background:var(--bg-light)}
+.wf-chrome{display:flex;align-items:center;gap:.4rem;background:var(--navy);padding:.5rem .8rem}
+.wf-chrome span{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.35)}
+.wf-chrome .wf-url{flex:1;margin-left:.5rem;background:rgba(255,255,255,.12);border-radius:4px;color:rgba(255,255,255,.7);font-family:var(--mono);font-size:.62rem;padding:.15rem .6rem}
+.wf-zone{border:2px dashed var(--border);margin:.7rem;border-radius:var(--radius-sm);padding:.8rem .9rem;transition:all .25s;background:rgba(255,255,255,.6)}
+.wf-zone.drag-over{border-color:var(--orange);background:var(--orange-glow);border-style:solid}
+.wf-zone-title{font-family:'DM Serif Display',serif;font-size:.98rem;color:var(--navy)}
+.wf-zone-sub{font-size:.68rem;color:var(--text-muted);margin-bottom:.55rem;letter-spacing:.04em;text-transform:uppercase;font-weight:600}
+.wf-drop{display:flex;flex-wrap:wrap;gap:.4rem;min-height:34px}
+
+/* ── STANDUP NOTES BLOCK ── */
+.notes-block{background:var(--navy-dark);border-radius:var(--radius-sm);padding:1.1rem 1.3rem;margin-top:.4rem;font-family:var(--mono);font-size:.78rem;line-height:1.75;color:rgba(255,255,255,.85)}
+.notes-block .nb-head{color:var(--orange-light);font-weight:600;letter-spacing:.04em;margin-bottom:.5rem}
+.notes-block em{color:#fff;font-style:normal;font-weight:600}
+
+/* ── ACTIVITY: A/B PAIRS ── */
+.ab-pair{margin-top:1.4rem;padding-top:1.4rem;border-top:1px solid var(--border)}
+.ab-pair:first-child{margin-top:0;padding-top:0;border-top:none}
+.ab-q{font-size:.9rem;font-weight:700;color:var(--navy);margin-bottom:.8rem}
+.ab-q .ab-tag{font-family:var(--mono);font-size:.68rem;color:var(--orange);font-weight:600;letter-spacing:.04em;display:block;margin-bottom:.2rem}
+.ab-cards{display:grid;grid-template-columns:1fr 1fr;gap:.9rem}
+@media (max-width:760px){.ab-cards{grid-template-columns:1fr}}
+.ab-card{background:var(--bg-light);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:1rem 1.1rem;cursor:pointer;transition:all .25s;position:relative}
+.ab-card:hover{border-color:var(--orange);transform:translateY(-2px);box-shadow:var(--shadow-sm)}
+.ab-card.locked{cursor:default;pointer-events:none}
+.ab-card.win{border-color:var(--green);background:var(--green-light)}
+.ab-card.lose{opacity:.55}
+.ab-card.picked-wrong{border-color:var(--red);background:var(--red-light)}
+.ab-letter{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;background:var(--navy);color:#fff;font-size:.72rem;font-weight:700;margin-bottom:.5rem}
+.ab-copy{font-size:.85rem;line-height:1.55;color:var(--text-primary)}
+.ab-verdict{margin-top:.8rem;font-size:.8rem;line-height:1.55;padding:.7rem .9rem;border-radius:6px;display:none}
+.ab-verdict.show{display:block;animation:fadeIn .35s ease}
+.ab-verdict.good{background:var(--green-light);color:#1F5723;border-left:3px solid var(--green)}
+.ab-verdict.bad{background:#FFF4E5;color:#7A4A0A;border-left:3px solid #E89B2E}
+
+/* ── ACTIVITY: AUDIENCE MATCHER (toggle rows) ── */
+.brand-block{margin-top:1.3rem;padding:1.1rem 1.2rem;background:var(--bg-light);border:1px solid var(--border);border-radius:var(--radius-sm)}
+.brand-block:first-child{margin-top:0}
+.brand-name{font-family:'DM Serif Display',serif;font-size:1.05rem;color:var(--navy);margin-bottom:.7rem}
+.brand-name .q-tag{font-family:var(--mono);font-size:.66rem;color:var(--orange);font-weight:600;letter-spacing:.04em;display:block;margin-bottom:.2rem;text-transform:none}
+.brand-row{display:grid;grid-template-columns:1fr auto;gap:.6rem;align-items:center;padding:.35rem 0}
+.brand-crit{font-size:.82rem;color:var(--text-secondary);font-weight:500}
+.tog-group{display:flex;gap:.35rem}
+.tog{padding:.32rem .85rem;border-radius:50px;border:1.5px solid var(--border);background:var(--bg-card);font-size:.74rem;font-weight:700;cursor:pointer;font-family:inherit;color:var(--text-secondary);transition:all .2s}
+.tog:hover{border-color:var(--orange);color:var(--orange)}
+.tog.on-yes{background:var(--navy);border-color:var(--navy);color:#fff}
+.tog.reveal-hit{background:var(--green-light);border-color:var(--green);color:#256B29}
+.tog.reveal-miss{background:var(--red-light);border-color:var(--red);color:#933}
+.brand-why{margin-top:.6rem;font-size:.78rem;line-height:1.55;color:var(--text-secondary);background:var(--bg-card);border-left:3px solid var(--orange);border-radius:4px;padding:.6rem .8rem;display:none}
+.brand-why.show{display:block;animation:fadeIn .35s ease}
+
+/* ── QUIZ ── */
+.quiz-q{margin-top:1.4rem;padding-top:1.4rem;border-top:1px solid var(--border)}
+.quiz-q:first-child{margin-top:0;padding-top:0;border-top:none}
+.quiz-prompt{font-size:.92rem;font-weight:700;color:var(--navy);margin-bottom:.8rem;line-height:1.5}
+.quiz-prompt .q-tag{font-family:var(--mono);font-size:.68rem;color:var(--orange);font-weight:600;letter-spacing:.04em;display:block;margin-bottom:.2rem}
+.quiz-opts{display:flex;flex-direction:column;gap:.55rem}
+.quiz-opt{background:var(--bg-light);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:.75rem 1rem;cursor:pointer;transition:all .2s;font-size:.85rem;line-height:1.45;color:var(--text-primary);display:flex;gap:.6rem;align-items:flex-start}
+.quiz-opt:hover{border-color:var(--orange)}
+.quiz-opt .opt-key{font-family:var(--mono);font-size:.72rem;font-weight:600;color:var(--orange);flex-shrink:0;margin-top:.05rem}
+.quiz-opt.locked{cursor:default;pointer-events:none}
+.quiz-opt.correct{border-color:var(--green);background:var(--green-light)}
+.quiz-opt.wrong{border-color:var(--red);background:var(--red-light)}
+.quiz-explain{margin-top:.7rem;font-size:.8rem;line-height:1.55;padding:.7rem .9rem;border-radius:6px;display:none}
+.quiz-explain.show{display:block;animation:fadeIn .35s ease}
+.quiz-explain.good{background:var(--green-light);color:#1F5723;border-left:3px solid var(--green)}
+.quiz-explain.bad{background:#FFF4E5;color:#7A4A0A;border-left:3px solid #E89B2E}
+
+/* ── VALIDATE CALLOUT ── */
+.check-list{list-style:none;margin-top:1rem;display:flex;flex-direction:column;gap:.7rem}
+.check-list li{display:flex;gap:.7rem;align-items:flex-start;background:var(--bg-light);border:1px solid var(--border);border-radius:var(--radius-sm);padding:.8rem 1rem}
+.check-ico{width:24px;height:24px;border-radius:6px;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.8rem;font-weight:700;background:linear-gradient(135deg,var(--orange-light),var(--orange))}
+.check-txt{font-size:.85rem;line-height:1.55;color:var(--text-secondary)}
+.check-txt strong{color:var(--navy)}
+
+/* ── REFLECTION ── */
+.reflect-prompt{display:grid;grid-template-columns:1fr;gap:.8rem;margin-top:1rem}
+.reflect-q{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:1rem 1.2rem}
+.reflect-q-text{font-size:.88rem;font-weight:600;color:var(--navy);margin-bottom:.5rem}
+.reflect-q textarea{width:100%;border:1px solid var(--border);border-radius:6px;padding:.6rem .8rem;font-family:inherit;font-size:.85rem;color:var(--text-primary);background:var(--bg-light);resize:vertical;min-height:60px}
+.reflect-q textarea:focus{outline:none;border-color:var(--orange)}
+
+/* ── FOOTER NEXT ── */
+.next-up{background:linear-gradient(135deg,var(--navy-dark),var(--navy));border-radius:var(--radius);padding:2.4rem;color:#fff;margin-top:2rem;text-align:center;position:relative;overflow:hidden}
+.next-up::before{content:'';position:absolute;top:-50px;right:-50px;width:180px;height:180px;border-radius:50%;background:rgba(232,122,46,0.12)}
+.next-up h3{font-family:'DM Serif Display',serif;font-size:1.5rem;margin-bottom:.5rem;position:relative}
+.next-up p{font-size:.92rem;color:rgba(255,255,255,0.75);margin-bottom:1.2rem;position:relative}
+.next-up .btn-primary{position:relative}
+
+@media (max-width:760px){
+  .nav{padding:0 1rem}
+  .nav-logo-tag{display:none}
+  .hero{padding:2.5rem 1.2rem 2rem}
+  section.lesson{padding:2rem 1.2rem}
+  .lesson-card{padding:1.4rem}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-left">
+    <span class="lesson-badge">Lesson 3 of 4</span>
+  </div>
+  <a href="https://mokshpath.org/" class="nav-logo">
+    <img class="nav-logo-icon" src="hero.svg" alt="MokshPath logo">
+    <div class="nav-logo-text">
+      <span class="nav-logo-name">Moksh<span>Path</span></span>
+      <span class="nav-logo-tag">Guided Path to True Learning</span>
+    </div>
+  </a>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-eyebrow"><span class="dot"></span> Week 5 · AI Project Management</div>
+  <h1>AI Tracking, Status &amp; Communication — <em>turn scattered signals into a status people trust</em></h1>
+  <p class="hero-sub">A project isn't behind because of one big surprise — it drifts, quietly, while everyone assumes someone else is watching. This lesson teaches the status workflow AI can accelerate: collect the signals, summarise, flag the real risks, tailor the same facts to an exec and to the team, and turn messy standup notes into owned tasks. Four hands-on drills — plus how to catch the "watermelon" status that looks green and is red inside.</p>
+  <div class="progress-rail">
+    <span class="progress-label">Progress</span>
+    <div class="progress-dot" id="prog1"></div>
+    <div class="progress-dot" id="prog2"></div>
+    <div class="progress-dot" id="prog3"></div>
+    <div class="progress-dot" id="prog4"></div>
+  </div>
+</header>
+
+<!-- ── WORKFLOW OVERVIEW (teaching) ── -->
+<section class="lesson" id="workflow">
+  <div class="container">
+    <span class="lesson-num" style="background:var(--navy)">•</span>
+    <h2 class="lesson-title">The status workflow — five steps, every update</h2>
+    <p class="lesson-intro">"Write me a status update" gets you fluent, confident prose that may quietly hide the one thing your manager needed to hear. A trustworthy update follows an order: gather the raw signals first, compress them, surface the risks honestly, shape the message for who's reading, and <em>review before you send</em>. AI can draft any step in seconds — but only you know which blocker is real. Skip the risk step or the review, and you'll send a green light over a red project.</p>
+    <div class="lesson-card">
+      <div class="pipeline">
+        <div class="pipe-step"><div class="pipe-n">STEP 1</div><div class="pipe-t">Collect signals</div><div class="pipe-d">Pull the raw inputs: standup notes, ticket movement, blockers, dates slipping, chat threads. AI can summarise them, but it can only see what you feed it.</div></div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-step"><div class="pipe-n">STEP 2</div><div class="pipe-t">Summarise</div><div class="pipe-d">Compress the noise into what changed since last update: done, in progress, next. Facts, not feelings.</div></div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-step"><div class="pipe-n">STEP 3</div><div class="pipe-t">Flag risks</div><div class="pipe-d">Name what could slip and why, with a RAG colour and an owner. This is the step AI most wants to soften — don't let it.</div></div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-step"><div class="pipe-n">STEP 4</div><div class="pipe-t">Tailor to audience</div><div class="pipe-d">Same facts, two messages: execs want the "so what" and the ask; the team wants specifics and owners.</div></div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-step"><div class="pipe-n">STEP 5</div><div class="pipe-t">Review &amp; send</div><div class="pipe-d">Read it as the recipient. Is anything over-reassuring? Did AI mark something "done" that isn't? Verify with the team, then send.</div></div>
+      </div>
+
+      <div class="rag-legend">
+        <div class="rag-chip rag-green"><span class="rag-dot"></span><span class="rag-name">Green — On track</span><div class="rag-desc">On schedule, no help needed. Reserve it for when it's actually true — over-using green is how projects fail quietly.</div></div>
+        <div class="rag-chip rag-amber"><span class="rag-dot"></span><span class="rag-name">Amber — At risk</span><div class="rag-desc">Something is threatening the date or scope. There's a plan, but it needs attention or a decision soon.</div></div>
+        <div class="rag-chip rag-red"><span class="rag-dot"></span><span class="rag-name">Red — Off track / blocked</span><div class="rag-desc">A commitment will be missed without intervention. Red isn't failure — it's an honest, early ask for help.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 1: EXEC vs TEAM UPDATE A/B ── -->
+<section class="lesson" id="activity-1" style="background:var(--bg-light)">
+  <div class="container">
+    <span class="lesson-num">1</span>
+    <h2 class="lesson-title">Same facts, right audience — pick the update that fits the reader</h2>
+    <p class="lesson-intro">A status update isn't one message; it's the same truth shaped for who's reading it. An <strong>executive</strong> wants the headline, the risk, and what you need from them — in three lines, no jargon. The <strong>team</strong> wants the specifics: which ticket, which owner, what's next. AI will happily generate one generic update for both — and it lands wrong for everyone. Below are three pairs. In each, pick the version that fits the stated reader.</p>
+    <div class="lesson-card" id="abWrap"></div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 2: STANDUP NOTES → TASKS (drag) ── -->
+<section class="lesson" id="activity-2">
+  <div class="container">
+    <span class="lesson-num" style="background:#5B8FE0">2</span>
+    <h2 class="lesson-title">Notes to tasks — every action needs an owner and a date</h2>
+    <p class="lesson-intro">Meeting notes are where decisions go to die. "We should update the API docs" is a wish; "<strong>Priya</strong> updates the API docs by <strong>Fri</strong>" is a task. AI is genuinely good at extracting action items from a transcript — but it invents owners, drops dates, and turns vague talk into fake-crisp tasks. Read the standup notes, then drag each line to where it belongs: a <strong>real task</strong> (has a clear owner and deadline), <strong>needs an owner/date</strong> (an action with a gap AI shouldn't guess), or <strong>not a task</strong> (context, opinion, or something already done). Wrong drops turn red — hover them to learn why.</p>
+
+    <div class="lesson-card">
+      <div class="notes-block">
+        <div class="nb-head"># standup-notes · 2026-07-03</div>
+        - Priya: login bug is fixed, deployed to staging last night.<br>
+        - "We really should update the API docs before the client demo."<br>
+        - Sam will send the client the new timeline by Thursday.<br>
+        - Team feels good about the sprint overall.<br>
+        - Someone needs to check why the nightly job failed twice this week.<br>
+        - Design review of the checkout screen — <em>Dana, this Friday.</em>
+      </div>
+      <div class="classify-grid">
+        <div class="classify-scenarios" id="taskList"></div>
+        <div class="wireframe">
+          <div class="wf-chrome"><span></span><span></span><span></span><div class="wf-url">task-tracker · from standup-notes</div></div>
+          <div class="wf-zone" data-zone="task">
+            <div class="wf-zone-title">✓ Real task</div>
+            <div class="wf-zone-sub">Clear owner + deadline · 2 lines</div>
+            <div class="wf-drop" data-drop="task"></div>
+          </div>
+          <div class="wf-zone" data-zone="gap">
+            <div class="wf-zone-title">? Needs an owner / date</div>
+            <div class="wf-zone-sub">Real action, missing who or when · 2 lines</div>
+            <div class="wf-drop" data-drop="gap"></div>
+          </div>
+          <div class="wf-zone" data-zone="none">
+            <div class="wf-zone-title">— Not a task</div>
+            <div class="wf-zone-sub">Context, opinion, or already done · 2 lines</div>
+            <div class="wf-drop" data-drop="none"></div>
+          </div>
+        </div>
+      </div>
+      <div class="activity-feedback" id="feedback2"></div>
+      <div class="activity-toolbar">
+        <button class="btn btn-ghost" onclick="resetActivity2()">↻ Try again</button>
+        <button class="btn btn-primary" onclick="showAnswers2()">Show me the answers</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 3: RAG / WATERMELON STATUS MATCHER ── -->
+<section class="lesson" id="activity-3" style="background:var(--bg-light)">
+  <div class="container">
+    <span class="lesson-num" style="background:#66BB6A">3</span>
+    <h2 class="lesson-title">Read the true colour — Green, Amber or Red?</h2>
+    <p class="lesson-intro">The most dangerous status is the "watermelon": green on the surface, red on the inside. It happens when an update reassures instead of reports — "great progress," "team is confident," "on track" — while a real blocker hides underneath. For each situation below, pick the honest RAG colour, then check yourself against the PM's verdict. Rule of thumb: if a date or commitment is threatened, it is <em>not</em> green, no matter how the update is worded.</p>
+
+    <div class="lesson-card">
+      <div id="ragWrap"></div>
+      <div class="activity-feedback" id="feedback3"></div>
+      <div class="activity-toolbar">
+        <button class="btn btn-ghost" onclick="resetRag()">↻ Reset choices</button>
+        <button class="btn btn-primary" onclick="checkRag()">Check my choices</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 4: QUIZ — HONEST LIMITS OF AI STATUS ── -->
+<section class="lesson" id="activity-4">
+  <div class="container">
+    <span class="lesson-num" style="background:#4CAF50">4</span>
+    <h2 class="lesson-title">Verify before you send — catch AI before it reassures the wrong person</h2>
+    <p class="lesson-intro">AI drafts a status update in seconds, but it doesn't know your project. It reads "almost done" as "done," it smooths a real blocker into an "on track," and it happily writes a confident summary from notes that were themselves wrong. It never talked to your team. Answer these four — each locks in with the reasoning.</p>
+    <div class="lesson-card" id="quizWrap"></div>
+  </div>
+</section>
+
+<!-- ── REVIEW CHECKLIST (teaching) ── -->
+<section class="lesson" id="validate" style="background:var(--bg-light)">
+  <div class="container">
+    <span class="lesson-num" style="background:var(--navy)">✓</span>
+    <h2 class="lesson-title">The 60-second review before you hit send</h2>
+    <p class="lesson-intro">Before any AI-drafted status update leaves your outbox, read it as the person receiving it and run these checks. Most bad updates are caught in a minute — if you actually look.</p>
+    <div class="lesson-card">
+      <ul class="check-list">
+        <li><div class="check-ico">✓</div><div class="check-txt"><strong>Is anything marked "done" that isn't?</strong> AI reads "nearly finished" and "in review" as complete. Confirm every "done" with the person who did it before you report it up.</div></li>
+        <li><div class="check-ico">!</div><div class="check-txt"><strong>Did it flag the real risk — or bury it?</strong> If the update is all reassurance and no ask, that's a watermelon. Name the blocker, its owner, and what you need. Red early beats green late.</div></li>
+        <li><div class="check-ico">👤</div><div class="check-txt"><strong>Does every action have an owner and a date?</strong> "Someone will look into it" is not a task. If AI left a gap, fill it with a real name and day — or ask the team, don't guess.</div></li>
+        <li><div class="check-ico">🎯</div><div class="check-txt"><strong>Does it fit the reader?</strong> An exec update should open with the "so what" and the ask; a team update needs specifics. One generic message serves neither well.</div></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ── REFLECT ── -->
+<section class="lesson" style="padding-bottom:1.5rem">
+  <div class="container">
+    <h2 class="lesson-title" style="font-size:1.5rem">Quick reflect — make it stick</h2>
+    <p class="lesson-intro" style="margin-bottom:1rem">A sentence each is enough. Writing it in your own words is what makes it stay. (Nothing is saved or sent.)</p>
+    <div class="reflect-prompt">
+      <div class="reflect-q">
+        <div class="reflect-q-text">Rewrite this over-reassuring line into an honest status a manager could act on: "Everything's going great, we're all really confident about the launch!"</div>
+        <textarea placeholder="Status: Amber. Launch date at risk — the payment integration is blocked on vendor access (owner: Sam). We need X by Friday to hold the date..."></textarea>
+      </div>
+      <div class="reflect-q">
+        <div class="reflect-q-text">AI summarised your standup and marked the login feature "done." How would you verify that before putting it in an update to your director — and why not just trust it?</div>
+        <textarea placeholder="I'd ask Priya directly / check it's actually deployed to production, not just staging — because AI reads 'nearly done' as 'done' and I'm the one whose name is on the update..."></textarea>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NEXT UP -->
+<section class="lesson" style="padding-top:0">
+  <div class="container">
+    <div class="next-up">
+      <h3>Lesson 4 · AI Automation Capstone</h3>
+      <p>You can collect, summarise, flag risks, tailor and verify — now wire it together. In the capstone you'll build a repeatable, lightly-automated workflow: signals in, a reviewed status draft out, tasks and risks tracked without you retyping them every week.</p>
+      <a href="04-ai-automation-capstone.html" class="btn btn-primary">Continue to Lesson 4 →</a>
+    </div>
+  </div>
+</section>
+
+<script>
+/* ─── shared helper ─── */
+function shuffle(arr){ return [...arr].sort(() => Math.random() - 0.5); }
+
+/* ─── ACTIVITY 1: Exec vs Team update A/B ─── */
+const PAIRS = [
+  {
+    tag:'Pair 1 · Update for the CEO (exec)',
+    losing:'We closed 14 tickets this sprint, the login refactor is in code review, Dana finished the checkout mocks, and the nightly job failed twice so Sam is investigating the retry logic in the queue worker.',
+    winning:'Launch is on track for the 18th (Amber). One risk: a flaky nightly job could delay QA — we need a decision on whether to hold the date if it isn\'t fixed by Friday. No action needed unless that slips.',
+    why:'An executive has ninety seconds and a dozen projects. Version B leads with the headline (on track / Amber), names the one risk that matters, and states exactly what you need from them — a decision, only if it slips. The losing version is a team-level ticket dump: accurate, but it forces a busy exec to reverse-engineer "so should I be worried?" from fourteen details. Tailor up: less detail, sharper "so what."',
+    lesson:'Exec updates lead with the headline, one risk, and the ask. Detail is noise at that altitude.'
+  },
+  {
+    tag:'Pair 2 · Update for the dev team (working level)',
+    losing:'Great work everyone, we\'re making solid progress and the launch is looking good — keep it up!',
+    winning:'Login refactor: in review, Priya to merge by Wed. Nightly job failing — Sam owns the fix, needs it green before QA starts Thu. Checkout mocks done (Dana); design review Fri. Blocker: still waiting on vendor access for payments — escalated.',
+    why:'The team already knows the vibe; what they need is specifics they can act on — who owns what, by when, and where the blockers are. Version B is a working list with owners and dates. The losing version is a morale message: warm, but it tells no one what to do next and hides the payments blocker behind "looking good." Tailor down: more detail, real owners, no cheerleading.',
+    lesson:'Team updates name the ticket, the owner and the date — and surface blockers plainly, not behind praise.'
+  },
+  {
+    tag:'Pair 3 · The weekly status email (mixed audience)',
+    losing:'Everything is progressing nicely and the team is very confident about hitting all our goals this quarter.',
+    winning:'Status: Amber. On track for the 18th, but the payments integration is blocked on vendor access (owner: Sam, escalated Mon). If unblocked by Thu we hold the date; if not, we slip ~3 days. Everything else green.',
+    why:'A status email is a record — someone will read it back if things go wrong. Version B commits to a colour, states the one thing at risk, names the owner, and spells out the consequence of slipping with a date. That\'s something a reader can act on and you can be held to. The losing version is pure reassurance with zero information — the textbook "watermelon": green words over a red risk.',
+    lesson:'A status is a commitment on the record: colour, the risk, the owner, the consequence. Reassurance without an ask is a warning sign.'
+  }
+];
+let abDone = 0;
+function renderPairs(){
+  abDone = 0;
+  const wrap = document.getElementById('abWrap');
+  wrap.innerHTML = PAIRS.map((p, i) => {
+    const winFirst = Math.random() < 0.5;
+    const cards = [
+      {label:'A', copy: winFirst ? p.winning : p.losing, win: winFirst},
+      {label:'B', copy: winFirst ? p.losing : p.winning, win: !winFirst}
+    ];
+    return `
+    <div class="ab-pair" data-pair="${i}">
+      <div class="ab-q"><span class="ab-tag">${p.tag}</span>Which version fits this reader?</div>
+      <div class="ab-cards">
+        ${cards.map(c => `
+        <div class="ab-card" data-win="${c.win ? 1 : 0}" onclick="pickAB(this, ${i})">
+          <span class="ab-letter">${c.label}</span>
+          <div class="ab-copy">${c.copy}</div>
+        </div>`).join('')}
+      </div>
+      <div class="ab-verdict" id="verdict${i}"></div>
+    </div>`;
+  }).join('') + `
+    <div class="activity-feedback" id="feedback1"></div>
+    <div class="activity-toolbar">
+      <button class="btn btn-ghost" onclick="resetActivity1()">↻ New round (sides reshuffle)</button>
+    </div>`;
+}
+function pickAB(card, i){
+  const pair = card.closest('.ab-pair');
+  if (pair.dataset.locked) return;
+  pair.dataset.locked = '1';
+  const pickedWin = card.dataset.win === '1';
+  pair.querySelectorAll('.ab-card').forEach(c => {
+    c.classList.add('locked');
+    if (c.dataset.win === '1') c.classList.add('win');
+    else c.classList.add(c === card ? 'picked-wrong' : 'lose');
+  });
+  const v = document.getElementById('verdict' + i);
+  v.className = 'ab-verdict show ' + (pickedWin ? 'good' : 'bad');
+  v.innerHTML = (pickedWin ? '<strong>Right call.</strong> ' : '<strong>The other one fits better.</strong> ') + PAIRS[i].why;
+  pair.dataset.score = pickedWin ? '1' : '0';
+  abDone++;
+  if (abDone === PAIRS.length) finishAB();
+}
+function finishAB(){
+  const score = [...document.querySelectorAll('.ab-pair')].reduce((s, p) => s + (p.dataset.score === '1' ? 1 : 0), 0);
+  const fb = document.getElementById('feedback1');
+  if (score === PAIRS.length) {
+    fb.className = 'activity-feedback show success';
+    fb.innerHTML = `<strong>3 for 3 — you write for the reader, not for yourself.</strong> The same project facts became three different messages: the exec got the headline and the ask, the team got owners and dates, the record got a colour and a consequence. This is exactly the prompt to give AI: "Draft this update for [audience] — lead with what they need, cut the rest." Then you review it, because AI defaults to a warm, generic middle that serves no one. Tailoring is the whole skill.`;
+  } else {
+    fb.className = 'activity-feedback show partial';
+    fb.innerHTML = `<strong>You picked ${score} of 3.</strong> Re-read the verdicts. The test: what does <em>this specific reader</em> do with this message? An exec needs the "so what" and the ask; the team needs owners and dates; a status email needs a colour and a consequence on the record. Warm, generic reassurance ("going great, feeling confident") fails all three — it's the watermelon in disguise. Reshuffle and run it again.`;
+  }
+  document.getElementById('prog1').classList.add('done');
+}
+function resetActivity1(){
+  renderPairs();
+  document.getElementById('prog1').classList.remove('done');
+}
+
+/* ─── ACTIVITY 2: Standup notes → tasks ─── */
+const FIELDS = [
+  {id:'f1', text:'Sam will send the client the new timeline by Thursday', zone:'task', hint:'Clear owner (Sam) and a deadline (Thursday) — this is a real, trackable task. Drop it straight into the tracker.'},
+  {id:'f2', text:'Design review of the checkout screen — Dana, this Friday', zone:'task', hint:'Owner (Dana) and a date (Friday) are both stated — a real task, ready to track as-is.'},
+  {id:'f3', text:'"We really should update the API docs before the client demo"', zone:'gap', hint:'A genuine action, but nobody owns it and there\'s no date. It\'s a real task waiting for an owner — do NOT let AI invent one; assign it in the meeting.'},
+  {id:'f4', text:'Someone needs to check why the nightly job failed twice this week', zone:'gap', hint:'"Someone" is not an owner and there\'s no deadline. Real action, missing who and when — assign it, don\'t guess.'},
+  {id:'f5', text:'Priya: login bug is fixed, deployed to staging last night', zone:'none', hint:'This is a status report of work already done, not an action item. (Note: "staging," not production — worth verifying before you call it fully done.)'},
+  {id:'f6', text:'Team feels good about the sprint overall', zone:'none', hint:'An opinion / morale note, not a task. Useful colour for a retro, but nothing to assign or track.'}
+];
+const ZONE_NAMES = {task:'Real task', gap:'Needs an owner / date', none:'Not a task'};
+let placed2 = {};
+function renderFields(){
+  const list = document.getElementById('taskList');
+  list.innerHTML = shuffle(FIELDS).map(e => `
+    <div class="scenario-card" draggable="true" data-id="${e.id}">
+      <div class="scenario-text">${e.text}</div>
+    </div>`).join('');
+  list.querySelectorAll('.scenario-card').forEach(card => {
+    card.addEventListener('dragstart', ev => {
+      ev.dataTransfer.setData('field', card.dataset.id);
+      card.classList.add('dragging');
+    });
+    card.addEventListener('dragend', () => card.classList.remove('dragging'));
+  });
+}
+function setupZones2(){
+  document.querySelectorAll('#activity-2 .wf-zone').forEach(z => {
+    z.addEventListener('dragover', e => { e.preventDefault(); z.classList.add('drag-over'); });
+    z.addEventListener('dragleave', () => z.classList.remove('drag-over'));
+    z.addEventListener('drop', e => {
+      e.preventDefault();
+      z.classList.remove('drag-over');
+      const id = e.dataTransfer.getData('field');
+      if (id) handleDrop2(id, z.dataset.zone);
+    });
+  });
+}
+function handleDrop2(id, zone){
+  const el = FIELDS.find(x => x.id === id);
+  if (!el || placed2[id]) return;
+  const correct = el.zone === zone;
+  placed2[id] = {zone, correct};
+  const card = document.querySelector(`#taskList .scenario-card[data-id="${id}"]`);
+  if (card) card.classList.add('placed', correct ? 'correct' : 'wrong');
+  const drop = document.querySelector(`#activity-2 .wf-drop[data-drop="${zone}"]`);
+  const pill = document.createElement('span');
+  pill.className = 'dropped-pill ' + (correct ? 'correct' : 'wrong');
+  pill.textContent = (correct ? '✓ ' : '✗ ') + el.text.split(' ').slice(0, 3).join(' ') + '…';
+  pill.title = correct ? el.hint : `Belongs in "${ZONE_NAMES[el.zone]}". ${el.hint}`;
+  drop.appendChild(pill);
+  checkDone2();
+}
+function checkDone2(){
+  if (Object.keys(placed2).length !== FIELDS.length) return;
+  const right = Object.values(placed2).filter(p => p.correct).length;
+  const fb = document.getElementById('feedback2');
+  if (right === FIELDS.length) {
+    fb.className = 'activity-feedback show success';
+    fb.innerHTML = `<strong>6 of 6 — you turned talk into tracked work.</strong> Two clean tasks (Sam / Dana), two that are real but ownerless (the API docs and the nightly job), and two that aren't tasks at all (a status of done work, a morale note). This is exactly where AI helps <em>and</em> hurts: ask it to "extract action items with owner and due date" and it drafts this list in seconds — but it will confidently assign the API docs to whoever spoke last and pick a date out of thin air. The AI's job is to surface the candidates; <em>your</em> job is to assign the missing owners in the room and confirm "done" is really done, not just "on staging."`;
+  } else {
+    fb.className = 'activity-feedback show partial';
+    fb.innerHTML = `<strong>You placed ${right} of 6 correctly.</strong> Hover each red pill for the fix. The test for each line: is there a clear owner AND a date? Both → real task. A genuine action but missing who or when → needs an owner/date (and AI must NOT invent them). A report of finished work or an opinion → not a task. Watch the traps: "someone needs to…" has no owner, and "fixed, on staging" is a done-report, not an action. Try again.`;
+  }
+  document.getElementById('prog2').classList.add('done');
+}
+function resetActivity2(){
+  placed2 = {};
+  document.getElementById('feedback2').className = 'activity-feedback';
+  document.querySelectorAll('#activity-2 .wf-drop[data-drop]').forEach(d => d.innerHTML = '');
+  renderFields();
+  document.getElementById('prog2').classList.remove('done');
+}
+function showAnswers2(){
+  FIELDS.forEach(e => { if (!placed2[e.id]) handleDrop2(e.id, e.zone); });
+}
+
+/* ─── ACTIVITY 3: RAG / watermelon matcher ─── */
+const RAG_OPTS = ['Green', 'Amber', 'Red'];
+const SITUATIONS = [
+  {name:'"Making great progress! The team is really confident about launching on the 18th." No blockers are mentioned, but you know the payment integration is stuck waiting on vendor access with no date.',
+   tag:'Situation · the reassuring update',
+   answer:'Red',
+   why:'PM verdict: Red. This is the classic watermelon — green words over a hard blocker. A commitment (the 18th) will be missed unless the vendor unblocks payments, and there\'s no plan or date to make that happen. "Confident" is a feeling, not a status. Red isn\'t admitting failure; it\'s asking for help early enough to do something about it.'},
+  {name:'The login refactor is in code review a day later than planned, but there\'s a clear plan to merge tomorrow and it won\'t affect the launch date.',
+   tag:'Situation · small slip, contained',
+   answer:'Green',
+   why:'PM verdict: Green. A one-day internal slip with a concrete recovery plan and no impact on any committed date is genuinely on track. Not every wobble is Amber — over-flagging trains people to ignore your colours. Green means "on schedule, no help needed," and that\'s true here.'},
+  {name:'You\'re still on target for the deadline, but a key dependency (a third-party API you don\'t control) has started throwing errors and there\'s no fix yet — if it isn\'t resolved this week, QA slips.',
+   tag:'Situation · a threat on the horizon',
+   answer:'Amber',
+   why:'PM verdict: Amber. The date isn\'t missed yet, but a real, un-owned risk could push it. Amber is the honest middle: "on track, but this needs attention/a decision soon." Calling it Green hides the risk until it\'s Red; calling it Red overstates it before the date is actually threatened. Amber, with the risk named and an owner, is the responsible call.'},
+  {name:'AI summarised the standup and reported "feature complete." When you check, the feature is merged to staging but hasn\'t been tested, and one acceptance criterion is still open.',
+   tag:'Situation · AI over-read "done"',
+   answer:'Amber',
+   why:'PM verdict: Amber (not Green). "Merged to staging, untested, one criterion open" is not complete — AI read "nearly done / in review" as "done," which is its most common status error. Until it\'s tested and meets acceptance, it\'s at risk of needing rework. This is exactly why you verify every AI "done" with the person who did the work before reporting it up.'}
+];
+let ragState = [];
+function renderRag(){
+  ragState = SITUATIONS.map(() => null);
+  const wrap = document.getElementById('ragWrap');
+  wrap.innerHTML = SITUATIONS.map((q, qi) => `
+    <div class="brand-block" data-q="${qi}">
+      <div class="brand-name"><span class="q-tag">${q.tag}</span>${q.name}</div>
+      <div class="brand-row">
+        <div class="brand-crit">Honest status colour:</div>
+        <div class="tog-group">
+          ${RAG_OPTS.map((c, ci) => `<button class="tog" id="rtog-${qi}-${ci}" onclick="setRag(${qi},${ci})">${c}</button>`).join('')}
+        </div>
+      </div>
+      <div class="brand-why" id="rwhy${qi}">${q.why}</div>
+    </div>`).join('');
+}
+function setRag(qi, ci){
+  ragState[qi] = ci;
+  RAG_OPTS.forEach((c, i) => {
+    document.getElementById(`rtog-${qi}-${i}`).className = 'tog' + (i === ci ? ' on-yes' : '');
+  });
+}
+function checkRag(){
+  const fb = document.getElementById('feedback3');
+  const unanswered = ragState.filter(v => v === null).length;
+  if (unanswered > 0) {
+    fb.className = 'activity-feedback show partial';
+    fb.innerHTML = `<strong>${unanswered} situation${unanswered > 1 ? 's' : ''} still blank.</strong> Pick a colour for every one, then check again.`;
+    return;
+  }
+  let hits = 0;
+  SITUATIONS.forEach((q, qi) => {
+    const correctIdx = RAG_OPTS.indexOf(q.answer);
+    const mine = ragState[qi];
+    const hit = mine === correctIdx;
+    if (hit) hits++;
+    document.getElementById(`rtog-${qi}-${mine}`).classList.add(hit ? 'reveal-hit' : 'reveal-miss');
+    if (!hit) document.getElementById(`rtog-${qi}-${correctIdx}`).classList.add('reveal-hit');
+    document.getElementById('rwhy' + qi).classList.add('show');
+  });
+  if (hits === SITUATIONS.length) {
+    fb.className = 'activity-feedback show success';
+    fb.innerHTML = `<strong>4 / 4 — you read the true colour, not the vibe.</strong> You cut through the watermelon, resisted over-flagging a contained slip, called the on-horizon risk Amber, and caught AI over-reading "done." The rule that ties it together: judge the <em>commitment</em>, not the wording. Threatened date with a plan = Amber; threatened date with no plan / a hard blocker = Red; genuinely on schedule = Green. When AI drafts a status, it defaults to optimistic — so you set the colour.`;
+  } else {
+    fb.className = 'activity-feedback show partial';
+    fb.innerHTML = `<strong>You matched ${hits} of 4.</strong> Green marks the PM's colour wherever you differed; each explanation is now open. Anchor on the commitment: is a date or promise threatened, and is there a plan? Reassuring words ("confident," "great progress") over a real blocker are Red, not Green. A contained one-day slip with a recovery plan is genuinely Green. And AI's "complete" is Amber until you\'ve verified it. Reset and try for a clean sheet.`;
+  }
+  document.getElementById('prog3').classList.add('done');
+}
+function resetRag(){
+  renderRag();
+  document.getElementById('feedback3').className = 'activity-feedback';
+  document.getElementById('prog3').classList.remove('done');
+}
+
+/* ─── ACTIVITY 4: Quiz ─── */
+const QUIZ = [
+  {
+    tag:'Q1 · AI over-reads "done"',
+    q:'AI summarises your standup and lists the checkout feature as "completed." A dev actually said it was "basically done, just needs testing." What\'s the right move before this goes in your update?',
+    opts:[
+      'Trust the AI — "completed" is cleaner and it read the transcript.',
+      'Confirm with the dev what "done" means (tested? in production?) before reporting it complete — AI routinely reads "nearly done / in review" as done.',
+      'Change it to "100% complete" to sound more confident.',
+      'Remove the feature from the update entirely to avoid the question.'
+    ],
+    correct:1,
+    explain:'AI compresses "basically done, needs testing" into "completed" because that\'s the tidy summary — but untested code isn\'t done, and if it breaks in QA your update was wrong. The fix is a ten-second check with the person who did the work: is it merged, tested, in production, meeting acceptance? Verify every AI "done" before it goes up the chain. Your name is on the status, not the model\'s.'
+  },
+  {
+    tag:'Q2 · The over-reassuring draft',
+    q:'You ask AI to write a status email. It produces: "Fantastic momentum this week, the team is energised and confident about the launch." You know payments are blocked. What\'s wrong, and what do you do?',
+    opts:[
+      'Nothing — positive updates keep stakeholders happy.',
+      'It\'s a watermelon: reassurance with no risk and no ask. Add the real status (Amber/Red), name the payments blocker, its owner, and what you need — then send.',
+      'Send it as-is and mention the blocker verbally later.',
+      'Ask AI to make it sound even more upbeat.'
+    ],
+    correct:1,
+    explain:'AI defaults to warm, confident prose because that\'s what "write a nice update" statistically looks like — but a status that hides a blocker behind enthusiasm is worse than useless; it actively delays the help you need. A real update commits to a colour, names the one thing at risk, says who owns it, and makes the ask. Reassurance without an ask is a warning sign, not a status.'
+  },
+  {
+    tag:'Q3 · Inventing owners and dates',
+    q:'From the notes "we should really fix the flaky test," AI generates a task: "John to fix flaky test by Friday." Nobody named John or Friday. Best response?',
+    opts:[
+      'Great — AI filled the gaps so you don\'t have to.',
+      'Reject the invented owner and date; flag it as an unassigned action and get a real owner + date from the team. AI must not guess who\'s accountable.',
+      'Assign it to John anyway; he probably won\'t mind.',
+      'Delete the task — if AI had to guess, it wasn\'t important.'
+    ],
+    correct:1,
+    explain:'A fabricated owner and deadline is worse than a blank one — it looks committed while binding no one, and John finds out he "owns" something in a meeting he wasn\'t in. AI is excellent at surfacing that an action exists; it must never invent accountability. Treat AI-suggested owners/dates as placeholders to confirm with the team, never as facts. The gap is real information: it tells you a decision still has to be made.'
+  },
+  {
+    tag:'Q4 · The blocker AI missed',
+    q:'AI summarised a long chat thread into a clean "all on track" update. But buried in the thread, someone mentioned a dependency is stuck — and AI smoothed it out. What does this teach about AI status summaries?',
+    opts:[
+      'AI never misses anything important; the dependency mustn\'t matter.',
+      'AI can miss or downplay a real blocker while producing a confident, tidy summary — so you must read the source yourself and verify with the team, not just trust the summary.',
+      'Longer threads are impossible to summarise, so skip them.',
+      'Add more exclamation marks so people read carefully.'
+    ],
+    correct:1,
+    explain:'AI optimises for a coherent, readable summary — and a lone "hey, this is stuck" in a noisy thread is exactly the kind of signal it flattens into "on track." The summary reads confidently precisely because it dropped the messy bit. That\'s why the summary is a starting point, not the truth: skim the source for anything that smells like a blocker, and ask the team "is anything actually stuck?" before you report all-clear. AI never talked to your people — you did.'
+  }
+];
+let quizDone = 0;
+function renderQuiz(){
+  quizDone = 0;
+  const wrap = document.getElementById('quizWrap');
+  wrap.innerHTML = QUIZ.map((item, qi) => `
+    <div class="quiz-q" data-quiz="${qi}">
+      <div class="quiz-prompt"><span class="q-tag">${item.tag}</span>${item.q}</div>
+      <div class="quiz-opts">
+        ${item.opts.map((o, oi) => `
+        <div class="quiz-opt" onclick="pickQuiz(${qi},${oi})" id="qopt-${qi}-${oi}">
+          <span class="opt-key">${String.fromCharCode(65 + oi)}</span><span>${o}</span>
+        </div>`).join('')}
+      </div>
+      <div class="quiz-explain" id="qexp${qi}"></div>
+    </div>`).join('') + `
+    <div class="activity-feedback" id="feedback4"></div>
+    <div class="activity-toolbar">
+      <button class="btn btn-ghost" onclick="resetQuiz()">↻ Reset quiz</button>
+    </div>`;
+}
+function pickQuiz(qi, oi){
+  const block = document.querySelector(`.quiz-q[data-quiz="${qi}"]`);
+  if (block.dataset.locked) return;
+  block.dataset.locked = '1';
+  const item = QUIZ[qi];
+  const correct = oi === item.correct;
+  block.querySelectorAll('.quiz-opt').forEach((el, i) => {
+    el.classList.add('locked');
+    if (i === item.correct) el.classList.add('correct');
+    else if (i === oi) el.classList.add('wrong');
+  });
+  const exp = document.getElementById('qexp' + qi);
+  exp.className = 'quiz-explain show ' + (correct ? 'good' : 'bad');
+  exp.innerHTML = (correct ? '<strong>Correct.</strong> ' : '<strong>Not quite.</strong> ') + item.explain;
+  block.dataset.score = correct ? '1' : '0';
+  quizDone++;
+  if (quizDone === QUIZ.length) finishQuiz();
+}
+function finishQuiz(){
+  const score = [...document.querySelectorAll('.quiz-q')].reduce((s, b) => s + (b.dataset.score === '1' ? 1 : 0), 0);
+  const fb = document.getElementById('feedback4');
+  if (score === QUIZ.length) {
+    fb.className = 'activity-feedback show success';
+    fb.innerHTML = `<strong>4 / 4 — you don't let AI speak for the project.</strong> You caught the over-read "done," the reassuring watermelon, the invented owner, and the blocker smoothed out of a summary. The through-line: AI drafts fast and reads confidently, but it doesn't know if "done" is really done, it defaults to optimism, it will guess accountability, and it never talked to your team. It gives you a first draft; you supply the truth. Verify, then send — every single time.`;
+  } else {
+    fb.className = 'activity-feedback show partial';
+    fb.innerHTML = `<strong>You got ${score} of 4.</strong> Re-read the explanations — each is a real failure mode of AI status updates. Confirm every "done" with the person who did it; strip reassurance and name the risk + ask; never accept an invented owner or date; and read the source, because AI smooths real blockers into tidy "on track." Reset and run it again.`;
+  }
+  document.getElementById('prog4').classList.add('done');
+}
+function resetQuiz(){
+  renderQuiz();
+  document.getElementById('prog4').classList.remove('done');
+}
+
+/* ─── INIT ─── */
+window.addEventListener('DOMContentLoaded', () => {
+  renderPairs();
+  renderFields();
+  setupZones2();
+  renderRag();
+  renderQuiz();
+});
+</script>
+</body>
+</html>
