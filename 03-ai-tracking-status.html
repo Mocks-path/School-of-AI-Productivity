@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>AI Tracking, Status &amp; Communication · Lesson 03</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,0,400;9..144,0,600;9..144,0,800;9..144,1,600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+
+:root{
+  --orange:#EF7F1A; --orange-light:#FF9429; --orange-dark:#D55222;
+  --brown:#412C23; --brown-dark:#2F1D19; --tan:#A34E1C;
+  --yellow:#FECC00; --cream:#FBF6EE; --paper:#FFFCF6;
+  --ink:#1C1410; --muted:#6E5C50; --line:#E8DCC8; --accent:#008DD2;
+  --green:#2E9E5B; --amber:#E5A100; --red:#D14343;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',system-ui,sans-serif;
+  background:var(--paper); color:var(--ink); line-height:1.6; overflow-x:hidden;
+}
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:radial-gradient(circle at 1px 1px,rgba(65,44,35,0.05) 1px,transparent 0);
+  background-size:24px 24px;
+}
+.topbar{
+  position:sticky;top:0;z-index:100;
+  background:rgba(255,252,246,0.92); backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+  padding:14px 40px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.brand{font-family:'Fraunces',serif;font-weight:800;font-size:17px;letter-spacing:-0.01em;color:var(--brown-dark)}
+.brand .dot{color:var(--orange)}
+.brand .sub{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.15em;color:var(--muted);font-weight:500;text-transform:uppercase;margin-left:8px}
+.logo-slot{width:44px;height:44px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.logo-slot svg{width:100%;height:100%;display:block}
+.page{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:50px 40px 100px}
+.hero{padding:30px 0 50px;border-bottom:1px solid var(--line)}
+.eyebrow{
+  font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.18em;
+  text-transform:uppercase;color:var(--orange-dark);font-weight:600;
+  display:inline-flex;align-items:center;gap:10px;
+}
+.eyebrow::before{content:"";width:24px;height:2px;background:var(--orange)}
+h1{
+  font-family:'Fraunces',serif;font-weight:800;
+  font-size:clamp(38px,7vw,80px);line-height:0.98;letter-spacing:-0.03em;
+  margin:18px 0 20px;color:var(--brown-dark);
+}
+h1 em{font-style:italic;color:var(--orange-dark);font-weight:600}
+.lede{font-size:19px;max-width:680px;color:var(--muted)}
+section{padding:70px 0;border-bottom:1px solid var(--line)}
+section:last-of-type{border-bottom:none}
+.section-num{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--orange);font-weight:600;letter-spacing:0.08em}
+h2{
+  font-family:'Fraunces',serif;font-weight:700;
+  font-size:clamp(28px,4.5vw,48px);line-height:1.05;letter-spacing:-0.02em;
+  margin:10px 0 22px;color:var(--brown-dark);max-width:720px;
+}
+h3{font-family:'Fraunces',serif;font-weight:600;font-size:24px;color:var(--brown-dark);margin:28px 0 12px}
+p{max-width:680px;margin-bottom:14px;color:var(--ink)}
+.lead{font-size:17px;color:var(--muted);max-width:680px;margin-bottom:26px}
+code{font-family:'JetBrains Mono',monospace;font-size:0.92em;background:var(--cream);padding:2px 6px;border-radius:4px;color:var(--brown-dark)}
+.illus{
+  background:var(--cream);border:1px solid var(--line);border-radius:18px;
+  padding:32px;margin:24px 0;position:relative;overflow:hidden;
+}
+.illus-title{
+  font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);
+  letter-spacing:0.12em;text-transform:uppercase;
+  margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:10px;
+}
+.controls{display:flex;gap:8px;flex-wrap:wrap}
+.controls button{
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  background:var(--paper);border:1px solid var(--line);color:var(--brown);
+  padding:6px 12px;border-radius:6px;cursor:pointer;
+  text-transform:uppercase;letter-spacing:0.1em;transition:all .2s;
+}
+.controls button:hover{background:var(--orange);color:#fff;border-color:var(--orange)}
+.controls button.active{background:var(--brown-dark);color:#fff;border-color:var(--brown-dark)}
+.takeaway{
+  background:var(--brown-dark);color:var(--paper);
+  border-radius:18px;padding:44px;margin-top:50px;position:relative;overflow:hidden;
+}
+.takeaway::after{
+  content:"";position:absolute;top:-40px;right:-40px;width:180px;height:180px;
+  border-radius:50%;background:radial-gradient(circle,var(--orange),transparent 70%);opacity:0.4;
+}
+.takeaway h2{color:var(--paper);margin-bottom:16px}
+.takeaway p{color:#E8D9C5;font-size:16px;max-width:680px}
+.takeaway ul{list-style:none;margin-top:18px;display:grid;gap:8px}
+.takeaway li{font-family:'JetBrains Mono',monospace;font-size:13px;padding-left:22px;position:relative;color:#FBE7CB}
+.takeaway li::before{content:"→";position:absolute;left:0;color:var(--orange);font-weight:bold}
+footer{text-align:center;padding:36px;color:var(--muted);font-size:12px;font-family:'JetBrains Mono',monospace;letter-spacing:0.1em}
+@media(max-width:700px){
+  .topbar{padding:12px 18px}
+  .page{padding:30px 18px 70px}
+  .illus{padding:20px}
+  .takeaway{padding:28px}
+  .logo-slot{width:38px;height:38px}
+}
+
+/* ============ Figure 1 · Status pipeline ============ */
+.pipe{display:flex;align-items:stretch;gap:0;flex-wrap:wrap}
+.pstep{
+  flex:1;min-width:120px;background:var(--paper);border:1px solid var(--line);
+  border-radius:14px;padding:18px 14px;text-align:center;cursor:pointer;
+  position:relative;transition:all .3s;opacity:0.55;
+}
+.pstep .arrow{
+  position:absolute;right:-16px;top:50%;transform:translateY(-50%);z-index:3;
+  color:var(--line);font-size:20px;font-weight:700;
+}
+.pstep:last-child .arrow{display:none}
+.pstep.on{opacity:1;border-color:var(--orange);box-shadow:0 10px 26px rgba(239,127,26,0.18);transform:translateY(-4px)}
+.pstep.on .arrow{color:var(--orange)}
+.pstep .p-ic{width:44px;height:44px;border-radius:12px;background:rgba(239,127,26,0.12);display:flex;align-items:center;justify-content:center;margin:0 auto 10px}
+.pstep .p-ic svg{width:24px;height:24px}
+.pstep .p-n{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;color:var(--muted);text-transform:uppercase}
+.pstep .p-t{font-family:'Fraunces',serif;font-size:16px;font-weight:700;color:var(--brown-dark);margin-top:3px;line-height:1.15}
+.pipe-panel{
+  background:var(--paper);border:1px solid var(--line);border-radius:14px;
+  padding:22px 24px;margin-top:22px;min-height:118px;
+}
+.pipe-panel.swap{animation:panelIn .4s ease}
+@keyframes panelIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.pp-tag{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:0.14em;text-transform:uppercase;color:var(--orange-dark);font-weight:600}
+.pp-title{font-family:'Fraunces',serif;font-size:21px;font-weight:700;color:var(--brown-dark);margin:5px 0 9px}
+.pp-why{font-size:14px;color:var(--ink);margin-bottom:11px;max-width:none}
+.pp-ai{
+  font-size:13px;color:var(--brown);background:var(--cream);border-left:3px solid var(--orange);
+  padding:10px 14px;border-radius:0 8px 8px 0;max-width:none;margin:0;
+}
+.pp-ai strong{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;color:var(--orange-dark)}
+
+/* ============ Figure 2 · Audience A/B ============ */
+.qgrid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.qcol{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:20px;display:flex;flex-direction:column}
+.qcol.vague{border-top:4px solid var(--accent)}
+.qcol.sharp{border-top:4px solid var(--orange)}
+.q-label{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:0.14em;text-transform:uppercase;font-weight:600;margin-bottom:12px}
+.qcol.vague .q-label{color:var(--accent)}
+.qcol.sharp .q-label{color:var(--orange-dark)}
+.q-item{
+  font-size:14px;color:var(--ink);background:var(--cream);border:1px solid var(--line);
+  border-radius:10px;padding:11px 14px;margin-bottom:9px;cursor:pointer;transition:all .2s;
+}
+.q-item:hover{border-color:var(--orange)}
+.q-item.on{background:var(--brown-dark);color:#FBE7CB;border-color:var(--brown-dark)}
+.q-out{
+  margin-top:8px;background:var(--paper);border:1px solid var(--line);
+  border-left:3px solid var(--yellow);border-radius:0 12px 12px 0;padding:16px 18px;min-height:96px;
+}
+.q-out.pop{animation:panelIn .35s ease}
+.q-out .qo-tag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--orange-dark);font-weight:600}
+.q-out .qo-body{font-size:14px;color:var(--brown-dark);margin-top:6px}
+
+/* ============ Figure 3 · RAG board + risk register ============ */
+.pivot-grid{display:grid;grid-template-columns:250px 1fr;gap:24px;align-items:start}
+.zone{margin-bottom:16px}
+.zone-label{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.field{display:flex;flex-wrap:wrap;gap:7px}
+.field button{
+  font-family:'JetBrains Mono',monospace;font-size:11px;background:var(--paper);
+  border:1px solid var(--line);color:var(--brown);padding:8px 12px;border-radius:8px;
+  cursor:pointer;transition:all .2s;letter-spacing:0.02em;
+}
+.field button:hover{border-color:var(--orange)}
+.field button.green{background:var(--green);color:#fff;border-color:var(--green)}
+.field button.amber{background:var(--amber);color:#fff;border-color:var(--amber)}
+.field button.red{background:var(--red);color:#fff;border-color:var(--red)}
+.pv-legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:6px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:0.06em}
+.pv-legend span{display:inline-flex;align-items:center;gap:5px}
+.pv-legend i{width:11px;height:11px;border-radius:3px;display:inline-block}
+.pv-out{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:20px;box-shadow:0 8px 22px rgba(65,44,35,0.06);overflow-x:auto}
+.pv-hint{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);margin-bottom:14px;letter-spacing:0.03em;max-width:none}
+table.pvt{border-collapse:collapse;width:100%;font-size:13px;min-width:340px}
+table.pvt th,table.pvt td{border:1px solid var(--line);padding:9px 12px;text-align:left}
+table.pvt th{background:var(--cream);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.04em;color:var(--brown-dark);font-weight:600}
+.rag-dot{display:inline-block;width:13px;height:13px;border-radius:50%;margin-right:7px;vertical-align:-1px}
+.rag-dot.green{background:var(--green)}
+.rag-dot.amber{background:var(--amber)}
+.rag-dot.red{background:var(--red)}
+.rag-tag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.06em;text-transform:uppercase;font-weight:600}
+.rag-tag.green{color:var(--green)}
+.rag-tag.amber{color:var(--amber)}
+.rag-tag.red{color:var(--red)}
+
+/* ============ Figure 4 · Notes → tasks extractor ============ */
+.chart-grid{display:grid;grid-template-columns:1fr 300px;gap:30px;align-items:start}
+.chips{display:flex;flex-wrap:wrap;gap:10px}
+.chip{
+  font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:0.02em;
+  border:1px solid var(--line);background:var(--paper);color:var(--brown);
+  padding:10px 15px;border-radius:999px;cursor:pointer;transition:all .25s;user-select:none;
+}
+.chip:hover{border-color:var(--orange)}
+.chip.on{background:var(--brown-dark);color:#FBE7CB;border-color:var(--brown-dark)}
+.notes-box{
+  margin-top:16px;font-size:14px;color:var(--brown-dark);background:var(--paper);
+  border:1px solid var(--line);border-left:3px solid var(--yellow);
+  padding:14px 16px;border-radius:0 10px 10px 0;min-height:100px;max-width:none;
+  font-family:'Inter',sans-serif;line-height:1.65;
+}
+.notes-box.pop{animation:panelIn .35s ease}
+.chart-hintrow{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);margin-top:16px;letter-spacing:0.03em;max-width:none}
+.task-stage{}
+.task-list{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:14px;min-height:200px}
+.task-list .th{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.task-card{background:var(--cream);border:1px solid var(--line);border-radius:10px;padding:11px 13px;margin-bottom:9px;animation:panelIn .35s ease}
+.task-card .tc-t{font-size:13.5px;color:var(--brown-dark);font-weight:600;line-height:1.35}
+.task-card .tc-meta{display:flex;gap:12px;margin-top:7px;flex-wrap:wrap}
+.task-card .tc-owner,.task-card .tc-date{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.04em;color:var(--tan);display:inline-flex;align-items:center;gap:4px}
+.task-card .tc-date{color:var(--orange-dark)}
+.task-empty{font-size:13px;color:var(--muted);font-family:'JetBrains Mono',monospace;padding:20px 4px}
+
+/* ============ Figure 5 · Watermelon status check ============ */
+.val-wrap{display:grid;grid-template-columns:1fr 300px;gap:26px;align-items:start}
+.claim-list{display:grid;gap:10px}
+.claim{
+  background:var(--paper);border:1px solid var(--line);border-radius:12px;
+  padding:14px 16px;cursor:pointer;transition:all .25s;
+}
+.claim:hover{border-color:var(--orange)}
+.claim.checked{border-color:var(--brown-dark)}
+.claim .c-head{font-size:14px;color:var(--brown-dark);font-weight:600;display:flex;align-items:center;gap:9px}
+.claim .c-badge{
+  font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.08em;text-transform:uppercase;
+  padding:2px 8px;border-radius:5px;flex-shrink:0;
+}
+.claim.unchecked-state .c-badge{background:var(--cream);color:var(--muted);border:1px solid var(--line)}
+.claim.ok .c-badge{background:rgba(46,158,91,0.16);color:var(--green)}
+.claim.bad .c-badge{background:rgba(209,67,67,0.16);color:var(--red)}
+.claim .c-detail{font-size:13px;color:var(--muted);margin-top:8px;display:none;line-height:1.5}
+.claim.checked .c-detail{display:block;animation:panelIn .3s ease}
+.val-side{
+  background:var(--brown-dark);color:#EFDFC9;border-radius:14px;padding:22px;position:sticky;top:90px;
+}
+.val-side h4{font-family:'Fraunces',serif;font-size:19px;color:var(--paper);margin-bottom:10px}
+.val-side .vs-num{font-family:'Fraunces',serif;font-size:52px;font-weight:800;color:var(--orange-light);line-height:1}
+.val-side .vs-cap{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#C9A574;margin-top:2px}
+.val-side p{color:#E8D9C5;font-size:13px;max-width:none;margin-top:14px}
+.val-side .vs-bar{height:8px;background:rgba(251,246,238,0.15);border-radius:6px;margin-top:14px;overflow:hidden}
+.val-side .vs-fill{height:100%;width:0;background:linear-gradient(90deg,var(--orange),var(--yellow));transition:width .5s cubic-bezier(.3,.8,.3,1)}
+
+@media(max-width:880px){
+  .pivot-grid,.chart-grid,.val-wrap{grid-template-columns:1fr}
+  .qgrid{grid-template-columns:1fr}
+  .val-side{position:static}
+  .pstep{min-width:calc(50% - 8px);flex:none}
+}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="brand">MokshPath <span class="dot">·</span> <span class="sub">Lesson 03 · AI Tracking &amp; Status</span></div>
+  <div class="logo-slot" aria-label="MokshPath logo">
+    <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="2" y="2" width="40" height="40" rx="11" fill="#412C23"/>
+      <path d="M10 31V14.5l6 8.5 6-8.5 6 8.5 6-8.5V31" stroke="#EF7F1A" stroke-width="3.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="34" cy="10.5" r="3" fill="#FECC00"/>
+    </svg>
+  </div>
+</div>
+<div class="page">
+
+<section class="hero">
+  <div class="eyebrow">Week 5 · Lesson 03 · AI Project Management</div>
+  <h1>From scattered signals to a <em>status</em> people trust.</h1>
+  <p class="lede">A status update is not a chore you do on Friday afternoon — it's how a project stays honest. In this lesson you turn scattered signals into a clear, truthful update through a repeatable pipeline: collect the signals, summarize them, flag the risks, tailor the message to who's reading it, and — the step everyone skips — review before you send. AI drafts each step; you own the truth.</p>
+</section>
+
+<section>
+  <div class="section-num">01 / 05</div>
+  <h2>A status update is a pipeline, not a Friday scramble</h2>
+  <p class="lead">Beginners treat status as a memory dump: "here's everything that happened this week." A good project manager runs the same five steps every time — gather the signals, summarize, flag what's at risk, tune it for the reader, and review before hitting send. AI can draft each step; the discipline is what makes it trustworthy.</p>
+
+  <p>The mistake is jumping straight from a pile of Slack threads and Jira tickets to a message you fire off. Skip the middle and you get an update that's long, vague, and quietly hides the one thing leadership needed to know. The pipeline forces order: first you <strong>collect</strong> the raw signals, then you <strong>summarize</strong> them into a few plain sentences, then you <strong>flag risks</strong> so blockers surface early, then you <strong>tailor</strong> the message to your audience, and finally you <strong>review</strong> before sending. Click through each stage below.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 1 · The signals-to-sent-update pipeline</span>
+      <div class="controls">
+        <button id="pipeBtn" onclick="tourPipe()">▶ Walk through</button>
+        <button onclick="resetPipe()">↺ Reset</button>
+      </div>
+    </div>
+    <div class="pipe" id="pipe">
+      <div class="pstep" data-step="collect" onclick="selectStep('collect')">
+        <div class="p-ic"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3v18M5 8l7-5 7 5M4 12h16M4 16h16" stroke="#EF7F1A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="p-n">Step 1</div><div class="p-t">Collect signals</div>
+        <span class="arrow">→</span>
+      </div>
+      <div class="pstep" data-step="summarize" onclick="selectStep('summarize')">
+        <div class="p-ic"><svg viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h11M4 18h7" stroke="#EF7F1A" stroke-width="2" stroke-linecap="round"/></svg></div>
+        <div class="p-n">Step 2</div><div class="p-t">Summarize</div>
+        <span class="arrow">→</span>
+      </div>
+      <div class="pstep" data-step="flag" onclick="selectStep('flag')">
+        <div class="p-ic"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2l10 18H2L12 2z" stroke="#EF7F1A" stroke-width="2" stroke-linejoin="round"/><path d="M12 9v5M12 17h.01" stroke="#EF7F1A" stroke-width="2" stroke-linecap="round"/></svg></div>
+        <div class="p-n">Step 3</div><div class="p-t">Flag risks</div>
+        <span class="arrow">→</span>
+      </div>
+      <div class="pstep" data-step="tailor" onclick="selectStep('tailor')">
+        <div class="p-ic"><svg viewBox="0 0 24 24" fill="none"><circle cx="9" cy="8" r="3.2" stroke="#EF7F1A" stroke-width="2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M16 4l5 5-5 5" stroke="#EF7F1A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="p-n">Step 4</div><div class="p-t">Tailor to audience</div>
+        <span class="arrow">→</span>
+      </div>
+      <div class="pstep" data-step="review" onclick="selectStep('review')">
+        <div class="p-ic"><svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="#EF7F1A" stroke-width="2"/><path d="M20 20l-4-4M9 11l1.5 1.5L14 9" stroke="#EF7F1A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="p-n">Step 5</div><div class="p-t">Review &amp; send</div>
+        <span class="arrow">→</span>
+      </div>
+    </div>
+    <div class="pipe-panel" id="pipePanel">
+      <div class="pp-tag" id="ppTag">Interactive pipeline</div>
+      <div class="pp-title" id="ppTitle">Click any stage above</div>
+      <p class="pp-why" id="ppWhy">Every trustworthy update travels these five steps in order. Skipping the middle — going straight from a pile of raw signals to a sent message — is how updates end up long, vague, and quietly hiding the one risk that mattered. Click a stage, or press "Walk through", to see what happens there and where AI helps.</p>
+      <p class="pp-ai" id="ppAi"><strong>Tip —</strong> the order is not optional. An update that skips "flag risks" reads fine on Friday and blows up on Monday.</p>
+    </div>
+  </div>
+
+  <h3>Why order matters</h3>
+  <p>Each stage protects the next. Collecting protects the summary; the summary protects the risk flags; the risk flags protect the tailoring; and review protects everyone downstream. Break the chain anywhere and the update still <em>looks</em> finished — which is exactly what makes it dangerous. A polished status with the real blocker buried is worse than no update at all, because it buys false confidence.</p>
+</section>
+
+<section>
+  <div class="section-num">02 / 05</div>
+  <h2>Same facts, different reader — tune the update</h2>
+  <p class="lead">The single hardest skill in status communication isn't writing — it's audience. A VP and a developer need the same truth in completely different shapes. The VP wants the headline, the risk, and the ask. The developer wants the specifics, the dependency, and who's unblocked. AI can spin one set of facts into both — if you tell it who's reading.</p>
+
+  <p>Give the AI the raw facts once, then ask for two versions: an <strong>executive update</strong> (outcome, RAG status, one risk, one decision needed — three sentences) and a <strong>team update</strong> (ticket-level detail, owners, blockers, next steps). Same reality, two lenses. Click a fact set on the left and watch the exec version render on the right, then toggle to the team view.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 2 · Same data → exec update vs team update</span>
+      <div class="controls">
+        <button id="abBtn" onclick="toggleAudience()">⇄ Exec ↔ Team</button>
+        <button onclick="resetQ()">↺ Reset</button>
+      </div>
+    </div>
+    <div class="qgrid">
+      <div class="qcol vague">
+        <div class="q-label">◆ Pick this week's raw facts</div>
+        <div class="q-item" onclick="pickQ('a',this)">Checkout redesign: 3 of 5 tickets done, payment gateway slipping.</div>
+        <div class="q-item" onclick="pickQ('b',this)">Data migration: on track, but staging env still down.</div>
+        <div class="q-item" onclick="pickQ('c',this)">Mobile launch: QA found a login bug, fix in review.</div>
+        <div class="q-item" onclick="pickQ('d',this)">API v2: shipped early, one client integration pending.</div>
+      </div>
+      <div class="qcol sharp">
+        <div class="q-label" id="abLabel">✓ Executive update</div>
+        <div class="q-out" id="qOut">
+          <div class="qo-tag" id="qoTag">Tailored for the reader</div>
+          <div class="qo-body" id="qBody">Pick a fact set on the left. We'll render it as an executive update — outcome, status, one risk, one ask. Then hit "Exec ↔ Team" to see the same facts rewritten for the working team.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h3>The audience test</h3>
+  <p>Before sending any update, ask one question: <em>what does this reader do with it?</em> A VP decides and reallocates — so lead with the risk and the ask. An engineer coordinates and unblocks — so lead with the dependency and the owner. If you send the developer's ticket dump to the VP, they'll miss the risk in the noise. If you send the VP's three-line summary to the team, nobody knows what to actually do. AI drafts both in seconds; you pick which reality each person needs.</p>
+</section>
+
+<section>
+  <div class="section-num">03 / 05</div>
+  <h2>The RAG board catches trouble before it's a crisis</h2>
+  <p class="lead">A red/amber/green status board is the fastest honest signal a project has. Green means on track, amber means watch this, red means it needs a decision now. The value isn't the colours — it's that amber and red force a risk into the open <em>while there's still time to act</em>. AI can draft the board from your signals; you set the honest colour.</p>
+
+  <p>Here's the whole idea: each workstream gets a <strong>RAG colour</strong> and, when it's amber or red, a line in the <strong>risk register</strong> — what could go wrong, and what you're doing about it. Green with no register entry means genuinely fine. Amber is the most valuable state: an early warning you can still act on. Set each workstream's colour below and watch the board and register fill in — notice how one red raises the whole project's status.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 3 · Set RAG colours → board &amp; risk register fill in</span>
+      <div class="controls">
+        <button onclick="ragDemo()">▶ Show example</button>
+        <button onclick="resetRag()">↺ Reset</button>
+      </div>
+    </div>
+    <div class="pivot-grid">
+      <div>
+        <div class="zone">
+          <div class="zone-label">Checkout redesign</div>
+          <div class="field"><button id="rag-checkout-green" onclick="setRag('checkout','green')">Green</button><button id="rag-checkout-amber" onclick="setRag('checkout','amber')">Amber</button><button id="rag-checkout-red" onclick="setRag('checkout','red')">Red</button></div>
+        </div>
+        <div class="zone">
+          <div class="zone-label">Data migration</div>
+          <div class="field"><button id="rag-migration-green" onclick="setRag('migration','green')">Green</button><button id="rag-migration-amber" onclick="setRag('migration','amber')">Amber</button><button id="rag-migration-red" onclick="setRag('migration','red')">Red</button></div>
+        </div>
+        <div class="zone">
+          <div class="zone-label">Mobile launch</div>
+          <div class="field"><button id="rag-mobile-green" onclick="setRag('mobile','green')">Green</button><button id="rag-mobile-amber" onclick="setRag('mobile','amber')">Amber</button><button id="rag-mobile-red" onclick="setRag('mobile','red')">Red</button></div>
+        </div>
+        <div class="pv-legend">
+          <span><i style="background:var(--green)"></i>On track</span>
+          <span><i style="background:var(--amber)"></i>At risk</span>
+          <span><i style="background:var(--red)"></i>Needs decision</span>
+        </div>
+      </div>
+      <div class="pv-out">
+        <p class="pv-hint" id="ragHint">Set a colour for each workstream to build the board and the risk register.</p>
+        <div id="ragBoard"></div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Amber is the goal, not red</h3>
+  <p>The projects that fail quietly are the ones that jump straight from green to red — because nobody flagged the amber in between. A blocker caught while it's amber ("staging env flaky, could slip the demo") is a five-minute Slack message. The same blocker caught at red ("staging is down, demo is tomorrow") is a crisis meeting. AI is good at spotting slippage early from your signals — but only the team can confirm whether "at risk" is really amber or already red.</p>
+</section>
+
+<section>
+  <div class="section-num">04 / 05</div>
+  <h2>Meeting notes become tasks with an owner and a date</h2>
+  <p class="lead">The commitments made in a meeting are worthless if they live in your notes. A task without an owner is a wish; a task without a date is a someday. The most useful thing AI does in project management is read raw meeting notes and pull out the action items — each with a name attached and a deadline — so nothing quietly evaporates.</p>
+
+  <p>Feed the AI your messy notes and ask for a table: <strong>task, owner, due date</strong>. It's fast and mostly right — but it will invent an owner when the notes are ambiguous, or drop a date it never saw. Pick a set of meeting notes below and watch the extractor pull structured tasks out of the mess — then read the caution about what to double-check.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 4 · Meeting notes → tasks (owner + date)</span>
+      <div class="controls">
+        <button onclick="resetNotes()">↺ Reset</button>
+      </div>
+    </div>
+    <div class="chart-grid" id="notesWrap">
+      <div>
+        <div class="chips">
+          <span class="chip on" id="n-standup" onclick="pickNotes('standup')">Sprint standup</span>
+          <span class="chip" id="n-client" onclick="pickNotes('client')">Client sync</span>
+          <span class="chip" id="n-retro" onclick="pickNotes('retro')">Retro</span>
+          <span class="chip" id="n-launch" onclick="pickNotes('launch')">Launch planning</span>
+        </div>
+        <div class="notes-box" id="notesBox"></div>
+        <p class="chart-hintrow">AI turns prose into a task list in seconds — but a task is only real once the owner has actually agreed to it.</p>
+      </div>
+      <div class="task-stage">
+        <div class="task-list" id="taskList">
+          <div class="th">Extracted action items</div>
+          <div class="task-empty">Pick a set of notes to extract tasks…</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h3>The gap the AI leaves</h3>
+  <p>Watch for three failure modes. The AI <strong>assigns an owner the notes never named</strong> ("someone should look at the API" becomes "Priya: fix API"). It <strong>invents a date</strong> to fill the column when none was said. And it <strong>merges two half-decisions into one confident task</strong>. Every extracted task is a draft commitment — before it goes on the board, the named owner has to see it and agree. AI drafts the list; the standup confirms it.</p>
+</section>
+
+<section>
+  <div class="section-num">05 / 05</div>
+  <h2>Spot the watermelon: green outside, red inside</h2>
+  <p class="lead">The most dangerous status update is the one that sounds fine. AI is trained to be helpful and reassuring — which means it will happily smooth a shaky project into a confident green, read "code merged" as "done," and summarize around the real blocker instead of surfacing it. A watermelon status is green on the surface and red in the middle. Your last job is to cut it open.</p>
+
+  <p>Before any AI-drafted update goes out, run it through a suspicion pass: does "done" actually mean shipped and verified, or just "merged"? Is the reassuring tone hiding a slip? Did the summary bury the one dependency that could sink the timeline? Click each AI-drafted status line below to see whether it's honest or a watermelon — and what to check with the team before you forward it.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 5 · Cut open each AI-drafted status line</span>
+      <div class="controls">
+        <button onclick="checkAll()">▶ Check all</button>
+        <button onclick="resetVal()">↺ Reset</button>
+      </div>
+    </div>
+    <div class="val-wrap" id="valWrap">
+      <div class="claim-list" id="claimList">
+        <div class="claim unchecked-state" data-claim="done" onclick="toggleClaim(this)">
+          <div class="c-head"><span class="c-badge">Not checked</span> "Payment feature is done — code was merged Tuesday."</div>
+          <div class="c-detail"></div>
+        </div>
+        <div class="claim unchecked-state" data-claim="green" onclick="toggleClaim(this)">
+          <div class="c-head"><span class="c-badge">Not checked</span> "Overall the project is green and on track for launch."</div>
+          <div class="c-detail"></div>
+        </div>
+        <div class="claim unchecked-state" data-claim="blocker" onclick="toggleClaim(this)">
+          <div class="c-head"><span class="c-badge">Not checked</span> "Team made great progress; a few small items remain."</div>
+          <div class="c-detail"></div>
+        </div>
+        <div class="claim unchecked-state" data-claim="qa" onclick="toggleClaim(this)">
+          <div class="c-head"><span class="c-badge">Not checked</span> "QA is complete and the build passed all tests."</div>
+          <div class="c-detail"></div>
+        </div>
+      </div>
+      <div class="val-side">
+        <h4>Watermelon check</h4>
+        <div class="vs-num" id="vsNum">0<span style="font-size:24px">/4</span></div>
+        <div class="vs-cap">Lines cut open</div>
+        <div class="vs-bar"><div class="vs-fill" id="vsFill"></div></div>
+        <p id="vsMsg">Click each AI-drafted line to cut it open. Two of these four sound green but are red inside — over-reassuring, misreading "done," or summarizing around the real blocker.</p>
+      </div>
+    </div>
+  </div>
+
+  <h3>The three-question honesty check</h3>
+  <p>You don't need to re-run the project — you need three questions the AI won't ask itself. <strong>Does "done" mean verified?</strong> Merged, deployed, and tested are three different things. <strong>Is the reassurance earned?</strong> "On track" needs a date and a burndown, not a vibe. <strong>Where's the risk it's not mentioning?</strong> A summary with no risk in it is either a genuinely healthy project or a watermelon — and you find out which by asking the team, not the model. Verify before you send: the AI drafts, the humans confirm, you own what goes out.</p>
+</section>
+
+<div class="takeaway">
+  <h2>What to carry forward</h2>
+  <p>You now know that a trustworthy status is manufactured, not typed on a Friday. Scattered signals become an update people can act on only when they're collected, summarized, risk-flagged, tailored to the reader, and reviewed before sending. AI accelerates every step — and quietly over-reassures at every step too, which is why the human owns the send button.</p>
+  <ul>
+    <li>Run every update through the pipeline: collect → summarize → flag risks → tailor → review &amp; send</li>
+    <li>Same facts, different reader: exec wants headline + risk + ask; team wants detail + owner + blocker</li>
+    <li>RAG boards make risk visible early — amber is the goal, a caught blocker beats a crisis</li>
+    <li>Turn meeting notes into tasks with an owner and a date; confirm each owner actually agreed</li>
+    <li>Watch for watermelon status: green outside, red inside — AI over-reassures and misreads "done"</li>
+    <li>AI drafts the status; the team verifies the truth and you review before you send</li>
+  </ul>
+</div>
+
+</div>
+<footer>MokshPath · Lesson 03 of 04 · Next up: AI Retrospectives &amp; Handoffs →</footer>
+<script>
+
+/* ============ Figure 1 · Status pipeline ============ */
+const STEPS={
+  collect:{t:"Collect the raw signals",
+    why:"Before you write a word, gather the real signals: standup notes, Jira/board movement, Slack threads, blockers people mentioned in passing, and the commits that actually landed. Status built from memory alone drifts — it reflects the loudest thing, not the true state.",
+    ai:"AI can sweep a channel or a set of tickets and pull the raw signals into one place: \"summarize what changed on the board this week.\" It gathers fast — you still confirm nothing important was left in a DM it couldn't see."},
+  summarize:{t:"Summarize into plain sentences",
+    why:"Turn the pile of signals into three or four plain sentences: what moved, what's stuck, what's next. A summary is a decision about what matters — you're choosing what leadership needs, not listing everything that happened.",
+    ai:"This is AI's strongest step. Feed it the raw signals and ask for a tight summary. But it will smooth over the ugly bits to sound helpful — read the draft and put the awkward truth back in."},
+  flag:{t:"Flag the risks early",
+    why:"The most valuable line in any update is the risk nobody wanted to write. Slippage, a shaky dependency, a blocker that's been amber for two weeks — surface it now, while there's still time to act. An update with no risks is usually hiding one.",
+    ai:"AI can scan your signals for slippage patterns and dependency mentions and draft a risk list. But it under-reacts by default — it would rather reassure than alarm. You decide whether \"at risk\" is amber or already red."},
+  tailor:{t:"Tailor it to the audience",
+    why:"One reality, different shapes. The exec needs outcome, status, one risk, one ask. The team needs tickets, owners, and next steps. Send the wrong shape and the reader either drowns in detail or misses the decision they needed to make.",
+    ai:"Give AI the facts once and ask for both an exec version and a team version. It reshapes tone and detail instantly — you check that the risk survived the trip into the short version."},
+  review:{t:"Review before you send",
+    why:"The last step everyone skips. Read the whole thing as the recipient: is \"done\" actually done, is the reassurance earned, did the real blocker survive editing? A status update is a claim you're putting your name on — verify it before it reaches anyone who'll decide on it.",
+    ai:"AI drafts confidently and reassuringly, which is exactly the risk. Treat every generated update as a draft: check the hard truths are still in it, confirm ambiguous items with the team, then you press send."}
+};
+const stepOrder=["collect","summarize","flag","tailor","review"];
+let pipeTimer=null,pipeIdx=0;
+function selectStep(k){
+  document.querySelectorAll('#pipe .pstep').forEach(el=>el.classList.remove('on'));
+  const el=document.querySelector('#pipe [data-step="'+k+'"]');
+  if(el)el.classList.add('on');
+  const d=STEPS[k],panel=document.getElementById('pipePanel');
+  document.getElementById('ppTag').textContent='Stage '+(stepOrder.indexOf(k)+1)+' of 5';
+  document.getElementById('ppTitle').textContent=d.t;
+  document.getElementById('ppWhy').textContent=d.why;
+  document.getElementById('ppAi').innerHTML='<strong>AI assist —</strong> '+d.ai;
+  panel.classList.remove('swap');void panel.offsetWidth;panel.classList.add('swap');
+}
+function tourPipe(){
+  stopPipe();
+  document.getElementById('pipeBtn').classList.add('active');
+  pipeIdx=0;selectStep(stepOrder[0]);
+  pipeTimer=setInterval(()=>{
+    pipeIdx++;
+    if(pipeIdx>=stepOrder.length){stopPipe();return}
+    selectStep(stepOrder[pipeIdx]);
+  },3200);
+}
+function stopPipe(){
+  if(pipeTimer){clearInterval(pipeTimer);pipeTimer=null}
+  document.getElementById('pipeBtn').classList.remove('active');
+}
+function resetPipe(){
+  stopPipe();
+  document.querySelectorAll('#pipe .pstep').forEach(el=>el.classList.remove('on'));
+  document.getElementById('ppTag').textContent='Interactive pipeline';
+  document.getElementById('ppTitle').textContent='Click any stage above';
+  document.getElementById('ppWhy').textContent='Every trustworthy update travels these five steps in order. Skipping the middle — going straight from a pile of raw signals to a sent message — is how updates end up long, vague, and quietly hiding the one risk that mattered. Click a stage, or press "Walk through", to see what happens there and where AI helps.';
+  document.getElementById('ppAi').innerHTML='<strong>Tip —</strong> the order is not optional. An update that skips "flag risks" reads fine on Friday and blows up on Monday.';
+}
+new IntersectionObserver((es,o)=>es.forEach(e=>{if(e.isIntersecting){tourPipe();o.unobserve(e.target)}}),{threshold:0.4}).observe(document.getElementById('pipe'));
+
+/* ============ Figure 2 · Audience A/B ============ */
+const QMAP={
+  a:{
+    exec:{tag:"Executive update · Checkout redesign",body:"Checkout redesign is AMBER. Three of five workstreams complete; the payment-gateway integration is slipping and threatens the launch date. Ask: approve one extra engineer for two days, or we move launch by a week."},
+    team:{tag:"Team update · Checkout redesign",body:"3/5 tickets closed. CHK-11 (payment gateway) is blocked on the vendor sandbox — Arjun owns, chasing today. CHK-12/13 in review. Next: unblock CHK-11, then repoint CHK-14. Flag the vendor delay in tomorrow's standup."}
+  },
+  b:{
+    exec:{tag:"Executive update · Data migration",body:"Data migration is AMBER — on schedule, but the staging environment is down and we can't fully rehearse the cutover. Risk: a surprise on migration day. Ask: infra to prioritise restoring staging by Thursday."},
+    team:{tag:"Team update · Data migration",body:"Migration scripts done and dry-run passes locally. Blocker: staging env down since Mon (infra ticket OPS-204). Can't run the full rehearsal until it's back. Owner: Meera coordinating with infra. Next: full dry-run once staging is up."}
+  },
+  c:{
+    exec:{tag:"Executive update · Mobile launch",body:"Mobile launch is AMBER. QA surfaced a login bug; fix is in review and expected today. No date impact yet, but it's the last blocker before store submission. Ask: none — will escalate only if the fix fails review."},
+    team:{tag:"Team update · Mobile launch",body:"QA found login failure on Android 13 (MOB-77). Fix pushed by Ravi, in review with Sana. Once merged, one more QA pass, then submit to store. Next: land MOB-77, regression on auth flow, cut release build."}
+  },
+  d:{
+    exec:{tag:"Executive update · API v2",body:"API v2 is GREEN and shipped ahead of schedule. One partner integration is still pending on the client's side, not ours. Ask: none — flagging only so the win is visible and the client dependency is on record."},
+    team:{tag:"Team update · API v2",body:"v2 endpoints live in prod, docs updated. Remaining: ClientCo hasn't finished their integration (their timeline). We've sent the migration guide + a sandbox key. Owner: Dev on point for support. Next: office-hours slot if they need it."}
+  }
+};
+let curFact=null,audienceMode='exec';
+function pickQ(k,el){
+  document.querySelectorAll('.qcol.vague .q-item').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');
+  curFact=k;renderAudience();
+}
+function renderAudience(){
+  if(!curFact)return;
+  const d=QMAP[curFact][audienceMode];
+  document.getElementById('abLabel').innerHTML=(audienceMode==='exec'?'✓ Executive update':'✓ Team update');
+  document.getElementById('qoTag').textContent=d.tag;
+  document.getElementById('qBody').textContent=d.body;
+  const out=document.getElementById('qOut');
+  out.classList.remove('pop');void out.offsetWidth;out.classList.add('pop');
+}
+function toggleAudience(){
+  audienceMode=(audienceMode==='exec')?'team':'exec';
+  if(!curFact){
+    document.getElementById('abLabel').innerHTML=(audienceMode==='exec'?'✓ Executive update':'✓ Team update');
+    return;
+  }
+  renderAudience();
+}
+function resetQ(){
+  curFact=null;audienceMode='exec';
+  document.querySelectorAll('.qcol.vague .q-item').forEach(b=>b.classList.remove('on'));
+  document.getElementById('abLabel').innerHTML='✓ Executive update';
+  document.getElementById('qoTag').textContent='Tailored for the reader';
+  document.getElementById('qBody').textContent="Pick a fact set on the left. We'll render it as an executive update — outcome, status, one risk, one ask. Then hit \"Exec ↔ Team\" to see the same facts rewritten for the working team.";
+}
+
+/* ============ Figure 3 · RAG board + risk register ============ */
+const WORKSTREAMS={
+  checkout:{name:"Checkout redesign"},
+  migration:{name:"Data migration"},
+  mobile:{name:"Mobile launch"}
+};
+const RISKS={
+  checkout:{amber:"Payment-gateway integration slipping on vendor sandbox.",red:"Payment gateway blocked; launch date at risk — needs a call today."},
+  migration:{amber:"Staging env down; full cutover rehearsal can't run yet.",red:"Staging still down; cutover cannot be validated before go-live."},
+  mobile:{amber:"Login bug found in QA; fix in review, watching the date.",red:"Login bug unresolved; store submission blocked."}
+};
+const MITIG={
+  checkout:{amber:"Chasing vendor daily; parallel path scoped.",red:"Escalate to vendor lead; request +1 engineer."},
+  migration:{amber:"Infra ticket raised; dry-run ready to go.",red:"Infra prioritising restore; go-live hold on the table."},
+  mobile:{amber:"Fix in review; one QA pass to go.",red:"All hands on the fix; hold submission."}
+};
+let ragMap={checkout:null,migration:null,mobile:null};
+function setRag(ws,color){
+  ragMap[ws]=color;
+  ['green','amber','red'].forEach(c=>document.getElementById('rag-'+ws+'-'+c).classList.remove('green','amber','red'));
+  document.getElementById('rag-'+ws+'-'+color).classList.add(color);
+  renderRag();
+}
+function renderRag(){
+  const hint=document.getElementById('ragHint'),host=document.getElementById('ragBoard');
+  const set=Object.keys(ragMap).filter(w=>ragMap[w]);
+  if(set.length===0){host.innerHTML='';hint.textContent='Set a colour for each workstream to build the board and the risk register.';return}
+  const anyRed=set.some(w=>ragMap[w]==='red');
+  const anyAmber=set.some(w=>ragMap[w]==='amber');
+  const overall=anyRed?'red':(anyAmber?'amber':'green');
+  const overallLabel=anyRed?'RED · needs a decision':(anyAmber?'AMBER · watch closely':'GREEN · on track');
+  hint.innerHTML='Overall project status: <span class="rag-tag '+overall+'">'+overallLabel+'</span> — one red pulls the whole project red.';
+  let html='<table class="pvt"><tr><th>Workstream</th><th>Status</th></tr>';
+  Object.keys(ragMap).forEach(w=>{
+    const c=ragMap[w];
+    html+='<tr><td>'+WORKSTREAMS[w].name+'</td><td>'+(c?'<span class="rag-dot '+c+'"></span><span class="rag-tag '+c+'">'+c.toUpperCase()+'</span>':'<span style="color:var(--muted);font-family:JetBrains Mono,monospace;font-size:11px">— not set</span>')+'</td></tr>';
+  });
+  html+='</table>';
+  // risk register — only amber/red
+  const flagged=Object.keys(ragMap).filter(w=>ragMap[w]==='amber'||ragMap[w]==='red');
+  html+='<div style="font-family:JetBrains Mono,monospace;font-size:10.5px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin:18px 0 10px">Risk register (amber &amp; red only)</div>';
+  if(flagged.length===0){
+    html+='<div style="font-size:13px;color:var(--green);font-family:JetBrains Mono,monospace">✓ All green — no open risks logged.</div>';
+  }else{
+    html+='<table class="pvt"><tr><th>Risk</th><th>Mitigation</th></tr>';
+    flagged.forEach(w=>{
+      const c=ragMap[w];
+      html+='<tr><td><span class="rag-dot '+c+'"></span>'+RISKS[w][c]+'</td><td>'+MITIG[w][c]+'</td></tr>';
+    });
+    html+='</table>';
+  }
+  host.innerHTML=html;
+}
+function ragDemo(){setRag('checkout','green');setRag('migration','amber');setRag('mobile','red')}
+function resetRag(){
+  ragMap={checkout:null,migration:null,mobile:null};
+  ['checkout','migration','mobile'].forEach(w=>['green','amber','red'].forEach(c=>document.getElementById('rag-'+w+'-'+c).classList.remove('green','amber','red')));
+  renderRag();
+}
+new IntersectionObserver((es,o)=>es.forEach(e=>{if(e.isIntersecting){ragDemo();o.unobserve(e.target)}}),{threshold:0.3}).observe(document.getElementById('ragBoard'));
+
+/* ============ Figure 4 · Notes → tasks extractor ============ */
+const NOTES={
+  standup:{
+    text:"Arjun: payment gateway still blocked on the vendor sandbox, will chase them today. Sana said she'll finish the checkout review by Thursday. We agreed someone needs to repoint CHK-14 once the gateway lands. Meera flagged staging is flaky again.",
+    tasks:[
+      {t:"Chase vendor on payment-gateway sandbox access",o:"Arjun",d:"Today"},
+      {t:"Finish checkout code review (CHK-12/13)",o:"Sana",d:"Thu"},
+      {t:"Repoint CHK-14 once gateway lands",o:"Unassigned ⚠",d:"After gateway"},
+      {t:"Look into flaky staging env",o:"Meera",d:"No date ⚠"}
+    ]
+  },
+  client:{
+    text:"Client asked for a demo of the new dashboard next Friday. They want the export-to-CSV feature in scope. Priya to send updated timeline by EOD Wednesday. We promised a follow-up on the SSO question — nobody clearly owned it in the call.",
+    tasks:[
+      {t:"Prepare dashboard demo for client",o:"Team",d:"Next Fri"},
+      {t:"Add export-to-CSV to sprint scope",o:"Unassigned ⚠",d:"No date ⚠"},
+      {t:"Send updated project timeline",o:"Priya",d:"Wed EOD"},
+      {t:"Follow up on client SSO question",o:"Unowned ⚠",d:"No date ⚠"}
+    ]
+  },
+  retro:{
+    text:"Team felt the last sprint was too crammed. Action: cap next sprint at 20 points. Ravi volunteered to set up the new CI pipeline. We keep skipping the design handoff — Nisha to write a short handoff checklist before next sprint starts.",
+    tasks:[
+      {t:"Cap next sprint at 20 story points",o:"Scrum lead",d:"Next sprint"},
+      {t:"Set up new CI pipeline",o:"Ravi",d:"No date ⚠"},
+      {t:"Write design-handoff checklist",o:"Nisha",d:"Before next sprint"}
+    ]
+  },
+  launch:{
+    text:"Launch is targeted for the 28th. Dev to freeze code by the 25th. Marketing needs final copy by the 22nd — Kabir owns that. QA sign-off must happen before freeze. Someone mentioned a rollback plan but we didn't decide who writes it.",
+    tasks:[
+      {t:"Code freeze",o:"Dev team",d:"25th"},
+      {t:"Deliver final launch copy",o:"Kabir",d:"22nd"},
+      {t:"QA sign-off before freeze",o:"QA",d:"Before 25th"},
+      {t:"Write rollback plan",o:"Unassigned ⚠",d:"No date ⚠"}
+    ]
+  }
+};
+function pickNotes(k){
+  document.querySelectorAll('#notesWrap .chip').forEach(c=>c.classList.remove('on'));
+  document.getElementById('n-'+k).classList.add('on');
+  const d=NOTES[k];
+  const box=document.getElementById('notesBox');
+  box.textContent=d.text;
+  box.classList.remove('pop');void box.offsetWidth;box.classList.add('pop');
+  let html='<div class="th">Extracted action items</div>';
+  d.tasks.forEach(t=>{
+    html+='<div class="task-card"><div class="tc-t">'+t.t+'</div><div class="tc-meta">'+
+      '<span class="tc-owner">◆ '+t.o+'</span>'+
+      '<span class="tc-date">▣ '+t.d+'</span></div></div>';
+  });
+  document.getElementById('taskList').innerHTML=html;
+}
+function resetNotes(){pickNotes('standup')}
+new IntersectionObserver((es,o)=>es.forEach(e=>{if(e.isIntersecting){pickNotes('standup');o.unobserve(e.target)}}),{threshold:0.4}).observe(document.getElementById('notesWrap'));
+
+/* ============ Figure 5 · Watermelon status check ============ */
+const CLAIMS={
+  done:{ok:false,badge:"Watermelon",
+    detail:"\"Merged\" is not \"done.\" Code in the main branch may be untested, undeployed, or behind a feature flag nobody flipped. AI reads \"merged\" as \"finished\" because that's the reassuring interpretation. Confirm: is it deployed to prod and verified by QA? Until then, this is amber wearing green."},
+  green:{ok:true,badge:"Honest — if backed",
+    detail:"\"Green and on track\" is a fine claim — but only if it's backed by a date and evidence (burndown, tickets closed vs planned). If the AI wrote \"on track\" from a vibe, ask it to show the date and the remaining scope. When the numbers back the colour, green is honest. Cross-check the burndown before you forward it."},
+  blocker:{ok:false,badge:"Watermelon",
+    detail:"\"Great progress, a few small items remain\" is the classic reassuring blur. \"A few small items\" is where the real blocker hides — one of those items might be the dependency that sinks the timeline. AI smooths specifics into comfort. Ask: name the remaining items and which one is on the critical path."},
+  qa:{ok:true,badge:"Honest — if verifiable",
+    detail:"\"QA complete, all tests passed\" is a checkable claim — either there's a passing test run and a QA sign-off, or there isn't. This one is honest as long as you can point to the evidence. Confirm the test suite actually covers the new feature, not just the old paths, and you're clear."}
+};
+let checkedSet=new Set();
+function applyClaim(el,d){
+  el.classList.remove('unchecked-state');
+  el.classList.add('checked',d.ok?'ok':'bad');
+  el.querySelector('.c-badge').textContent=(d.ok?'✓ ':'✗ ')+d.badge;
+  el.querySelector('.c-detail').textContent=d.detail;
+}
+function toggleClaim(el){
+  const key=el.dataset.claim,d=CLAIMS[key];
+  if(el.classList.contains('checked')){
+    el.classList.remove('checked','ok','bad');el.classList.add('unchecked-state');
+    el.querySelector('.c-badge').textContent='Not checked';
+    el.querySelector('.c-detail').textContent='';
+    checkedSet.delete(key);
+  }else{
+    applyClaim(el,d);checkedSet.add(key);
+  }
+  updateVal();
+}
+function updateVal(){
+  const n=checkedSet.size;
+  document.getElementById('vsNum').innerHTML=n+'<span style="font-size:24px">/4</span>';
+  document.getElementById('vsFill').style.width=(n/4*100)+'%';
+  const msg=document.getElementById('vsMsg');
+  if(n===0)msg.textContent='Click each AI-drafted line to cut it open. Two of these four sound green but are red inside — over-reassuring, misreading "done," or summarizing around the real blocker.';
+  else if(n<4)msg.textContent='Keep going. '+n+' of 4 cut open. Notice how two lines sounded fine but were red inside — that\'s the AI over-reassuring or misreading "done."';
+  else msg.textContent='All four cut open. Two were watermelons: "merged = done" and "a few small items remain." This is exactly why you never forward an AI status unverified.';
+}
+function checkAll(){
+  document.querySelectorAll('#claimList .claim').forEach(el=>{
+    if(!el.classList.contains('checked')){applyClaim(el,CLAIMS[el.dataset.claim]);checkedSet.add(el.dataset.claim)}
+  });
+  updateVal();
+}
+function resetVal(){
+  checkedSet.clear();
+  document.querySelectorAll('#claimList .claim').forEach(el=>{
+    el.classList.remove('checked','ok','bad');el.classList.add('unchecked-state');
+    el.querySelector('.c-badge').textContent='Not checked';
+    el.querySelector('.c-detail').textContent='';
+  });
+  updateVal();
+}
+updateVal();
+
+</script>
+</body>
+</html>
