@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>AI Design &amp; Visuals · Lesson 03</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,0,400;9..144,0,600;9..144,0,800;9..144,1,600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+
+:root{
+  --orange:#EF7F1A; --orange-light:#FF9429; --orange-dark:#D55222;
+  --brown:#412C23; --brown-dark:#2F1D19; --tan:#A34E1C;
+  --yellow:#FECC00; --cream:#FBF6EE; --paper:#FFFCF6;
+  --ink:#1C1410; --muted:#6E5C50; --line:#E8DCC8; --accent:#008DD2;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',system-ui,sans-serif;
+  background:var(--paper); color:var(--ink); line-height:1.6; overflow-x:hidden;
+}
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:radial-gradient(circle at 1px 1px,rgba(65,44,35,0.05) 1px,transparent 0);
+  background-size:24px 24px;
+}
+.topbar{
+  position:sticky;top:0;z-index:100;
+  background:rgba(255,252,246,0.92); backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+  padding:14px 40px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.brand{font-family:'Fraunces',serif;font-weight:800;font-size:17px;letter-spacing:-0.01em;color:var(--brown-dark)}
+.brand .dot{color:var(--orange)}
+.brand .sub{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.15em;color:var(--muted);font-weight:500;text-transform:uppercase;margin-left:8px}
+.logo-slot{width:44px;height:44px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.logo-slot svg{width:100%;height:100%;display:block}
+.page{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:50px 40px 100px}
+.hero{padding:30px 0 50px;border-bottom:1px solid var(--line)}
+.eyebrow{
+  font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.18em;
+  text-transform:uppercase;color:var(--orange-dark);font-weight:600;
+  display:inline-flex;align-items:center;gap:10px;
+}
+.eyebrow::before{content:"";width:24px;height:2px;background:var(--orange)}
+h1{
+  font-family:'Fraunces',serif;font-weight:800;
+  font-size:clamp(38px,7vw,80px);line-height:0.98;letter-spacing:-0.03em;
+  margin:18px 0 20px;color:var(--brown-dark);
+}
+h1 em{font-style:italic;color:var(--orange-dark);font-weight:600}
+.lede{font-size:19px;max-width:680px;color:var(--muted)}
+section{padding:70px 0;border-bottom:1px solid var(--line)}
+section:last-of-type{border-bottom:none}
+.section-num{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--orange);font-weight:600;letter-spacing:0.08em}
+h2{
+  font-family:'Fraunces',serif;font-weight:700;
+  font-size:clamp(28px,4.5vw,48px);line-height:1.05;letter-spacing:-0.02em;
+  margin:10px 0 22px;color:var(--brown-dark);max-width:720px;
+}
+h3{font-family:'Fraunces',serif;font-weight:600;font-size:24px;color:var(--brown-dark);margin:28px 0 12px}
+p{max-width:680px;margin-bottom:14px;color:var(--ink)}
+.lead{font-size:17px;color:var(--muted);max-width:680px;margin-bottom:26px}
+code{font-family:'JetBrains Mono',monospace;font-size:0.92em;background:var(--cream);padding:2px 6px;border-radius:4px;color:var(--brown-dark)}
+.illus{
+  background:var(--cream);border:1px solid var(--line);border-radius:18px;
+  padding:32px;margin:24px 0;position:relative;overflow:hidden;
+}
+.illus-title{
+  font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);
+  letter-spacing:0.12em;text-transform:uppercase;
+  margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:10px;
+}
+.controls{display:flex;gap:8px;flex-wrap:wrap}
+.controls button{
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  background:var(--paper);border:1px solid var(--line);color:var(--brown);
+  padding:6px 12px;border-radius:6px;cursor:pointer;
+  text-transform:uppercase;letter-spacing:0.1em;transition:all .2s;
+}
+.controls button:hover{background:var(--orange);color:#fff;border-color:var(--orange)}
+.controls button.active{background:var(--brown-dark);color:#fff;border-color:var(--brown-dark)}
+.takeaway{
+  background:var(--brown-dark);color:var(--paper);
+  border-radius:18px;padding:44px;margin-top:50px;position:relative;overflow:hidden;
+}
+.takeaway::after{
+  content:"";position:absolute;top:-40px;right:-40px;width:180px;height:180px;
+  border-radius:50%;background:radial-gradient(circle,var(--orange),transparent 70%);opacity:0.4;
+}
+.takeaway h2{color:var(--paper);margin-bottom:16px}
+.takeaway p{color:#E8D9C5;font-size:16px;max-width:680px}
+.takeaway ul{list-style:none;margin-top:18px;display:grid;gap:8px}
+.takeaway li{font-family:'JetBrains Mono',monospace;font-size:13px;padding-left:22px;position:relative;color:#FBE7CB}
+.takeaway li::before{content:"→";position:absolute;left:0;color:var(--orange);font-weight:bold}
+footer{text-align:center;padding:36px;color:var(--muted);font-size:12px;font-family:'JetBrains Mono',monospace;letter-spacing:0.1em}
+@media(max-width:700px){
+  .topbar{padding:12px 18px}
+  .page{padding:30px 18px 70px}
+  .illus{padding:20px}
+  .takeaway{padding:28px}
+  .logo-slot{width:38px;height:38px}
+}
+
+/* ============ Figure 1 · Design principles pipeline ============ */
+.pipe{display:flex;align-items:stretch;gap:0;flex-wrap:wrap}
+.pstep{
+  flex:1;min-width:120px;background:var(--paper);border:1px solid var(--line);
+  border-radius:14px;padding:18px 14px;text-align:center;cursor:pointer;
+  position:relative;transition:all .3s;opacity:0.55;
+}
+.pstep .arrow{
+  position:absolute;right:-16px;top:50%;transform:translateY(-50%);z-index:3;
+  color:var(--line);font-size:20px;font-weight:700;
+}
+.pstep:last-child .arrow{display:none}
+.pstep.on{opacity:1;border-color:var(--orange);box-shadow:0 10px 26px rgba(239,127,26,0.18);transform:translateY(-4px)}
+.pstep.on .arrow{color:var(--orange)}
+.pstep .p-ic{width:44px;height:44px;border-radius:12px;background:rgba(239,127,26,0.12);display:flex;align-items:center;justify-content:center;margin:0 auto 10px}
+.pstep .p-ic svg{width:24px;height:24px}
+.pstep .p-n{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;color:var(--muted);text-transform:uppercase}
+.pstep .p-t{font-family:'Fraunces',serif;font-size:16px;font-weight:700;color:var(--brown-dark);margin-top:3px;line-height:1.15}
+.pipe-panel{
+  background:var(--paper);border:1px solid var(--line);border-radius:14px;
+  padding:22px 24px;margin-top:22px;min-height:118px;
+}
+.pipe-panel.swap{animation:panelIn .4s ease}
+@keyframes panelIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.pp-tag{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:0.14em;text-transform:uppercase;color:var(--orange-dark);font-weight:600}
+.pp-title{font-family:'Fraunces',serif;font-size:21px;font-weight:700;color:var(--brown-dark);margin:5px 0 9px}
+.pp-why{font-size:14px;color:var(--ink);margin-bottom:11px;max-width:none}
+.pp-ai{
+  font-size:13px;color:var(--brown);background:var(--cream);border-left:3px solid var(--orange);
+  padding:10px 14px;border-radius:0 8px 8px 0;max-width:none;margin:0;
+}
+.pp-ai strong{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;color:var(--orange-dark)}
+
+/* ============ Figure 2 · Weak vs strong image prompt ============ */
+.qgrid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.qcol{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:20px;display:flex;flex-direction:column}
+.qcol.vague{border-top:4px solid var(--muted)}
+.qcol.sharp{border-top:4px solid var(--orange)}
+.q-label{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:0.14em;text-transform:uppercase;font-weight:600;margin-bottom:12px}
+.qcol.vague .q-label{color:var(--muted)}
+.qcol.sharp .q-label{color:var(--orange-dark)}
+.q-item{
+  font-size:14px;color:var(--ink);background:var(--cream);border:1px solid var(--line);
+  border-radius:10px;padding:11px 14px;margin-bottom:9px;cursor:pointer;transition:all .2s;
+}
+.q-item:hover{border-color:var(--orange)}
+.q-item.on{background:var(--brown-dark);color:#FBE7CB;border-color:var(--brown-dark)}
+.q-out{
+  margin-top:8px;background:var(--paper);border:1px solid var(--line);
+  border-left:3px solid var(--yellow);border-radius:0 12px 12px 0;padding:16px 18px;min-height:96px;
+}
+.q-out.pop{animation:panelIn .35s ease}
+.q-out .qo-tag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--orange-dark);font-weight:600}
+.q-out .qo-body{font-size:14px;color:var(--brown-dark);margin-top:6px}
+
+/* ============ Figure 3 · Good vs off-brand image A/B ============ */
+.ab-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.ab-card{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:18px;text-align:center}
+.ab-card.good{border-top:4px solid var(--accent)}
+.ab-card.bad{border-top:4px solid var(--orange-dark)}
+.ab-label{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:0.12em;text-transform:uppercase;font-weight:600;margin-bottom:12px}
+.ab-card.good .ab-label{color:var(--accent)}
+.ab-card.bad .ab-label{color:var(--orange-dark)}
+.ab-frame{height:150px;background:var(--cream);border:1px solid var(--line);border-radius:12px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.ab-frame svg{width:100%;height:100%}
+.ab-note{font-size:13px;color:var(--muted);margin-top:12px;text-align:left;max-width:none}
+.ab-flags{margin-top:16px;display:grid;gap:9px}
+.ab-flag{
+  font-size:13px;color:var(--brown-dark);background:var(--paper);border:1px solid var(--line);
+  border-radius:10px;padding:11px 14px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:9px;
+}
+.ab-flag:hover{border-color:var(--orange)}
+.ab-flag.on{background:var(--brown-dark);color:#FBE7CB;border-color:var(--brown-dark)}
+.ab-flag .fbadge{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.06em;text-transform:uppercase;padding:2px 8px;border-radius:5px;flex-shrink:0;background:var(--cream);color:var(--muted);border:1px solid var(--line)}
+.ab-flag.on .fbadge{background:var(--orange);color:#fff;border-color:var(--orange)}
+.ab-flag .freveal{display:none;font-size:12px;color:inherit;margin-top:6px}
+.ab-flag.on .freveal{display:block}
+
+/* ============ Figure 4 · Chart chooser ============ */
+.chart-grid{display:grid;grid-template-columns:1fr 250px;gap:30px;align-items:start}
+.chips{display:flex;flex-wrap:wrap;gap:10px}
+.chip{
+  font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:0.02em;
+  border:1px solid var(--line);background:var(--paper);color:var(--brown);
+  padding:10px 15px;border-radius:999px;cursor:pointer;transition:all .25s;user-select:none;
+}
+.chip:hover{border-color:var(--orange)}
+.chip.on{background:var(--brown-dark);color:#FBE7CB;border-color:var(--brown-dark)}
+.chart-verdict{
+  margin-top:16px;font-size:14px;color:var(--brown-dark);background:var(--paper);
+  border:1px solid var(--line);border-left:3px solid var(--yellow);
+  padding:14px 16px;border-radius:0 10px 10px 0;min-height:60px;max-width:none;
+}
+.chart-verdict.pop{animation:panelIn .35s ease}
+.chart-verdict strong{color:var(--orange-dark)}
+.chart-hintrow{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);margin-top:16px;letter-spacing:0.03em;max-width:none}
+.chart-stage{text-align:center}
+.chart-viz{
+  height:200px;background:var(--paper);border:1px solid var(--line);border-radius:14px;
+  padding:16px;display:flex;align-items:flex-end;justify-content:center;
+}
+.chart-viz svg{width:100%;height:100%}
+.chart-name{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--orange-dark);font-weight:600;margin-top:12px}
+
+/* ============ Figure 5 · Wall-of-text → clean slide redesign ============ */
+.redesign-wrap{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:stretch}
+.slide{
+  background:var(--paper);border:1px solid var(--line);border-radius:14px;
+  padding:0;overflow:hidden;transition:all .3s;position:relative;
+}
+.slide.before{border-top:4px solid var(--orange-dark)}
+.slide.after{border-top:4px solid var(--accent)}
+.slide-tag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;font-weight:600;padding:12px 18px 0}
+.slide.before .slide-tag{color:var(--orange-dark)}
+.slide.after .slide-tag{color:var(--accent)}
+.slide-canvas{margin:12px 18px 18px;background:var(--cream);border:1px solid var(--line);border-radius:8px;padding:18px;min-height:210px}
+.wallhead{font-family:'Fraunces',serif;font-size:16px;font-weight:700;color:var(--brown-dark);margin-bottom:8px}
+.walltext{font-size:10.5px;color:var(--muted);line-height:1.5}
+.cleanhead{font-family:'Fraunces',serif;font-size:19px;font-weight:700;color:var(--brown-dark);margin-bottom:14px}
+.cleanrow{display:flex;align-items:center;gap:10px;margin-bottom:11px}
+.clean-ic{width:30px;height:30px;border-radius:8px;background:rgba(239,127,26,0.14);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.clean-ic svg{width:17px;height:17px}
+.clean-txt{font-size:12.5px;color:var(--brown-dark);font-weight:600}
+.clean-big{font-family:'Fraunces',serif;font-size:34px;font-weight:800;color:var(--orange-dark);line-height:1}
+.clean-cap{font-size:10px;color:var(--muted);font-family:'JetBrains Mono',monospace;letter-spacing:0.08em;text-transform:uppercase}
+.slide-fix{padding:0 18px 16px;font-size:12.5px;color:var(--muted);max-width:none}
+.slide-fix.show{animation:panelIn .35s ease}
+.slide.hidden-after .slide-canvas{opacity:0.25;filter:blur(2px)}
+.slide.hidden-after .slide-fix{visibility:hidden}
+
+/* ============ Figure 6 · Chart honesty sanity-check ============ */
+.val-wrap{display:grid;grid-template-columns:1fr 300px;gap:26px;align-items:start}
+.claim-list{display:grid;gap:10px}
+.claim{
+  background:var(--paper);border:1px solid var(--line);border-radius:12px;
+  padding:14px 16px;cursor:pointer;transition:all .25s;
+}
+.claim:hover{border-color:var(--orange)}
+.claim.checked{border-color:var(--brown-dark)}
+.claim .c-head{font-size:14px;color:var(--brown-dark);font-weight:600;display:flex;align-items:center;gap:9px}
+.claim .c-badge{
+  font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.08em;text-transform:uppercase;
+  padding:2px 8px;border-radius:5px;flex-shrink:0;
+}
+.claim.unchecked-state .c-badge{background:var(--cream);color:var(--muted);border:1px solid var(--line)}
+.claim.ok .c-badge{background:rgba(0,141,210,0.14);color:var(--accent)}
+.claim.bad .c-badge{background:rgba(213,82,34,0.14);color:var(--orange-dark)}
+.claim .c-detail{font-size:13px;color:var(--muted);margin-top:8px;display:none;line-height:1.5}
+.claim.checked .c-detail{display:block;animation:panelIn .3s ease}
+.val-side{
+  background:var(--brown-dark);color:#EFDFC9;border-radius:14px;padding:22px;position:sticky;top:90px;
+}
+.val-side h4{font-family:'Fraunces',serif;font-size:19px;color:var(--paper);margin-bottom:10px}
+.val-side .vs-num{font-family:'Fraunces',serif;font-size:52px;font-weight:800;color:var(--orange-light);line-height:1}
+.val-side .vs-cap{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#C9A574;margin-top:2px}
+.val-side p{color:#E8D9C5;font-size:13px;max-width:none;margin-top:14px}
+.val-side .vs-bar{height:8px;background:rgba(251,246,238,0.15);border-radius:6px;margin-top:14px;overflow:hidden}
+.val-side .vs-fill{height:100%;width:0;background:linear-gradient(90deg,var(--orange),var(--yellow));transition:width .5s cubic-bezier(.3,.8,.3,1)}
+
+@media(max-width:880px){
+  .chart-grid,.val-wrap{grid-template-columns:1fr}
+  .qgrid,.ab-grid,.redesign-wrap{grid-template-columns:1fr}
+  .val-side{position:static}
+  .pstep{min-width:calc(50% - 8px);flex:none}
+}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="brand">MokshPath <span class="dot">·</span> <span class="sub">Lesson 03 · AI Design &amp; Visuals</span></div>
+  <div class="logo-slot" aria-label="MokshPath logo">
+    <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="2" y="2" width="40" height="40" rx="11" fill="#412C23"/>
+      <path d="M10 31V14.5l6 8.5 6-8.5 6 8.5 6-8.5V31" stroke="#EF7F1A" stroke-width="3.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="34" cy="10.5" r="3" fill="#FECC00"/>
+    </svg>
+  </div>
+</div>
+<div class="page">
+
+<section class="hero">
+  <div class="eyebrow">Week 4 · Lesson 03 · AI PowerPoint</div>
+  <h1>A slide is a <em>picture</em> of an idea, not a page of text.</h1>
+  <p class="lede">AI can fill a deck in minutes — with walls of text, off-brand clip-art, and charts that quietly lie. Design is what separates a slide people read from a slide people ignore. In this lesson you learn the visual principles that actually move an audience, then wield AI as a design assistant: on-brand themes, honest charts, generated imagery done right — and the human judgement that keeps all of it true.</p>
+</section>
+
+<section>
+  <div class="section-num">01 / 05</div>
+  <h2>Good design is four decisions, not a talent</h2>
+  <p class="lead">Beginners think "good-looking slides" is a gift some people have. It isn't. Designers run every slide through the same handful of principles — hierarchy, whitespace, contrast, and less-text-more-visual. Learn the checklist and your slides stop looking amateur, whether you or an AI built them.</p>
+
+  <p>The mistake is treating the slide as a document — cramming every sentence you might say onto the screen. A slide is a <strong>visual</strong>; your voice is the document. So each slide gets one job. First you set <strong>hierarchy</strong> so the eye knows what matters most, then you add <strong>whitespace</strong> so that thing can breathe, then you use <strong>contrast</strong> to separate signal from noise, and finally you replace text with a <strong>visual</strong> wherever a picture would say it faster. Click through each principle below.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 1 · The four principles of a slide that works</span>
+      <div class="controls">
+        <button id="pipeBtn" onclick="tourPipe()">▶ Walk through</button>
+        <button onclick="resetPipe()">↺ Reset</button>
+      </div>
+    </div>
+    <div class="pipe" id="pipe">
+      <div class="pstep" data-step="hierarchy" onclick="selectStep('hierarchy')">
+        <div class="p-ic"><svg viewBox="0 0 24 24" fill="none"><path d="M4 6h16M6 12h12M9 18h6" stroke="#EF7F1A" stroke-width="2" stroke-linecap="round"/></svg></div>
+        <div class="p-n">One</div><div class="p-t">Hierarchy</div>
+        <span class="arrow">→</span>
+      </div>
+      <div class="pstep" data-step="whitespace" onclick="selectStep('whitespace')">
+        <div class="p-ic"><svg viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="16" height="16" rx="2" stroke="#EF7F1A" stroke-width="2"/><rect x="9" y="9" width="6" height="6" rx="1" fill="#EF7F1A"/></svg></div>
+        <div class="p-n">Two</div><div class="p-t">Whitespace</div>
+        <span class="arrow">→</span>
+      </div>
+      <div class="pstep" data-step="contrast" onclick="selectStep('contrast')">
+        <div class="p-ic"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#EF7F1A" stroke-width="2"/><path d="M12 3a9 9 0 000 18z" fill="#EF7F1A"/></svg></div>
+        <div class="p-n">Three</div><div class="p-t">Contrast</div>
+        <span class="arrow">→</span>
+      </div>
+      <div class="pstep" data-step="visual" onclick="selectStep('visual')">
+        <div class="p-ic"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="14" rx="2" stroke="#EF7F1A" stroke-width="2"/><circle cx="8.5" cy="10" r="1.8" fill="#EF7F1A"/><path d="M4 17l5-5 4 3 3-3 4 4" stroke="#EF7F1A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="p-n">Four</div><div class="p-t">Visual</div>
+        <span class="arrow">→</span>
+      </div>
+    </div>
+    <div class="pipe-panel" id="pipePanel">
+      <div class="pp-tag" id="ppTag">Interactive principles</div>
+      <div class="pp-title" id="ppTitle">Click any principle above</div>
+      <p class="pp-why" id="ppWhy">Every slide that works respects these four principles. Skip them — cram text edge to edge with no focal point — and the audience reads nothing and remembers less. Click a principle, or press "Walk through", to see what it does and how AI can help you apply it.</p>
+      <p class="pp-ai" id="ppAi"><strong>Tip —</strong> if the audience can't tell what a slide is about in three seconds, no amount of colour will save it.</p>
+    </div>
+  </div>
+
+  <h3>Why "one job per slide" is the whole game</h3>
+  <p>Each principle serves a single idea: the slide has one point, and everything on it either advances that point or gets cut. Hierarchy names the point, whitespace protects it, contrast highlights it, and a visual delivers it faster than a sentence can. When AI drafts your deck, it will happily ignore all four — so these principles are also your edit checklist for anything the machine hands back.</p>
+</section>
+
+<section>
+  <div class="section-num">02 / 05</div>
+  <h2>A vague image prompt gets vague, off-brand art</h2>
+  <p class="lead">"Make me an image for this slide" returns generic stock-looking sludge. Generated imagery is only as good as the description you feed it. A strong prompt names the <strong>subject</strong>, the <strong>style</strong>, the <strong>mood</strong>, the <strong>composition</strong>, and the <strong>colours</strong> — so the output fits your brand instead of fighting it.</p>
+
+  <p>Think of a prompt like a creative brief you'd hand a designer. Say <em>what</em> the picture shows, <em>how</em> it should look (flat illustration, photo, line icon), the <em>feeling</em> (calm, energetic, premium), the <em>framing</em> (wide, centred, negative space on the left for text), and the <em>palette</em> (your brand's warm ochre and cream). Click a lazy prompt on the left and watch its rewritten, on-brand twin on the right.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 2 · Weak vs strong image prompt — pick one</span>
+      <div class="controls">
+        <button onclick="resetQ()">↺ Reset</button>
+      </div>
+    </div>
+    <div class="qgrid">
+      <div class="qcol vague">
+        <div class="q-label">✗ Weak — the AI has to guess</div>
+        <div class="q-item" onclick="pickQ('a',this)">"An image about teamwork."</div>
+        <div class="q-item" onclick="pickQ('b',this)">"Something for the intro slide."</div>
+        <div class="q-item" onclick="pickQ('c',this)">"A nice background."</div>
+        <div class="q-item" onclick="pickQ('d',this)">"An icon for growth."</div>
+      </div>
+      <div class="qcol sharp">
+        <div class="q-label">✓ On-brand — the AI can deliver</div>
+        <div class="q-out" id="qOut">
+          <div class="qo-tag">The rewritten brief</div>
+          <div class="qo-body" id="qBody">Click a weak prompt on the left. We'll rewrite it into a brief with a subject, a style, a mood, a composition, and your brand palette — the version that returns art you'd actually put on a slide.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Turn the first result into the next prompt</h3>
+  <p>Image generation is iterative, not one-shot. When the AI returns something close but too busy, your next prompt writes itself: "same illustration, flat style, more negative space on the left, remove the extra characters." Each pass tightens the fit to your slide. Beginners accept the first image; designers run five prompts and pick the one that leaves room for the headline.</p>
+</section>
+
+<section>
+  <div class="section-num">03 / 05</div>
+  <h2>On-brand beats impressive — and decorative-but-empty is worse than nothing</h2>
+  <p class="lead">The prettiest AI image in the world is a mistake if it clashes with your brand or says nothing. Two failures dominate generated visuals: <strong>off-brand</strong> (wrong colours, wrong style, obvious stock feel) and <strong>decorative-but-empty</strong> (a slick picture that adds zero meaning). A good visual is on-palette and it earns its place by making a point.</p>
+
+  <p>This is where a <strong>brand kit</strong> pays off. When your theme, fonts and colours live in one place — PowerPoint's Slide Master, a saved template, or a brand-kit tool — every generated element can be nudged to match. Compare the two versions below, then click each red flag on the "off-brand" side to see exactly what went wrong.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 3 · On-brand vs off-brand generated imagery</span>
+      <div class="controls">
+        <button onclick="revealAllFlags()">▶ Reveal flags</button>
+        <button onclick="resetFlags()">↺ Reset</button>
+      </div>
+    </div>
+    <div class="ab-grid">
+      <div class="ab-card good">
+        <div class="ab-label">✓ On-brand &amp; meaningful</div>
+        <div class="ab-frame">
+          <svg viewBox="0 0 200 150"><rect width="200" height="150" fill="#FBF6EE"/><circle cx="60" cy="75" r="26" fill="#EF7F1A"/><circle cx="115" cy="60" r="18" fill="#FECC00"/><circle cx="130" cy="98" r="14" fill="#A34E1C"/><path d="M60 75 L115 60 M60 75 L130 98 M115 60 L130 98" stroke="#412C23" stroke-width="2.2"/><rect x="10" y="118" width="120" height="7" rx="3.5" fill="#E8DCC8"/><rect x="10" y="130" width="70" height="6" rx="3" fill="#E8DCC8"/></svg>
+        </div>
+        <p class="ab-note">Warm ochre-and-cream palette matches the deck. Flat illustration style is consistent. Negative space bottom-left leaves room for a headline. The network of nodes actually <em>means</em> "connected team".</p>
+      </div>
+      <div class="ab-card bad">
+        <div class="ab-label">✗ Off-brand &amp; decorative</div>
+        <div class="ab-frame">
+          <svg viewBox="0 0 200 150"><rect width="200" height="150" fill="#0d1b3e"/><circle cx="100" cy="70" r="40" fill="#00e5ff" opacity="0.7"/><circle cx="100" cy="70" r="26" fill="#7b2ff7" opacity="0.8"/><path d="M40 130 Q100 100 160 130" stroke="#ff00c8" stroke-width="4" fill="none"/><circle cx="55" cy="35" r="5" fill="#00e5ff"/><circle cx="150" cy="30" r="6" fill="#ff00c8"/><circle cx="170" cy="90" r="4" fill="#7b2ff7"/></svg>
+        </div>
+        <div class="ab-flags" id="abFlags">
+          <div class="ab-flag" data-flag="color" onclick="toggleFlag(this)">
+            <span class="fbadge">Flag 1</span><span>Neon blue-purple palette — nowhere near the brand
+            <span class="freveal">Glowing sci-fi colours scream "generic AI art". Nothing here matches the deck's warm ochre/cream, so the slide looks bolted on from another presentation.</span></span>
+          </div>
+          <div class="ab-flag" data-flag="meaning" onclick="toggleFlag(this)">
+            <span class="fbadge">Flag 2</span><span>Pretty glow, but it means nothing
+            <span class="freveal">Abstract orbs and swooshes are pure decoration — the audience can't say what they represent. A visual should carry the point, not just fill space.</span></span>
+          </div>
+          <div class="ab-flag" data-flag="text" onclick="toggleFlag(this)">
+            <span class="fbadge">Flag 3</span><span>No room left for a headline
+            <span class="freveal">The busy centred composition leaves no clean negative space, so any text you add lands on top of clutter and becomes unreadable.</span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h3>A licensing note you cannot skip</h3>
+  <p>On-brand or not, check that you're allowed to use the image. AI-generated visuals raise real questions: some tools grant you commercial rights, others don't, and a model may reproduce a copyrighted character or a recognisable logo you're not licensed to use. Read the tool's terms, avoid prompts that name living artists or brands, and for anything client-facing keep a note of where each asset came from. "The AI made it" is not, on its own, a licence.</p>
+</section>
+
+<section>
+  <div class="section-num">04 / 05</div>
+  <h2>The right chart tells the truth faster</h2>
+  <p class="lead">A chart on a slide is an argument, and the wrong chart type either hides your point or — worse — misleads the room. Before AI draws anything, name the question: comparison, trend over time, composition, or relationship. The question chooses the chart; the chart must be honest.</p>
+
+  <p>Four questions cover most decks. <strong>Comparing categories?</strong> Bar chart. <strong>Showing change over time?</strong> Line chart. <strong>Showing parts of a whole?</strong> Pie — only with a handful of slices. <strong>Relating two numbers or spotting an odd one out?</strong> Scatter plot. AI can draft any of these from a plain-English request, but you decide what it argues. Pick your question below and see which chart fits — and the trap to avoid.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 4 · The chart chooser</span>
+      <div class="controls">
+        <button onclick="resetChart()">↺ Reset</button>
+      </div>
+    </div>
+    <div class="chart-grid" id="chartWrap">
+      <div>
+        <div class="chips">
+          <span class="chip on" id="q-compare" onclick="pickChart('compare')">Compare categories</span>
+          <span class="chip" id="q-trend" onclick="pickChart('trend')">Change over time</span>
+          <span class="chip" id="q-part" onclick="pickChart('part')">Parts of a whole</span>
+          <span class="chip" id="q-relate" onclick="pickChart('relate')">Relationship / outliers</span>
+        </div>
+        <div class="chart-verdict" id="chartVerdict"></div>
+        <p class="chart-hintrow">There is no "best chart" in the abstract — only the best chart for the question. Change the question and the answer changes.</p>
+      </div>
+      <div class="chart-stage">
+        <div class="chart-viz" id="chartViz"></div>
+        <div class="chart-name" id="chartName">Bar chart</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Verify the numbers before the slide leaves the room</h3>
+  <p>AI will draw a beautiful chart from whatever data you paste — including data it read wrong. It can truncate a y-axis to exaggerate a difference, plot the wrong column, or invent a total that never appears in your sheet. A chart looks authoritative either way. The non-negotiable step is checking that the picture tells the same story as the numbers. Use the sanity-check below to catch the classic tricks.</p>
+</section>
+
+<section>
+  <div class="section-num">05 / 05</div>
+  <h2>From wall-of-text to a slide people actually read</h2>
+  <p class="lead">The most common AI-deck failure is the wall-of-text slide: a paragraph the AI dumped onto a canvas because you asked it to "put the content on a slide". Redesign is a skill you can run every time — pull out the one point, turn support into icons or a number, and delete the rest. Watch the same slide get rescued below, then check the AI's honesty on charts.</p>
+
+  <p>The move is always the same: find the single sentence that is the point, promote it to a headline, convert three supporting facts into a row of icons or a big number, and cut everything the audience will hear you say out loud. Click <strong>Redesign</strong> to transform the wall of text into a clean visual slide.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 5 · Redesign a wall-of-text slide</span>
+      <div class="controls">
+        <button id="redesignBtn" onclick="doRedesign()">▶ Redesign</button>
+        <button onclick="resetRedesign()">↺ Reset</button>
+      </div>
+    </div>
+    <div class="redesign-wrap" id="redesignWrap">
+      <div class="slide before">
+        <div class="slide-tag">Before · wall of text</div>
+        <div class="slide-canvas">
+          <div class="wallhead">Our Q3 Performance Summary and Key Results Overview</div>
+          <div class="walltext">In the third quarter our team delivered strong results across every region. Revenue increased compared to the previous quarter, driven primarily by growth in the enterprise segment which expanded faster than expected. Customer satisfaction scores also improved over the period as our support response times fell. We onboarded a record number of new customers this quarter, many of whom came through referral channels. Meanwhile our churn rate declined for the third consecutive quarter, and our net retention improved. Overall this was our strongest quarter to date and sets us up well for the remainder of the year as we head into the important Q4 selling season and beyond.</div>
+        </div>
+        <div class="slide-fix">Six sentences, one focal point (none), zero visuals. The audience reads while you talk — so they hear nothing.</div>
+      </div>
+      <div class="slide after hidden-after" id="afterSlide">
+        <div class="slide-tag">After · one point, three proofs</div>
+        <div class="slide-canvas">
+          <div class="cleanhead">Q3 was our strongest quarter yet</div>
+          <div class="cleanrow"><div class="clean-ic"><svg viewBox="0 0 24 24" fill="none"><path d="M4 18l6-6 4 3 6-8" stroke="#EF7F1A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><span class="clean-big">+18%</span> <span class="clean-cap">revenue vs Q2</span></div></div>
+          <div class="cleanrow"><div class="clean-ic"><svg viewBox="0 0 24 24" fill="none"><circle cx="9" cy="8" r="3" stroke="#EF7F1A" stroke-width="2"/><path d="M3 20a6 6 0 0112 0M16 6l2 2 3-3" stroke="#EF7F1A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="clean-txt">Record new customers onboarded</div></div>
+          <div class="cleanrow"><div class="clean-ic"><svg viewBox="0 0 24 24" fill="none"><path d="M12 21s-7-4.5-7-10a4 4 0 017-2.5A4 4 0 0119 11c0 5.5-7 10-7 10z" stroke="#EF7F1A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="clean-txt">Churn down · 3rd quarter running</div></div>
+        </div>
+        <div class="slide-fix">One headline as the point. Three proofs as a number and two icon rows. Everything you'd <em>say</em> got cut. The eye lands, then you speak.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Never ship a chart you haven't sanity-checked</h3>
+  <p>Redesign fixes clutter; honesty fixes trust. AI can hand you a chart that looks clean and still lies — a chopped axis, a mislabelled slice, a total that doesn't add up. Click each chart claim below to run the three-second check before that slide reaches a decision-maker.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 6 · Spot the misleading chart</span>
+      <div class="controls">
+        <button onclick="checkAll()">▶ Check all</button>
+        <button onclick="resetVal()">↺ Reset</button>
+      </div>
+    </div>
+    <div class="val-wrap" id="valWrap">
+      <div class="claim-list" id="claimList">
+        <div class="claim unchecked-state" data-claim="axis" onclick="toggleClaim(this)">
+          <div class="c-head"><span class="c-badge">Not checked</span> "Sales doubled — look how much taller the bar is."</div>
+          <div class="c-detail"></div>
+        </div>
+        <div class="claim unchecked-state" data-claim="pie" onclick="toggleClaim(this)">
+          <div class="c-head"><span class="c-badge">Not checked</span> "Our slice is the biggest at 34%."</div>
+          <div class="c-detail"></div>
+        </div>
+        <div class="claim unchecked-state" data-claim="line" onclick="toggleClaim(this)">
+          <div class="c-head"><span class="c-badge">Not checked</span> "Steady growth every month this year."</div>
+          <div class="c-detail"></div>
+        </div>
+        <div class="claim unchecked-state" data-claim="total" onclick="toggleClaim(this)">
+          <div class="c-head"><span class="c-badge">Not checked</span> "The four segments add up to 108% of customers."</div>
+          <div class="c-detail"></div>
+        </div>
+      </div>
+      <div class="val-side">
+        <h4>Chart honesty score</h4>
+        <div class="vs-num" id="vsNum">0<span style="font-size:24px">/4</span></div>
+        <div class="vs-cap">Claims verified</div>
+        <div class="vs-bar"><div class="vs-fill" id="vsFill"></div></div>
+        <p id="vsMsg">Click each chart claim to check it against the numbers behind it — the axis range, the slice totals, the actual data points. Two of these four charts mislead.</p>
+      </div>
+    </div>
+  </div>
+
+  <h3>The three-second honesty check</h3>
+  <p>You don't need to redraw the chart — you need to ask three questions. Does the y-axis start at zero (or is a small change made to look huge)? Do the pie slices actually sum to 100%? Does the shape match the data, not a story you wanted to tell? If a chart fails the gut check, AI probably read a column wrong or "helpfully" flattered the trend. On slides, verify first — then present.</p>
+</section>
+
+<div class="takeaway">
+  <h2>What to carry forward</h2>
+  <p>You now know that a great slide is designed, not decorated. Hierarchy, whitespace, contrast and less-text-more-visual turn a page of words into a picture of an idea. AI accelerates every step — theme, imagery, charts — and just as easily produces off-brand art and dishonest charts, which is why the human owns the final look and the final truth.</p>
+  <ul>
+    <li>Run every slide through four principles: hierarchy → whitespace → contrast → visual</li>
+    <li>One job per slide; your voice is the document, the slide is the picture</li>
+    <li>A strong image prompt names subject, style, mood, composition and brand palette</li>
+    <li>On-brand beats impressive; decorative-but-empty is worse than no image at all</li>
+    <li>Check licensing — "the AI made it" is not automatically a right to use it</li>
+    <li>Let Designer and Copilot draft layouts, but override when they miss the point</li>
+    <li>The question chooses the chart; check the axis, the slices and the totals for honesty</li>
+  </ul>
+</div>
+
+</div>
+<footer>MokshPath · Lesson 03 of 04 · Next up: AI Delivery &amp; Speaker Notes →</footer>
+<script>
+
+/* ============ Figure 1 · Design principles pipeline ============ */
+const STEPS={
+  hierarchy:{t:"Set a clear hierarchy",
+    why:"Before anything else, decide what the eye should hit first. Make the one point big and bold; make everything supporting it smaller and quieter. A slide with no hierarchy is a slide where everything shouts, so nothing is heard. Size, weight and position tell the audience where to look before they read a single word.",
+    ai:"Ask AI to \"rank the ideas on this slide from most to least important\" — then size them to match. Copilot and Designer will suggest layouts, but you decide which element is the headline and which is the footnote."},
+  whitespace:{t:"Give it whitespace to breathe",
+    why:"Empty space is not wasted space — it's the frame that makes the point stand out. Beginners fill every pixel; designers cut until only the essential remains and let it float. Margins, gaps between elements, and a clear focal area do more for readability than any font choice. When in doubt, remove something.",
+    ai:"AI-drafted slides tend to fill the canvas. Prompt it: \"remove half the words and leave generous margins.\" Whitespace is usually a subtraction task, and AI is happy to over-add — so this is your edit, not its default."},
+  contrast:{t:"Use contrast to separate signal from noise",
+    why:"Contrast is how the eye distinguishes the important from the incidental — through colour, size, and weight. Your key number in the brand accent, supporting text in a muted tone, background quiet. Low contrast makes a slide feel muddy and effortful; strong, deliberate contrast makes the point pop and keeps the rest legible.",
+    ai:"Have AI apply your theme's accent colour to the single most important element only. If everything is highlighted, nothing is. Ask it to check text-on-background contrast for readability, especially for anyone at the back of the room."},
+  visual:{t:"Replace text with a visual",
+    why:"The final move: wherever a picture, icon, chart or single number would say it faster than a sentence, use the picture. A slide is a visual medium — your spoken words are the paragraph, the slide is the illustration. Three bullet points often become three icons; a claim becomes one bold statistic.",
+    ai:"This is where AI earns its keep: generate an on-brand icon set, draft a chart from your numbers, or turn a bullet list into a simple diagram. But you decide what the visual argues — a pretty image of the wrong idea is just confident noise."}
+};
+const stepOrder=["hierarchy","whitespace","contrast","visual"];
+let pipeTimer=null,pipeIdx=0;
+function selectStep(k){
+  document.querySelectorAll('#pipe .pstep').forEach(el=>el.classList.remove('on'));
+  const el=document.querySelector('#pipe [data-step="'+k+'"]');
+  if(el)el.classList.add('on');
+  const d=STEPS[k],panel=document.getElementById('pipePanel');
+  document.getElementById('ppTag').textContent='Principle '+(stepOrder.indexOf(k)+1)+' of 4';
+  document.getElementById('ppTitle').textContent=d.t;
+  document.getElementById('ppWhy').textContent=d.why;
+  document.getElementById('ppAi').innerHTML='<strong>AI assist —</strong> '+d.ai;
+  panel.classList.remove('swap');void panel.offsetWidth;panel.classList.add('swap');
+}
+function tourPipe(){
+  stopPipe();
+  document.getElementById('pipeBtn').classList.add('active');
+  pipeIdx=0;selectStep(stepOrder[0]);
+  pipeTimer=setInterval(()=>{
+    pipeIdx++;
+    if(pipeIdx>=stepOrder.length){stopPipe();return}
+    selectStep(stepOrder[pipeIdx]);
+  },3200);
+}
+function stopPipe(){
+  if(pipeTimer){clearInterval(pipeTimer);pipeTimer=null}
+  document.getElementById('pipeBtn').classList.remove('active');
+}
+function resetPipe(){
+  stopPipe();
+  document.querySelectorAll('#pipe .pstep').forEach(el=>el.classList.remove('on'));
+  document.getElementById('ppTag').textContent='Interactive principles';
+  document.getElementById('ppTitle').textContent='Click any principle above';
+  document.getElementById('ppWhy').textContent='Every slide that works respects these four principles. Skip them — cram text edge to edge with no focal point — and the audience reads nothing and remembers less. Click a principle, or press "Walk through", to see what it does and how AI can help you apply it.';
+  document.getElementById('ppAi').innerHTML='<strong>Tip —</strong> if the audience can\'t tell what a slide is about in three seconds, no amount of colour will save it.';
+}
+new IntersectionObserver((es,o)=>es.forEach(e=>{if(e.isIntersecting){tourPipe();o.unobserve(e.target)}}),{threshold:0.4}).observe(document.getElementById('pipe'));
+
+/* ============ Figure 2 · Weak vs strong image prompt ============ */
+const QMAP={
+  a:{tag:"From \"An image about teamwork\"",body:"\"Flat vector illustration of three abstract figures connected by lines, warm ochre and cream palette, calm and collaborative mood, wide composition with negative space on the lower-left for a headline.\" — subject, style, mood, composition and brand palette, all named."},
+  b:{tag:"From \"Something for the intro slide\"",body:"\"Minimal line-art illustration of a winding path leading to a hilltop flag, single accent colour on a cream background, optimistic tone, plenty of empty space on the right for the title.\" — now the AI knows exactly what to draw and where the text will sit."},
+  c:{tag:"From \"A nice background\"",body:"\"Soft, low-contrast abstract texture in muted cream and light tan, subtle grain, no focal point, dark enough nowhere to compete with black body text placed on top.\" — a background that supports text instead of fighting it."},
+  d:{tag:"From \"An icon for growth\"",body:"\"Simple two-colour line icon of an upward arrow over a bar chart, rounded strokes, ochre and brown, transparent background, matching a set of icons at the same weight.\" — specific enough to sit consistently beside your other icons."}
+};
+function pickQ(k,el){
+  document.querySelectorAll('.qcol.vague .q-item').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');
+  const d=QMAP[k];
+  document.querySelector('#qOut .qo-tag').textContent=d.tag;
+  document.getElementById('qBody').textContent=d.body;
+  const out=document.getElementById('qOut');
+  out.classList.remove('pop');void out.offsetWidth;out.classList.add('pop');
+}
+function resetQ(){
+  document.querySelectorAll('.qcol.vague .q-item').forEach(b=>b.classList.remove('on'));
+  document.querySelector('#qOut .qo-tag').textContent='The rewritten brief';
+  document.getElementById('qBody').textContent="Click a weak prompt on the left. We'll rewrite it into a brief with a subject, a style, a mood, a composition, and your brand palette — the version that returns art you'd actually put on a slide.";
+}
+
+/* ============ Figure 3 · Off-brand flags ============ */
+function toggleFlag(el){el.classList.toggle('on')}
+function revealAllFlags(){document.querySelectorAll('#abFlags .ab-flag').forEach(el=>el.classList.add('on'))}
+function resetFlags(){document.querySelectorAll('#abFlags .ab-flag').forEach(el=>el.classList.remove('on'))}
+
+/* ============ Figure 4 · Chart chooser ============ */
+const CHARTS={
+  compare:{name:"Bar chart",
+    verdict:"<strong>Comparing categories?</strong> Use a bar chart — the eye compares bar lengths effortlessly, even across a dozen categories. Trap: don't use a pie for this; humans read length far better than angle. And keep the axis at zero or the comparison lies.",
+    svg:'<svg viewBox="0 0 200 150"><line x1="20" y1="130" x2="190" y2="130" stroke="#A34E1C" stroke-width="1.5"/><rect x="34" y="70" width="24" height="60" fill="#EF7F1A"/><rect x="72" y="45" width="24" height="85" fill="#FF9429"/><rect x="110" y="90" width="24" height="40" fill="#D55222"/><rect x="148" y="30" width="24" height="100" fill="#FECC00"/></svg>'},
+  trend:{name:"Line chart",
+    verdict:"<strong>Watching change over time?</strong> Use a line chart — the slope between points is the trend, and your eye follows it naturally. Trap: bars for time-series make the reader reconstruct the direction themselves, and a cherry-picked window can fake a trend that isn't there.",
+    svg:'<svg viewBox="0 0 200 150"><line x1="20" y1="130" x2="190" y2="130" stroke="#A34E1C" stroke-width="1.5"/><polyline points="30,110 65,90 100,100 135,55 175,40" fill="none" stroke="#EF7F1A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="30" cy="110" r="4" fill="#D55222"/><circle cx="65" cy="90" r="4" fill="#D55222"/><circle cx="100" cy="100" r="4" fill="#D55222"/><circle cx="135" cy="55" r="4" fill="#D55222"/><circle cx="175" cy="40" r="4" fill="#D55222"/></svg>'},
+  part:{name:"Pie chart",
+    verdict:"<strong>Showing parts of a whole?</strong> A pie works — but only with 2–5 slices that sum to 100%. Trap: more than five slices and nobody can compare them; switch to a bar chart of the same shares. And if the slices don't add to 100%, the pie is simply wrong.",
+    svg:'<svg viewBox="0 0 200 150"><g transform="translate(100,75)"><path d="M0 0 L0 -60 A60 60 0 0 1 52 30 Z" fill="#EF7F1A"/><path d="M0 0 L52 30 A60 60 0 0 1 -52 30 Z" fill="#FECC00"/><path d="M0 0 L-52 30 A60 60 0 0 1 0 -60 Z" fill="#A34E1C"/></g></svg>'},
+  relate:{name:"Scatter plot",
+    verdict:"<strong>Looking for a relationship or outliers?</strong> Use a scatter plot — each point is one record, and the odd one out jumps off the page. Trap: a summary chart hides individual outliers; scatter keeps every point visible so you can ask whether that spike is real or a typo.",
+    svg:'<svg viewBox="0 0 200 150"><line x1="20" y1="130" x2="190" y2="130" stroke="#A34E1C" stroke-width="1.5"/><line x1="20" y1="130" x2="20" y2="20" stroke="#A34E1C" stroke-width="1.5"/><circle cx="45" cy="110" r="4" fill="#EF7F1A"/><circle cx="65" cy="95" r="4" fill="#EF7F1A"/><circle cx="85" cy="100" r="4" fill="#EF7F1A"/><circle cx="105" cy="80" r="4" fill="#EF7F1A"/><circle cx="125" cy="70" r="4" fill="#EF7F1A"/><circle cx="150" cy="60" r="4" fill="#EF7F1A"/><circle cx="160" cy="30" r="5" fill="#D55222" stroke="#2F1D19" stroke-width="1.5"/></svg>'}
+};
+function pickChart(k){
+  document.querySelectorAll('.chips .chip').forEach(c=>c.classList.remove('on'));
+  document.getElementById('q-'+k).classList.add('on');
+  const d=CHARTS[k];
+  document.getElementById('chartViz').innerHTML=d.svg;
+  document.getElementById('chartName').textContent=d.name;
+  const v=document.getElementById('chartVerdict');
+  v.innerHTML=d.verdict;
+  v.classList.remove('pop');void v.offsetWidth;v.classList.add('pop');
+}
+function resetChart(){pickChart('compare')}
+new IntersectionObserver((es,o)=>es.forEach(e=>{if(e.isIntersecting){pickChart('compare');o.unobserve(e.target)}}),{threshold:0.4}).observe(document.getElementById('chartWrap'));
+
+/* ============ Figure 5 · Redesign ============ */
+function doRedesign(){
+  document.getElementById('afterSlide').classList.remove('hidden-after');
+  document.getElementById('redesignBtn').classList.add('active');
+  document.querySelectorAll('#afterSlide .slide-fix').forEach(el=>{el.classList.remove('show');void el.offsetWidth;el.classList.add('show')});
+}
+function resetRedesign(){
+  document.getElementById('afterSlide').classList.add('hidden-after');
+  document.getElementById('redesignBtn').classList.remove('active');
+}
+new IntersectionObserver((es,o)=>es.forEach(e=>{if(e.isIntersecting){doRedesign();o.unobserve(e.target)}}),{threshold:0.4}).observe(document.getElementById('redesignWrap'));
+
+/* ============ Figure 6 · Chart honesty sanity-check ============ */
+const CLAIMS={
+  axis:{ok:false,badge:"Misleads",
+    detail:"Look at the y-axis. If it starts at 90 instead of 0, a jump from 100 to 105 looks like the bar \"doubled\" when sales rose 5%. Truncated axes are the oldest trick in the book — always confirm the baseline is zero before you trust the height of a bar."},
+  pie:{ok:true,badge:"Honest",
+    detail:"34% is genuinely the largest slice here, and the four slices sum to 100%. A pie is the right chart, the maths adds up, and the biggest wedge really is biggest. This one holds — present it as-is."},
+  line:{ok:true,badge:"Honest",
+    detail:"The line rises across all twelve months with no cherry-picked window and a full date range on the x-axis. The shape matches the data, so \"steady growth\" is a fair reading. Verified."},
+  total:{ok:false,badge:"Misleads",
+    detail:"Parts of a whole cannot exceed 100%. If four customer segments add to 108%, either a customer was counted in two segments or the AI misread the source column. A pie built on this data is simply false — recount before it goes on a slide."}
+};
+let checkedSet=new Set();
+function applyClaim(el,d){
+  el.classList.remove('unchecked-state');
+  el.classList.add('checked',d.ok?'ok':'bad');
+  el.querySelector('.c-badge').textContent=(d.ok?'✓ ':'✗ ')+d.badge;
+  el.querySelector('.c-detail').textContent=d.detail;
+}
+function toggleClaim(el){
+  const key=el.dataset.claim,d=CLAIMS[key];
+  if(el.classList.contains('checked')){
+    el.classList.remove('checked','ok','bad');el.classList.add('unchecked-state');
+    el.querySelector('.c-badge').textContent='Not checked';
+    el.querySelector('.c-detail').textContent='';
+    checkedSet.delete(key);
+  }else{
+    applyClaim(el,d);checkedSet.add(key);
+  }
+  updateVal();
+}
+function updateVal(){
+  const n=checkedSet.size;
+  document.getElementById('vsNum').innerHTML=n+'<span style="font-size:24px">/4</span>';
+  document.getElementById('vsFill').style.width=(n/4*100)+'%';
+  const msg=document.getElementById('vsMsg');
+  if(n===0)msg.textContent='Click each chart claim to check it against the numbers behind it — the axis range, the slice totals, the actual data points. Two of these four charts mislead.';
+  else if(n<4)msg.textContent='Keep going. '+n+' of 4 checked. Notice how two charts quietly mislead — a truncated axis and a total over 100%.';
+  else msg.textContent='All four checked. Two misled: the doubled bar (chopped axis) and the 108% pie. This is why you verify a chart before it decides anything.';
+}
+function checkAll(){
+  document.querySelectorAll('#claimList .claim').forEach(el=>{
+    if(!el.classList.contains('checked')){applyClaim(el,CLAIMS[el.dataset.claim]);checkedSet.add(el.dataset.claim)}
+  });
+  updateVal();
+}
+function resetVal(){
+  checkedSet.clear();
+  document.querySelectorAll('#claimList .claim').forEach(el=>{
+    el.classList.remove('checked','ok','bad');el.classList.add('unchecked-state');
+    el.querySelector('.c-badge').textContent='Not checked';
+    el.querySelector('.c-detail').textContent='';
+  });
+  updateVal();
+}
+updateVal();
+
+</script>
+</body>
+</html>
