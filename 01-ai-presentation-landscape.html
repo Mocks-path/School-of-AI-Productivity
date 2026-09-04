@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>The AI Presentation Landscape · Lesson 01</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,0,400;9..144,0,600;9..144,0,800;9..144,1,600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+
+:root{
+  --orange:#EF7F1A; --orange-light:#FF9429; --orange-dark:#D55222;
+  --brown:#412C23; --brown-dark:#2F1D19; --tan:#A34E1C;
+  --yellow:#FECC00; --cream:#FBF6EE; --paper:#FFFCF6;
+  --ink:#1C1410; --muted:#6E5C50; --line:#E8DCC8; --accent:#008DD2;
+  --deck-red:#C0392B;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',system-ui,sans-serif;
+  background:var(--paper); color:var(--ink); line-height:1.6; overflow-x:hidden;
+}
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:radial-gradient(circle at 1px 1px,rgba(65,44,35,0.05) 1px,transparent 0);
+  background-size:24px 24px;
+}
+.topbar{
+  position:sticky;top:0;z-index:100;
+  background:rgba(255,252,246,0.92); backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+  padding:14px 40px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.brand{font-family:'Fraunces',serif;font-weight:800;font-size:17px;letter-spacing:-0.01em;color:var(--brown-dark)}
+.brand .dot{color:var(--orange)}
+.brand .sub{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.15em;color:var(--muted);font-weight:500;text-transform:uppercase;margin-left:8px}
+.logo-slot{width:44px;height:44px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.logo-slot svg{width:100%;height:100%;display:block}
+.page{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:50px 40px 100px}
+.hero{padding:30px 0 50px;border-bottom:1px solid var(--line)}
+.eyebrow{
+  font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.18em;
+  text-transform:uppercase;color:var(--orange-dark);font-weight:600;
+  display:inline-flex;align-items:center;gap:10px;
+}
+.eyebrow::before{content:"";width:24px;height:2px;background:var(--orange)}
+h1{
+  font-family:'Fraunces',serif;font-weight:800;
+  font-size:clamp(38px,7vw,80px);line-height:0.98;letter-spacing:-0.03em;
+  margin:18px 0 20px;color:var(--brown-dark);
+}
+h1 em{font-style:italic;color:var(--orange-dark);font-weight:600}
+.lede{font-size:19px;max-width:680px;color:var(--muted)}
+section{padding:70px 0;border-bottom:1px solid var(--line)}
+section:last-of-type{border-bottom:none}
+.section-num{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--orange);font-weight:600;letter-spacing:0.08em}
+h2{
+  font-family:'Fraunces',serif;font-weight:700;
+  font-size:clamp(28px,4.5vw,48px);line-height:1.05;letter-spacing:-0.02em;
+  margin:10px 0 22px;color:var(--brown-dark);max-width:720px;
+}
+h3{font-family:'Fraunces',serif;font-weight:600;font-size:24px;color:var(--brown-dark);margin:28px 0 12px}
+p{max-width:680px;margin-bottom:14px;color:var(--ink)}
+.lead{font-size:17px;color:var(--muted);max-width:680px;margin-bottom:26px}
+code{font-family:'JetBrains Mono',monospace;font-size:0.92em;background:var(--cream);padding:2px 6px;border-radius:4px;color:var(--brown-dark)}
+.illus{
+  background:var(--cream);border:1px solid var(--line);border-radius:18px;
+  padding:32px;margin:24px 0;position:relative;overflow:hidden;
+}
+.illus-title{
+  font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);
+  letter-spacing:0.12em;text-transform:uppercase;
+  margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:10px;
+}
+.controls{display:flex;gap:8px;flex-wrap:wrap}
+.controls button{
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  background:var(--paper);border:1px solid var(--line);color:var(--brown);
+  padding:6px 12px;border-radius:6px;cursor:pointer;
+  text-transform:uppercase;letter-spacing:0.1em;transition:all .2s;
+}
+.controls button:hover{background:var(--orange);color:#fff;border-color:var(--orange)}
+.controls button.active{background:var(--brown-dark);color:#fff;border-color:var(--brown-dark)}
+.takeaway{
+  background:var(--brown-dark);color:var(--paper);
+  border-radius:18px;padding:44px;margin-top:50px;position:relative;overflow:hidden;
+}
+.takeaway::after{
+  content:"";position:absolute;top:-40px;right:-40px;width:180px;height:180px;
+  border-radius:50%;background:radial-gradient(circle,var(--orange),transparent 70%);opacity:0.4;
+}
+.takeaway h2{color:var(--paper);margin-bottom:16px}
+.takeaway p{color:#E8D9C5;font-size:16px;max-width:680px}
+.takeaway ul{list-style:none;margin-top:18px;display:grid;gap:8px}
+.takeaway li{font-family:'JetBrains Mono',monospace;font-size:13px;padding-left:22px;position:relative;color:#FBE7CB}
+.takeaway li::before{content:"→";position:absolute;left:0;color:var(--orange);font-weight:bold}
+footer{text-align:center;padding:36px;color:var(--muted);font-size:12px;font-family:'JetBrains Mono',monospace;letter-spacing:0.1em}
+@media(max-width:700px){
+  .topbar{padding:12px 18px}
+  .page{padding:30px 18px 70px}
+  .illus{padding:20px}
+  .takeaway{padding:28px}
+  .logo-slot{width:38px;height:38px}
+}
+
+/* ============ Figure 1 · deck generator flow ============ */
+.flow{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:30px 22px 22px;position:relative}
+.flow-row{display:flex;align-items:stretch;gap:0}
+.fnode{
+  flex:0 0 auto;width:150px;text-align:center;padding:16px 10px 13px;
+  background:var(--cream);border:2px solid var(--line);border-radius:12px;
+  transition:border-color .3s,background .3s,transform .3s,box-shadow .3s;
+}
+.fnode h5{font-family:'Fraunces',serif;font-size:16px;color:var(--brown-dark);line-height:1.15;margin-bottom:4px}
+.fnode .fsub{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);line-height:1.4;display:block}
+.fnode .fmark{width:34px;height:34px;border-radius:50%;background:var(--brown-dark);color:var(--paper);font-family:'Fraunces',serif;font-weight:700;font-size:16px;display:flex;align-items:center;justify-content:center;margin:0 auto 8px;transition:background .3s}
+.fnode.on{border-color:var(--orange);background:#FDEBD7;transform:translateY(-4px);box-shadow:0 8px 18px rgba(239,127,26,0.22)}
+.fnode.on .fmark{background:var(--orange)}
+.fconn{flex:1;min-width:26px;align-self:center;height:3px;background:var(--line);position:relative;border-radius:2px}
+.fdot{
+  position:absolute;top:50%;left:0;width:15px;height:15px;border-radius:50%;
+  transform:translate(-50%,-50%);opacity:0;z-index:2;
+}
+.fdot.data{background:var(--yellow);border:2px solid var(--tan);box-shadow:0 0 0 4px rgba(254,204,0,0.25)}
+.fdot.answer{background:var(--orange);border:2px solid var(--brown-dark);box-shadow:0 0 0 4px rgba(239,127,26,0.18)}
+.fconn.go .fdot,.frail.go .fdot{animation:dotR 1.35s ease-in-out forwards}
+.fconn.go.rev .fdot,.frail.go.rev .fdot{animation:dotL 1.35s ease-in-out forwards}
+@keyframes dotR{0%{left:0%;opacity:0}14%{opacity:1}86%{opacity:1}100%{left:100%;opacity:0}}
+@keyframes dotL{0%{left:100%;opacity:0}14%{opacity:1}86%{opacity:1}100%{left:0%;opacity:0}}
+.frail{margin:30px 10px 6px;height:3px;background:var(--line);position:relative;border-radius:2px}
+.frail-label{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);text-align:center;margin-top:8px}
+.fcap-wrap{display:flex;gap:14px;align-items:flex-start;margin-top:20px;background:var(--cream);border:1px solid var(--line);border-radius:10px;padding:14px 16px;min-height:74px}
+.fstep{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;letter-spacing:0.08em;color:#fff;background:var(--orange);border-radius:6px;padding:4px 9px;white-space:nowrap;flex-shrink:0;margin-top:2px}
+.fcap{font-size:14.5px;color:var(--brown-dark);line-height:1.5}
+.fkey{display:flex;gap:22px;margin-top:14px;font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted)}
+.fkey span{display:inline-flex;align-items:center;gap:7px}
+.fkey i{width:12px;height:12px;border-radius:50%;display:inline-block}
+.fkey .km{background:var(--yellow);border:2px solid var(--tan)}
+.fkey .kp{background:var(--orange);border:2px solid var(--brown-dark)}
+@media(max-width:700px){
+  .flow{padding:18px 10px 14px}
+  .fnode{width:96px;padding:10px 5px 9px}
+  .fnode h5{font-size:12.5px}
+  .fnode .fsub{font-size:8px}
+  .fnode .fmark{width:26px;height:26px;font-size:13px}
+}
+
+/* ============ Figure 2 · tool comparison matrix ============ */
+.mcalc{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:26px}
+.toolgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.tcard{
+  background:var(--cream);border:2px solid var(--line);border-radius:12px;
+  padding:18px 15px;cursor:pointer;transition:all .25s;position:relative;
+}
+.tcard:hover{border-color:var(--orange);transform:translateY(-3px);box-shadow:0 8px 18px rgba(239,127,26,0.16)}
+.tcard.active{border-color:var(--brown-dark);background:#FDEBD7}
+.tcard .tname{font-family:'Fraunces',serif;font-weight:700;font-size:16px;color:var(--brown-dark);line-height:1.1;margin-bottom:8px}
+.tcard .ttag{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;padding:3px 7px;border-radius:5px;display:inline-block;margin-bottom:12px}
+.ttag.paid{background:#F6E3C8;color:var(--tan)}
+.ttag.free{background:#D9EEDF;color:#217346}
+.ttag.ext{background:#DCEAF4;color:var(--accent)}
+.tcard .tmeta{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--muted);line-height:1.7}
+.tcard .tmeta b{color:var(--brown-dark)}
+.tdetail{
+  margin-top:20px;background:var(--cream);border:1px solid var(--line);
+  border-radius:12px;padding:22px;min-height:130px;
+}
+.tdetail.swap{animation:panelIn .4s ease}
+.tdetail h4{font-family:'Fraunces',serif;font-size:20px;color:var(--brown-dark);margin-bottom:4px}
+.tdetail .dtag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--orange-dark);font-weight:600;display:block;margin-bottom:12px}
+.tdetail .drow{display:flex;gap:10px;align-items:baseline;font-size:14px;color:var(--ink);margin-bottom:8px;line-height:1.45}
+.tdetail .dk{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);font-weight:600;flex:0 0 108px}
+.tdetail .warn{background:#FCEBD6;border-left:3px solid var(--orange);border-radius:0 8px 8px 0;padding:10px 14px;font-size:13px;color:var(--brown);margin-top:6px;line-height:1.5}
+.tbars{display:flex;gap:16px;flex-wrap:wrap;margin:12px 0 4px}
+.tbar{flex:1;min-width:120px}
+.tbar .tbl{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
+.tbar .ttrack{height:8px;background:#EADFC9;border-radius:5px;overflow:hidden}
+.tbar .tfill{height:100%;background:linear-gradient(90deg,var(--orange),var(--orange-light));border-radius:5px;width:0;transition:width .6s ease}
+@media(max-width:700px){
+  .toolgrid{grid-template-columns:1fr 1fr}
+  .tdetail .drow{flex-direction:column;gap:2px}
+  .tdetail .dk{flex-basis:auto}
+}
+
+/* ============ Figure 3 · prompt-to-deck vs document-to-deck ============ */
+.aimap-chain{display:flex;align-items:center;gap:0;margin-bottom:20px}
+.ainode{
+  flex:1;text-align:center;padding:16px 8px;background:var(--paper);
+  border:2px solid var(--line);border-radius:12px;cursor:pointer;
+  transition:all .25s;font-family:'JetBrains Mono',monospace;
+  font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--brown);font-weight:600;
+}
+.ainode .aidx{display:block;font-family:'Fraunces',serif;font-size:24px;font-weight:800;color:var(--line);margin-bottom:4px;transition:color .25s;text-transform:none;letter-spacing:0}
+.ainode:hover{border-color:var(--orange);transform:translateY(-2px)}
+.ainode.active{background:var(--brown-dark);border-color:var(--brown-dark);color:var(--paper)}
+.ainode.active .aidx{color:var(--orange)}
+.ailink{width:26px;height:3px;background:var(--line);flex-shrink:0;position:relative}
+.ailink::after{content:"";position:absolute;right:-1px;top:50%;transform:translateY(-50%);border-left:7px solid var(--line);border-top:5px solid transparent;border-bottom:5px solid transparent}
+.aipanel{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:26px;min-height:250px}
+.aipanel.swap{animation:panelIn .4s ease}
+@keyframes panelIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.aipanel h4{font-family:'Fraunces',serif;font-size:22px;color:var(--brown-dark);margin-bottom:4px}
+.aipanel .aitag{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:0.12em;text-transform:uppercase;color:var(--orange-dark);font-weight:600;display:block;margin-bottom:14px}
+.aipanel ul{list-style:none;display:grid;gap:9px;margin-bottom:18px}
+.aipanel li{font-size:14.5px;color:var(--ink);padding-left:24px;position:relative;line-height:1.5}
+.aipanel li::before{content:"✦";position:absolute;left:0;color:var(--orange);font-size:13px}
+.ai-human{
+  background:var(--cream);border-left:3px solid var(--brown);border-radius:0 10px 10px 0;
+  padding:13px 16px;font-size:13.5px;color:var(--brown);line-height:1.5;
+}
+.ai-human strong{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--brown-dark);display:block;margin-bottom:3px}
+.aiprompt{font-family:'JetBrains Mono',monospace;font-size:12px;background:var(--brown-dark);color:#F3E7D5;border-radius:8px;padding:12px 14px;margin-bottom:16px;line-height:1.55;overflow-x:auto}
+.aiprompt .plab{color:var(--yellow);font-size:9.5px;letter-spacing:0.12em;text-transform:uppercase;display:block;margin-bottom:6px}
+@media(max-width:700px){
+  .aimap-chain{flex-wrap:wrap;gap:8px}
+  .ainode{flex:1 1 42%}
+  .ailink{display:none}
+}
+
+/* ============ Figure 4 · limitation flip cards ============ */
+.hgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.hcard{height:225px;perspective:1100px;cursor:pointer;opacity:0;transform:translateY(12px)}
+.hgrid.show .hcard{animation:hIn .5s forwards}
+.hgrid.show .hcard:nth-child(1){animation-delay:.05s}
+.hgrid.show .hcard:nth-child(2){animation-delay:.2s}
+.hgrid.show .hcard:nth-child(3){animation-delay:.35s}
+.hgrid.show .hcard:nth-child(4){animation-delay:.5s}
+@keyframes hIn{to{opacity:1;transform:translateY(0)}}
+.hinner{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .65s cubic-bezier(.4,.1,.2,1)}
+.hcard.flipped .hinner{transform:rotateY(180deg)}
+.hface{
+  position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;
+  border-radius:14px;padding:22px;display:flex;flex-direction:column;justify-content:center;
+}
+.hfront{background:linear-gradient(135deg,var(--orange) 0%,var(--orange-dark) 100%);color:#fff;text-align:center;align-items:center}
+.hfront .hclaim{font-family:'Fraunces',serif;font-weight:800;font-size:25px;line-height:1.1;margin-bottom:8px}
+.hfront .hsub{font-size:13px;opacity:.92;max-width:260px}
+.hfront .hhint{position:absolute;bottom:12px;left:0;right:0;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:0.15em;text-transform:uppercase;opacity:.75}
+.hback{background:var(--brown-dark);color:#F3E7D5;transform:rotateY(180deg);border:1px solid var(--brown)}
+.hback .hlab{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--yellow);font-weight:600;margin-bottom:8px}
+.hback p{font-size:13px;line-height:1.5;color:#F3E7D5;margin:0;max-width:none}
+@media(max-width:700px){
+  .hgrid{grid-template-columns:1fr}
+  .hcard{height:210px}
+  .hfront .hclaim{font-size:22px}
+}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="brand">MokshPath <span class="dot">·</span> <span class="sub">Lesson 01 · Slides · AI Landscape</span></div>
+  <div class="logo-slot" aria-label="MokshPath logo">
+    <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="4" y="13" width="36" height="27" rx="6" fill="#412C23"/>
+      <path d="M14 13 C14 4.5 30 4.5 30 13" stroke="#EF7F1A" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+      <path d="M12 32 L12 22 L17 28 L22 21 L27 28 L32 22 L32 32" stroke="#FECC00" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="36" cy="9" r="4.5" fill="#EF7F1A"/>
+    </svg>
+  </div>
+</div>
+<div class="page">
+
+<section class="hero">
+  <div class="eyebrow">Week 4 · Lesson 01 · AI Presentations</div>
+  <h1>The AI presentation <em>landscape</em>.</h1>
+  <p class="lede">A blank slide is one of the most intimidating things in office life. You have ideas — but turning them into a clean, structured, good-looking deck used to eat an entire afternoon. AI changes the starting point: you describe the presentation you want, and a tool drafts a full deck in seconds. This lesson is your honest map of that landscape — what "AI for slides" really means today, which tools do what, how a deck generator actually works, and where you still have to take over the story.</p>
+</section>
+
+<section>
+  <div class="section-num">01 / 04</div>
+  <h2>Why AI for slides matters</h2>
+  <p class="lead">Presentations are how ideas travel through an organisation — pitches, updates, training, reports. Yet most people don't struggle with the idea; they struggle with the blank canvas: what goes on each slide, in what order, and how to make it look intentional rather than thrown together. AI attacks exactly that friction.</p>
+
+  <p>Before AI, building a deck meant three separate jobs done by hand: <strong>structuring</strong> (deciding the slides and their order), <strong>writing</strong> (the words on each slide), and <strong>designing</strong> (layout, colour, spacing, alignment). Each is a skill of its own, and doing all three at once is why decks take so long and so often end up as walls of bullet points. The gap between "I know what I want to say" and "here's a finished slide" is where the hours vanished.</p>
+  <p>"AI for slides" means closing that gap. You describe the presentation — a topic, an audience, maybe a document to draw from — and an AI generator drafts the whole structure, the slide text, and a coherent visual theme in one pass. It's not magic and it's not final: think of it as a <strong>fast first draft of an entire deck</strong> that you then direct and refine. The tool proposes; you decide the story. Press the buttons below to watch how a deck generator actually builds a presentation, stage by stage.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 1 · How an AI deck generator builds a presentation</span>
+      <div class="controls">
+        <button id="btnAI" class="active" onclick="runFlow('ai')">▶ Generate with AI</button>
+        <button id="btnOld" onclick="runFlow('old')">▶ The old manual way</button>
+        <button onclick="resetFlow(true)">↺ Reset</button>
+      </div>
+    </div>
+    <div class="flow ai" id="flow">
+      <div class="flow-row">
+        <div class="fnode" id="fnPrompt">
+          <div class="fmark">P</div>
+          <h5>Your Prompt</h5>
+          <span class="fsub">Topic · audience</span>
+        </div>
+        <div class="fconn" id="fc1"><div class="fdot data"></div></div>
+        <div class="fnode" id="fnOutline">
+          <div class="fmark">1</div>
+          <h5>Outline</h5>
+          <span class="fsub">Slide-by-slide plan</span>
+        </div>
+        <div class="fconn" id="fc2"><div class="fdot data"></div></div>
+        <div class="fnode" id="fnContent">
+          <div class="fmark">2</div>
+          <h5>Slide Content</h5>
+          <span class="fsub">Titles · bullets</span>
+        </div>
+        <div class="fconn" id="fc3"><div class="fdot data"></div></div>
+        <div class="fnode" id="fnLayout">
+          <div class="fmark">3</div>
+          <h5>Layout + Theme</h5>
+          <span class="fsub">Design · colour</span>
+        </div>
+      </div>
+      <div class="frail" id="frail"><div class="fdot answer"></div></div>
+      <div class="frail-label" id="frailLabel">← the finished draft deck travels back to you along this rail</div>
+      <div class="fcap-wrap">
+        <div class="fstep" id="fstep">— / —</div>
+        <div class="fcap" id="fcap">Press ▶ Generate with AI or ▶ The old manual way to run the sequence.</div>
+      </div>
+      <div class="fkey">
+        <span><i class="km"></i> your intent / instructions</span>
+        <span><i class="kp"></i> the draft deck coming back</span>
+      </div>
+    </div>
+  </div>
+
+  <h3>What you still own</h3>
+  <p>Notice where the sequence ends: the draft comes back to <em>you</em>. AI handles structure, first-pass wording and a consistent look — the mechanical heavy lifting. What it can't do is know why this deck matters, which single point the audience must remember, or the story that connects the slides. That judgment stays yours. The whole skill of AI presentations is learning to hand off the drafting and keep the direction.</p>
+</section>
+
+<section>
+  <div class="section-num">02 / 04</div>
+  <h2>The tool landscape, compared</h2>
+  <p class="lead">"AI for slides" isn't one product. It's a growing field of tools with very different starting points, design quality and — critically — how faithfully they export to a real PowerPoint file. Confusing them is the most common beginner mistake. Click each tool to see its generation mode, design quality, editability, PPTX export fidelity, cost and best fit.</p>
+
+  <p>Broadly there are two camps. Some tools live <strong>inside the apps you already use</strong> — Copilot in PowerPoint, PowerPoint Designer, and Google Slides with Gemini — so the output is a native editable file from the start. Others are <strong>standalone AI-first generators</strong> — Gamma, Beautiful.ai, Canva — that produce beautiful decks quickly but in their own environment, where exporting to <code>.pptx</code> can lose some polish. Same goal, very different trade-offs. Click a card to compare.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 2 · Six ways to make a deck with AI · click a tool</span>
+      <div class="controls">
+        <button onclick="toolStep(-1)">◀ Prev</button>
+        <button onclick="toolStep(1)">Next ▶</button>
+      </div>
+    </div>
+    <div class="mcalc">
+      <div class="toolgrid" id="toolGrid">
+        <div class="tcard" data-k="copilot" onclick="pickTool('copilot')">
+          <div class="tname">Copilot in PowerPoint</div>
+          <span class="ttag paid">Paid add-on</span>
+          <div class="tmeta"><b>Mode:</b> prompt + docs<br><b>Output:</b> native .pptx</div>
+        </div>
+        <div class="tcard" data-k="designer" onclick="pickTool('designer')">
+          <div class="tname">PowerPoint Designer</div>
+          <span class="ttag free">Built in</span>
+          <div class="tmeta"><b>Mode:</b> redesign<br><b>Output:</b> native .pptx</div>
+        </div>
+        <div class="tcard" data-k="gamma" onclick="pickTool('gamma')">
+          <div class="tname">Gamma</div>
+          <span class="ttag ext">Standalone</span>
+          <div class="tmeta"><b>Mode:</b> prompt / doc<br><b>Output:</b> web + export</div>
+        </div>
+        <div class="tcard" data-k="beautiful" onclick="pickTool('beautiful')">
+          <div class="tname">Beautiful.ai</div>
+          <span class="ttag ext">Standalone</span>
+          <div class="tmeta"><b>Mode:</b> smart templates<br><b>Output:</b> web + export</div>
+        </div>
+        <div class="tcard" data-k="canva" onclick="pickTool('canva')">
+          <div class="tname">Canva</div>
+          <span class="ttag ext">Standalone</span>
+          <div class="tmeta"><b>Mode:</b> Magic Design<br><b>Output:</b> web + export</div>
+        </div>
+        <div class="tcard" data-k="gemini" onclick="pickTool('gemini')">
+          <div class="tname">Google Slides + Gemini</div>
+          <span class="ttag ext">Google</span>
+          <div class="tmeta"><b>Mode:</b> prompt assist<br><b>Output:</b> native Slides</div>
+        </div>
+      </div>
+      <div class="tdetail" id="toolDetail"></div>
+    </div>
+  </div>
+
+  <h3>The line that matters most: export fidelity</h3>
+  <p>There's one dividing question that beginners always miss: <em>does the tool produce a real PowerPoint, or its own format that you export later?</em> Copilot, Designer and Google Slides give you a native editable file from the first second. Gamma, Beautiful.ai and Canva build in their own beautiful environment — and when you download a <code>.pptx</code>, fonts, spacing and smart layouts can shift or flatten into images. If your workflow requires handing off an editable PowerPoint to a colleague, that export step is where the polish quietly leaks. Always test the export early, not the night before the meeting.</p>
+</section>
+
+<section>
+  <div class="section-num">03 / 04</div>
+  <h2>Prompt-to-deck vs document-to-deck</h2>
+  <p class="lead">However you generate a deck, you feed the AI one of two things: a short <strong>prompt</strong> describing what you want, or an existing <strong>document</strong> to transform into slides. They feel similar but behave very differently — and picking the wrong one is why some AI decks come out thin and others come out cluttered. Click each mode to see how it works and when to reach for it.</p>
+
+  <p>The honest framing for this whole week: an AI deck generator is a <strong>fast, tireless designer</strong> who has seen every presentation ever made but has never sat in your meeting. From a prompt it invents plausible content — great for brainstorming, risky on facts. From a document it reorganises what you already wrote — faithful to your material, but only as good as the source. Below, click through both modes to see the mechanics, a sample input, and the check that stays your job.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 3 · Two ways to feed a deck generator</span>
+      <div class="controls">
+        <button onclick="stageStep(-1)">◀ Prev</button>
+        <button onclick="stageStep(1)">Next ▶</button>
+      </div>
+    </div>
+    <div class="aimap-chain" id="aiChain">
+      <div class="ainode" data-k="prompt" onclick="pickStage('prompt')"><span class="aidx">A</span>Prompt&nbsp;to&nbsp;Deck</div>
+      <div class="ailink"></div>
+      <div class="ainode" data-k="document" onclick="pickStage('document')"><span class="aidx">B</span>Document&nbsp;to&nbsp;Deck</div>
+      <div class="ailink"></div>
+      <div class="ainode" data-k="hybrid" onclick="pickStage('hybrid')"><span class="aidx">C</span>Hybrid&nbsp;Approach</div>
+    </div>
+    <div class="aipanel" id="aiPanel"></div>
+  </div>
+
+  <h3>The rule of thumb</h3>
+  <p>If you're <strong>exploring an idea</strong> and don't have material yet, prompt-to-deck gives you a scaffold to react to — just verify every fact it invents. If you <strong>already have the content</strong> — a report, a doc, meeting notes — document-to-deck keeps you faithful to your own material and saves you from AI making things up. Most professionals end up hybrid: draft the structure from a prompt, then paste in your real numbers and story. Whichever you choose, the AI produces the draft; you own what's true.</p>
+</section>
+
+<section>
+  <div class="section-num">04 / 04</div>
+  <h2>The honest limitations, flipped</h2>
+  <p class="lead">The internet promises that AI will "make your whole presentation for you." Before you lean on it in front of an audience, flip each card and read what the promise looks like once you've actually shipped a few AI decks. Honest expectations now save you from a generic slide — or a wrong fact — in a real meeting later.</p>
+
+  <p>None of this means "don't use AI for slides." It means use it as a drafting engine, not an oracle. The realistic workflow is calm and repeatable: describe the deck, let AI structure and design a first pass, then cut the fluff, verify every claim, and layer in the one story only you can tell. That last part is the principle behind this entire week — <strong>AI drafts, you direct the story.</strong></p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 4 · Flip the promise</span>
+      <div class="controls">
+        <button onclick="allReal()">Show all realities</button>
+        <button onclick="allHype()">↺ Back to hype</button>
+      </div>
+    </div>
+    <div class="hgrid" id="hgrid">
+      <div class="hcard" onclick="this.classList.toggle('flipped')">
+        <div class="hinner">
+          <div class="hface hfront">
+            <div class="hclaim">"AI writes the whole deck for you"</div>
+            <div class="hsub">Type a topic, present it as-is.</div>
+            <div class="hhint">tap to flip</div>
+          </div>
+          <div class="hface hback">
+            <div class="hlab">Reality</div>
+            <p>By default AI decks are generic and wordy — plausible bullet points that could belong to anyone. They're a strong first draft, not a finished talk. Cut half the text, sharpen every title, and add the specific example only you know. AI removes the blank page, not the editing.</p>
+          </div>
+        </div>
+      </div>
+      <div class="hcard" onclick="this.classList.toggle('flipped')">
+        <div class="hinner">
+          <div class="hface hfront">
+            <div class="hclaim">"Every fact on the slide is true"</div>
+            <div class="hsub">It sounds so confident.</div>
+            <div class="hhint">tap to flip</div>
+          </div>
+          <div class="hface hback">
+            <div class="hlab">Reality</div>
+            <p>Prompt-to-deck tools can hallucinate — invent a statistic, a quote, a market size or a date that reads perfectly but isn't real. Confidence is not accuracy. Verify every number and named fact against a source before it lands in front of an audience.</p>
+          </div>
+        </div>
+      </div>
+      <div class="hcard" onclick="this.classList.toggle('flipped')">
+        <div class="hinner">
+          <div class="hface hfront">
+            <div class="hclaim">"Export to PowerPoint is perfect"</div>
+            <div class="hsub">Just click download.</div>
+            <div class="hhint">tap to flip</div>
+          </div>
+          <div class="hface hback">
+            <div class="hlab">Reality</div>
+            <p>Standalone tools like Gamma, Beautiful.ai and Canva build in their own format. Exporting to <code>.pptx</code> can shift fonts, break smart layouts, or flatten slides into images your colleague can't edit. Test the export early, and expect some cleanup before handoff.</p>
+          </div>
+        </div>
+      </div>
+      <div class="hcard" onclick="this.classList.toggle('flipped')">
+        <div class="hinner">
+          <div class="hface hfront">
+            <div class="hclaim">"You don't need slide skills now"</div>
+            <div class="hsub">The AI handles design.</div>
+            <div class="hhint">tap to flip</div>
+          </div>
+          <div class="hface hback">
+            <div class="hlab">Reality</div>
+            <p>The opposite. You still need to judge whether a slide is clear, whether the order tells a story, and what to cut. AI rewards people who understand presentations — it just removes the tedious layout work. Taste and story are exactly what it can't supply.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Your getting-started path</h3>
+  <p>Start small and safe. <strong>First,</strong> pick one tool that matches your workflow — if colleagues need an editable file, start with Copilot or Google Slides; if you want beautiful fast drafts, try Gamma or Canva. <strong>Second,</strong> generate a short deck from a clear prompt and notice what's generic. <strong>Third,</strong> try document-to-deck by feeding in a real doc, and compare. <strong>Always,</strong> cut the fluff, verify every fact, and export a test file before you rely on it. Do that a few times and AI becomes a genuine part of how you present.</p>
+</section>
+
+<div class="takeaway">
+  <h2>What to carry forward</h2>
+  <p>You now have the honest map of AI presentations. The blank slide is the enemy, and AI attacks it by drafting structure, words and design in one pass — a fast first draft you then direct. A deck generator works in stages: outline → slide content → layout + theme. The tools split into in-app (Copilot, Designer, Google Slides — native editable output) and standalone AI-first (Gamma, Beautiful.ai, Canva — beautiful, but watch the PPTX export). You feed them a prompt or a document, and by default they're generic, wordy and occasionally wrong. So you verify, cut, and add the story. Next lesson: generating your first deck, step by step.</p>
+  <ul>
+    <li>The blank slide is the friction — AI drafts structure, words and design at once</li>
+    <li>Deck generators build in stages: outline → content → layout + theme</li>
+    <li>In-app tools (Copilot · Designer · Google Slides) give native editable output</li>
+    <li>Standalone tools (Gamma · Beautiful.ai · Canva) are beautiful — mind PPTX export</li>
+    <li>Prompt-to-deck invents content; document-to-deck stays faithful to your material</li>
+    <li>AI decks default to generic, wordy, sometimes wrong — verify, cut, and direct</li>
+    <li>The principle for the week: AI drafts, you direct the story</li>
+  </ul>
+</div>
+
+</div>
+<footer>MokshPath · Lesson 01 of Week 4 · Next up: Generating Your First Deck with AI →</footer>
+<script>
+
+function el(id){return document.getElementById(id)}
+
+/* ===== Figure 1 · deck generator flow ===== */
+const flowEl=el('flow'),fcap=el('fcap'),fstep=el('fstep');
+let flowTimers=[];
+const FLOWS={
+  ai:[
+    {n:['fnPrompt'],c:[],cap:'You give a short prompt — "a 10-slide pitch for a coffee subscription app, for investors." Topic and audience in plain English. No blank slides to fill.'},
+    {n:['fnPrompt','fnOutline'],c:[['fc1','data',false]],cap:'Stage 1 · Outline. The AI first plans the deck: which slides exist and in what order — problem, solution, market, model, ask. The skeleton before any words.'},
+    {n:['fnOutline','fnContent'],c:[['fc2','data',false]],cap:'Stage 2 · Slide content. For each outline point it writes a title and a few concise bullets or a short paragraph — the actual words on the page.'},
+    {n:['fnContent','fnLayout'],c:[['fc3','data',false]],cap:'Stage 3 · Layout + theme. It picks a consistent visual theme — fonts, colours, spacing — and arranges each slide into a clean layout with room for images.'},
+    {n:['fnLayout','fnPrompt'],c:[['frail','answer',true]],cap:'The finished draft deck travels back to YOU — structured, written and styled in seconds. Now your real job begins: cut the fluff, verify facts, add the story.'}
+  ],
+  old:[
+    {n:['fnPrompt'],c:[],cap:'You open a blank presentation. You know the topic, but you face an empty slide and a blinking cursor — and you have to invent all three jobs at once.'},
+    {n:['fnPrompt','fnOutline'],c:[['fc1','data',false]],cap:'Structuring by hand. You brainstorm the slides and their order on paper or in your head — often reshuffling three times before it flows.'},
+    {n:['fnOutline','fnContent'],c:[['fc2','data',false]],cap:'Writing by hand. You type a title and bullets on each slide, wrestling with how much to say and cutting yourself off mid-thought.'},
+    {n:['fnContent','fnLayout'],c:[['fc3','data',false]],cap:'Designing by hand. You fight alignment guides, pick colours, resize boxes, and nudge text until it stops looking thrown together. This is where the afternoon goes.'},
+    {n:['fnLayout'],c:[],cap:'Hours later you have a deck. The end result is similar to the AI route — it just cost you a full afternoon of structuring, writing and pixel-nudging.'}
+  ]
+};
+function clearFlowState(){
+  ['fnPrompt','fnOutline','fnContent','fnLayout'].forEach(id=>el(id).classList.remove('on'));
+  ['fc1','fc2','fc3','frail'].forEach(id=>el(id).classList.remove('go','rev'));
+}
+function applyFlowStep(s,i,total){
+  clearFlowState();
+  s.n.forEach(id=>el(id).classList.add('on'));
+  s.c.forEach(pair=>{
+    const c=el(pair[0]),d=c.querySelector('.fdot');
+    d.className='fdot '+pair[1];
+    void c.offsetWidth;
+    if(pair[2])c.classList.add('rev');
+    c.classList.add('go');
+  });
+  fstep.textContent=(i+1)+' / '+total;
+  fcap.textContent=s.cap;
+}
+function runFlow(mode){
+  resetFlow(false);
+  el('btnAI').classList.toggle('active',mode==='ai');
+  el('btnOld').classList.toggle('active',mode==='old');
+  flowEl.classList.remove('ai','old');
+  flowEl.classList.add(mode);
+  el('frailLabel').textContent = mode==='ai'
+    ? '← the finished draft deck travels back to you along this rail'
+    : '← no shortcut back — every stage is done by hand, one slide at a time';
+  const steps=FLOWS[mode];
+  steps.forEach((s,i)=>{
+    flowTimers.push(setTimeout(()=>applyFlowStep(s,i,steps.length), 300+i*2100));
+  });
+}
+function resetFlow(full){
+  flowTimers.forEach(t=>clearTimeout(t));
+  flowTimers=[];
+  clearFlowState();
+  if(full){
+    fstep.textContent='— / —';
+    fcap.textContent='Press ▶ Generate with AI or ▶ The old manual way to run the sequence.';
+  }
+}
+new IntersectionObserver((es,o)=>es.forEach(e=>{if(e.isIntersecting){runFlow('ai');o.unobserve(e.target)}}),{threshold:0.35}).observe(flowEl);
+
+/* ===== Figure 2 · tool comparison ===== */
+const TOOLS={
+  copilot:{t:'Copilot in PowerPoint',tag:'Inside PowerPoint · paid add-on license',rows:[
+    ['Generation','Prompt or document — "create a deck about X", or point it at a Word doc to convert.'],
+    ['Design quality','Solid and on-brand — uses your company template and Designer layouts under the hood.'],
+    ['Editability','Fully native — every slide is a normal, editable PowerPoint object from the start.'],
+    ['Export fidelity','Perfect — it IS a .pptx. Nothing to export or convert.'],
+    ['Cost','A paid Microsoft 365 Copilot license on top of your Office subscription.'],
+    ['Best fit','Teams already in Microsoft 365 who must hand off editable, on-brand files.']
+  ],bars:{design:70,edit:100,export:100},warn:'Check your organisation actually has the Copilot license enabled — it is not included by default.'},
+  designer:{t:'PowerPoint Designer',tag:'Built into PowerPoint · free',rows:[
+    ['Generation','Redesign, not generation — you add content, it suggests polished layout options for that slide.'],
+    ['Design quality','Very good for single-slide layouts — clean arrangements of your text and images.'],
+    ['Editability','Fully native — you apply a suggestion and it becomes ordinary editable slide content.'],
+    ['Export fidelity','Perfect — output is native PowerPoint.'],
+    ['Cost','Free — included with modern PowerPoint (needs an internet connection).'],
+    ['Best fit','Anyone who has the content but wants a slide to look designed in one click.']
+  ],bars:{design:65,edit:100,export:100},warn:'It improves individual slides — it will not plan a whole deck or write content for you.'},
+  gamma:{t:'Gamma',tag:'Standalone AI-first generator',rows:[
+    ['Generation','Prompt or paste a document — generates a full, structured deck in one pass.'],
+    ['Design quality','Excellent — modern, cohesive themes that look professional out of the box.'],
+    ['Editability','Editable in Gamma’s own card-based editor — not native PowerPoint until exported.'],
+    ['Export fidelity','Good-to-imperfect — .pptx export can shift spacing and flatten some smart elements.'],
+    ['Cost','Free tier with credits; paid plans for more generations and export options.'],
+    ['Best fit','Fast, great-looking drafts when you’ll present from the web or lightly clean the export.']
+  ],bars:{design:95,edit:70,export:60},warn:'The web version is gorgeous; budget time to fix the PowerPoint export if a colleague needs to edit it.'},
+  beautiful:{t:'Beautiful.ai',tag:'Standalone · smart templates',rows:[
+    ['Generation','Prompt-assisted plus "smart" templates that auto-adjust layout as you add content.'],
+    ['Design quality','Very high consistency — the templates enforce good spacing and alignment for you.'],
+    ['Editability','Editable within its own system; layouts are semi-locked to protect the design.'],
+    ['Export fidelity','Imperfect — exporting to .pptx loses the smart auto-layout behaviour.'],
+    ['Cost','Subscription-based; no free-forever tier for full features.'],
+    ['Best fit','People who want guaranteed-tidy slides and will live inside the tool.']
+  ],bars:{design:88,edit:60,export:55},warn:'Its strength is the smart layouts — which are exactly what a PowerPoint export cannot carry over.'},
+  canva:{t:'Canva',tag:'Standalone · Magic Design',rows:[
+    ['Generation','"Magic Design" from a prompt, plus a vast library of templates to start from.'],
+    ['Design quality','Strong and flexible — huge choice of styles, images and brand kits.'],
+    ['Editability','Very editable inside Canva’s drag-and-drop editor; not native PowerPoint.'],
+    ['Export fidelity','Imperfect — .pptx export often turns rich elements into images you cannot edit.'],
+    ['Cost','Generous free tier; Canva Pro for brand kits and premium assets.'],
+    ['Best fit','Visual, marketing-style decks where look matters more than editable handoff.']
+  ],bars:{design:85,edit:75,export:55},warn:'Great for polished visuals; a Canva-to-PowerPoint export is rarely something a colleague can cleanly edit.'},
+  gemini:{t:'Google Slides + Gemini',tag:'Google’s presentation AI',rows:[
+    ['Generation','Prompt assistance inside Slides — generate slides, images and text from a request.'],
+    ['Design quality','Clean and functional; less designer-slick than Gamma, but tidy and consistent.'],
+    ['Editability','Fully native to Google Slides — everything stays editable in your Workspace.'],
+    ['Export fidelity','Native Slides; exporting to .pptx is generally faithful for standard layouts.'],
+    ['Cost','Available on Google Workspace plans that include Gemini features.'],
+    ['Best fit','Teams living in Google Workspace who want AI help without leaving Slides.']
+  ],bars:{design:70,edit:95,export:85},warn:'Same principle as Copilot — confirm your Workspace plan actually includes the Gemini features.'}
+};
+const TOOLORDER=['copilot','designer','gamma','beautiful','canva','gemini'];
+let toolCurrent='copilot';
+function pickTool(k){
+  toolCurrent=k;
+  document.querySelectorAll('#toolGrid .tcard').forEach(c=>c.classList.toggle('active',c.dataset.k===k));
+  const d=TOOLS[k],box=el('toolDetail');
+  let html='<span class="dtag">'+d.tag+'</span><h4>'+d.t+'</h4>';
+  html+='<div class="tbars">'
+    +'<div class="tbar"><div class="tbl">Design quality</div><div class="ttrack"><div class="tfill" data-w="'+d.bars.design+'"></div></div></div>'
+    +'<div class="tbar"><div class="tbl">Editability</div><div class="ttrack"><div class="tfill" data-w="'+d.bars.edit+'"></div></div></div>'
+    +'<div class="tbar"><div class="tbl">PPTX export</div><div class="ttrack"><div class="tfill" data-w="'+d.bars.export+'"></div></div></div>'
+    +'</div>';
+  d.rows.forEach(r=>{html+='<div class="drow"><span class="dk">'+r[0]+'</span><span>'+r[1]+'</span></div>'});
+  html+='<div class="warn">'+d.warn+'</div>';
+  box.innerHTML=html;
+  box.classList.remove('swap');void box.offsetWidth;box.classList.add('swap');
+  setTimeout(()=>{box.querySelectorAll('.tfill').forEach(f=>{f.style.width=f.dataset.w+'%'})},60);
+}
+function toolStep(dir){
+  let i=TOOLORDER.indexOf(toolCurrent)+dir;
+  if(i<0)i=TOOLORDER.length-1;
+  if(i>=TOOLORDER.length)i=0;
+  pickTool(TOOLORDER[i]);
+}
+pickTool('copilot');
+new IntersectionObserver((es,o)=>es.forEach(e=>{if(e.isIntersecting){pickTool('copilot');o.unobserve(e.target)}}),{threshold:0.3}).observe(el('toolGrid'));
+
+/* ===== Figure 3 · prompt vs document vs hybrid ===== */
+const AIMAP={
+  prompt:{t:'Prompt to Deck',tag:'Mode A · describe it, AI invents it',prompt:'"Create a 12-slide deck introducing our new project-management app to small businesses. Friendly, benefit-led, one idea per slide."',tasks:[
+    'You give a topic, audience and tone — the AI supplies the structure AND the content',
+    'Fastest possible start: a full draft deck from a single sentence',
+    'Ideal for brainstorming, exploring an angle, or when you have no material yet',
+    'The AI decides what points to make, so it fills gaps with plausible generic content'
+  ],h:'Because the AI invents the content, it can invent facts too — statistics, quotes, market sizes. Treat a prompt-generated deck as a scaffold and verify every claim before it is public.'},
+  document:{t:'Document to Deck',tag:'Mode B · transform what you already have',prompt:'"Turn this quarterly report into a 10-slide summary deck for the leadership team. Keep the real numbers; highlight the three biggest changes."',tasks:[
+    'You paste or upload a report, doc or notes — the AI reshapes it into slides',
+    'Faithful to your material: it summarises YOUR words rather than inventing new ones',
+    'Ideal when the thinking is already done and you need it presentable fast',
+    'Much lower hallucination risk — the facts come from your source, not the model'
+  ],h:'It is only as good as the document you feed it. A vague or bloated source makes a vague or bloated deck. Give it clean, well-organised material and tell it what to emphasise.'},
+  hybrid:{t:'Hybrid Approach',tag:'Mode C · the way pros actually work',prompt:'"Draft the outline and structure of an investor pitch. I’ll then paste in our real traction numbers and rewrite the story slide myself."',tasks:[
+    'Generate the structure and design from a prompt to beat the blank page',
+    'Then swap in your real numbers, quotes and the specific story only you know',
+    'Best of both: AI’s speed on scaffolding, your accuracy on substance',
+    'The most common professional workflow once you are past your first few decks'
+  ],h:'The hand-off point is the skill. Let AI own the parts that are mechanical — structure, layout, first-pass wording — and personally own every fact and the through-line that makes the deck yours.'}
+};
+const AIORDER=['prompt','document','hybrid'];
+let aiCurrent='prompt';
+function pickStage(k){
+  aiCurrent=k;
+  document.querySelectorAll('#aiChain .ainode').forEach(n=>{
+    n.classList.toggle('active',n.dataset.k===k);
+  });
+  const d=AIMAP[k],panel=el('aiPanel');
+  let html='<span class="aitag">'+d.tag+'</span><h4>'+d.t+'</h4>';
+  html+='<div class="aiprompt"><span class="plab">Sample input</span>'+d.prompt+'</div><ul>';
+  d.tasks.forEach(t=>{html+='<li>'+t+'</li>'});
+  html+='</ul><div class="ai-human"><strong>You still decide</strong>'+d.h+'</div>';
+  panel.innerHTML=html;
+  panel.classList.remove('swap');
+  void panel.offsetWidth;
+  panel.classList.add('swap');
+}
+function stageStep(dir){
+  let i=AIORDER.indexOf(aiCurrent)+dir;
+  if(i<0)i=AIORDER.length-1;
+  if(i>=AIORDER.length)i=0;
+  pickStage(AIORDER[i]);
+}
+pickStage('prompt');
+new IntersectionObserver((es,o)=>es.forEach(e=>{if(e.isIntersecting){pickStage('prompt');o.unobserve(e.target)}}),{threshold:0.3}).observe(el('aiChain'));
+
+/* ===== Figure 4 · limitations flip ===== */
+const hgrid=el('hgrid');
+function allReal(){document.querySelectorAll('.hcard').forEach(c=>c.classList.add('flipped'))}
+function allHype(){document.querySelectorAll('.hcard').forEach(c=>c.classList.remove('flipped'))}
+new IntersectionObserver((es,o)=>es.forEach(e=>{if(e.isIntersecting){hgrid.classList.add('show');o.unobserve(e.target)}}),{threshold:0.25}).observe(hgrid);
+
+</script>
+</body>
+</html>
