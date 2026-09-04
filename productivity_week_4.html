@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Presentations Week 4 — Save Leo's Board Meeting: Turn a Messy Word Doc into a Boardroom-Ready Deck in 90 Minutes</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --orange:#E87A2E;--orange-dark:#D06A20;--orange-light:#F5943E;--orange-glow:rgba(232,122,46,0.12);
+  --navy:#2B2D42;--navy-dark:#1A1B2E;
+  --bg:#F3EDE7;--bg-card:#FFFFFF;--bg-light:#F9F5F0;
+  --text-primary:#2B2D42;--text-secondary:#6B6D7B;--text-muted:#9597A6;
+  --border:#E5DDD4;
+  --green:#4CAF50;--green-light:#E8F5E9;
+  --blue:#3F88C5;--purple:#8B5CF6;--pink:#EC4899;--red:#E74C3C;
+  --shadow-sm:0 2px 8px rgba(43,45,66,0.06);
+  --shadow-md:0 8px 24px rgba(43,45,66,0.08);
+  --shadow-lg:0 16px 48px rgba(43,45,66,0.12);
+  --radius:14px;--radius-sm:8px;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text-primary);overflow-x:hidden;-webkit-font-smoothing:antialiased;line-height:1.6}
+
+/* ─── HEADER ─── */
+.header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:.8rem 2rem;display:flex;align-items:center;justify-content:space-between}
+.header-left{display:flex;align-items:center;gap:.7rem}
+.header-title{font-family:'DM Serif Display',serif;font-size:1.15rem;color:var(--navy);line-height:1.2}
+.header-title span{color:var(--orange)}
+.header-tag{font-size:.65rem;color:var(--text-muted);font-weight:500;letter-spacing:.04em;text-transform:uppercase}
+.logo-mascot{width:44px;height:44px;flex-shrink:0}
+.progress-pill{display:flex;align-items:center;gap:.6rem;padding:.4rem .9rem;background:var(--orange-glow);border-radius:50px;font-size:.72rem;color:var(--orange);font-weight:700}
+.progress-pill .dot{width:7px;height:7px;border-radius:50%;background:var(--orange);animation:pulse 2s infinite}
+
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.9)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes popIn{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:scale(1)}}
+@keyframes shimmer{0%{background-position:-400px 0}100%{background-position:400px 0}}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ─── HERO ─── */
+.hero{padding:3.5rem 2rem 2.5rem;background:linear-gradient(180deg,var(--bg) 0%,var(--bg-light) 100%);position:relative;overflow:hidden}
+.hero-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1.4fr 1fr;gap:2.5rem;align-items:center}
+.hero-badge{display:inline-flex;align-items:center;gap:.45rem;padding:.4rem 1rem;border-radius:50px;background:var(--orange-glow);color:var(--orange);font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:1rem;animation:fadeUp .7s ease}
+.hero h1{font-family:'DM Serif Display',serif;font-size:clamp(1.9rem,4vw,2.8rem);line-height:1.15;color:var(--navy);margin-bottom:.9rem;animation:fadeUp .7s ease .1s both}
+.hero h1 em{font-style:normal;color:var(--orange)}
+.hero-sub{font-size:.95rem;color:var(--text-secondary);line-height:1.7;margin-bottom:1.4rem;animation:fadeUp .7s ease .2s both}
+.usecase-banner{background:#fff;border-radius:var(--radius);padding:1rem 1.2rem;border:1px solid var(--border);box-shadow:var(--shadow-sm);display:flex;align-items:center;gap:1rem;animation:fadeUp .7s ease .3s both}
+.usecase-icon{width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,#8B5CF6,#E87A2E);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.4rem}
+.usecase-text{font-size:.82rem;color:var(--text-secondary);line-height:1.5}
+.usecase-text strong{color:var(--navy);font-weight:700}
+.hero-visual{display:flex;justify-content:center;align-items:center;animation:fadeUp .8s ease .2s both}
+.hero-mascot{width:230px;height:auto;animation:float 3.5s ease-in-out infinite;filter:drop-shadow(0 12px 40px rgba(232,122,46,0.22))}
+.budget-strip{max-width:1100px;margin:1.6rem auto 0;display:grid;grid-template-columns:repeat(4,1fr);gap:.8rem;animation:fadeUp .8s ease .35s both}
+.budget-chip{background:#fff;border:1px solid var(--border);border-radius:10px;padding:.75rem .9rem;text-align:center;box-shadow:var(--shadow-sm)}
+.budget-chip .bv{font-family:'DM Serif Display',serif;font-size:1.25rem;color:var(--orange)}
+.budget-chip .bl{font-size:.64rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;font-weight:700;margin-top:.15rem}
+
+/* ─── SECTION SHELL ─── */
+.section{padding:3rem 2rem;scroll-margin-top:80px}
+.section.alt{background:var(--bg-light)}
+.container{max-width:1100px;margin:0 auto}
+.section-header{margin-bottom:2rem}
+.section-num{display:inline-flex;align-items:center;gap:.5rem;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--orange);margin-bottom:.5rem}
+.section-num .num{width:24px;height:24px;border-radius:50%;background:var(--orange);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.7rem}
+.section-title{font-family:'DM Serif Display',serif;font-size:clamp(1.5rem,2.8vw,2rem);color:var(--navy);line-height:1.25;margin-bottom:.4rem}
+.section-sub{font-size:.92rem;color:var(--text-secondary);line-height:1.65;max-width:720px}
+.story-beat{background:#fff;border-left:4px solid var(--orange);border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:1rem 1.2rem;font-size:.88rem;color:var(--text-primary);line-height:1.65;box-shadow:var(--shadow-sm);margin-bottom:1.6rem}
+.story-beat .sb-tag{display:inline-block;font-size:.62rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--orange);margin-bottom:.3rem}
+.story-beat em{color:var(--text-secondary)}
+
+/* ─── TAB NAV ─── */
+.tab-nav{display:flex;gap:.4rem;overflow-x:auto;padding:.4rem;background:rgba(255,255,255,0.7);backdrop-filter:blur(8px);border-radius:50px;border:1px solid var(--border);box-shadow:var(--shadow-sm);position:sticky;top:72px;z-index:50;margin:0 auto 2rem;max-width:fit-content;flex-wrap:nowrap;-ms-overflow-style:none;scrollbar-width:none}
+.tab-nav::-webkit-scrollbar{display:none}
+.tab-btn{padding:.55rem 1.1rem;border-radius:50px;border:none;background:transparent;color:var(--text-secondary);font-size:.78rem;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap;transition:all .2s}
+.tab-btn:hover{color:var(--orange)}
+.tab-btn.active{background:var(--orange);color:#fff;box-shadow:0 3px 12px rgba(232,122,46,0.35)}
+
+/* ─── GENERIC CARDS/GRIDS ─── */
+.pick-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;margin-bottom:1.5rem}
+.pick-grid.four{grid-template-columns:repeat(4,1fr)}
+.pick-card{background:#fff;border-radius:var(--radius);padding:1.4rem;border:2px solid var(--border);cursor:pointer;transition:all .3s;position:relative;overflow:hidden}
+.pick-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;transition:height .3s}
+.pick-card:nth-child(1)::before{background:linear-gradient(90deg,var(--green),#7BC67E)}
+.pick-card:nth-child(2)::before{background:linear-gradient(90deg,var(--blue),#5DADE2)}
+.pick-card:nth-child(3)::before{background:linear-gradient(90deg,var(--purple),#B39DDB)}
+.pick-card:nth-child(4)::before{background:linear-gradient(90deg,var(--pink),#F48FB1)}
+.pick-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-md)}
+.pick-card.active{border-color:var(--orange);box-shadow:var(--shadow-md)}
+.pick-card.active::before{height:6px}
+.pick-icon{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;margin-bottom:.8rem;background:var(--bg-light)}
+.pick-card h4{font-family:'DM Serif Display',serif;font-size:1.05rem;color:var(--navy);margin-bottom:.3rem}
+.pick-card .pc-tag{font-size:.66rem;color:var(--orange);font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:.6rem}
+.pick-card p{font-size:.78rem;color:var(--text-secondary);line-height:1.5}
+.pick-detail{background:#fff;border-radius:var(--radius);padding:1.3rem 1.5rem;border:1px solid var(--border);box-shadow:var(--shadow-sm);font-size:.86rem;line-height:1.65;display:none}
+.pick-detail.show{display:block;animation:fadeUp .4s ease}
+.pick-detail strong{color:var(--navy)}
+.pick-detail .verdict-pill{display:inline-block;padding:.2rem .7rem;border-radius:50px;font-size:.68rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;margin-bottom:.5rem}
+.vp-good{background:var(--green-light);color:#2E7D32}
+.vp-mid{background:#FFF3CD;color:#856404}
+.vp-bad{background:#FEE;color:#C62828}
+
+/* ─── SCENARIO QUIZ ─── */
+.scenario-panel{background:#fff;border-radius:var(--radius);padding:1.5rem;border:1px solid var(--border);box-shadow:var(--shadow-sm);margin-top:1.4rem}
+.scenario-title{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-muted);margin-bottom:.6rem}
+.scenario-q{font-size:1rem;color:var(--navy);margin-bottom:1rem;font-weight:600;line-height:1.5}
+.scenario-options{display:grid;grid-template-columns:1fr;gap:.6rem;margin-bottom:1rem}
+.scenario-btn{padding:.75rem .9rem;border-radius:8px;border:1.5px solid var(--border);background:#fff;font-size:.82rem;font-weight:600;color:var(--text-primary);cursor:pointer;font-family:inherit;transition:all .2s;text-align:left;line-height:1.45}
+.scenario-btn:hover{border-color:var(--orange);color:var(--orange)}
+.scenario-btn.correct{background:var(--green-light);border-color:var(--green);color:#2E7D32}
+.scenario-btn.wrong{background:#FEE;border-color:var(--red);color:#C62828}
+.scenario-feedback{padding:.9rem;border-radius:8px;font-size:.83rem;line-height:1.55;display:none}
+.scenario-feedback.show{display:block;animation:fadeUp .4s ease}
+.scenario-feedback.success{background:var(--green-light);color:#2E7D32;border-left:3px solid var(--green)}
+.scenario-feedback.fail{background:#FEE;color:#C62828;border-left:3px solid var(--red)}
+.btn-action{padding:.55rem 1.1rem;border-radius:8px;background:var(--orange);color:#fff;border:none;font-size:.82rem;font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s}
+.btn-action:hover{background:var(--orange-dark);transform:translateY(-1px);box-shadow:0 4px 12px rgba(232,122,46,0.3)}
+.btn-secondary{background:transparent;color:var(--text-primary);border:1.5px solid var(--border);padding:.55rem 1.1rem;border-radius:8px;font-size:.82rem;font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s}
+.btn-secondary:hover{border-color:var(--orange);color:var(--orange)}
+
+/* ─── CHAT MOCK (prompt showdown) ─── */
+.chat-mock{background:#fff;border-radius:var(--radius);border:1px solid var(--border);box-shadow:var(--shadow-sm);overflow:hidden;margin-top:1rem}
+.chat-head{background:var(--navy-dark);color:#fff;padding:.6rem 1rem;font-size:.78rem;font-weight:600;display:flex;align-items:center;gap:.5rem}
+.chat-head .cdot{width:8px;height:8px;border-radius:50%;background:var(--green)}
+.chat-body{padding:1.1rem;display:flex;flex-direction:column;gap:.8rem;min-height:150px}
+.chat-msg{max-width:88%;padding:.8rem 1rem;border-radius:12px;font-size:.83rem;line-height:1.55}
+.chat-msg.user{align-self:flex-end;background:var(--orange-glow);color:var(--text-primary);border:1px solid rgba(232,122,46,0.25);border-bottom-right-radius:3px}
+.chat-msg.ai{align-self:flex-start;background:var(--bg-light);border:1px solid var(--border);border-bottom-left-radius:3px}
+.chat-msg.ai strong{color:var(--orange)}
+.chat-msg .who{display:block;font-size:.62rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--text-muted);margin-bottom:.3rem}
+
+/* ─── SLIDE / DECK MOCK ─── */
+.deck-wrap{background:#fff;border-radius:var(--radius);border:1px solid var(--border);box-shadow:var(--shadow-md);overflow:hidden;margin-top:1rem}
+.deck-chrome{background:#B7472A;color:#fff;padding:.5rem 1rem;font-size:.75rem;font-weight:700;display:flex;align-items:center;gap:.5rem}
+.deck-chrome .picon{width:18px;height:18px;background:#fff;color:#B7472A;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:800}
+.deck-tabs{background:#F3F2F1;border-bottom:1px solid var(--border);display:flex;font-size:.7rem}
+.deck-tabs .dtab{padding:.4rem .9rem;color:var(--text-secondary);border-right:1px solid var(--border)}
+.deck-tabs .dtab.on{background:#fff;color:#B7472A;font-weight:700;border-bottom:2px solid #B7472A}
+.slide-canvas{padding:1.6rem 1.8rem;min-height:210px;position:relative}
+.slide-canvas.brand-navy{background:linear-gradient(135deg,#2B2D42,#1A1B2E);color:#fff}
+.slide-canvas.brand-navy .slide-h{color:#fff}
+.slide-canvas .accent-bar{width:52px;height:5px;border-radius:3px;background:var(--orange);margin-bottom:.9rem}
+.slide-h{font-family:'DM Serif Display',serif;font-size:1.3rem;color:var(--navy);margin-bottom:.9rem;line-height:1.25}
+.slide-bullets{list-style:none;padding:0}
+.slide-bullets li{position:relative;padding-left:1.2rem;font-size:.82rem;line-height:1.55;margin-bottom:.5rem}
+.slide-bullets li::before{content:'▸';position:absolute;left:0;color:var(--orange);font-weight:800}
+.slide-canvas.brand-navy .slide-bullets li{color:rgba(255,255,255,0.88)}
+.slide-canvas.wall li{font-size:.72rem;margin-bottom:.28rem;color:var(--text-secondary)}
+.slide-big{font-family:'DM Serif Display',serif;font-size:2.6rem;color:var(--orange);line-height:1;margin:.3rem 0 .5rem}
+.slide-support{font-size:.86rem;color:var(--text-secondary);line-height:1.5;max-width:420px}
+.slide-canvas.brand-navy .slide-support{color:rgba(255,255,255,0.8)}
+.deck-cap{font-size:.76rem;color:var(--text-muted);padding:.6rem 1rem;background:var(--bg-light);border-top:1px solid var(--border)}
+
+/* ─── BEFORE / AFTER TOGGLE ─── */
+.ba-wrap{background:#fff;border-radius:var(--radius);padding:1.4rem;border:1px solid var(--border);box-shadow:var(--shadow-sm);margin-top:1.4rem}
+.ba-toggle{display:flex;gap:.4rem;margin-bottom:1rem}
+.ba-tab{padding:.45rem 1rem;border-radius:50px;border:1.5px solid var(--border);background:#fff;font-size:.76rem;font-weight:700;color:var(--text-secondary);cursor:pointer;font-family:inherit;transition:all .2s}
+.ba-tab.bad.active{background:var(--red);border-color:var(--red);color:#fff}
+.ba-tab.good.active{background:var(--green);border-color:var(--green);color:#fff}
+.ba-explain{font-size:.83rem;line-height:1.6;color:var(--text-secondary);margin-top:.9rem}
+.ba-explain strong{color:var(--navy)}
+
+/* ─── SPEAKER NOTES / GENERIC PANEL ─── */
+.formula-lab{background:#fff;border-radius:var(--radius);padding:1.4rem;border:1px solid var(--border);box-shadow:var(--shadow-sm);margin-top:1.4rem}
+.fl-tabs{display:flex;gap:.4rem;margin-bottom:1rem;flex-wrap:wrap}
+.fl-tab{padding:.45rem .9rem;border-radius:50px;border:1.5px solid var(--border);background:#fff;font-size:.74rem;font-weight:600;color:var(--text-secondary);cursor:pointer;font-family:inherit;transition:all .2s}
+.fl-tab:hover{border-color:var(--orange);color:var(--orange)}
+.fl-tab.active{background:var(--orange);border-color:var(--orange);color:#fff}
+.fl-prompt{background:var(--orange-glow);border:1px solid rgba(232,122,46,0.25);border-radius:8px;padding:.8rem 1rem;font-size:.83rem;line-height:1.5;margin-bottom:.9rem}
+.fl-prompt .who{display:block;font-size:.62rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--orange);margin-bottom:.3rem}
+.fl-code{background:var(--navy-dark);border-radius:8px;padding:.85rem 1rem;font-family:'Consolas','Courier New',monospace;font-size:.8rem;color:#D8DAE5;overflow-x:auto;line-height:1.5;margin-bottom:.9rem}
+.fl-code .kw{color:#F5943E}.fl-code .st{color:#8BD49C}.fl-code .rf{color:#82AAFF}
+.fl-explain{font-size:.83rem;line-height:1.6;color:var(--text-secondary)}
+.fl-explain strong{color:var(--navy)}
+
+/* review-style two column */
+.review-mine{background:#fff;border-radius:var(--radius);padding:1.4rem;border:1px solid var(--border);box-shadow:var(--shadow-sm);margin-top:1.4rem}
+.review-cols{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:.9rem}
+.review-col{border-radius:var(--radius-sm);padding:1rem 1.1rem}
+.review-col.love{background:var(--green-light)}
+.review-col.hate{background:#FEE}
+.review-col h5{font-size:.72rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.6rem}
+.review-col.love h5{color:#2E7D32}
+.review-col.hate h5{color:#C62828}
+.review-col li{font-size:.8rem;line-height:1.5;margin-left:1.1rem;margin-bottom:.35rem;color:var(--text-primary)}
+
+/* ─── ERROR / CATCH PANEL ─── */
+.err-panel{background:#fff;border-radius:var(--radius);padding:1.5rem;border:1px solid var(--border);box-shadow:var(--shadow-sm);margin-top:1.4rem}
+.err-badge{display:inline-flex;align-items:center;gap:.4rem;background:#FEE;color:#C62828;font-weight:800;font-size:.85rem;padding:.35rem .8rem;border-radius:7px;font-family:'Consolas',monospace}
+.err-cell{font-family:'Consolas',monospace;background:var(--bg-light);border:1px solid var(--border);border-radius:6px;padding:.6rem .8rem;font-size:.82rem;margin:.8rem 0;color:var(--text-primary)}
+.err-cell b{color:#C62828}
+
+/* ─── IMAGE FIXER ─── */
+.imgfix-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1rem}
+.imgfix-card{border-radius:var(--radius-sm);overflow:hidden;border:2px solid var(--border);background:#fff}
+.imgfix-card.bad{border-color:var(--red)}
+.imgfix-card.good{border-color:var(--green)}
+.imgfix-frame{height:120px;display:flex;align-items:center;justify-content:center;font-size:2.4rem;position:relative}
+.imgfix-frame.bad{background:repeating-linear-gradient(45deg,#F3D5C0,#F3D5C0 12px,#EBC3A6 12px,#EBC3A6 24px)}
+.imgfix-frame.good{background:linear-gradient(135deg,#2B2D42,#3F88C5)}
+.imgfix-tag{position:absolute;top:.4rem;left:.4rem;font-size:.6rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;padding:.15rem .5rem;border-radius:50px}
+.imgfix-tag.bad{background:#FEE;color:#C62828}
+.imgfix-tag.good{background:var(--green-light);color:#2E7D32}
+.imgfix-body{padding:.7rem .9rem;font-size:.76rem;line-height:1.5;color:var(--text-secondary)}
+.imgfix-body strong{color:var(--navy)}
+
+/* ─── CHART / DATA ─── */
+.pivot-wrap{background:#fff;border-radius:var(--radius);border:1px solid var(--border);box-shadow:var(--shadow-md);overflow:hidden;margin-top:1.4rem}
+.pivot-head{background:#F5F5F7;padding:.55rem 1rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:.4rem;font-size:.72rem;color:var(--text-muted)}
+.pivot-head .sdot{width:9px;height:9px;border-radius:50%}
+.pivot-body{padding:1.4rem 1.6rem}
+.pivot-body h4{font-family:'DM Serif Display',serif;font-size:1.05rem;color:var(--navy);margin-bottom:1rem}
+.bars{display:flex;align-items:flex-end;gap:1.1rem;height:200px;padding:0 .5rem;border-bottom:2px solid var(--border);margin-bottom:.6rem}
+.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%}
+.bar{width:100%;max-width:56px;border-radius:6px 6px 0 0;background:linear-gradient(180deg,var(--orange-light),var(--orange));position:relative;transition:height 1s cubic-bezier(.2,.8,.2,1);height:0}
+.bar .bnum{position:absolute;top:-1.3rem;left:0;right:0;text-align:center;font-size:.72rem;font-weight:800;color:var(--navy)}
+.bar-lbl{font-size:.68rem;color:var(--text-secondary);margin-top:.4rem;font-weight:600;text-align:center}
+.bar-col.peak .bar{background:linear-gradient(180deg,#7BC67E,var(--green))}
+.ask-data{margin-top:1.2rem}
+.ask-chip{display:inline-block;margin:.25rem .3rem .25rem 0;padding:.45rem .9rem;border-radius:50px;border:1.5px solid var(--border);background:#fff;font-size:.76rem;font-weight:600;color:var(--text-secondary);cursor:pointer;font-family:inherit;transition:all .2s}
+.ask-chip:hover{border-color:var(--orange);color:var(--orange)}
+.ask-chip.active{background:var(--orange);border-color:var(--orange);color:#fff}
+.ask-answer{margin-top:.9rem;padding:.9rem 1.1rem;border-radius:8px;background:var(--bg-light);border-left:3px solid var(--orange);font-size:.84rem;line-height:1.6;display:none}
+.ask-answer.show{display:block;animation:fadeUp .4s ease}
+.ask-answer strong{color:var(--orange-dark)}
+
+/* checklist + feed */
+.build-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1.5rem}
+.build-card{background:#fff;border-radius:var(--radius);padding:1.3rem;border:1px solid var(--border);box-shadow:var(--shadow-sm)}
+.build-card h4{font-size:.95rem;color:var(--navy);margin-bottom:.7rem;display:flex;align-items:center;gap:.5rem}
+.build-card h4::before{content:'';width:10px;height:10px;border-radius:50%;background:var(--orange)}
+.checklist{list-style:none;padding:0}
+.checklist li{display:flex;align-items:flex-start;gap:.6rem;padding:.42rem 0;font-size:.84rem;color:var(--text-primary);cursor:pointer;line-height:1.45}
+.checklist li .check{width:18px;height:18px;border-radius:5px;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;transition:all .2s}
+.checklist li.done .check{background:var(--green);border-color:var(--green)}
+.checklist li.done .check::after{content:'✓';color:#fff;font-size:.7rem;font-weight:800}
+.checklist li.done{color:var(--text-muted);text-decoration:line-through}
+.feed{background:var(--navy-dark);border-radius:10px;padding:1rem 1.1rem;min-height:220px;max-height:280px;overflow-y:auto}
+.feed-line{display:flex;gap:.6rem;font-size:.78rem;line-height:1.55;padding:.3rem 0;color:#D8DAE5;animation:fadeUp .4s ease}
+.feed-line .ft{color:var(--orange-light);font-weight:700;flex-shrink:0}
+.feed-line.hint-line{color:#8B8DA0;font-style:italic}
+.done-note{margin-top:1rem;padding:.8rem;background:var(--green-light);border-radius:7px;font-size:.78rem;color:#2E7D32;display:none}
+
+/* ─── SPEAKER COACH ─── */
+.coach{background:#fff;border-radius:var(--radius);padding:1.5rem;border:1px solid var(--border);box-shadow:var(--shadow-sm);margin-top:1.4rem}
+.coach-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.4rem}
+.coach-field{margin-bottom:1rem}
+.coach-field label{display:flex;justify-content:space-between;font-size:.78rem;font-weight:700;color:var(--text-primary);margin-bottom:.35rem}
+.coach-field label output{color:var(--orange);font-weight:800}
+.coach-slider{-webkit-appearance:none;appearance:none;width:100%;height:6px;border-radius:3px;background:var(--border);outline:none;cursor:pointer}
+.coach-slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:20px;height:20px;border-radius:50%;background:#fff;border:3px solid var(--orange);cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.15)}
+.coach-slider::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:#fff;border:3px solid var(--orange);cursor:pointer}
+.coach-out{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;align-content:start}
+.coach-tile{padding:.95rem;background:var(--bg-light);border-radius:10px;text-align:center;border:1.5px solid transparent;transition:all .3s}
+.coach-tile.warn{border-color:var(--red);background:#FEE}
+.coach-tile.ok{border-color:var(--green);background:var(--green-light)}
+.coach-tile .cv{font-family:'DM Serif Display',serif;font-size:1.45rem;color:var(--navy);line-height:1.1}
+.coach-tile .cl{font-size:.64rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em;font-weight:700;margin-top:.3rem}
+.coach-note{grid-column:1/-1;font-size:.8rem;line-height:1.55;padding:.8rem 1rem;border-radius:8px;background:var(--orange-glow);color:var(--text-primary)}
+.coach-note strong{color:var(--orange)}
+
+/* ─── PRE-FLIGHT DASHBOARD ─── */
+.dash-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:1.4rem;margin-top:1.4rem}
+.dash-controls .prompt-field{display:flex;flex-direction:column;gap:.4rem;margin-bottom:.9rem}
+.dash-controls label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted)}
+.dash-controls select{padding:.6rem .8rem;border:1.5px solid var(--border);border-radius:7px;font-family:inherit;font-size:.83rem;color:var(--text-primary);background:#fff}
+.dash-controls select:focus{outline:none;border-color:var(--orange)}
+.dash-preview{background:#fff;border-radius:var(--radius);border:1px solid var(--border);box-shadow:var(--shadow-md);overflow:hidden}
+.dashp-head{background:var(--navy-dark);color:#fff;padding:.7rem 1rem;display:flex;align-items:center;justify-content:space-between}
+.dashp-title{font-family:'DM Serif Display',serif;font-size:1rem}
+.dashp-when{font-size:.66rem;color:rgba(255,255,255,.6)}
+.dashp-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem;padding:1rem}
+.dashp-kpi{background:var(--bg-light);border-radius:9px;padding:.7rem;text-align:center}
+.dashp-kpi .kv{font-family:'DM Serif Display',serif;font-size:1.2rem;color:var(--orange)}
+.dashp-kpi .kl{font-size:.6rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em;font-weight:700;margin-top:.2rem}
+.dashp-note{padding:0 1rem 1rem;font-size:.78rem;line-height:1.55;color:var(--text-secondary)}
+.dashp-note strong{color:var(--navy)}
+
+/* ─── VERDICT ─── */
+.week-verdict{display:none;margin-top:1.4rem;background:var(--navy-dark);border-radius:var(--radius);padding:1.6rem;color:#fff;animation:popIn .5s ease}
+.week-verdict.show{display:block}
+.week-verdict h4{font-family:'DM Serif Display',serif;font-size:1.35rem;margin-bottom:.8rem}
+.week-verdict h4 em{font-style:normal;color:var(--orange-light)}
+.wv-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.7rem;margin-bottom:1rem}
+.wv-tile{background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.14);border-radius:9px;padding:.8rem;text-align:center}
+.wv-tile .v{font-family:'DM Serif Display',serif;font-size:1.3rem;color:var(--orange-light)}
+.wv-tile .l{font-size:.62rem;text-transform:uppercase;letter-spacing:.05em;color:rgba(255,255,255,0.55);font-weight:700;margin-top:.25rem}
+.week-verdict p{font-size:.87rem;line-height:1.65;color:rgba(255,255,255,0.85)}
+.week-verdict p strong{color:var(--orange-light)}
+
+/* ─── FOOTER / RECAP ─── */
+.footer-cta{text-align:center;padding:3rem 2rem 5.5rem;background:var(--navy-dark);color:#fff}
+.footer-cta h2{font-family:'DM Serif Display',serif;font-size:1.9rem;margin-bottom:.6rem}
+.footer-cta h2 em{color:var(--orange);font-style:normal}
+.footer-cta>p{font-size:.92rem;color:rgba(255,255,255,0.7);max-width:600px;margin:0 auto 1.8rem}
+.recap-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.9rem;max-width:1050px;margin:0 auto 1.8rem;text-align:left}
+.recap-card{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.13);border-radius:var(--radius);padding:1.2rem 1.3rem}
+.recap-card .rn{font-size:.62rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--orange-light);margin-bottom:.35rem}
+.recap-card h4{font-family:'DM Serif Display',serif;font-size:1.02rem;margin-bottom:.35rem;color:#fff}
+.recap-card p{font-size:.76rem;color:rgba(255,255,255,0.65);line-height:1.55}
+.footer-note{font-size:.72rem;color:rgba(255,255,255,0.4);margin-top:1.6rem;max-width:640px;margin-left:auto;margin-right:auto;line-height:1.6}
+
+/* ─── COMPLETION BAR ─── */
+.completion-bar{position:fixed;bottom:0;left:0;right:0;background:rgba(255,255,255,0.95);backdrop-filter:blur(10px);border-top:1px solid var(--border);padding:.7rem 2rem;display:flex;align-items:center;justify-content:space-between;z-index:90;box-shadow:0 -2px 12px rgba(0,0,0,0.05)}
+.completion-info{display:flex;align-items:center;gap:.8rem;font-size:.82rem;color:var(--text-primary);font-weight:600}
+.completion-track{flex:1;max-width:280px;height:8px;background:var(--bg-light);border-radius:4px;overflow:hidden;margin:0 1rem}
+.completion-fill{height:100%;background:linear-gradient(90deg,var(--orange),var(--orange-light));border-radius:4px;transition:width .5s ease}
+.completion-percent{font-family:'DM Serif Display',serif;color:var(--orange);font-size:1.15rem}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:880px){
+  .hero-inner{grid-template-columns:1fr;text-align:center}
+  .hero-mascot{width:170px;margin:0 auto}
+  .usecase-banner{text-align:left}
+  .budget-strip{grid-template-columns:repeat(2,1fr)}
+  .pick-grid,.pick-grid.four{grid-template-columns:1fr}
+  .coach-grid,.build-grid,.dash-grid,.review-cols,.imgfix-grid{grid-template-columns:1fr}
+  .dashp-kpis{grid-template-columns:repeat(3,1fr)}
+  .wv-grid,.recap-grid{grid-template-columns:repeat(2,1fr)}
+  .header{padding:.7rem 1rem}
+  .section{padding:2.2rem 1rem}
+  .hero{padding:2.5rem 1rem 2rem}
+}
+</style>
+</head>
+<body>
+
+<!-- ─── HEADER ─── -->
+<header class="header">
+  <div class="header-left">
+    <svg class="logo-mascot" viewBox="0 0 955 1486" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="477" cy="380" rx="285" ry="324" fill="#EBE3D6"/>
+      <ellipse cx="477" cy="380" rx="240" ry="270" fill="#412C23"/>
+      <circle cx="389" cy="430" r="36" fill="#fff"/>
+      <circle cx="565" cy="430" r="36" fill="#fff"/>
+      <circle cx="389" cy="430" r="14" fill="#2B2D42"/>
+      <circle cx="565" cy="430" r="14" fill="#2B2D42"/>
+      <path d="M380 1180c30 28 65 42 97 42s67-14 97-42" stroke="#A34E1C" stroke-width="14" stroke-linecap="round" fill="none"/>
+      <ellipse cx="477" cy="1350" rx="430" ry="100" fill="#EF7F1A"/>
+      <ellipse cx="477" cy="1350" rx="380" ry="78" fill="#FF9429"/>
+    </svg>
+    <div>
+      <div class="header-title">MokshPath · <span>AI Presentations</span></div>
+      <div class="header-tag">Week 4 · Fun While You Learn</div>
+    </div>
+  </div>
+  <div class="progress-pill"><span class="dot"></span> <span id="headerProgressText">0 of 5 chapters explored</span></div>
+</header>
+
+<!-- ─── HERO ─── -->
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-badge"><span style="width:7px;height:7px;border-radius:50%;background:var(--orange);display:inline-block"></span> Story Project · One Ticking Clock</div>
+      <h1>Save Leo's Board Meeting — Turn a <em>Messy Word Doc</em> into a Boardroom-Ready Deck in 90 Minutes</h1>
+      <p class="hero-sub">Leo has to present the <strong>quarterly review</strong> to leadership at 3 p.m. It's 1:30. All he has is <em>Q3_notes_ROUGH.docx</em> — three pages of bullet fragments, a stray data table, and a half-baked "growth" claim he can't remember the source of. He has never made a "real" boardroom deck. But he has AI. Over four chapters you'll help him pick the right presentation tool, generate a first-draft deck from his notes, make it look on-brand and honest, then polish, practise and walk in calm. AI drafts fast — but Leo directs and verifies every slide. Choose like a pro.</p>
+      <div class="usecase-banner">
+        <div class="usecase-icon">🎤</div>
+        <div class="usecase-text"><strong>The Mission:</strong> By 3 p.m., that rough Word doc must become a clean, on-brand, honest quarterly deck with tight speaker notes — using AI to draft, and a human to direct. Win or lose, you'll walk away knowing the full AI-presentation playbook: tools, drafting, design, and delivery.</div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <svg class="hero-mascot" viewBox="0 0 955 1486" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="bodyGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#EBE3D6"/><stop offset="1" stop-color="#D1D0CC"/></linearGradient>
+          <linearGradient id="faceGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7A6A48"/><stop offset="1" stop-color="#412C23"/></linearGradient>
+          <linearGradient id="feetGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FF9429"/><stop offset="1" stop-color="#EF7F1A"/></linearGradient>
+        </defs>
+        <ellipse cx="210" cy="408" rx="68" ry="82" fill="#D9DADA"/>
+        <ellipse cx="740" cy="408" rx="68" ry="82" fill="#D9DADA"/>
+        <ellipse cx="477" cy="380" rx="285" ry="324" fill="url(#bodyGrad)"/>
+        <ellipse cx="477" cy="392" rx="240" ry="225" fill="url(#faceGrad)"/>
+        <circle cx="389" cy="430" r="38" fill="#fff"/>
+        <circle cx="565" cy="430" r="38" fill="#fff"/>
+        <circle cx="389" cy="430" r="15" fill="#2B2D42"/>
+        <circle cx="565" cy="430" r="15" fill="#2B2D42"/>
+        <circle cx="395" cy="424" r="5" fill="#fff"/>
+        <circle cx="571" cy="424" r="5" fill="#fff"/>
+        <path d="M380 1180c30 28 65 42 97 42s67-14 97-42" stroke="#A34E1C" stroke-width="16" stroke-linecap="round" fill="none"/>
+        <ellipse cx="477" cy="1350" rx="430" ry="105" fill="url(#feetGrad)"/>
+        <ellipse cx="477" cy="1320" rx="380" ry="78" fill="#FF9429"/>
+      </svg>
+    </div>
+  </div>
+  <div class="budget-strip">
+    <div class="budget-chip"><div class="bv">3 pages</div><div class="bl">Of rough notes</div></div>
+    <div class="budget-chip"><div class="bv">3:00 p.m.</div><div class="bl">Board meeting starts</div></div>
+    <div class="budget-chip"><div class="bv">90 min</div><div class="bl">On the clock</div></div>
+    <div class="budget-chip"><div class="bv">4 lessons</div><div class="bl">Woven into 1 story</div></div>
+  </div>
+</section>
+
+<!-- ─── TAB NAVIGATION ─── -->
+<div class="tab-nav" id="tabNav">
+  <button class="tab-btn active" data-target="s1">Ch 1 · Pick the Tool</button>
+  <button class="tab-btn" data-target="s2">Ch 2 · Build the Deck</button>
+  <button class="tab-btn" data-target="s3">Ch 3 · Design &amp; Visuals</button>
+  <button class="tab-btn" data-target="s4">Ch 4 · Polish &amp; Deliver</button>
+  <button class="tab-btn" data-target="s5">Walk In · 3 p.m.</button>
+</div>
+
+<!-- ═══════════ CHAPTER 1: PICK THE TOOL ═══════════ -->
+<section class="section" id="s1">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-num"><div class="num">1</div> Chapter One · 1:30 p.m.</div>
+      <h2 class="section-title">The AI Presentation Landscape — Meet the Tools, Pick the Right One</h2>
+      <p class="section-sub">Rule one of AI decks: there's no single "make me a presentation" button. There are four very different helpers, each with a licence, a workflow, and a sweet spot. And there are two ways to start: <strong>prompt-to-deck</strong> (describe it) or <strong>document-to-deck</strong> (feed it your notes). Leo has notes — so his path is almost decided already.</p>
+    </div>
+
+    <div class="story-beat">
+      <span class="sb-tag">📖 The story so far</span>
+      1:30 p.m. Leo opens <em>Q3_notes_ROUGH.docx</em> and his stomach drops. Three pages of fragments: "revenue up," "churn issue?", "new region did well," a pasted table nobody formatted, and a line reading <strong>"growth ~40%?? (check!!)"</strong>. His manager pings: <em>"Board's at 3. You've got the Q3 review. Thanks!"</em> Before he panics, he does the professional thing: <em>he figures out which AI tool fits the job — and whether to describe a deck from scratch or convert the notes he already has.</em> Click each tool to inspect it, then commit.
+    </div>
+
+    <div class="pick-grid four">
+      <div class="pick-card" data-tool="copilot" onclick="pickTool('copilot')">
+        <div class="pick-icon">🟧</div>
+        <div class="pc-tag">Paid licence</div>
+        <h4>Copilot in PowerPoint</h4>
+        <p>Microsoft 365 Copilot, built into PowerPoint. Can turn a Word doc into a first-draft deck, apply your company template, and draft speaker notes — inside the file you already use. Powerful, but a paid add-on IT must enable.</p>
+      </div>
+      <div class="pick-card" data-tool="gamma" onclick="pickTool('gamma')">
+        <div class="pick-icon">✨</div>
+        <div class="pc-tag">AI-native · web</div>
+        <h4>Gamma</h4>
+        <p>AI-first tool that generates a whole deck from a prompt or pasted notes in seconds, with slick auto-layouts. Free tier + paid. Great for speed and story — but check whether pasting company data to a web tool is allowed.</p>
+      </div>
+      <div class="pick-card" data-tool="canva" onclick="pickTool('canva')">
+        <div class="pick-icon">🎨</div>
+        <div class="pc-tag">Design-led</div>
+        <h4>Canva (Magic Design)</h4>
+        <p>Design-first, with Magic Design generating decks from a prompt and a huge template/brand-kit library. Strongest when visuals and brand polish matter most. Free tier + paid teams for locked brand kits.</p>
+      </div>
+      <div class="pick-card" data-tool="gemini" onclick="pickTool('gemini')">
+        <div class="pick-icon">🟦</div>
+        <div class="pc-tag">If you're on Google</div>
+        <h4>Google Slides + Gemini</h4>
+        <p>Google Workspace's AI inside Slides — drafts slides, images and text from a prompt. Same idea as Copilot, different suite. Great only if your org lives in Google, not Microsoft.</p>
+      </div>
+    </div>
+    <div class="pick-detail" id="toolDetail"></div>
+
+    <div class="chat-mock">
+      <div class="chat-head"><span class="cdot"></span> AI Assistant · The starting-point showdown — prompt-to-deck vs document-to-deck</div>
+      <div class="chat-body" id="promptChat">
+        <div class="chat-msg ai"><span class="who">Narrator</span>Leo already has three pages of notes. The question isn't "describe a deck from nothing" — it's <strong>which starting move gets him a faithful first draft fastest?</strong> Pick the approach you'd use — then see what comes back.</div>
+      </div>
+    </div>
+    <div class="scenario-panel">
+      <div class="scenario-title">🎯 Checkpoint · Pick Leo's starting move</div>
+      <div class="scenario-q">Leo has Q3_notes_ROUGH.docx. How does he kick off the deck?</div>
+      <div class="scenario-options">
+        <button class="scenario-btn" onclick="pickPrompt(0)">"Make me a presentation about our quarter." (prompt-to-deck, no notes)</button>
+        <button class="scenario-btn" onclick="pickPrompt(1)">"Write a beautiful, award-winning deck that will impress the board." (vibes, no structure)</button>
+        <button class="scenario-btn" onclick="pickPrompt(2)">Document-to-deck: "Here are my Q3 notes. Turn them into a 10-slide board deck: one idea per slide, an agenda, a summary, and a clear recommendation. Keep every number from my notes — don't invent any."</button>
+      </div>
+      <div class="scenario-feedback" id="promptFb"></div>
+    </div>
+
+    <div class="scenario-panel">
+      <div class="scenario-title">🧠 Pop Quiz · Tool &amp; workflow instincts (3 rounds)</div>
+      <div class="scenario-q" id="toolQ">Loading…</div>
+      <div class="scenario-options" id="toolOpts"></div>
+      <div class="scenario-feedback" id="toolFb"></div>
+      <button class="btn-secondary" id="toolNext" onclick="nextToolQ()" style="margin-top:.5rem;display:none">Next round →</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ CHAPTER 2: BUILD THE DECK ═══════════ -->
+<section class="section alt" id="s2">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-num"><div class="num">2</div> Chapter Two · 1:50 p.m.</div>
+      <h2 class="section-title">Building Decks with AI — Generate the Draft, Then Direct It</h2>
+      <p class="section-sub">A first draft in 60 seconds is the easy part. Turning a <strong>wordy bullet-dump</strong> into a <strong>one-idea story slide</strong>, generating honest speaker notes, and <em>catching the number the AI invented</em> — that's where Leo earns his seat at the table.</p>
+    </div>
+
+    <div class="story-beat">
+      <span class="sb-tag">📖 The story so far</span>
+      1:50 p.m. Leo pastes his notes into the tool and hits generate. Ten slides appear in under a minute — a real first draft. Relief… then reality: slide 3 is a wall of nine bullets, the tone is generic, and one slide proudly announces <strong>"revenue up 42% YoY"</strong> — a number that isn't anywhere in his notes. <em>AI drafts; Leo directs and verifies.</em> Inspect the raw draft, then fix it slide by slide.
+    </div>
+
+    <div class="deck-wrap">
+      <div class="deck-chrome"><span class="picon">P</span> Q3_Review_DRAFT.pptx — the AI's first-pass deck</div>
+      <div class="deck-tabs"><span class="dtab on">Slide 3</span><span class="dtab">Slide 4</span><span class="dtab">Notes</span></div>
+      <div class="slide-canvas wall">
+        <div class="slide-h">Q3 Performance Overview</div>
+        <ul class="slide-bullets">
+          <li>Revenue grew this quarter compared to last quarter and also compared to the same quarter last year</li>
+          <li>The new Southern region launched and performed reasonably well overall in most segments</li>
+          <li>Churn was a bit of an issue in the mid-market tier but improved slightly toward the end</li>
+          <li>Marketing spend was up but so was pipeline so the ratio stayed roughly acceptable</li>
+          <li>Customer support tickets rose but resolution time also went down which is good</li>
+          <li>Hiring continued across engineering and the sales org grew by a few people too</li>
+          <li>Product shipped two features that customers had been asking about for a while now</li>
+          <li>Some contracts renewed early which helped the numbers look better than expected maybe</li>
+          <li>Overall it was a solid quarter with a few things to watch going into Q4 next</li>
+        </ul>
+      </div>
+      <div class="deck-cap">⚠️ Nine bullets, zero focus. A board can't <em>read</em> and <em>listen</em> at once. This slide has no single idea — it's the raw notes reformatted, not a story. Leo will fix it below.</div>
+    </div>
+
+    <div class="ba-wrap">
+      <div style="font-family:'DM Serif Display',serif;font-size:1.1rem;color:var(--navy);margin-bottom:.9rem">🔧 Fix the bullet-dump — one idea per slide</div>
+      <div class="ba-toggle">
+        <button class="ba-tab bad active" id="baBad" onclick="setBA('bad')">✗ AI's draft (9 bullets)</button>
+        <button class="ba-tab good" id="baGood" onclick="setBA('good')">✓ Leo's redirect (1 idea)</button>
+      </div>
+      <div class="deck-wrap" style="margin-top:0">
+        <div class="slide-canvas brand-navy" id="baCanvas"></div>
+      </div>
+      <div class="ba-explain" id="baExplain"></div>
+    </div>
+
+    <div class="formula-lab">
+      <div style="font-family:'DM Serif Display',serif;font-size:1.1rem;color:var(--navy);margin-bottom:.9rem">🗣️ The Speaker-Notes Lab — describe the slide, AI drafts notes, you edit them</div>
+      <div class="fl-tabs">
+        <button class="fl-tab active" data-fl="prompt" onclick="setFormula('prompt')">The prompt that works</button>
+        <button class="fl-tab" data-fl="notes" onclick="setFormula('notes')">Generate speaker notes</button>
+        <button class="fl-tab" data-fl="agenda" onclick="setFormula('agenda')">Add an agenda + summary</button>
+        <button class="fl-tab" data-fl="tighten" onclick="setFormula('tighten')">Tighten a wordy line</button>
+      </div>
+      <div class="fl-prompt" id="flPrompt"><span class="who">You → AI</span></div>
+      <div class="fl-code" id="flCode"></div>
+      <div class="fl-explain" id="flExplain"></div>
+    </div>
+
+    <div class="err-panel">
+      <div style="font-family:'DM Serif Display',serif;font-size:1.1rem;color:var(--navy);margin-bottom:.5rem">🚨 Catch the invented stat — the <span class="err-badge">HALLUCINATION</span></div>
+      <p style="font-size:.83rem;color:var(--text-secondary);line-height:1.6">Slide 2 reads: <em>"Revenue up 42% YoY."</em> But Leo's notes only said <strong>"growth ~40%?? (check!!)"</strong> — a rough, unverified guess with a giant question mark. The AI rounded a maybe into a confident, board-ready fact. <em>This one moment is the whole week.</em></p>
+      <div class="err-cell">Notes said: <b>"growth ~40%?? (check!!)"</b> &nbsp;→&nbsp; 🡒 &nbsp; AI wrote: <b>"Revenue up 42% YoY"</b> (a number no source in the file supports)</div>
+      <div class="scenario-panel" style="margin-top:1rem">
+        <div class="scenario-title">🎯 Checkpoint · The AI just stated a number your notes never confirmed</div>
+        <div class="scenario-q">"Revenue up 42% YoY" is on the slide. What does a pro do?</div>
+        <div class="scenario-options">
+          <button class="scenario-btn" onclick="errQ(0)">Leave it — 42% sounds impressive and the AI probably knows.</button>
+          <button class="scenario-btn" onclick="errQ(1)">Stop. My notes said "~40%?? (check!!)" — that's not a confirmed figure. Pull the real number from the finance report; if I can't verify it before 3 p.m., remove the exact % and say "revenue grew year-over-year" instead.</button>
+          <button class="scenario-btn" onclick="errQ(2)">Change it to 45% so it's rounder and looks intentional.</button>
+        </div>
+        <div class="scenario-feedback" id="errFb"></div>
+      </div>
+    </div>
+
+    <div class="scenario-panel">
+      <div class="scenario-title">🧠 Pop Quiz · Deck-building instincts (3 rounds)</div>
+      <div class="scenario-q" id="formQ">Loading…</div>
+      <div class="scenario-options" id="formOpts"></div>
+      <div class="scenario-feedback" id="formFb"></div>
+      <button class="btn-secondary" id="formNext" onclick="nextFormQ()" style="margin-top:.5rem;display:none">Next round →</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ CHAPTER 3: DESIGN & VISUALS ═══════════ -->
+<section class="section" id="s3">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-num"><div class="num">3</div> Chapter Three · 2:15 p.m.</div>
+      <h2 class="section-title">AI Design &amp; Visuals — Make It On-Brand and Honest</h2>
+      <p class="section-sub">A clean message still needs to <em>look</em> right and <em>tell the truth</em>. Today Leo applies the company brand theme, fixes an off-brand AI image, turns a data table into an honest chart — spotting a misleading version along the way — and rescues a wall-of-text slide.</p>
+    </div>
+
+    <div class="story-beat">
+      <span class="sb-tag">📖 The story so far</span>
+      2:15 p.m. The words are tight. Now it looks generic — default purple template, a stock AI image of smiling people in a completely different brand colour, and a slide that pasted the raw data table straight from the doc. Leo applies the theme in one click, regenerates the image on-brand, and asks AI to chart the data. Then one chart makes the numbers look <em>too</em> good — and a good presenter never ships a misleading chart, even a flattering one.
+    </div>
+
+    <div class="deck-wrap">
+      <div class="deck-chrome"><span class="picon">P</span> Apply the brand theme — one click, whole deck</div>
+      <div class="deck-tabs"><span class="dtab on">Themed slide</span><span class="dtab">Master</span></div>
+      <div class="slide-canvas brand-navy">
+        <div class="accent-bar"></div>
+        <div class="slide-h">New Southern region added ₹1.2Cr in its first quarter</div>
+        <div class="slide-support">Brand theme applied: navy + orange, DM Serif headings, consistent accent bar. AI applied the company template to all 10 slides at once — Leo just confirmed the fonts matched the brand kit.</div>
+      </div>
+      <div class="deck-cap">✅ Same content, now unmistakably "us." AI applies a theme in one click — but you confirm fonts, colours and logo match the real brand kit, because AI will happily pick a close-but-wrong shade.</div>
+    </div>
+
+    <div class="err-panel" style="margin-top:1.4rem">
+      <div style="font-family:'DM Serif Display',serif;font-size:1.1rem;color:var(--navy);margin-bottom:.6rem">🖼️ Fix the off-brand AI image</div>
+      <p style="font-size:.83rem;color:var(--text-secondary);line-height:1.6">The AI dropped in a generic stock-style image in teal-and-pink — nothing like the brand. Leo re-prompts for something on-brand and purposeful, then adds <strong>alt text</strong> so it's accessible. Click to compare.</p>
+      <div class="imgfix-grid">
+        <div class="imgfix-card bad">
+          <div class="imgfix-frame bad"><span class="imgfix-tag bad">Off-brand</span>🧑‍🤝‍🧑</div>
+          <div class="imgfix-body"><strong>AI's first image:</strong> generic smiling-people stock in teal/pink. Wrong colours, no meaning, clashes with the deck. Decorative filler that dilutes the message.</div>
+        </div>
+        <div class="imgfix-card good">
+          <div class="imgfix-frame good"><span class="imgfix-tag good">On-brand</span>🗺️</div>
+          <div class="imgfix-body"><strong>Leo's re-prompt:</strong> "A clean map graphic highlighting the Southern region, navy + orange, minimal, no text." On-brand, meaningful, with alt text: <em>"Map highlighting the new Southern region."</em></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pivot-wrap">
+      <div class="pivot-head">
+        <span class="sdot" style="background:#FF5F57"></span><span class="sdot" style="background:#FEBC2E"></span><span class="sdot" style="background:#28C840"></span>
+        <span style="margin-left:.6rem">AI charts the table → Revenue by region (Q3)</span>
+      </div>
+      <div class="pivot-body">
+        <h4>📊 Turn the pasted table into an honest chart</h4>
+        <div class="bars" id="bars">
+          <div class="bar-col peak"><div class="bar" data-h="100"><span class="bnum">₹8.4Cr</span></div><div class="bar-lbl">North</div></div>
+          <div class="bar-col"><div class="bar" data-h="74"><span class="bnum">₹6.2Cr</span></div><div class="bar-lbl">West</div></div>
+          <div class="bar-col"><div class="bar" data-h="58"><span class="bnum">₹4.9Cr</span></div><div class="bar-lbl">East</div></div>
+          <div class="bar-col"><div class="bar" data-h="41"><span class="bnum">₹3.5Cr</span></div><div class="bar-lbl">South</div></div>
+          <div class="bar-col"><div class="bar" data-h="28"><span class="bnum">₹2.4Cr</span></div><div class="bar-lbl">Central</div></div>
+        </div>
+        <div class="ask-data">
+          <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted);margin-bottom:.5rem">💬 Ask the chart (click a question)</div>
+          <span class="ask-chip" onclick="askData(0,this)">Which region led?</span>
+          <span class="ask-chip" onclick="askData(1,this)">How did the new region do?</span>
+          <span class="ask-chip" onclick="askData(2,this)">What chart type fits best?</span>
+          <span class="ask-chip" onclick="askData(3,this)">Is this chart honest?</span>
+          <div class="ask-answer" id="askAnswer"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="err-panel" style="margin-top:1.4rem">
+      <div style="font-family:'DM Serif Display',serif;font-size:1.1rem;color:var(--navy);margin-bottom:.5rem">🕵️ Spot the misleading chart — the honesty check</div>
+      <p style="font-size:.83rem;color:var(--text-secondary);line-height:1.6">The AI offered two versions of the same growth chart. Version A starts the y-axis at ₹0. Version B starts it at <strong>₹7.9Cr</strong> — making a modest 6% rise look like a cliff-face doubling. Same data, very different story. <em>The lesson of the whole week hides in this one choice.</em></p>
+      <div class="scenario-panel" style="margin-top:1rem">
+        <div class="scenario-title">🎯 Checkpoint · One chart flatters the numbers. Now what?</div>
+        <div class="scenario-q">Version B's truncated axis makes growth look huge. What does a pro do?</div>
+        <div class="scenario-options">
+          <button class="scenario-btn" onclick="sanityQ(0)">Use Version B — bigger-looking growth impresses the board more.</button>
+          <button class="scenario-btn" onclick="sanityQ(1)">Use Version A (axis from ₹0). A truncated axis exaggerates the story; if the board later spots it, I lose all credibility. Show the real shape and let the honest number stand.</button>
+          <button class="scenario-btn" onclick="sanityQ(2)">Remove the axis labels entirely so nobody can tell.</button>
+        </div>
+        <div class="scenario-feedback" id="sanityFb"></div>
+      </div>
+    </div>
+
+    <div class="review-mine">
+      <div style="font-family:'DM Serif Display',serif;font-size:1.1rem;color:var(--navy)">🧱 Rescue the wall-of-text slide — AI restructures in seconds</div>
+      <p style="font-size:.82rem;color:var(--text-secondary);margin-top:.3rem">Leo asks AI: <em>"This slide has one dense paragraph. Restructure it into a headline + 3 short supporting points, and suggest a simple visual."</em> Instant restructure — but he still reads it to confirm the meaning survived the trim.</p>
+      <div class="review-cols">
+        <div class="review-col hate">
+          <h5>💔 Before — wall of text</h5>
+          <ul>
+            <li>One 60-word paragraph explaining churn, causes, timing and next steps all at once</li>
+            <li>10pt font to make it fit → nobody past row two can read it</li>
+            <li>No headline → the audience doesn't know what to take away</li>
+          </ul>
+        </div>
+        <div class="review-col love">
+          <h5>💚 After — headline + 3 points</h5>
+          <ul>
+            <li><strong>Headline:</strong> "Mid-market churn is the one thing to watch in Q4"</li>
+            <li>Rose 2 pts in the mid-market tier → concentrated, not company-wide</li>
+            <li>Improved late in the quarter → the fix is already working; here's the plan</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ CHAPTER 4: POLISH & DELIVER ═══════════ -->
+<section class="section alt" id="s4">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-num"><div class="num">4</div> Chapter Four · 2:35 p.m.</div>
+      <h2 class="section-title">Polish, Delivery &amp; Practice — The Edit Pass, Then Walk In Confident</h2>
+      <p class="section-sub">The deck is good. Now Leo makes it <em>reliable</em>: a final edit pass, refined speaker notes, a <strong>Speaker Coach</strong> run for pace and filler words, an <strong>accessibility</strong> fix (alt text + contrast), and a pre-flight checklist — <em>because a great deck delivered badly still loses the room.</em></p>
+    </div>
+
+    <div class="story-beat">
+      <span class="sb-tag">📖 The story so far</span>
+      2:35 p.m. Twenty-five minutes left. Leo does the professional finish: one edit pass for consistency, refines the AI speaker notes into words he'd actually say, runs PowerPoint's <strong>Speaker Coach</strong> to hear he's rushing and saying "um" too much, fixes two accessibility issues, and walks the pre-flight checklist. AI helps at every step — <strong>but Leo owns the room.</strong> Work the checklist and watch it come together.
+    </div>
+
+    <div class="scenario-panel">
+      <div class="scenario-title">🎯 Checkpoint · The golden rule of AI delivery</div>
+      <div class="scenario-q">The AI drafted great speaker notes. What does Leo do with them before 3 p.m.?</div>
+      <div class="scenario-options">
+        <button class="scenario-btn" onclick="autoQ(0)">Read the AI notes verbatim off the screen during the meeting — they're polished.</button>
+        <button class="scenario-btn" onclick="autoQ(1)">Edit them into his own voice, cut them to key phrases (not paragraphs), then practise once out loud so he can look up and talk, not read.</button>
+        <button class="scenario-btn" onclick="autoQ(2)">Delete all notes and wing it — real leaders don't use notes.</button>
+      </div>
+      <div class="scenario-feedback" id="autoFb"></div>
+    </div>
+
+    <div class="build-grid">
+      <div class="build-card">
+        <h4>Leo's pre-flight checklist</h4>
+        <ul class="checklist" id="buildList">
+          <li data-step="0" onclick="runBuildStep(0)"><span class="check"></span><strong>&nbsp;Edit pass&nbsp;</strong> — consistent fonts, one idea per slide, every number verified against source</li>
+          <li data-step="1" onclick="runBuildStep(1)"><span class="check"></span>Refine <strong>&nbsp;speaker notes&nbsp;</strong> into my own voice — key phrases, not full paragraphs</li>
+          <li data-step="2" onclick="runBuildStep(2)"><span class="check"></span>Run <strong>&nbsp;Speaker Coach&nbsp;</strong> — check pace, filler words, and monotone</li>
+          <li data-step="3" onclick="runBuildStep(3)"><span class="check"></span>Fix <strong>&nbsp;accessibility&nbsp;</strong> — alt text on every image, contrast that passes</li>
+          <li data-step="4" onclick="runBuildStep(4)"><span class="check"></span>Pre-flight: title slide, page numbers, no typos, fonts embedded, backup PDF</li>
+          <li data-step="5" onclick="runBuildStep(5)"><span class="check"></span>Practise the open + close once out loud; time it under the slot</li>
+        </ul>
+        <div class="done-note" id="buildDone">✅ <strong>Deck done, delivery rehearsed, at 2:56 p.m.</strong> Verified numbers, honest charts, notes in his own voice, and a body that's practised the open. Four minutes to spare — Leo walks in calm.</div>
+      </div>
+      <div class="build-card">
+        <h4>Polish feed (click checklist items)</h4>
+        <div class="feed" id="buildFeed">
+          <div class="feed-line hint-line"><span class="ft">--:--</span>Waiting for you to start… tick items on the left.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="coach">
+      <div style="font-family:'DM Serif Display',serif;font-size:1.1rem;color:var(--navy);margin-bottom:.2rem">🎙️ Speaker Coach — rehearse and read the feedback</div>
+      <p style="font-size:.8rem;color:var(--text-secondary);margin-bottom:1rem;line-height:1.5">PowerPoint's Speaker Coach (and Rehearse with Coach) listens as you practise and reports pace, filler words and monotone. Drag the sliders to Leo's practice run — watch it flip from "at-risk" to "board-ready."</p>
+      <div class="coach-grid">
+        <div>
+          <div class="coach-field">
+            <label>Speaking pace <output id="paceOut">190 wpm</output></label>
+            <input type="range" class="coach-slider" id="paceIn" min="90" max="220" value="190" oninput="renderCoach()">
+          </div>
+          <div class="coach-field">
+            <label>Filler words ("um", "like") per minute <output id="fillOut">7</output></label>
+            <input type="range" class="coach-slider" id="fillIn" min="0" max="15" value="7" oninput="renderCoach()">
+          </div>
+          <div class="coach-field">
+            <label>Time used of 12-min slot <output id="timeOut">14 min</output></label>
+            <input type="range" class="coach-slider" id="timeIn" min="6" max="18" value="14" oninput="renderCoach()">
+          </div>
+        </div>
+        <div class="coach-out">
+          <div class="coach-tile" id="paceTile"><div class="cv" id="paceVal">190</div><div class="cl">Words / min</div></div>
+          <div class="coach-tile" id="fillTile"><div class="cv" id="fillVal">7</div><div class="cl">Fillers / min</div></div>
+          <div class="coach-tile" id="timeTile"><div class="cv" id="timeVal">14m</div><div class="cl">Runtime</div></div>
+          <div class="coach-tile" id="scoreTile"><div class="cv" id="scoreVal">—</div><div class="cl">Coach verdict</div></div>
+          <div class="coach-note" id="coachNote"><strong>Aim:</strong> ~120–150 wpm, under 3 fillers/min, inside the slot. Speaker Coach flags the numbers; Leo does the practising.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dash-grid">
+      <div class="dash-controls">
+        <div style="font-family:'DM Serif Display',serif;font-size:1.1rem;color:var(--navy);margin-bottom:.8rem">🛫 Pre-Flight Panel — configure the final check</div>
+        <div class="prompt-field">
+          <label>Accessibility</label>
+          <select id="dHeadline" onchange="renderDash()">
+            <option value="alt">Alt text on all images ✓</option>
+            <option value="contrast">Contrast checker passed ✓</option>
+            <option value="reading">Reading order set ✓</option>
+          </select>
+        </div>
+        <div class="prompt-field">
+          <label>Backup &amp; format</label>
+          <select id="dChart" onchange="renderDash()">
+            <option value="pdf">Export a backup PDF</option>
+            <option value="embed">Embed fonts in the file</option>
+            <option value="offline">Save an offline copy on a USB</option>
+          </select>
+        </div>
+        <div class="prompt-field">
+          <label>Delivery plan</label>
+          <select id="dSchedule" onchange="renderDash()">
+            <option value="live">Present live · notes on my phone</option>
+            <option value="hybrid">Hybrid · share screen + PDF handout</option>
+            <option value="record">Record a narrated version too</option>
+          </select>
+        </div>
+        <p style="font-size:.78rem;color:var(--text-muted);line-height:1.55;margin-top:.6rem">💡 The pre-flight card on the right updates as you choose. Accessibility isn't optional polish — a slide someone can't read is a slide that didn't land.</p>
+      </div>
+      <div>
+        <div class="dash-preview">
+          <div class="dashp-head">
+            <div class="dashp-title" id="dashTitle">Q3 Review · Pre-Flight</div>
+            <div class="dashp-when" id="dashWhen">Ready · 2:56 p.m.</div>
+          </div>
+          <div class="dashp-kpis">
+            <div class="dashp-kpi"><div class="kv" id="dKpi1">All ✓</div><div class="kl" id="dKpiL1">Alt text</div></div>
+            <div class="dashp-kpi"><div class="kv">10</div><div class="kl">Slides</div></div>
+            <div class="dashp-kpi"><div class="kv">0</div><div class="kl">Unverified stats</div></div>
+          </div>
+          <div class="dashp-note" id="dashNote"><strong>Backup:</strong> a PDF export is saved in case the projector hates .pptx. <strong>Plan:</strong> present live with notes on his phone — AI drafted the checklist; Leo ran it.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ WALK IN: 3 P.M. ═══════════ -->
+<section class="section" id="s5">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-num"><div class="num">5</div> Walk In · 3:00 p.m.</div>
+      <h2 class="section-title">The Board Room — Read the Deck, Sign Off, Present</h2>
+      <p class="section-sub">The clock's up. Feelings don't matter now — the message and the checks do. Leo reviews three slides one last time and decides whether each is <strong>Verified</strong>, <strong>Flag &amp; fix</strong>, or <strong>Present blindly</strong> (never that last one). Judge each line the way a professional would.</p>
+    </div>
+
+    <div class="story-beat">
+      <span class="sb-tag">📖 The story so far</span>
+      2:58 p.m. Leo stands outside the boardroom, deck in hand — clean, on-brand, on time, exactly what leadership asked for at 1:30. But walking in isn't clicking "present." It's taking thirty seconds to confirm the AI didn't quietly lie on a slide with his name on it. Judge the three slides below the way a professional would.
+    </div>
+
+    <div class="err-panel">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:.6rem">
+        <div>
+          <div style="font-family:'DM Serif Display',serif;font-size:1.15rem;color:var(--navy)">Q3 Board Review · Final Deck</div>
+          <div style="font-size:.78rem;color:var(--text-muted)">AI-drafted, human-directed · 2:58 p.m. · awaiting Leo's sign-off</div>
+        </div>
+      </div>
+
+      <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted);margin:.4rem 0 .8rem">Judge each slide before you walk in</div>
+
+      <div class="scenario-panel" style="margin-top:0">
+        <div class="scenario-q" style="font-size:.92rem">📈 Slide 4 — "Revenue grew year-over-year" (exact % pulled from the verified finance report)</div>
+        <div class="scenario-options" style="grid-template-columns:1fr 1fr 1fr;gap:.5rem">
+          <button class="scenario-btn" style="text-align:center" onclick="judge('A','verify',this)">Verified ✓</button>
+          <button class="scenario-btn" style="text-align:center" onclick="judge('A','flag',this)">Flag &amp; fix</button>
+          <button class="scenario-btn" style="text-align:center" onclick="judge('A','trust',this)">Present blindly</button>
+        </div>
+        <div class="scenario-feedback" id="fbA"></div>
+      </div>
+
+      <div class="scenario-panel">
+        <div class="scenario-q" style="font-size:.92rem">🤖 Slide 7 — "Industry-leading retention, best in our sector" (a claim the AI added; Leo has no competitor data)</div>
+        <div class="scenario-options" style="grid-template-columns:1fr 1fr 1fr;gap:.5rem">
+          <button class="scenario-btn" style="text-align:center" onclick="judge('B','verify',this)">Verified ✓</button>
+          <button class="scenario-btn" style="text-align:center" onclick="judge('B','flag',this)">Flag &amp; fix</button>
+          <button class="scenario-btn" style="text-align:center" onclick="judge('B','trust',this)">Present blindly</button>
+        </div>
+        <div class="scenario-feedback" id="fbB"></div>
+      </div>
+
+      <div class="scenario-panel">
+        <div class="scenario-q" style="font-size:.92rem">📊 Slide 6 — "North led at ₹8.4Cr; chart y-axis starts at ₹0" (honest chart, matches the source table)</div>
+        <div class="scenario-options" style="grid-template-columns:1fr 1fr 1fr;gap:.5rem">
+          <button class="scenario-btn" style="text-align:center" onclick="judge('C','verify',this)">Verified ✓</button>
+          <button class="scenario-btn" style="text-align:center" onclick="judge('C','flag',this)">Flag &amp; fix</button>
+          <button class="scenario-btn" style="text-align:center" onclick="judge('C','trust',this)">Present blindly</button>
+        </div>
+        <div class="scenario-feedback" id="fbC"></div>
+      </div>
+
+      <div class="week-verdict" id="weekVerdict">
+        <h4>📜 The 3 p.m. Verdict: <em>deck presented — with Leo's name on it, honestly.</em></h4>
+        <div class="wv-grid">
+          <div class="wv-tile"><div class="v">90 min</div><div class="l">Notes → boardroom deck</div></div>
+          <div class="wv-tile"><div class="v">1 catch</div><div class="l">Hallucinated stat removed</div></div>
+          <div class="wv-tile"><div class="v">0 fake</div><div class="l">Unverified claims shipped</div></div>
+          <div class="wv-tile"><div class="v">2:56 p.m.</div><div class="l">Ready · 4 min early</div></div>
+        </div>
+        <p>Leo kept Slide 4 and Slide 6 (both verified against sources he controls), and he <strong>flagged Slide 7</strong> — deleting the AI's "industry-leading retention" claim, since he had no competitor data to back it. That single edit is the difference between a presenter and a copy-paste button. After the meeting, the CFO said: <em>"Clear, honest, and you actually knew your numbers. Nice work."</em> Leo exhaled. The secret wasn't AI magic. It was <strong>AI as a fast drafter, directed and verified by a human who owns the room.</strong> 🎉</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FOOTER RECAP ─── -->
+<div class="footer-cta">
+  <h2>🎉 At 1:30, that Word doc was a <em>panic</em>.</h2>
+  <p>By 3:00 it was a deck Leo proudly presented. Here's what the story secretly taught you — the four lessons of Week 4: AI PowerPoint Presentations.</p>
+  <div class="recap-grid">
+    <div class="recap-card">
+      <div class="rn">Lesson 1</div>
+      <h4>The AI Presentation Landscape</h4>
+      <p>Four tools, four trade-offs: Copilot in PowerPoint (paid, in-app), Gamma (AI-native web), Canva Magic Design (design-led), Google Slides + Gemini. And two starts — prompt-to-deck vs document-to-deck. Match the tool to the job. Chapter 1.</p>
+    </div>
+    <div class="recap-card">
+      <div class="rn">Lesson 2</div>
+      <h4>Building Decks with AI</h4>
+      <p>Generate a draft from your notes with a strong, structured prompt; fix the bullet-dump into one idea per slide; generate speaker notes — and catch the invented stat before it reaches a board. Chapter 2.</p>
+    </div>
+    <div class="recap-card">
+      <div class="rn">Lesson 3</div>
+      <h4>AI Design &amp; Visuals</h4>
+      <p>Apply the brand theme, re-prompt an off-brand image, turn a table into an honest chart (and reject the misleading truncated-axis version), and rescue a wall-of-text slide. Chapter 3's honesty check is the whole point.</p>
+    </div>
+    <div class="recap-card">
+      <div class="rn">Lesson 4</div>
+      <h4>Polish, Delivery &amp; Practice</h4>
+      <p>The edit pass, speaker notes in your own voice, Speaker Coach for pace and fillers, accessibility (alt text + contrast), a pre-flight checklist — then practise and walk in confident. Chapter 4.</p>
+    </div>
+  </div>
+  <button class="btn-action" style="font-size:.9rem;padding:.8rem 1.8rem" onclick="document.getElementById('s1').scrollIntoView({behavior:'smooth'})">↻ Replay Leo's 90 minutes</button>
+  <div class="footer-note">Leo's quarterly review is a teaching scenario. Real AI tools, licences and privacy rules change — always confirm what your workplace allows before pasting company data into a web tool, and remember the golden rule this whole week was built on: <strong>AI drafts fast; you direct and verify. A human who reads every slide presents the truth.</strong></div>
+</div>
+
+<!-- ─── COMPLETION BAR ─── -->
+<div class="completion-bar">
+  <div class="completion-info"><span style="font-size:1.1rem">🎤</span><span>Leo's Deck Progress</span></div>
+  <div class="completion-track"><div class="completion-fill" id="completionFill" style="width:0%"></div></div>
+  <div class="completion-percent" id="completionPct">0%</div>
+</div>
+
+<script>
+/* ───────── PROGRESS TRACKING ───────── */
+const visited = new Set();
+function markVisited(id){
+  visited.add(id);
+  const pct = Math.round((visited.size / 5) * 100);
+  document.getElementById('completionFill').style.width = pct + '%';
+  document.getElementById('completionPct').textContent = pct + '%';
+  document.getElementById('headerProgressText').textContent = `${visited.size} of 5 chapters explored`;
+}
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.target).scrollIntoView({behavior:'smooth', block:'start'});
+    markVisited(btn.dataset.target);
+  });
+});
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting && e.intersectionRatio > 0.3) {
+      markVisited(e.target.id);
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.target === e.target.id));
+    }
+  });
+}, {threshold:[0.3]});
+document.querySelectorAll('.section').forEach(s => observer.observe(s));
+
+/* ───────── CHAPTER 1: TOOL PICK ───────── */
+const toolInfo = {
+  copilot: `<span class="verdict-pill vp-mid">Powerful · but paid</span><br><strong>Copilot in PowerPoint</strong> lives right inside the app you already use. It can turn a Word document into a first-draft deck ("Create presentation from file"), apply your organisation's template, summarise, rewrite slides and draft speaker notes — all from a chat pane. The catch: it's part of a <strong>paid Microsoft 365 Copilot licence</strong> your organisation must switch on. If Leo's company has it enabled and the brand template loaded, it's his fastest path <em>because his notes are already a Word doc</em>. If not, he pivots to a web tool. <em>Great when licensed; don't assume it's there.</em>`,
+  gamma: `<span class="verdict-pill vp-good">✓ Fast · AI-native</span><br><strong>Gamma</strong> is built AI-first: paste your notes or write a prompt and it generates an entire structured deck in seconds, with smart auto-layouts and a clean default look. It has a <strong>free tier</strong> (with credits) plus paid plans, and exports to PowerPoint/PDF. Brilliant for speed and story flow. The honest caveat: it's a <strong>web tool</strong> — pasting confidential company numbers into it may breach your data policy, so check first or use non-sensitive framing. <em>Fastest to a first draft; verify what you may upload.</em>`,
+  canva: `<span class="verdict-pill vp-mid">Design-led · check brand kit tier</span><br><strong>Canva with Magic Design</strong> generates decks from a prompt and shines when <em>visual polish and brand consistency</em> matter — enormous template library, drag-and-drop editing, and Brand Kits that lock your fonts and colours. There's a <strong>free tier</strong>; locked brand kits and some AI features sit behind <strong>Canva Pro / Teams</strong>. Best when the deck is design-heavy or public-facing. For Leo's fast internal board deck it's a strong option if the brand kit is already set up. <em>Beautiful; mind which features are paid.</em>`,
+  gemini: `<span class="verdict-pill vp-mid">Right idea · wrong suite for Leo</span><br><strong>Google Slides + Gemini</strong> is Google Workspace's built-in AI — draft slides, generate images and rewrite text with a prompt, much like Copilot but in Slides. Excellent… if your organisation runs on Google. Leo's company runs on Microsoft and his notes are a Word doc, so this isn't his tool today — but it's the exact same skill, portable to whichever suite you land in. <em>Know it exists; use it when you're in Google.</em>`
+};
+function pickTool(k){
+  document.querySelectorAll('#s1 .pick-card').forEach(c => c.classList.toggle('active', c.dataset.tool === k));
+  const d = document.getElementById('toolDetail');
+  d.innerHTML = toolInfo[k];
+  d.classList.add('show');
+}
+
+/* starting-point showdown */
+const promptResults = [
+  {ok:false, fb:'✗ Too vague, and it throws away the notes he already has. "Make me a presentation about our quarter" forces the AI to invent structure and content from nothing — you\'ll get generic filler and made-up specifics. When you already have material, feed it in (document-to-deck) instead of starting blank.',
+   chat:`<div class="chat-msg user"><span class="who">Leo</span>Make me a presentation about our quarter.</div><div class="chat-msg ai"><span class="who">AI</span>Sure! Here's a generic quarterly template with placeholder sections… <strong>(Because you gave it no numbers or notes, it invents structure — and may invent "achievements" you never had.)</strong></div>`},
+  {ok:false, fb:'✗ "Award-winning, impress the board" is vibes, not a brief. The AI can\'t tell what impresses <em>your</em> board without your actual content and goal. Adjectives don\'t give it structure — your notes and a clear ask do.',
+   chat:`<div class="chat-msg user"><span class="who">Leo</span>Write a beautiful, award-winning deck that will impress the board.</div><div class="chat-msg ai"><span class="who">AI</span>I can make it look polished, but "impressive" depends on your content and audience. <strong>Share your notes and tell me the goal, the slide count and who's in the room</strong> and I'll build something specific.</div>`},
+  {ok:true, fb:'✓ Exactly. This is <strong>document-to-deck</strong>: real notes + clear structure (slide count, agenda, summary, recommendation) + a hard guardrail ("keep every number, invent none"). That last clause is the whole course in one line — you\'re using AI as a fast drafter, not a fact source. This becomes Leo\'s first real draft in Chapter 2.',
+   chat:`<div class="chat-msg user"><span class="who">Leo</span>Here are my Q3 notes. Turn them into a 10-slide board deck: one idea per slide, an agenda, a summary, and a clear recommendation. Keep every number from my notes — don't invent any.</div><div class="chat-msg ai"><span class="who">AI</span>Done — a 10-slide draft: <strong>Title → Agenda → Revenue → Regions → Churn → Chart → Wins → Watch-items → Recommendation → Summary.</strong> I used only the figures in your notes and flagged one ("growth ~40%?? check") as <em>unverified — please confirm before presenting.</em> <strong>← Now you direct and verify each slide.</strong></div>`}
+];
+let promptAnswered = false;
+function pickPrompt(i){
+  const r = promptResults[i];
+  const btns = document.querySelectorAll('#s1 .scenario-panel:first-of-type .scenario-btn');
+  if (!promptAnswered){
+    btns.forEach((b,j) => { if (j===2) b.classList.add('correct'); else if (j===i && !r.ok) b.classList.add('wrong'); });
+    if (r.ok) promptAnswered = true;
+  }
+  const fb = document.getElementById('promptFb');
+  fb.className = 'scenario-feedback show ' + (r.ok ? 'success' : 'fail');
+  fb.innerHTML = r.fb;
+  document.getElementById('promptChat').innerHTML = r.chat;
+}
+
+/* tool + workflow quiz */
+const toolQs = [
+  {q:"You have three pages of notes in a Word doc. Which starting approach fits best?", opts:["Prompt-to-deck: describe a deck from scratch and ignore the notes","Document-to-deck: feed the notes in and ask the AI to structure them into slides","Retype the notes as slides by hand first"], correct:1, explain:"When you already have material, document-to-deck keeps your real content and numbers and just structures them — faster and far less likely to hallucinate than asking the AI to invent a quarter from nothing."},
+  {q:"You want an AI-native tool that drafts a whole deck from a prompt and has a free tier. Which fits?", opts:["Copilot in PowerPoint (free for everyone)","Gamma (AI-native, free tier + paid)","There is no free option anywhere"], correct:1, explain:"Gamma is AI-first with a free credit tier and exports to PowerPoint/PDF. Copilot in PowerPoint is a paid Microsoft 365 add-on, not free by default."},
+  {q:"Which statement about Copilot in PowerPoint is accurate?", opts:["It's free and on by default for every account","It's a paid Microsoft 365 add-on your org must enable, and it can build a deck from a Word file","It only works inside Google Slides"], correct:1, explain:"Copilot is a paid licence, not a default freebie. Its 'create from file' feature is exactly why it suits Leo — his notes are already a Word doc. Gemini in Google Slides is the Google-suite equivalent."}
+];
+let tqIdx = 0;
+function renderToolQ(){
+  const s = toolQs[tqIdx];
+  document.getElementById('toolQ').textContent = `Round ${tqIdx+1}/3 — ${s.q}`;
+  document.getElementById('toolOpts').innerHTML = s.opts.map((o,i)=>`<button class="scenario-btn" onclick="answerToolQ(${i})">${o}</button>`).join('');
+  const fb = document.getElementById('toolFb');
+  fb.className = 'scenario-feedback'; fb.innerHTML = '';
+  document.getElementById('toolNext').style.display = 'none';
+}
+function answerToolQ(i){
+  const s = toolQs[tqIdx];
+  document.querySelectorAll('#toolOpts .scenario-btn').forEach((b,j)=>{
+    b.disabled = true;
+    if (j===s.correct) b.classList.add('correct'); else if (j===i) b.classList.add('wrong');
+  });
+  const fb = document.getElementById('toolFb');
+  fb.className = 'scenario-feedback show ' + (i===s.correct ? 'success' : 'fail');
+  fb.innerHTML = (i===s.correct ? '✓ Spot on! ' : '✗ Not quite. ') + s.explain + (tqIdx===toolQs.length-1 ? '<br><br>🎉 Chapter 1 complete — Leo will use Copilot in PowerPoint (his notes are a Word doc, brand template is loaded) via document-to-deck. Next: build the draft.' : '');
+  document.getElementById('toolNext').style.display = tqIdx < toolQs.length-1 ? 'inline-block' : 'none';
+}
+function nextToolQ(){ tqIdx++; if (tqIdx < toolQs.length) renderToolQ(); }
+renderToolQ();
+
+/* ───────── CHAPTER 2: BUILD THE DECK ───────── */
+/* before/after bullet-dump */
+const baData = {
+  bad: {
+    html:`<div class="slide-h" style="color:#fff">Q3 Performance Overview</div><ul class="slide-bullets"><li>Revenue grew this quarter compared to last quarter and also year-over-year</li><li>The new Southern region launched and performed reasonably well overall</li><li>Churn was a bit of an issue in the mid-market tier but improved slightly</li><li>Marketing spend was up but so was pipeline so the ratio stayed acceptable</li><li>Support tickets rose but resolution time went down which is good</li></ul>`,
+    explain:`<strong>The problem:</strong> five (originally nine) competing ideas on one slide. The audience can't <em>read</em> and <em>listen</em> at once, so they do neither. There's no single takeaway — it's the notes reformatted, not a message. AI produced this because the prompt asked it to "cover everything." Direct it toward focus instead.`
+  },
+  good: {
+    html:`<div class="accent-bar"></div><div class="slide-h" style="color:#fff">Q3 delivered growth — with one thing to watch</div><div class="slide-support" style="color:rgba(255,255,255,0.85)">Revenue up year-over-year, the new Southern region is live and contributing, and mid-market churn is the single item flagged for Q4.<br><br><em style="color:var(--orange-light)">The other details live in the speaker notes and appendix — not on the slide.</em></div>`,
+    explain:`<strong>The fix:</strong> one idea, stated as a headline the board remembers. Leo asked AI: <em>"Rewrite this slide as a single headline + one line of support. Move the rest to speaker notes."</em> Supporting detail moves to the notes and appendix — where it belongs. <strong>One idea per slide is the difference between a deck people follow and a deck they tune out.</strong>`
+  }
+};
+function setBA(k){
+  document.getElementById('baBad').classList.toggle('active', k==='bad');
+  document.getElementById('baGood').classList.toggle('active', k==='good');
+  document.getElementById('baCanvas').innerHTML = baData[k].html;
+  document.getElementById('baExplain').innerHTML = baData[k].explain;
+}
+setBA('bad');
+
+/* speaker-notes lab */
+const formulas = {
+  prompt: {
+    prompt:'Turn my Q3 notes into a 10-slide board deck: one idea per slide, an agenda, a summary and a clear recommendation. Keep every number from my notes — invent none. Flag anything unverified.',
+    code:`<span class="kw">STRUCTURE</span> = Title → Agenda → Revenue → Regions →\n         Churn → Chart → Wins → Watch → <span class="st">Recommendation</span> → Summary\n<span class="kw">RULE</span> = <span class="st">"use only my figures; flag unverified; one idea/slide"</span>`,
+    explain:`A strong deck prompt has four parts: <strong>the source</strong> (my notes), <strong>the shape</strong> (10 slides, this order), <strong>the standard</strong> (one idea per slide, a recommendation) and <strong>the guardrail</strong> (invent no numbers; flag unverified). The guardrail is what stops hallucinations at the source. <strong>Verify:</strong> AI still drafts — you read every slide before it's yours.`
+  },
+  notes: {
+    prompt:'For each slide, write 2–3 sentences of speaker notes in a warm, confident, first-person voice — what I\'d actually say out loud, not the bullets repeated.',
+    code:`<span class="kw">SPEAKER NOTES</span> · Slide 4\n<span class="st">"North stayed our anchor at ₹8.4Cr. The story</span>\n<span class="st"> this quarter is the new Southern region — live</span>\n<span class="st"> for one quarter and already contributing."</span>`,
+    explain:`AI drafts notes fast, but out of the box they often just <em>repeat the slide</em>. Ask for a <strong>spoken voice</strong> — what you'd say, not read. Good notes are prompts for <em>you</em>, not a script to recite. <strong>Verify:</strong> read them aloud once; if they sound like a robot, they are — rewrite in your own words. That happens in Chapter 4.`
+  },
+  agenda: {
+    prompt:'Add an agenda slide near the front and a one-slide summary at the end that restates the three things the board should remember.',
+    code:`<span class="kw">AGENDA</span>  = 1. Results · 2. Regions · 3. Watch-items · 4. Ask\n<span class="kw">SUMMARY</span> = <span class="st">"Grew YoY · Southern region live ·</span>\n          <span class="st"> mid-market churn is the Q4 focus"</span>`,
+    explain:`An <strong>agenda</strong> tells the room where you're taking them; a <strong>summary</strong> tells them what to carry out. AI can generate both from the deck it just built. <strong>Verify:</strong> the summary must match what the slides actually proved — no new claims sneaking in at the end. A summary is a recap, not a place for fresh, unbacked numbers.`
+  },
+  tighten: {
+    prompt:'This slide title is 18 words. Rewrite it as a punchy headline under 10 words that states the takeaway, not the topic.',
+    code:`<span class="rf">Before</span>: <span class="st">"An Overview And Discussion Of Our Q3</span>\n<span class="st">         Regional Revenue Performance Results"</span>\n<span class="rf">After</span> : <span class="st">"Southern region added ₹1.2Cr in quarter one"</span>`,
+    explain:`A title should state the <strong>takeaway</strong> ("Southern region added ₹1.2Cr"), not the <strong>topic</strong> ("An overview of regional revenue"). AI is great at this rewrite — feed it the takeaway and let it tighten. <strong>Verify:</strong> the number in the headline must exist in your source. A punchy headline built on an invented figure is just a confident mistake.`
+  }
+};
+function setFormula(k){
+  document.querySelectorAll('.fl-tab').forEach(t => t.classList.toggle('active', t.dataset.fl === k));
+  const f = formulas[k];
+  document.getElementById('flPrompt').innerHTML = '<span class="who">Leo → AI</span>' + f.prompt;
+  document.getElementById('flCode').innerHTML = f.code;
+  document.getElementById('flExplain').innerHTML = f.explain;
+}
+setFormula('prompt');
+
+/* hallucination checkpoint */
+const errFbs = [
+  {ok:false, fb:'✗ "It probably knows" is exactly how a fake number reaches a board. The AI didn\'t <em>know</em> — it rounded your "~40%?? (check!!)" into a confident "42%". If the CFO asks for the source and there isn\'t one, your whole deck loses trust. Verify or remove.'},
+  {ok:true, fb:'✓ Exactly right. Your notes flagged the number as unverified ("(check!!)"), so a precise "42% YoY" is a <strong>hallucination dressed as a fact</strong>. Pull the real figure from the finance report; if you can\'t confirm it in time, downgrade to the honest, defensible claim ("revenue grew year-over-year"). <strong>Never present a number you can\'t source.</strong> This is the whole week in one decision.'},
+  {ok:false, fb:'✗ Changing 42% to 45% doesn\'t make it true — it makes it a bigger lie. "Rounder" isn\'t "verified." The fix is to find the real number or drop the exact figure entirely, not to invent a tidier one.'}
+];
+function errQ(i){
+  const btns = document.querySelectorAll('#s2 .err-panel .scenario-btn');
+  btns.forEach((b,j)=>{ b.disabled = true; if (errFbs[j].ok) b.classList.add('correct'); else if (j===i) b.classList.add('wrong'); });
+  const fb = document.getElementById('errFb');
+  fb.className = 'scenario-feedback show ' + (errFbs[i].ok ? 'success' : 'fail');
+  fb.innerHTML = errFbs[i].fb;
+}
+
+/* deck-building quiz */
+const formQs = [
+  {q:"A slide has nine bullets covering nine topics. Best fix?", opts:["Shrink the font so it all fits","Split it: one idea per slide, move detail to speaker notes and the appendix","Add more bullets so nothing is missed"], correct:1, explain:"The audience can't read and listen at once. One idea per slide, stated as a headline, with detail in the notes — that's how a board follows you instead of tuning out."},
+  {q:"The AI wrote 'revenue up 42%' but your notes only said '~40%?? (check!!)'. What do you do?", opts:["Keep it — 42% sounds precise and confident","Verify against the finance report; if you can't confirm it, remove the exact % and state the defensible claim","Round it to 45% to look intentional"], correct:1, explain:"AI turns rough guesses into confident facts. Every number on a board slide must trace to a source you can defend. Verify or downgrade to what's true — never invent precision."},
+  {q:"AI generated speaker notes that just repeat your bullets. Best next step?", opts:["Read them verbatim — they match the slide","Ask AI to rewrite them in a spoken, first-person voice, then edit into your own words","Delete all notes and improvise"], correct:1, explain:"Notes should be what you'd say, not the slide read aloud. Prompt for a spoken voice, then make them yours — good notes cue you to look up and talk, not read."}
+];
+let fqIdx = 0;
+function renderFormQ(){
+  const s = formQs[fqIdx];
+  document.getElementById('formQ').textContent = `Round ${fqIdx+1}/3 — ${s.q}`;
+  document.getElementById('formOpts').innerHTML = s.opts.map((o,i)=>`<button class="scenario-btn" onclick="answerFormQ(${i})">${o}</button>`).join('');
+  const fb = document.getElementById('formFb');
+  fb.className = 'scenario-feedback'; fb.innerHTML = '';
+  document.getElementById('formNext').style.display = 'none';
+}
+function answerFormQ(i){
+  const s = formQs[fqIdx];
+  document.querySelectorAll('#formOpts .scenario-btn').forEach((b,j)=>{
+    b.disabled = true;
+    if (j===s.correct) b.classList.add('correct'); else if (j===i) b.classList.add('wrong');
+  });
+  const fb = document.getElementById('formFb');
+  fb.className = 'scenario-feedback show ' + (i===s.correct ? 'success' : 'fail');
+  fb.innerHTML = (i===s.correct ? '✓ Spot on! ' : '✗ Not quite. ') + s.explain + (fqIdx===formQs.length-1 ? '<br><br>🎉 Chapter 2 complete — the draft is focused, the notes have a voice, and the fake stat is gone. Next: make it look right.' : '');
+  document.getElementById('formNext').style.display = fqIdx < formQs.length-1 ? 'inline-block' : 'none';
+}
+function nextFormQ(){ fqIdx++; if (fqIdx < formQs.length) renderFormQ(); }
+renderFormQ();
+
+/* ───────── CHAPTER 3: DESIGN & VISUALS ───────── */
+/* animate bars into view */
+const barObserver = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      document.querySelectorAll('#bars .bar').forEach(b=>{ b.style.height = b.dataset.h + '%'; });
+      barObserver.disconnect();
+    }
+  });
+},{threshold:0.4});
+const barsEl = document.getElementById('bars');
+if(barsEl) barObserver.observe(barsEl);
+
+const askAnswers = [
+  '<strong>North</strong> led at ₹8.4Cr — the anchor region and roughly a third of total revenue. It stays the reliable base while the story this quarter is elsewhere.',
+  'The new <strong>South</strong> region did ₹3.5Cr in its very first quarter — impressive for a launch, and Leo\'s headline growth story. Note: it\'s already ahead of the older Central region.',
+  'For "value by category," a <strong>bar chart</strong> beats a pie — the eye compares bar heights far more accurately than pie slices. AI suggested bars, and that\'s the right call here.',
+  'Yes — <strong>only if the y-axis starts at ₹0</strong>. This chart does, so the bar heights honestly reflect the real ratios. ⚠️ Watch out: the AI also offered a version starting the axis at ₹7.9Cr, which fakes a dramatic jump. Same data, dishonest shape. See the honesty check below.'
+];
+function askData(i, el){
+  document.querySelectorAll('.ask-chip').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  const a = document.getElementById('askAnswer');
+  a.innerHTML = askAnswers[i];
+  a.classList.add('show');
+}
+
+/* misleading-chart checkpoint */
+const sanityFbs = [
+  {ok:false, fb:'✗ <strong>The credibility-killer.</strong> A truncated y-axis makes a 6% rise look like a doubling — it "impresses" only until someone in the room notices the axis. The moment a board catches one misleading chart, they distrust <em>every</em> number you presented. Short-term wow, long-term disaster.'},
+  {ok:true, fb:'✓ <strong>This is the whole chapter in one move.</strong> An honest chart starts value axes at zero so bar heights match reality. A flattering-but-truncated axis is the classic misleading chart — and AI will happily generate it if you don\'t catch it. Show the real shape; a modest, honest number you can defend beats an exaggerated one you can\'t. AI drafts; you keep it honest.'},
+  {ok:false, fb:'✗ <strong>Worse, not better.</strong> Hiding the axis labels so no one can check the scale is deception by omission — it makes the chart <em>less</em> trustworthy, not more. The fix is an honest axis from zero, not a chart nobody can verify.'}
+];
+function sanityQ(i){
+  const btns = document.querySelectorAll('#s3 .err-panel:last-of-type .scenario-btn');
+  btns.forEach((b,j)=>{ b.disabled = true; if (sanityFbs[j].ok) b.classList.add('correct'); else if (j===i) b.classList.add('wrong'); });
+  const fb = document.getElementById('sanityFb');
+  fb.className = 'scenario-feedback show ' + (sanityFbs[i].ok ? 'success' : 'fail');
+  fb.innerHTML = sanityFbs[i].fb;
+}
+
+/* ───────── CHAPTER 4: POLISH & DELIVER ───────── */
+const autoFbs = [
+  {ok:false, fb:'✗ <strong>Reading AI notes off the screen kills the room.</strong> You\'ll stare at the monitor, sound robotic, and lose eye contact with the board. Polished text isn\'t the same as prepared delivery — the notes are a starting point, not a teleprompter script.'},
+  {ok:true, fb:'✓ <strong>The golden rule of delivery.</strong> AI drafts the notes; you make them yours — trimmed to cues, in your own voice, rehearsed once out loud so you can look up and <em>talk</em>. That single practice run is what separates presenting from reading. AI helps you prepare; you own the room.'},
+  {ok:false, fb:'✗ Winging a board presentation to "look like a leader" is how people freeze, ramble, or blow past the time slot. Confident presenters <em>are</em> prepared — a few cue phrases and one rehearsal beat bravado every time.'}
+];
+function autoQ(i){
+  const btns = document.querySelectorAll('#s4 .scenario-panel:first-of-type .scenario-btn');
+  btns.forEach((b,j)=>{ b.disabled = true; if (autoFbs[j].ok) b.classList.add('correct'); else if (j===i) b.classList.add('wrong'); });
+  const fb = document.getElementById('autoFb');
+  fb.className = 'scenario-feedback show ' + (autoFbs[i].ok ? 'success' : 'fail');
+  fb.innerHTML = autoFbs[i].fb;
+}
+
+/* build checklist + feed */
+const buildEvents = [
+  {t:'2:36 p.m.', msg:'Edit pass done: fonts consistent, one idea per slide, and every number re-checked against the finance report. The "42%" is now the verified figure — or gone.'},
+  {t:'2:41 p.m.', msg:'Speaker notes refined from the AI draft into Leo\'s own voice — short cues, not paragraphs. He can glance and talk, not read.'},
+  {t:'2:46 p.m.', msg:'Speaker Coach run: flagged pace at 190 wpm (too fast) and 7 fillers/min. Leo slows down and the second run lands at 138 wpm, 2 fillers. Board-ready.'},
+  {t:'2:50 p.m.', msg:'Accessibility fixed: alt text added to every image, and the low-contrast grey caption bumped to a shade that passes the checker.'},
+  {t:'2:53 p.m.', msg:'Pre-flight: title slide present, page numbers on, spell-check clean, fonts embedded, and a backup PDF exported in case the projector rejects .pptx.'},
+  {t:'2:56 p.m.', msg:'Open and close rehearsed once out loud, timed at 11:20 — comfortably inside the 12-minute slot. Leo breathes out. Four minutes early.'}
+];
+const buildSteps = new Set();
+function runBuildStep(i){
+  if (buildSteps.has(i)) return;
+  buildSteps.add(i);
+  document.querySelector(`#buildList li[data-step="${i}"]`).classList.add('done');
+  const feed = document.getElementById('buildFeed');
+  if (buildSteps.size === 1) feed.innerHTML = '';
+  const e = buildEvents[i];
+  feed.innerHTML += `<div class="feed-line"><span class="ft">${e.t}</span><span>${e.msg}</span></div>`;
+  feed.scrollTop = feed.scrollHeight;
+  if (buildSteps.size === buildEvents.length) document.getElementById('buildDone').style.display = 'block';
+}
+
+/* speaker coach */
+function renderCoach(){
+  const pace = +document.getElementById('paceIn').value;
+  const fill = +document.getElementById('fillIn').value;
+  const time = +document.getElementById('timeIn').value;
+  document.getElementById('paceOut').textContent = pace + ' wpm';
+  document.getElementById('fillOut').textContent = fill;
+  document.getElementById('timeOut').textContent = time + ' min';
+  document.getElementById('paceVal').textContent = pace;
+  document.getElementById('fillVal').textContent = fill;
+  document.getElementById('timeVal').textContent = time + 'm';
+
+  const paceOk = pace >= 120 && pace <= 150;
+  const fillOk = fill <= 3;
+  const timeOk = time <= 12;
+  document.getElementById('paceTile').className = 'coach-tile ' + (paceOk ? 'ok' : 'warn');
+  document.getElementById('fillTile').className = 'coach-tile ' + (fillOk ? 'ok' : 'warn');
+  document.getElementById('timeTile').className = 'coach-tile ' + (timeOk ? 'ok' : 'warn');
+
+  const passes = [paceOk, fillOk, timeOk].filter(Boolean).length;
+  const scoreEl = document.getElementById('scoreVal');
+  const scoreTile = document.getElementById('scoreTile');
+  const note = document.getElementById('coachNote');
+  if (passes === 3){
+    scoreEl.textContent = 'A';
+    scoreTile.className = 'coach-tile ok';
+    note.innerHTML = '<strong>Board-ready.</strong> Steady pace, almost no fillers, comfortably inside the slot. This is Leo\'s second run after Speaker Coach flagged the first. The tool measures; the practice fixes.';
+  } else {
+    scoreEl.textContent = passes >= 2 ? 'B' : 'C';
+    scoreTile.className = 'coach-tile warn';
+    const issues = [];
+    if (!paceOk) issues.push(pace > 150 ? 'you\'re rushing — slow to ~120–150 wpm' : 'a touch slow — aim for ~120–150 wpm');
+    if (!fillOk) issues.push('too many fillers — pause instead of saying "um"');
+    if (!timeOk) issues.push('over the 12-min slot — cut a slide or tighten');
+    note.innerHTML = '<strong>At-risk:</strong> ' + issues.join('; ') + '. Speaker Coach flags it; a practice run fixes it. Adjust the sliders toward the target.';
+  }
+}
+renderCoach();
+
+/* pre-flight panel */
+const dashData = {
+  headlines: {
+    alt:{v:'All ✓', l:'Alt text'},
+    contrast:{v:'Pass', l:'Contrast'},
+    reading:{v:'Set', l:'Reading order'}
+  },
+  charts: {
+    pdf:'A PDF export is saved as a backup in case the projector rejects .pptx.',
+    embed:'Fonts are embedded so the deck looks right on any machine, even without the brand fonts installed.',
+    offline:'An offline copy sits on a USB — no meeting ever died from "the Wi-Fi is down."'
+  },
+  schedules: {
+    live:'Ready · present live',
+    hybrid:'Ready · hybrid + handout',
+    record:'Ready · narrated version too'
+  }
+};
+function renderDash(){
+  const h = document.getElementById('dHeadline').value;
+  const c = document.getElementById('dChart').value;
+  const s = document.getElementById('dSchedule').value;
+  document.getElementById('dKpi1').textContent = dashData.headlines[h].v;
+  document.getElementById('dKpiL1').textContent = dashData.headlines[h].l;
+  document.getElementById('dashWhen').textContent = dashData.schedules[s];
+  document.getElementById('dashNote').innerHTML = '<strong>Backup:</strong> ' + dashData.charts[c] + ' <strong>Plan:</strong> Leo present with notes on his phone — AI drafted the checklist; Leo ran it.';
+}
+
+/* ───────── WALK IN: JUDGE ───────── */
+const judgeKey = {
+  A: {right:'verify', fb:{
+    verify:'✓ Correct — <strong>VERIFIED.</strong> The exact percentage now traces to the finance report Leo checked. He can defend it if the CFO asks for the source. This is the "~40%?? (check!!)" line, finally confirmed. Present it.',
+    flag:'△ Over-cautious. This figure already went through verification — the % now comes straight from the finance report. No fix needed; it\'s clean. Verdict: <strong>VERIFIED</strong>.',
+    trust:'✗ Right answer, wrong reason — never "present blindly," even when the number is correct. The habit is what matters: it\'s verified against a source Leo controls. Verdict: <strong>VERIFIED</strong> (because checked, not because trusted).'}},
+  B: {right:'flag', fb:{
+    flag:'✓ Correct — <strong>FLAG &amp; FIX.</strong> "Industry-leading, best in our sector" is a claim the AI added, and Leo has no competitor data to back it. Unverifiable superlatives are how a deck loses credibility the instant someone asks "says who?". Leo deletes it and states only what he can prove. This single edit separates a presenter from a copy-paste button.',
+    verify:'✗ You can\'t verify a claim you have no data for. "Best in our sector" needs competitor benchmarks Leo doesn\'t have — so it\'s an unbacked superlative to remove, not a fact to confirm. Verdict: <strong>FLAG &amp; FIX</strong>.',
+    trust:'✗ This is the exact trap the whole week warns about. A confident AI superlative with nothing behind it, presented unchecked, is how a board catches you out. Verdict: <strong>FLAG &amp; remove it</strong>.'}},
+  C: {right:'verify', fb:{
+    verify:'✓ Correct — <strong>VERIFIED.</strong> ₹8.4Cr for North matches the source table, and the chart\'s y-axis starts at ₹0, so the bars tell an honest story. Chosen the honest chart over the flattering one in Chapter 3 — solid, defensible headline.',
+    flag:'△ No fix needed here — the number matches the source table and the axis starts at zero, so the chart is honest. That\'s exactly what "verified" looks like. Verdict: <strong>VERIFIED</strong>.',
+    trust:'✗ It happens to be right, but "present blindly" is never the habit. It\'s verified because the number matches the table and the axis is honest — cross-checking, not faith. Verdict: <strong>VERIFIED</strong>.'}}
+};
+const judged = {};
+function judge(line, verdict, btn){
+  if (judged[line]) return;
+  const k = judgeKey[line];
+  judged[line] = true;
+  const panel = btn.closest('.scenario-panel');
+  panel.querySelectorAll('.scenario-btn').forEach(b => {
+    b.disabled = true;
+    if (b.getAttribute('onclick').includes("'"+k.right+"'")) b.classList.add('correct');
+    else if (b === btn) b.classList.add('wrong');
+  });
+  const fb = document.getElementById('fb'+line);
+  fb.className = 'scenario-feedback show ' + (verdict===k.right ? 'success' : 'fail');
+  fb.innerHTML = k.fb[verdict];
+  if (judged.A && judged.B && judged.C){
+    setTimeout(()=>{ document.getElementById('weekVerdict').classList.add('show'); document.getElementById('weekVerdict').scrollIntoView({behavior:'smooth', block:'center'}); }, 600);
+  }
+}
+</script>
+</body>
+</html>
