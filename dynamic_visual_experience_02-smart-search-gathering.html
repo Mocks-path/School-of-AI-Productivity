@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Smart Search &amp; Information Gathering · Lesson 02</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,0,400;9..144,0,600;9..144,0,800;9..144,1,600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+
+:root{
+  --orange:#EF7F1A; --orange-light:#FF9429; --orange-dark:#D55222;
+  --brown:#412C23; --brown-dark:#2F1D19; --tan:#A34E1C;
+  --yellow:#FECC00; --cream:#FBF6EE; --paper:#FFFCF6;
+  --ink:#1C1410; --muted:#6E5C50; --line:#E8DCC8; --accent:#008DD2;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',system-ui,sans-serif;
+  background:var(--paper); color:var(--ink); line-height:1.6; overflow-x:hidden;
+}
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:radial-gradient(circle at 1px 1px,rgba(65,44,35,0.05) 1px,transparent 0);
+  background-size:24px 24px;
+}
+.topbar{
+  position:sticky;top:0;z-index:100;
+  background:rgba(255,252,246,0.92); backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+  padding:14px 40px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.brand{font-family:'Fraunces',serif;font-weight:800;font-size:17px;letter-spacing:-0.01em;color:var(--brown-dark)}
+.brand .dot{color:var(--orange)}
+.brand .sub{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.15em;color:var(--muted);font-weight:500;text-transform:uppercase;margin-left:8px}
+.logo-slot{width:44px;height:44px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.logo-slot svg{width:100%;height:100%;display:block}
+.page{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:50px 40px 100px}
+.hero{padding:30px 0 50px;border-bottom:1px solid var(--line)}
+.eyebrow{
+  font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.18em;
+  text-transform:uppercase;color:var(--orange-dark);font-weight:600;
+  display:inline-flex;align-items:center;gap:10px;
+}
+.eyebrow::before{content:"";width:24px;height:2px;background:var(--orange)}
+h1{
+  font-family:'Fraunces',serif;font-weight:800;
+  font-size:clamp(38px,7vw,80px);line-height:0.98;letter-spacing:-0.03em;
+  margin:18px 0 20px;color:var(--brown-dark);
+}
+h1 em{font-style:italic;color:var(--orange-dark);font-weight:600}
+.lede{font-size:19px;max-width:680px;color:var(--muted)}
+section{padding:70px 0;border-bottom:1px solid var(--line)}
+section:last-of-type{border-bottom:none}
+.section-num{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--orange);font-weight:600;letter-spacing:0.08em}
+h2{
+  font-family:'Fraunces',serif;font-weight:700;
+  font-size:clamp(28px,4.5vw,48px);line-height:1.05;letter-spacing:-0.02em;
+  margin:10px 0 22px;color:var(--brown-dark);max-width:720px;
+}
+h3{font-family:'Fraunces',serif;font-weight:600;font-size:24px;color:var(--brown-dark);margin:28px 0 12px}
+p{max-width:680px;margin-bottom:14px;color:var(--ink)}
+.lead{font-size:17px;color:var(--muted);max-width:680px;margin-bottom:26px}
+code{font-family:'JetBrains Mono',monospace;font-size:0.92em;background:var(--cream);padding:2px 6px;border-radius:4px;color:var(--brown-dark)}
+.illus{
+  background:var(--cream);border:1px solid var(--line);border-radius:18px;
+  padding:32px;margin:24px 0;position:relative;overflow:hidden;
+}
+.illus-title{
+  font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);
+  letter-spacing:0.12em;text-transform:uppercase;
+  margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:10px;
+}
+.controls{display:flex;gap:8px;flex-wrap:wrap}
+.controls button{
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  background:var(--paper);border:1px solid var(--line);color:var(--brown);
+  padding:6px 12px;border-radius:6px;cursor:pointer;
+  text-transform:uppercase;letter-spacing:0.1em;transition:all .2s;
+}
+.controls button:hover{background:var(--orange);color:#fff;border-color:var(--orange)}
+.controls button.active{background:var(--brown-dark);color:#fff;border-color:var(--brown-dark)}
+.takeaway{
+  background:var(--brown-dark);color:var(--paper);
+  border-radius:18px;padding:44px;margin-top:50px;position:relative;overflow:hidden;
+}
+.takeaway::after{
+  content:"";position:absolute;top:-40px;right:-40px;width:180px;height:180px;
+  border-radius:50%;background:radial-gradient(circle,var(--orange),transparent 70%);opacity:0.4;
+}
+.takeaway h2{color:var(--paper);margin-bottom:16px}
+.takeaway p{color:#E8D9C5;font-size:16px;max-width:680px}
+.takeaway ul{list-style:none;margin-top:18px;display:grid;gap:8px}
+.takeaway li{font-family:'JetBrains Mono',monospace;font-size:13px;padding-left:22px;position:relative;color:#FBE7CB}
+.takeaway li::before{content:"→";position:absolute;left:0;color:var(--orange);font-weight:bold}
+footer{text-align:center;padding:36px;color:var(--muted);font-size:12px;font-family:'JetBrains Mono',monospace;letter-spacing:0.1em}
+@media(max-width:700px){
+  .topbar{padding:12px 18px}
+  .page{padding:30px 18px 70px}
+  .illus{padding:20px}
+  .takeaway{padding:28px}
+  .logo-slot{width:42px;height:66px}
+}
+
+/* ===== anatomy cards (section 02) ===== */
+.crit-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;margin:22px 0}
+.crit{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:18px}
+.crit .k{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;font-weight:600;color:#fff;background:var(--tan);display:inline-block;padding:3px 8px;border-radius:4px;margin-bottom:8px}
+.crit h4{font-family:'Fraunces',serif;font-size:17px;color:var(--brown-dark);margin-bottom:5px}
+.crit p{font-size:13px;color:var(--muted);margin:0;max-width:none}
+
+/* ===== transformer (figure 1) ===== */
+.tf-wrap{display:grid;grid-template-columns:1fr auto 1fr;gap:18px;align-items:stretch}
+.tf-col{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:20px;min-width:0}
+.tf-lab{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;font-weight:600;color:#fff;padding:4px 10px;border-radius:4px;display:inline-block;margin-bottom:12px}
+.tf-lab.en{background:var(--tan)}
+.tf-lab.fx{background:var(--orange-dark)}
+.tf-en{font-size:15px;color:var(--brown);line-height:1.55;min-height:118px}
+.tf-fx{font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--brown-dark);background:var(--cream);border:1px solid var(--line);border-radius:8px;padding:14px;min-height:118px;word-break:break-word;line-height:1.5;opacity:0;transform:translateY(8px);transition:opacity .5s,transform .5s}
+.tf-fx.show{opacity:1;transform:translateY(0)}
+.tf-note{font-size:12px;color:var(--muted);margin-top:12px;max-width:none}
+.tf-arrow{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:var(--orange)}
+.tf-arrow svg{width:44px;height:44px}
+.tf-arrow .spin{transform-origin:center;animation:tfSpin 2.6s linear infinite;animation-play-state:paused}
+.tf-wrap.working .tf-arrow .spin{animation-play-state:running}
+@keyframes tfSpin{to{transform:rotate(360deg)}}
+.tf-arrow .cap{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted)}
+@media(max-width:700px){.tf-wrap{grid-template-columns:1fr}.tf-arrow svg{transform:rotate(90deg)}}
+
+/* ===== research loop (figure 2) ===== */
+.loop-wrap{display:grid;grid-template-columns:1.05fr 1fr;gap:26px;align-items:start}
+.loop-stage{display:grid;gap:10px}
+.loop-step{display:flex;gap:14px;align-items:center;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:14px 16px;cursor:pointer;transition:all .2s;opacity:0.55}
+.loop-step:hover{border-color:var(--orange);transform:translateX(4px)}
+.loop-step.active{border-color:var(--orange-dark);background:var(--cream);opacity:1}
+.loop-n{font-family:'JetBrains Mono',monospace;font-weight:600;font-size:14px;color:#fff;background:var(--brown-dark);width:30px;height:30px;display:flex;align-items:center;justify-content:center;border-radius:50%;flex-shrink:0}
+.loop-step.active .loop-n{background:var(--orange-dark)}
+.loop-name{font-family:'Fraunces',serif;font-size:17px;color:var(--brown-dark)}
+.loop-panel{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:24px;position:sticky;top:90px}
+.loop-tag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--orange-dark);font-weight:600;display:block;margin-bottom:6px}
+.loop-big{font-family:'Fraunces',serif;font-size:24px;color:var(--brown-dark);margin-bottom:12px}
+.loop-desc{font-size:14px;color:var(--brown);max-width:none;margin-bottom:14px}
+.loop-do{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--brown-dark);background:var(--cream);border:1px solid var(--line);border-left:3px solid var(--orange);border-radius:8px;padding:12px}
+
+/* ===== pattern cards / tabs (figure 3) ===== */
+.pat-tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.pat-tab{font-family:'JetBrains Mono',monospace;font-size:11px;background:var(--paper);border:1px solid var(--line);color:var(--brown);padding:8px 14px;border-radius:8px;cursor:pointer;text-transform:uppercase;letter-spacing:0.08em;transition:all .2s}
+.pat-tab:hover{border-color:var(--orange)}
+.pat-tab.active{background:var(--brown-dark);color:#fff;border-color:var(--brown-dark)}
+.pat-body{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:24px;min-height:210px}
+.pat-body h4{font-family:'Fraunces',serif;font-size:22px;color:var(--brown-dark);margin-bottom:4px}
+.pat-use{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--orange-dark);margin-bottom:14px}
+.pat-code{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--brown-dark);background:var(--cream);border:1px solid var(--line);border-left:3px solid var(--orange);border-radius:8px;padding:14px;margin-bottom:14px;word-break:break-word;line-height:1.55}
+.pat-desc{font-size:14px;color:var(--muted);max-width:none;margin:0}
+.pat-panel{display:none;animation:patIn .35s}
+.pat-panel.on{display:block}
+@keyframes patIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* ===== citation reveal (figure 4) ===== */
+.cite-card{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:20px;margin-bottom:16px;line-height:1.9}
+.cite-line{font-size:15px;color:var(--brown-dark);word-break:break-word}
+.ex-tok{border-radius:5px;padding:2px 5px;cursor:pointer;transition:all .2s;border:1px solid transparent}
+.ex-tok:hover{background:rgba(239,127,26,0.14);border-color:var(--orange)}
+.ex-tok.active{background:var(--orange);color:#fff}
+.ex-panel{background:var(--brown-dark);border-radius:12px;padding:22px;min-height:110px;transition:all .3s}
+.ex-tag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;font-weight:600;color:var(--yellow);margin-bottom:8px;display:block}
+.ex-msg{color:#F3E4D0;font-size:15px;max-width:none;margin:0}
+.ex-verdict{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.06em;margin-top:12px;font-weight:600}
+.ex-verdict.good{color:var(--yellow)}
+.ex-verdict.bad{color:var(--orange-light)}
+.ex-hint{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--orange-dark);letter-spacing:0.06em;margin-top:12px}
+
+/* ===== confident-wrong activity (figure 5) ===== */
+.cw-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:24px;align-items:start}
+.cw-list{display:grid;gap:10px}
+.cw-item{display:flex;gap:14px;align-items:center;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:14px 16px;cursor:pointer;transition:all .2s}
+.cw-item:hover{border-color:var(--orange);transform:translateX(4px)}
+.cw-item.active{border-color:var(--orange-dark);background:var(--cream)}
+.cw-flag{font-family:'JetBrains Mono',monospace;font-weight:600;font-size:13px;color:#fff;background:var(--brown-dark);padding:8px 12px;border-radius:8px;white-space:nowrap;flex-shrink:0}
+.cw-item.active .cw-flag{background:var(--orange-dark)}
+.cw-claim{font-size:13px;color:var(--muted);margin:0;max-width:none}
+.cw-panel{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:24px;position:sticky;top:90px}
+.cw-name{font-family:'Fraunces',serif;font-size:20px;color:var(--brown-dark);margin-bottom:14px}
+.cw-row{margin-bottom:14px}
+.cw-rk{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--orange-dark);font-weight:600;display:block;margin-bottom:4px}
+.cw-rv{font-size:14px;color:var(--brown);max-width:none;margin:0}
+.cw-prompt{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--brown-dark);background:var(--cream);border:1px solid var(--line);border-left:3px solid var(--orange);border-radius:8px;padding:12px}
+
+/* ===== verify checklist (figure 6) ===== */
+.vwrap{display:grid;grid-template-columns:1.15fr 1fr;gap:26px;align-items:start}
+.vprod{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+.vprod strong{color:var(--orange-dark)}
+#vlist{display:grid;gap:8px}
+.vitem{display:flex;gap:12px;align-items:flex-start;background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:12px 14px;cursor:pointer;font-size:14px;color:var(--brown);transition:border-color .2s;opacity:0;transform:translateX(-14px)}
+.vitem:hover{border-color:var(--orange)}
+.vitem input{width:18px;height:18px;margin-top:2px;accent-color:var(--orange);cursor:pointer;flex-shrink:0}
+#vlist.go .vitem{animation:vIn .45s forwards}
+#vlist.go .vitem:nth-child(1){animation-delay:.05s}
+#vlist.go .vitem:nth-child(2){animation-delay:.13s}
+#vlist.go .vitem:nth-child(3){animation-delay:.21s}
+#vlist.go .vitem:nth-child(4){animation-delay:.29s}
+#vlist.go .vitem:nth-child(5){animation-delay:.37s}
+#vlist.go .vitem:nth-child(6){animation-delay:.45s}
+@keyframes vIn{to{opacity:1;transform:translateX(0)}}
+.vside{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:22px;position:sticky;top:90px}
+.vbar{height:16px;background:var(--cream);border:1px solid var(--line);border-radius:8px;overflow:hidden;margin:8px 0 10px}
+#vfill{height:100%;width:0%;background:linear-gradient(90deg,var(--orange),var(--orange-dark));transition:width .5s ease;border-radius:8px}
+.vscore-row{display:flex;justify-content:space-between;align-items:baseline;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted)}
+.vscore-row strong{font-family:'Fraunces',serif;font-size:34px;color:var(--brown-dark)}
+.vpanel{margin-top:16px;border-left:3px solid var(--line);padding-left:14px;transition:border-color .3s}
+.vpanel.v-bad{border-color:var(--brown-dark)}
+.vpanel.v-warn{border-color:var(--tan)}
+.vpanel.v-good{border-color:var(--orange)}
+.vpanel.v-great{border-color:var(--yellow)}
+.vtag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;font-weight:600;color:var(--brown-dark)}
+.vpanel p{font-size:14px;color:var(--muted);margin:6px 0 0;max-width:none}
+
+@media(max-width:700px){
+  .loop-wrap,.cw-grid,.vwrap{grid-template-columns:1fr}
+  .loop-panel,.cw-panel,.vside{position:static}
+}
+
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="brand">MokshPath <span class="dot">·</span> <span class="sub">Lesson 02 · AI Research</span></div>
+  <div class="logo-slot" aria-label="MokshPath logo">
+    <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="22" cy="22" r="20" fill="#412C23"/>
+      <path d="M12 31V15l10 10 10-10v16" stroke="#EF7F1A" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="22" cy="10.5" r="3" fill="#FECC00"/>
+    </svg>
+  </div>
+</div>
+<div class="page">
+
+<section class="hero">
+  <div class="eyebrow">Week 3 · Lesson 02 · AI Research</div>
+  <h1>Ask well. <em>Read</em> the sources. Trust nothing blindly.</h1>
+  <p class="lede">Answer engines like Perplexity and ChatGPT search will hand you a fluent paragraph with footnotes in seconds. That speed is the trap. This lesson teaches the part that still belongs to you: turning a vague question into a strong research prompt, running the search loop that reaches primary sources, reading a citation critically, and catching the confident-sounding answer that happens to be wrong.</p>
+</section>
+
+<section>
+  <div class="section-num">01 / 06</div>
+  <h2>Vague question in, weak research out</h2>
+  <p class="lead">A search tool answers the question you actually typed — not the one in your head. The old skill was choosing keywords. The new skill is describing what you need precisely enough that the machine gathers the right sources instead of the loudest ones.</p>
+
+  <p>Here is the shift. You used to type three keywords into a search box and skim ten blue links yourself. Now you type a sentence and an answer engine reads the pages for you and writes a summary with citations. But that summary is only as good as the question. A thin question — "best CRM?" — invites a thin, generic, possibly outdated answer stitched from whoever ranked highest. A question that carries <em>your context, your constraints, and a demand for sources</em> steers the tool toward evidence you can actually act on. Watch a vague query and a strong one produce very different research below.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 1 · The research-prompt transformer</span>
+      <div class="controls">
+        <button id="tb0" onclick="tfSet(0)">Vague</button>
+        <button id="tb1" onclick="tfSet(1)">Better</button>
+        <button id="tb2" onclick="tfSet(2)">Strong</button>
+      </div>
+    </div>
+    <div class="tf-wrap" id="tfWrap">
+      <div class="tf-col">
+        <span class="tf-lab en">Your question</span>
+        <div class="tf-en" id="tfEn">Pick a phrasing above to see the query.</div>
+      </div>
+      <div class="tf-arrow" aria-hidden="true">
+        <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <g class="spin"><circle cx="22" cy="22" r="16" stroke="#EF7F1A" stroke-width="3" stroke-dasharray="16 10" stroke-linecap="round"/></g>
+          <path d="M16 22h12m0 0-4-4m4 4-4 4" stroke="#D55222" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="cap">Engine searches</span>
+      </div>
+      <div class="tf-col">
+        <span class="tf-lab fx">What comes back</span>
+        <div class="tf-fx" id="tfFx">…</div>
+      </div>
+    </div>
+    <p class="tf-note" id="tfNote">The more your question pins down who you are, what you're deciding, and what evidence you'll accept, the less the engine has to guess — and the less you have to re-search afterwards.</p>
+  </div>
+
+  <p>The lesson of the transformer is simple: <strong>the vague query wasn't wrong, it was under-specified</strong>, so the engine answered for an average person with an average need and grabbed whatever ranked. Specificity in, relevance out. Which brings us to what a "strong" research prompt actually contains.</p>
+</section>
+
+<section>
+  <div class="section-num">02 / 06</div>
+  <h2>The anatomy of a strong research prompt</h2>
+  <p class="lead">A useful research request answers four questions before the engine ever searches: what exactly are you asking, who's asking and why, what would make an answer wrong for you, and what evidence you'll accept.</p>
+
+  <p>Think of it as briefing a research assistant. "Look into CRMs" gets you a Wikipedia-flavoured shrug; "find me the two best CRMs for a 4-person agency under $50/user, with pricing pages linked, ignore anything older than a year" gets you something you can decide on. A research prompt works the same way. Skip these and the engine fills the gaps with the internet's defaults — popular, generic, and often stale.</p>
+
+  <div class="crit-grid">
+    <div class="crit"><span class="k">Part 1</span><h4>Specificity</h4><p>The exact thing you want to know, narrowed to the real decision: not "AI tools" but "note-taking apps that transcribe meetings and export to Notion." A sharp question retrieves sharp sources.</p></div>
+    <div class="crit"><span class="k">Part 2</span><h4>Context</h4><p>Who you are and why you're asking — team size, budget, region, skill level, what you've already ruled out. The engine can't see your situation, so it answers for the average one unless you say.</p></div>
+    <div class="crit"><span class="k">Part 3</span><h4>Constraints</h4><p>The boundaries that make an answer usable: a price ceiling, a date cutoff ("nothing before 2024"), a platform, a regulation. Constraints are what turn a list of options into a shortlist.</p></div>
+    <div class="crit"><span class="k">Part 4</span><h4>Ask for sources</h4><p>Explicitly demand citations, publication dates, and primary sources — "link the official pricing page, note when each source was published." This is what lets you verify instead of trust.</p></div>
+  </div>
+
+  <p>Notice that none of these require you to know clever search operators. You describe the <em>decision and the evidence you'll accept</em>; the engine does the retrieval. That division of labour — you own the question and the judgement, the engine owns the reading-at-scale — is the whole method of this lesson, and it repeats in every pattern below.</p>
+</section>
+
+<section>
+  <div class="section-num">03 / 06</div>
+  <h2>The search loop: ask, read, follow, capture, verify</h2>
+  <p class="lead">Good research is a loop, not a single query. You ask, read what comes back, follow the citations down to the primary source, capture what's worth keeping, and verify the claim before you rely on it — then loop again on what's still fuzzy.</p>
+
+  <p>The failure mode is stopping at step one: reading the engine's summary and treating it as the answer. That summary is a starting point — a map of where the evidence lives, not the evidence itself. The value is in the loop. Click through each stage to see what it asks of you and how to do it well.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 2 · The research search loop</span>
+    </div>
+    <div class="loop-wrap">
+      <div class="loop-stage" id="loopList">
+        <div class="loop-step active" onclick="loopSet(0)"><span class="loop-n">1</span><span class="loop-name">Ask</span></div>
+        <div class="loop-step" onclick="loopSet(1)"><span class="loop-n">2</span><span class="loop-name">Read sources</span></div>
+        <div class="loop-step" onclick="loopSet(2)"><span class="loop-n">3</span><span class="loop-name">Follow to primary</span></div>
+        <div class="loop-step" onclick="loopSet(3)"><span class="loop-n">4</span><span class="loop-name">Capture</span></div>
+        <div class="loop-step" onclick="loopSet(4)"><span class="loop-n">5</span><span class="loop-name">Verify</span></div>
+      </div>
+      <div class="loop-panel" id="loopPanel">
+        <span class="loop-tag" id="loopTag">Stage 1</span>
+        <div class="loop-big" id="loopBig">Ask</div>
+        <p class="loop-desc" id="loopDesc"></p>
+        <div class="loop-do" id="loopDo"></div>
+      </div>
+    </div>
+  </div>
+
+  <p>The loop is what separates research from lucky guessing. Most of the time you'll cycle it two or three times — the first answer surfaces the sources, the second pass drills into the one that matters, the third confirms the specific number or claim you're about to put your name on. <strong>The engine speeds up steps one and two; you still own three, four, and five.</strong></p>
+</section>
+
+<section>
+  <div class="section-num">04 / 06</div>
+  <h2>Four patterns cover almost every search job</h2>
+  <p class="lead">Research tasks look endless, but most fall into a handful of shapes. Learn to recognise the shape and you'll know which tool to reach for and how to frame the ask.</p>
+
+  <p>You don't need to memorise the tools — they change every few months. What's worth internalising is the <em>name of the job</em>, so that when a question lands you can think "this is a quick answer-engine lookup" or "this deserves a Deep Research task" and frame it cleanly. Click through the four patterns you'll meet again and again.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 3 · The four everyday research patterns</span>
+    </div>
+    <div class="pat-tabs" id="patTabs">
+      <button class="pat-tab active" onclick="patSet(0)">Answer engines</button>
+      <button class="pat-tab" onclick="patSet(1)">Reading citations</button>
+      <button class="pat-tab" onclick="patSet(2)">Deep Research</button>
+      <button class="pat-tab" onclick="patSet(3)">Source discovery</button>
+    </div>
+    <div class="pat-body" id="patBody"></div>
+  </div>
+
+  <p>Every one of these is a framing away. "Give me a quick, cited overview of X, note the dates" is an answer-engine lookup. "Compare five options against my constraints, cite official pages, flag disagreements between sources" is a Deep Research task. Name the job, hand it the right tool, and — always — read the sources it returns rather than the summary alone.</p>
+</section>
+
+<section>
+  <div class="section-num">05 / 06</div>
+  <h2>Reading a citation critically</h2>
+  <p class="lead">A footnote is not proof. An answer engine can cite a forum post, a two-year-old blog, or a vendor's own marketing page as confidently as it cites a peer-reviewed study. The skill is opening the citation and judging it — is this source credible, current, and actually about what the sentence claimed.</p>
+
+  <p>Here's a real hazard. The engine writes a clean sentence — "Studies show X" — and links a source. You nod and move on. But when you click through, the "study" is a company blog with no data, published three years ago, that never actually said X. The footnote created false confidence. Click each part of the citation below to judge whether it earns your trust — this is exactly the inspection you should run on every source an engine hands you.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 4 · Read the citation critically</span>
+    </div>
+    <div class="cite-card">
+      <div class="cite-line">
+        <span class="ex-tok" data-i="0">acme-crm-blog.com</span> · <span class="ex-tok" data-i="1">"Why our CRM is the #1 choice for agencies"</span> · published <span class="ex-tok" data-i="2">March 2021</span> · cited to support the claim <span class="ex-tok" data-i="3">"the best CRM for small agencies"</span> · <span class="ex-tok" data-i="4">no author, no data table, no methodology</span>
+      </div>
+    </div>
+    <div class="ex-panel" id="exPanel">
+      <span class="ex-tag" id="exTag">Tap a part of the citation</span>
+      <p class="ex-msg" id="exMsg">Click any highlighted part above to judge whether it strengthens or weakens this source — the same interrogation you run on every citation an answer engine returns.</p>
+      <div class="ex-verdict" id="exVerdict"></div>
+    </div>
+    <div class="ex-hint">↑ Click each part to test the source, one signal at a time</div>
+  </div>
+
+  <p>Reading this citation in one sentence: <em>"a vendor's own marketing page, three years stale, with no author or data, cited to prove it's the best — a source that fails on independence, currency, and evidence at once."</em> A footnote tells you where a claim came from, not whether it's true. <strong>Credible, current, relevant, and independent</strong> — a citation that misses any of those is a lead to chase, not a fact to trust.</p>
+</section>
+
+<section>
+  <div class="section-num">06 / 06</div>
+  <h2>Spot the confident wrong answer</h2>
+  <p class="lead">The most dangerous output isn't the one that says "I'm not sure." It's the one that's fluent, specific, and completely wrong — a made-up statistic, an outdated price quoted as current, a citation to a page that doesn't say what it claims. AI reads the situation for you, but the confidence is an interface, not a guarantee.</p>
+
+  <p>Beginners treat a confident tone as a correctness signal. It isn't. Answer engines can quote stale numbers, invent citations, average away real disagreement, and state a plausible-but-false claim with total poise. Each has a tell you can learn to spot — and a prompt that flushes it out. Click each failure below to see how it hides and how to catch it before it reaches your report.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 5 · The confident-wrong-answer detector</span>
+    </div>
+    <div class="cw-grid">
+      <div class="cw-list" id="cwList">
+        <div class="cw-item active" onclick="cwSet(0)"><span class="cw-flag">Stale</span><p class="cw-claim">"Their plan is $12/user/month" — quoted with confidence, but from a cached page that changed six months ago.</p></div>
+        <div class="cw-item" onclick="cwSet(1)"><span class="cw-flag">Invented</span><p class="cw-claim">"According to a 2023 Gartner report, 78% of teams…" — the number is precise, the report doesn't exist.</p></div>
+        <div class="cw-item" onclick="cwSet(2)"><span class="cw-flag">Mismatch</span><p class="cw-claim">A real source is cited, but the linked page never actually makes the claim in the sentence.</p></div>
+        <div class="cw-item" onclick="cwSet(3)"><span class="cw-flag">Averaged</span><p class="cw-claim">Sources genuinely disagree, but the summary blends them into one smooth, false consensus.</p></div>
+        <div class="cw-item" onclick="cwSet(4)"><span class="cw-flag">Plausible</span><p class="cw-claim">A clean, reasonable-sounding fact with no citation at all — stated as if everyone knows it.</p></div>
+      </div>
+      <div class="cw-panel" id="cwPanel">
+        <div class="cw-name" id="cwName"></div>
+        <div class="cw-row"><span class="cw-rk">The tell</span><p class="cw-rv" id="cwTell"></p></div>
+        <div class="cw-row"><span class="cw-rk">Why it happens</span><p class="cw-rv" id="cwWhy"></p></div>
+        <div class="cw-row"><span class="cw-rk">Flush it out</span><div class="cw-prompt" id="cwPrompt"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <h3>The discipline that keeps you honest: verify before you cite</h3>
+  <p>Answer engines are usually right, but "usually" is not "always" — and a fabricated statistic pasted into a client deck is your name on someone else's mistake. Never forward a claim on the strength of its tone. Before you rely on anything an engine tells you, run it through this six-point check.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 6 · The verify-before-you-cite checklist</span>
+      <div class="controls">
+        <button onclick="vPreset()">Check a careful run</button>
+        <button onclick="vClear()">↺ Clear</button>
+      </div>
+    </div>
+    <div class="vwrap">
+      <div>
+        <div class="vprod">Verifying: <strong>a cited statistic before it goes in a report</strong></div>
+        <div id="vlist">
+          <label class="vitem"><input type="checkbox" onchange="vUpdate()"><span>Opened the actual citation — didn't trust the footnote's existence as proof</span></label>
+          <label class="vitem"><input type="checkbox" onchange="vUpdate()"><span>Confirmed the source really makes the claim the sentence attributed to it</span></label>
+          <label class="vitem"><input type="checkbox" onchange="vUpdate()"><span>Checked the publication date — the fact is current, not quietly stale</span></label>
+          <label class="vitem"><input type="checkbox" onchange="vUpdate()"><span>Judged the source's independence and credibility, not just its confident tone</span></label>
+          <label class="vitem"><input type="checkbox" onchange="vUpdate()"><span>Found the same fact in a second, independent source</span></label>
+          <label class="vitem"><input type="checkbox" onchange="vUpdate()"><span>Only then quoted it — with the source and its date, not as bare fact</span></label>
+        </div>
+      </div>
+      <div class="vside">
+        <div class="vscore-row"><span>Verify score</span><strong id="vnum">0 / 6</strong></div>
+        <div class="vbar"><div id="vfill"></div></div>
+        <div class="vpanel" id="vpanel">
+          <span class="vtag" id="vtag">Verdict</span>
+          <p id="vmsg">Tick each check you actually performed — a fluent answer with a footnote can still be wrong.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <p>The point isn't paranoia — it's that an answer which <em>sounds</em> authoritative and an answer which is <em>correct</em> are two different things, and only opening the source tells them apart. AI removes the tedium of reading a hundred pages. It does not remove your responsibility for the claim. Verify small, then cite with confidence — the real kind, earned by looking.</p>
+</section>
+
+<div class="takeaway">
+  <h2>What to carry forward</h2>
+  <p>You don't hunt through blue links anymore — you brief an engine and it reads at scale. But framing the question, running the loop to the primary source, interrogating a citation, catching the confident error, and verifying before you cite are skills that stay firmly yours. That's where the value moved.</p>
+  <ul>
+    <li>Specificity, context, constraints, sources · a sharp question retrieves sharp evidence</li>
+    <li>Research is a loop · ask, read, follow to primary, capture, verify — then loop again</li>
+    <li>Match the job to the tool · quick answer engines vs a framed Deep Research task</li>
+    <li>A footnote is a lead, not proof · credible, current, relevant, independent, or discard</li>
+    <li>Confidence is an interface, not a guarantee · open the source before you cite it</li>
+  </ul>
+</div>
+
+</div>
+<footer>MokshPath · Lesson 02 of 04 · Next up: Synthesising &amp; Citing What You Found →</footer>
+<script>
+
+/* ============ Figure 1 · Research-prompt transformer ============ */
+const tfWrap=document.getElementById('tfWrap');
+const tfEn=document.getElementById('tfEn'),tfFx=document.getElementById('tfFx'),tfNote=document.getElementById('tfNote');
+const TF=[
+  {
+    en:'"What’s the best CRM?"',
+    fx:'Returns a generic top-10 listicle stitched from whoever ranks highest. No pricing, no dates, sources are mostly affiliate blogs. Answers the average person’s question, not yours.',
+    note:'Under-specified. The engine had no idea who you are or what you’re deciding, so it answered for everyone — which means it answered for no one. Popular, generic, probably half-stale.'
+  },
+  {
+    en:'"What’s the best CRM for a small marketing agency, around 5 people, budget-conscious?"',
+    fx:'Returns a shorter, more relevant shortlist scoped to small teams and cost. Names a few real contenders — but still no dates, no pricing pages linked, no way to check if it’s current.',
+    note:'Clearer. Context (team size, budget) narrows the field to usable options. Still missing hard constraints and an explicit demand for sources you can open and verify.'
+  },
+  {
+    en:'"Find the 2–3 best CRMs for a 5-person marketing agency under $40/user/month. Must integrate with Slack. Ignore anything not updated in the last 12 months. Link each vendor’s official pricing page and give the publication date of every source."',
+    fx:'Returns a tight shortlist that meets the price and integration constraints, each with a linked official pricing page and a publication date — so you can open, compare, and verify every claim yourself.',
+    note:'Strong. Specificity, your context, hard constraints, and an explicit ask for sources and dates — the engine has almost nothing left to guess, and every claim it makes is one you can check.'
+  }
+];
+let tfCur=-1,tfTimer=null;
+function tfSet(i){
+  if(tfCur===i)return;
+  tfCur=i;
+  [0,1,2].forEach(j=>document.getElementById('tb'+j).classList.toggle('active',j===i));
+  tfEn.textContent=TF[i].en;
+  tfFx.classList.remove('show');
+  tfWrap.classList.add('working');
+  clearTimeout(tfTimer);
+  tfTimer=setTimeout(()=>{
+    tfFx.textContent=TF[i].fx;
+    tfFx.classList.add('show');
+    tfNote.textContent=TF[i].note;
+    tfWrap.classList.remove('working');
+  },820);
+}
+new IntersectionObserver((es,o)=>es.forEach(e=>{if(e.isIntersecting){tfSet(0);o.unobserve(e.target)}}),{threshold:0.4}).observe(tfWrap);
+
+/* ============ Figure 2 · Research loop ============ */
+const LOOP=[
+  {tag:'Stage 1',big:'Ask',desc:'Frame the question with specificity, context, constraints, and a demand for sources. This is the prompt from sections 01 and 02 — the entire loop only works if it starts from a sharp ask.',do:'"Give me a cited, dated overview of X for my situation — link primary sources and flag anything you’re unsure of."'},
+  {tag:'Stage 2',big:'Read sources',desc:'Read what the engine returns — but read the summary as a map, not the destination. Note which citations look like they carry real weight and which are filler blogs. Do not stop here; this is where lazy research ends.',do:'Skim the answer, then scan every citation: who published it, how recent, is it primary or a rehash? Mark the two worth opening.'},
+  {tag:'Stage 3',big:'Follow to primary',desc:'Click through to the original source behind the claim — the official page, the actual study, the primary document — not the article summarising the article summarising it. Each hop away from the source loses fidelity.',do:'"Show me the primary source for this claim — the original report or official page, not a write-up of it."'},
+  {tag:'Stage 4',big:'Capture',desc:'Save what’s worth keeping in a form you can cite later: the exact claim, the source URL, the publication date, and a one-line note on why it’s trustworthy. Capture as you go, or you’ll re-search everything twice.',do:'Paste the quote, the link, and the date into your notes. Tag it: primary or secondary, current or dated, strong or shaky.'},
+  {tag:'Stage 5',big:'Verify',desc:'Before you rely on the claim, confirm it independently — a second source, a cross-check, or the original data. If it fails to hold up, loop back to Ask with a sharper question. Verification is what turns gathered information into knowledge.',do:'"Find a second, independent source for this exact figure. If they disagree, tell me which is more authoritative and why."'}
+];
+function loopSet(i){
+  Array.prototype.forEach.call(document.getElementById('loopList').children,(el,j)=>el.classList.toggle('active',j===i));
+  const l=LOOP[i];
+  document.getElementById('loopTag').textContent=l.tag;
+  document.getElementById('loopBig').textContent=l.big;
+  document.getElementById('loopDesc').textContent=l.desc;
+  document.getElementById('loopDo').textContent=l.do;
+}
+loopSet(0);
+
+/* ============ Figure 3 · Pattern tabs ============ */
+const PAT=[
+  {name:'Answer engines',use:'A fast, cited overview to get oriented',code:'Perplexity / ChatGPT search:  "Give me a cited, dated summary of X. Link sources. Note anything uncertain."',desc:'The job: "get me a quick, sourced lay of the land." Answer engines read live pages and reply with a summary plus footnotes — ideal for orienting on an unfamiliar topic. Treat the summary as a starting map and always open the citations; the footnotes are the point, not decoration.'},
+  {name:'Reading citations',use:'Judge the sources behind the answer',code:'Open each cited link. Ask:  Who published it? · When? · Is it primary or a rehash? · Does it actually say this?',desc:'The job: "decide whether these sources earn my trust." An engine cites a marketing blog as readily as a study. Open every citation and check credibility, currency, relevance, and independence. A confident sentence with a weak footnote is a lead to chase — not a fact to keep.'},
+  {name:'Deep Research',use:'A framed, multi-source investigation',code:'Deep Research mode:  "Compare 5 options against these constraints. Cite official pages. Flag where sources disagree. Return a table + dates."',desc:'The job: "do the thing that would take me an afternoon of tabs." Deep Research tools run many searches, read deeply, and return a structured, cited report. Frame it hard — the constraints, the comparison axes, the sources you’ll accept, the disagreements to surface — or it wanders. A sharp brief is the whole game.'},
+  {name:'Source discovery',use:'Find where the good evidence lives',code:'"What are the most authoritative primary sources on X? Official bodies, original datasets, standards — not blogs summarising them."',desc:'The job: "point me at the origin, not the echo." Sometimes you don’t want an answer — you want to know which official body, dataset, or primary document is the real authority, so you can read it yourself. Ask the engine to surface the sources, then do the reading where it counts most.'}
+];
+const patBody=document.getElementById('patBody'),patTabs=document.getElementById('patTabs');
+function patSet(i){
+  Array.prototype.forEach.call(patTabs.children,(b,j)=>b.classList.toggle('active',j===i));
+  const p=PAT[i];
+  patBody.innerHTML='<div class="pat-panel on"><h4>'+p.name+'</h4><div class="pat-use">'+p.use+'</div><div class="pat-code">'+p.code+'</div><p class="pat-desc">'+p.desc+'</p></div>';
+}
+patSet(0);
+
+/* ============ Figure 4 · Citation reveal ============ */
+const EX=[
+  {tag:'The domain',verdict:'bad',v:'Weakens it',msg:'The publisher is the vendor’s own blog — acme-crm-blog.com. A source praising the product it sells is not independent. Marketing is not evidence; you’d never accept "we’re the best" as proof from a salesperson.'},
+  {tag:'The headline',verdict:'bad',v:'Weakens it',msg:'"Why our CRM is the #1 choice" is a claim, not a finding. The title tells you the piece exists to persuade, not to inform — the conclusion was written before any evidence was gathered.'},
+  {tag:'The date',verdict:'bad',v:'Weakens it',msg:'March 2021. In a fast-moving category, a three-year-old page is likely stale — pricing, features, and competitors have all moved. Currency matters: an out-of-date fact quoted as current is a quiet error.'},
+  {tag:'Claim match',verdict:'bad',v:'Weakens it',msg:'The sentence claimed "the best CRM for small agencies," but this source only argues its own product is #1 — it never neutrally compared options. The citation doesn’t actually support the claim it’s attached to.'},
+  {tag:'Missing rigor',verdict:'bad',v:'Weakens it',msg:'No named author, no data table, no methodology. There’s no way to check how any conclusion was reached, or who stands behind it. Absence of evidence dressed as a confident claim is the classic weak citation.'}
+];
+const exToks=Array.prototype.slice.call(document.querySelectorAll('.cite-card .ex-tok'));
+const exTag=document.getElementById('exTag'),exMsg=document.getElementById('exMsg'),exVerdict=document.getElementById('exVerdict');
+exToks.forEach(t=>t.addEventListener('click',()=>{
+  const i=+t.dataset.i;
+  exToks.forEach(x=>x.classList.toggle('active',x===t));
+  exTag.textContent=EX[i].tag;
+  exMsg.textContent=EX[i].msg;
+  exVerdict.textContent='⚑ '+EX[i].v;
+  exVerdict.className='ex-verdict '+EX[i].verdict;
+}));
+
+/* ============ Figure 5 · Confident-wrong detector ============ */
+const CW=[
+  {name:'Stale, quoted as current',tell:'A precise fact — a price, a stat, a feature — stated in the present tense, but the cited page is old or cached. The tone says "now"; the source says "then".',why:'Engines index and cache pages, and models were trained on a snapshot. Neither knows a number changed last week unless the live page is re-read. Confidence carries over even when the fact expired.',prompt:'"What’s the publication or last-updated date of the page this figure comes from? Re-check the live source and tell me if it still says this."'},
+  {name:'Invented citation',tell:'A suspiciously precise statistic ("78% of teams") attributed to a named, authoritative-sounding report — but you can’t find the report, or it doesn’t contain that number.',why:'Language models predict plausible text. A realistic-looking citation is exactly the kind of plausible text they generate — the report title and percentage can both be fabrications that read like real ones.',prompt:'"Give me the direct link to that exact report and the page number for this statistic. If you can’t, say the citation is unverified."'},
+  {name:'Source-claim mismatch',tell:'A real, credible source is linked — but when you open it, the page never actually makes the claim the sentence attached to it. The footnote is genuine; the connection isn’t.',why:'When summarising many pages, an engine can attach the wrong citation to the right-sounding sentence, or over-read a source into saying more than it did. A real link creates false confidence.',prompt:'"Quote the exact sentence from the linked source that supports this claim. If there isn’t one, tell me the source doesn’t back it."'},
+  {name:'Averaged-away disagreement',tell:'A single confident consensus on a topic where sources genuinely conflict. The messy, real disagreement has been smoothed into one tidy — and misleading — answer.',why:'Summarisation blends inputs. When it blends two opposing views, it can produce a middle position that no source actually holds, hiding the very conflict you needed to see.',prompt:'"Do the sources agree on this? Show me each source’s position separately, and flag any disagreement instead of blending them."'},
+  {name:'Plausible but uncited',tell:'A clean, reasonable-sounding claim stated flatly, with no citation at all — as if it’s common knowledge. The absence of a source is the tell.',why:'Models fill gaps with fluent, likely-sounding text. When no source is offered, the claim may be a genuine fact, an outdated one, or a confident guess — and you can’t tell which by tone.',prompt:'"This claim has no source. Give me a citation for it, or tell me plainly that it’s unsupported and might be wrong."'}
+];
+function cwSet(i){
+  Array.prototype.forEach.call(document.getElementById('cwList').children,(el,j)=>el.classList.toggle('active',j===i));
+  const c=CW[i];
+  document.getElementById('cwName').textContent=c.name;
+  document.getElementById('cwTell').textContent=c.tell;
+  document.getElementById('cwWhy').textContent=c.why;
+  document.getElementById('cwPrompt').textContent=c.prompt;
+}
+cwSet(0);
+
+/* ============ Figure 6 · Verify checklist ============ */
+const vboxes=Array.prototype.slice.call(document.querySelectorAll('#vlist input'));
+function vUpdate(){
+  const n=vboxes.filter(b=>b.checked).length;
+  document.getElementById('vfill').style.width=(n/6*100)+'%';
+  document.getElementById('vnum').textContent=n+' / 6';
+  const panel=document.getElementById('vpanel'),tag=document.getElementById('vtag'),msg=document.getElementById('vmsg');
+  panel.className='vpanel';
+  if(n===0){tag.textContent='Verdict';msg.textContent='Tick each check you actually performed — a fluent answer with a footnote can still be wrong.';return}
+  if(n<=2){panel.classList.add('v-bad');tag.textContent='Not verified — do not cite';msg.textContent='You’ve barely looked. Forwarding this claim now is how a fabricated statistic ends up in your report with your name on it.'}
+  else if(n<=3){panel.classList.add('v-warn');tag.textContent='Partly checked — keep going';msg.textContent='A start, but gaps remain. The claim-match and the second-source check are exactly where confident-wrong answers survive.'}
+  else if(n<=5){panel.classList.add('v-good');tag.textContent='Well verified — nearly there';msg.textContent='Solid discipline. Finish the last checks — especially the independent second source — and you can stand behind this claim.'}
+  else{panel.classList.add('v-great');tag.textContent='Fully verified — cite it';msg.textContent='This is the standard. You opened the source, matched the claim, checked the date, and confirmed it twice. Cite it with the date, and move on.'}
+}
+function vPreset(){
+  const run=[1,1,1,1,0,1];
+  vboxes.forEach((b,i)=>b.checked=!!run[i]);
+  vUpdate();
+}
+function vClear(){vboxes.forEach(b=>b.checked=false);vUpdate()}
+const vlist=document.getElementById('vlist');
+new IntersectionObserver((es,o)=>es.forEach(e=>{if(e.isIntersecting){vlist.classList.remove('go');void vlist.offsetWidth;vlist.classList.add('go');o.unobserve(e.target)}}),{threshold:0.25}).observe(vlist);
+
+</script>
+</body>
+</html>
