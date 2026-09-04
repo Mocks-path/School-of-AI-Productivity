@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 3 · AI Design &amp; Visuals — MokshPath</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=JetBrains+Mono:wght@400;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --orange:#E87A2E;--orange-dark:#D06A20;--orange-light:#F5943E;--orange-glow:rgba(232,122,46,0.12);
+  --navy:#2B2D42;--navy-dark:#1A1B2E;
+  --bg:#F3EDE7;--bg-card:#FFFFFF;--bg-light:#F9F5F0;
+  --text-primary:#2B2D42;--text-secondary:#6B6D7B;--text-muted:#9597A6;
+  --border:#E5DDD4;--green:#4CAF50;--green-light:#E8F5E9;--red:#E04E3C;--red-light:#FDECEA;
+  --shadow-sm:0 2px 8px rgba(43,45,66,0.06);--shadow-md:0 8px 24px rgba(43,45,66,0.08);
+  --shadow-lg:0 16px 48px rgba(43,45,66,0.12);
+  --radius:14px;--radius-sm:8px;
+  --mono:'JetBrains Mono',monospace;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text-primary);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+
+/* ── NAV ── */
+.nav{position:sticky;top:0;z-index:100;background:var(--bg-card);border-bottom:1px solid var(--border);padding:0 2rem;height:64px;display:flex;align-items:center;justify-content:space-between;box-shadow:var(--shadow-sm)}
+.nav-left{display:flex;align-items:center;gap:.7rem}
+.lesson-badge{font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--orange);background:var(--orange-glow);padding:.3rem .7rem;border-radius:50px}
+.nav-logo{display:flex;align-items:center;gap:.7rem;text-decoration:none}
+.nav-logo-icon{width:auto;height:48px;display:block;object-fit:contain}
+.nav-logo-text{display:flex;flex-direction:column;line-height:1.15}
+.nav-logo-name{font-family:'DM Serif Display',serif;font-size:1.25rem;color:var(--navy)}
+.nav-logo-name span{color:var(--orange)}
+.nav-logo-tag{font-size:.62rem;color:var(--text-muted);font-weight:500;letter-spacing:.02em}
+
+/* ── HERO ── */
+.hero{padding:3.5rem 2rem 2.5rem;text-align:center;position:relative}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:.45rem;padding:.4rem 1rem;border-radius:50px;background:var(--orange-glow);color:var(--orange);font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:1.2rem}
+.hero-eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--orange);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.hero h1{font-family:'DM Serif Display',serif;font-size:clamp(2rem,4vw,3rem);line-height:1.13;color:var(--navy);margin-bottom:1rem;max-width:780px;margin-left:auto;margin-right:auto}
+.hero h1 em{font-style:normal;color:var(--orange)}
+.hero-sub{font-size:1.02rem;color:var(--text-secondary);line-height:1.7;max-width:620px;margin:0 auto}
+
+/* ── PROGRESS RAIL ── */
+.progress-rail{max-width:760px;margin:1.8rem auto 0;display:flex;align-items:center;gap:.5rem}
+.progress-dot{flex:1;height:6px;background:var(--border);border-radius:3px;transition:background .3s}
+.progress-dot.done{background:linear-gradient(90deg,var(--orange),var(--orange-light))}
+.progress-label{font-size:.7rem;color:var(--text-muted);font-weight:600;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+
+/* ── SECTIONS ── */
+section.lesson{padding:3rem 2rem}
+.container{max-width:1080px;margin:0 auto}
+.lesson-num{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;background:var(--orange);color:#fff;font-family:'DM Serif Display',serif;font-size:1.1rem;margin-bottom:.9rem}
+.lesson-title{font-family:'DM Serif Display',serif;font-size:clamp(1.6rem,2.5vw,2.1rem);color:var(--navy);margin-bottom:.55rem;line-height:1.2}
+.lesson-intro{font-size:.95rem;color:var(--text-secondary);line-height:1.7;max-width:680px;margin-bottom:2rem}
+.lesson-card{background:var(--bg-card);border-radius:var(--radius);box-shadow:var(--shadow-sm);border:1px solid var(--border);padding:2rem;margin-top:1.5rem}
+.lesson-card.alt{background:var(--bg-light)}
+
+/* ── PIPELINE STRIP ── */
+.pipeline{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1.4rem}
+.pipe-step{flex:1 1 150px;background:var(--bg-light);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:.9rem 1rem;position:relative}
+.pipe-step .pipe-n{font-family:var(--mono);font-size:.68rem;font-weight:600;color:var(--orange);letter-spacing:.06em}
+.pipe-step .pipe-t{font-family:'DM Serif Display',serif;font-size:1.05rem;color:var(--navy);margin:.2rem 0 .3rem}
+.pipe-step .pipe-d{font-size:.76rem;color:var(--text-secondary);line-height:1.5}
+.pipe-arrow{align-self:center;color:var(--orange);font-weight:700;font-size:1.1rem}
+@media (max-width:760px){.pipe-arrow{display:none}.pipe-step{flex:1 1 100%}}
+
+/* ── DRAG CARDS + FEEDBACK (shared) ── */
+.classify-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:1.5rem;margin-top:1rem}
+@media (max-width:760px){.classify-grid{grid-template-columns:1fr}}
+.classify-scenarios{display:flex;flex-direction:column;gap:.7rem}
+.scenario-card{background:var(--bg-card);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:.8rem 1rem;cursor:grab;transition:all .25s;position:relative;user-select:none}
+.scenario-card:hover{border-color:var(--orange);box-shadow:var(--shadow-sm);transform:translateY(-1px)}
+.scenario-card.dragging{opacity:.4}
+.scenario-card.placed{opacity:.35;cursor:not-allowed;pointer-events:none}
+.scenario-card.placed.correct{border-color:var(--green);background:var(--green-light)}
+.scenario-card.placed.wrong{border-color:var(--red);background:var(--red-light)}
+.scenario-text{font-size:.85rem;color:var(--text-primary);line-height:1.45;font-weight:500}
+.dropped-pill{background:var(--bg-card);border:1px solid var(--border);border-radius:50px;padding:.3rem .7rem;font-size:.72rem;font-weight:500;color:var(--text-primary);cursor:help}
+.dropped-pill.correct{background:var(--green-light);border-color:var(--green);color:#256B29}
+.dropped-pill.wrong{background:var(--red-light);border-color:var(--red);color:#933}
+.activity-feedback{margin-top:1.2rem;padding:1rem 1.2rem;border-radius:var(--radius-sm);font-size:.85rem;line-height:1.55;display:none}
+.activity-feedback.show{display:block;animation:fadeIn .4s ease}
+.activity-feedback.success{background:var(--green-light);color:#1F5723;border-left:3px solid var(--green)}
+.activity-feedback.partial{background:#FFF4E5;color:#7A4A0A;border-left:3px solid #E89B2E}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.activity-toolbar{display:flex;gap:.6rem;margin-top:1.2rem;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:.4rem;padding:.6rem 1.2rem;border-radius:8px;font-size:.82rem;font-weight:600;border:none;cursor:pointer;transition:all .2s;font-family:inherit;text-decoration:none}
+.btn-primary{background:var(--orange);color:#fff}.btn-primary:hover{background:var(--orange-dark);transform:translateY(-1px);box-shadow:0 4px 12px rgba(232,122,46,0.3)}
+.btn-ghost{background:transparent;border:1.5px solid var(--border);color:var(--text-secondary)}.btn-ghost:hover{border-color:var(--orange);color:var(--orange)}
+
+/* ── ACTIVITY: SLIDE ANATOMY (wireframe-style zones) ── */
+.wireframe{border:1.5px solid var(--border);border-radius:var(--radius-sm);overflow:hidden;background:var(--bg-light)}
+.wf-chrome{display:flex;align-items:center;gap:.4rem;background:var(--navy);padding:.5rem .8rem}
+.wf-chrome span{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.35)}
+.wf-chrome .wf-url{flex:1;margin-left:.5rem;background:rgba(255,255,255,.12);border-radius:4px;color:rgba(255,255,255,.7);font-family:var(--mono);font-size:.62rem;padding:.15rem .6rem}
+.wf-zone{border:2px dashed var(--border);margin:.7rem;border-radius:var(--radius-sm);padding:.8rem .9rem;transition:all .25s;background:rgba(255,255,255,.6)}
+.wf-zone.drag-over{border-color:var(--orange);background:var(--orange-glow);border-style:solid}
+.wf-zone-title{font-family:'DM Serif Display',serif;font-size:.98rem;color:var(--navy)}
+.wf-zone-sub{font-size:.68rem;color:var(--text-muted);margin-bottom:.55rem;letter-spacing:.04em;text-transform:uppercase;font-weight:600}
+.wf-drop{display:flex;flex-wrap:wrap;gap:.4rem;min-height:34px}
+
+/* ── ACTIVITY: A/B QUESTION PAIRS ── */
+.ab-pair{margin-top:1.4rem;padding-top:1.4rem;border-top:1px solid var(--border)}
+.ab-pair:first-child{margin-top:0;padding-top:0;border-top:none}
+.ab-q{font-size:.9rem;font-weight:700;color:var(--navy);margin-bottom:.8rem}
+.ab-q .ab-tag{font-family:var(--mono);font-size:.68rem;color:var(--orange);font-weight:600;letter-spacing:.04em;display:block;margin-bottom:.2rem}
+.ab-cards{display:grid;grid-template-columns:1fr 1fr;gap:.9rem}
+@media (max-width:760px){.ab-cards{grid-template-columns:1fr}}
+.ab-card{background:var(--bg-light);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:1rem 1.1rem;cursor:pointer;transition:all .25s;position:relative}
+.ab-card:hover{border-color:var(--orange);transform:translateY(-2px);box-shadow:var(--shadow-sm)}
+.ab-card.locked{cursor:default;pointer-events:none}
+.ab-card.win{border-color:var(--green);background:var(--green-light)}
+.ab-card.lose{opacity:.55}
+.ab-card.picked-wrong{border-color:var(--red);background:var(--red-light)}
+.ab-letter{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;background:var(--navy);color:#fff;font-size:.72rem;font-weight:700;margin-bottom:.5rem}
+.ab-copy{font-size:.85rem;line-height:1.55;color:var(--text-primary)}
+.ab-verdict{margin-top:.8rem;font-size:.8rem;line-height:1.55;padding:.7rem .9rem;border-radius:6px;display:none}
+.ab-verdict.show{display:block;animation:fadeIn .35s ease}
+.ab-verdict.good{background:var(--green-light);color:#1F5723;border-left:3px solid var(--green)}
+.ab-verdict.bad{background:#FFF4E5;color:#7A4A0A;border-left:3px solid #E89B2E}
+
+/* ── ACTIVITY: TOGGLE ROWS (image audit / chart honesty) ── */
+.brand-block{margin-top:1.3rem;padding:1.1rem 1.2rem;background:var(--bg-light);border:1px solid var(--border);border-radius:var(--radius-sm)}
+.brand-block:first-child{margin-top:0}
+.brand-name{font-family:'DM Serif Display',serif;font-size:1.05rem;color:var(--navy);margin-bottom:.7rem}
+.brand-name .q-tag{font-family:var(--mono);font-size:.66rem;color:var(--orange);font-weight:600;letter-spacing:.04em;display:block;margin-bottom:.2rem;text-transform:none}
+.brand-row{display:grid;grid-template-columns:1fr auto;gap:.6rem;align-items:center;padding:.35rem 0}
+.brand-crit{font-size:.82rem;color:var(--text-secondary);font-weight:500}
+.tog-group{display:flex;gap:.35rem}
+.tog{padding:.32rem .85rem;border-radius:50px;border:1.5px solid var(--border);background:var(--bg-card);font-size:.74rem;font-weight:700;cursor:pointer;font-family:inherit;color:var(--text-secondary);transition:all .2s}
+.tog:hover{border-color:var(--orange);color:var(--orange)}
+.tog.on-yes{background:var(--navy);border-color:var(--navy);color:#fff}
+.tog.reveal-hit{background:var(--green-light);border-color:var(--green);color:#256B29}
+.tog.reveal-miss{background:var(--red-light);border-color:var(--red);color:#933}
+.brand-why{margin-top:.6rem;font-size:.78rem;line-height:1.55;color:var(--text-secondary);background:var(--bg-card);border-left:3px solid var(--orange);border-radius:4px;padding:.6rem .8rem;display:none}
+.brand-why.show{display:block;animation:fadeIn .35s ease}
+
+/* ── QUIZ ── */
+.quiz-q{margin-top:1.4rem;padding-top:1.4rem;border-top:1px solid var(--border)}
+.quiz-q:first-child{margin-top:0;padding-top:0;border-top:none}
+.quiz-prompt{font-size:.92rem;font-weight:700;color:var(--navy);margin-bottom:.8rem;line-height:1.5}
+.quiz-prompt .q-tag{font-family:var(--mono);font-size:.68rem;color:var(--orange);font-weight:600;letter-spacing:.04em;display:block;margin-bottom:.2rem}
+.quiz-opts{display:flex;flex-direction:column;gap:.55rem}
+.quiz-opt{background:var(--bg-light);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:.75rem 1rem;cursor:pointer;transition:all .2s;font-size:.85rem;line-height:1.45;color:var(--text-primary);display:flex;gap:.6rem;align-items:flex-start}
+.quiz-opt:hover{border-color:var(--orange)}
+.quiz-opt .opt-key{font-family:var(--mono);font-size:.72rem;font-weight:600;color:var(--orange);flex-shrink:0;margin-top:.05rem}
+.quiz-opt.locked{cursor:default;pointer-events:none}
+.quiz-opt.correct{border-color:var(--green);background:var(--green-light)}
+.quiz-opt.wrong{border-color:var(--red);background:var(--red-light)}
+.quiz-explain{margin-top:.7rem;font-size:.8rem;line-height:1.55;padding:.7rem .9rem;border-radius:6px;display:none}
+.quiz-explain.show{display:block;animation:fadeIn .35s ease}
+.quiz-explain.good{background:var(--green-light);color:#1F5723;border-left:3px solid var(--green)}
+.quiz-explain.bad{background:#FFF4E5;color:#7A4A0A;border-left:3px solid #E89B2E}
+
+/* ── VALIDATE CALLOUT ── */
+.check-list{list-style:none;margin-top:1rem;display:flex;flex-direction:column;gap:.7rem}
+.check-list li{display:flex;gap:.7rem;align-items:flex-start;background:var(--bg-light);border:1px solid var(--border);border-radius:var(--radius-sm);padding:.8rem 1rem}
+.check-ico{width:24px;height:24px;border-radius:6px;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.8rem;font-weight:700;background:linear-gradient(135deg,var(--orange-light),var(--orange))}
+.check-txt{font-size:.85rem;line-height:1.55;color:var(--text-secondary)}
+.check-txt strong{color:var(--navy)}
+
+/* ── REFLECTION ── */
+.reflect-prompt{display:grid;grid-template-columns:1fr;gap:.8rem;margin-top:1rem}
+.reflect-q{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:1rem 1.2rem}
+.reflect-q-text{font-size:.88rem;font-weight:600;color:var(--navy);margin-bottom:.5rem}
+.reflect-q textarea{width:100%;border:1px solid var(--border);border-radius:6px;padding:.6rem .8rem;font-family:inherit;font-size:.85rem;color:var(--text-primary);background:var(--bg-light);resize:vertical;min-height:60px}
+.reflect-q textarea:focus{outline:none;border-color:var(--orange)}
+
+/* ── FOOTER NEXT ── */
+.next-up{background:linear-gradient(135deg,var(--navy-dark),var(--navy));border-radius:var(--radius);padding:2.4rem;color:#fff;margin-top:2rem;text-align:center;position:relative;overflow:hidden}
+.next-up::before{content:'';position:absolute;top:-50px;right:-50px;width:180px;height:180px;border-radius:50%;background:rgba(232,122,46,0.12)}
+.next-up h3{font-family:'DM Serif Display',serif;font-size:1.5rem;margin-bottom:.5rem;position:relative}
+.next-up p{font-size:.92rem;color:rgba(255,255,255,0.75);margin-bottom:1.2rem;position:relative}
+.next-up .btn-primary{position:relative}
+
+@media (max-width:760px){
+  .nav{padding:0 1rem}
+  .nav-logo-tag{display:none}
+  .hero{padding:2.5rem 1.2rem 2rem}
+  section.lesson{padding:2rem 1.2rem}
+  .lesson-card{padding:1.4rem}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-left">
+    <span class="lesson-badge">Lesson 3 of 4</span>
+  </div>
+  <a href="https://mokshpath.org/" class="nav-logo">
+    <img class="nav-logo-icon" src="hero.svg" alt="MokshPath logo">
+    <div class="nav-logo-text">
+      <span class="nav-logo-name">Moksh<span>Path</span></span>
+      <span class="nav-logo-tag">Guided Path to True Learning</span>
+    </div>
+  </a>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-eyebrow"><span class="dot"></span> Week 4 · AI PowerPoint</div>
+  <h1>AI Design &amp; Visuals — <em>make it look like it belongs to you</em></h1>
+  <p class="hero-sub">AI can fill a deck with images, icons and charts in seconds — and just as fast make it look generic, off-brand or quietly dishonest. Four hands-on drills: learn the three visual principles that carry every good slide, build a slide on the right zones, catch what's wrong with an off-brand AI image, judge whether a chart is honest, then test your instinct for when a visual is helping and when it's lying.</p>
+  <div class="progress-rail">
+    <span class="progress-label">Progress</span>
+    <div class="progress-dot" id="prog1"></div>
+    <div class="progress-dot" id="prog2"></div>
+    <div class="progress-dot" id="prog3"></div>
+    <div class="progress-dot" id="prog4"></div>
+  </div>
+</header>
+
+<!-- ── PRINCIPLES OVERVIEW (teaching) ── -->
+<section class="lesson" id="principles">
+  <div class="container">
+    <span class="lesson-num" style="background:var(--navy)">•</span>
+    <h2 class="lesson-title">Three principles that carry every slide</h2>
+    <p class="lesson-intro">A good-looking slide isn't about decoration — it's about guiding the eye to the one thing that matters. AI tools like PowerPoint <em>Designer</em> and <em>Copilot</em> can lay out slides and drop in visuals for you, but they don't know your priorities. If you understand these three principles, you can steer the AI and override it when it makes the wrong call. Skip them, and you'll ship a slide that's busy, off-brand, or says nothing at a glance.</p>
+    <div class="lesson-card">
+      <div class="pipeline">
+        <div class="pipe-step"><div class="pipe-n">PRINCIPLE 1</div><div class="pipe-t">Hierarchy</div><div class="pipe-d">One clear focal point per slide. Size, colour and position tell the eye what to read first. If everything shouts, nothing lands.</div></div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-step"><div class="pipe-n">PRINCIPLE 2</div><div class="pipe-t">Whitespace</div><div class="pipe-d">Empty space isn't wasted — it's what makes the important thing readable. Crowded slides exhaust the audience.</div></div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-step"><div class="pipe-n">PRINCIPLE 3</div><div class="pipe-t">Less text, more visual</div><div class="pipe-d">Slides support you speaking; they aren't the script. One idea, one image or chart, a few words. The detail goes in your mouth, not the slide.</div></div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-step"><div class="pipe-n">THE GLUE</div><div class="pipe-t">On-brand consistency</div><div class="pipe-d">A theme, template and brand kit lock your fonts and colours so every AI-generated slide looks like the same deck — not a ransom note.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ON-BRAND TEACHING ── -->
+<section class="lesson" id="onbrand" style="background:var(--bg-light)">
+  <div class="container">
+    <span class="lesson-num" style="background:#5B8FE0">i</span>
+    <h2 class="lesson-title">Keeping AI output on-brand — themes, templates, brand kits</h2>
+    <p class="lesson-intro">The single biggest reason AI slides look "off" is inconsistency: three fonts, four blues, icons in five different styles. The fix is to set the rules once and let every AI-added element inherit them.</p>
+    <div class="lesson-card">
+      <ul class="check-list">
+        <li><div class="check-ico">T</div><div class="check-txt"><strong>Theme</strong> sets your global fonts and colour palette. Pick or build one first, before Designer touches a slide — then AI layouts snap to your fonts and colours automatically instead of guessing.</div></li>
+        <li><div class="check-ico">▦</div><div class="check-txt"><strong>Template</strong> defines your slide layouts — title, section header, content, comparison — so structure stays consistent whether you or the AI builds the next slide.</div></li>
+        <li><div class="check-ico">◆</div><div class="check-txt"><strong>Brand kit</strong> (logo, exact hex colours, approved fonts) is your source of truth. Many AI tools let you upload it so generated visuals match. If yours doesn't, apply the theme colours by hand.</div></li>
+        <li><div class="check-ico">✎</div><div class="check-txt"><strong>Designer &amp; Copilot help — you decide.</strong> They suggest layouts and pick images fast. Accept when the suggestion strengthens hierarchy; <strong>override</strong> when it buries your focal point, adds a decorative image with no meaning, or drifts off your palette. The AI optimises for "tidy," not "your point."</div></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 1: PRINCIPLE A/B ── -->
+<section class="lesson" id="activity-1">
+  <div class="container">
+    <span class="lesson-num">1</span>
+    <h2 class="lesson-title">Which slide choice actually helps the audience?</h2>
+    <p class="lesson-intro">Good design is a series of small decisions, and AI will happily make the wrong one if you let it. Each pair below shows two ways to design the same slide. One respects hierarchy, whitespace and your brand; the other looks busy, generic or hard to read. Click the choice you'd ship, then check yourself against the design verdict.</p>
+    <div class="lesson-card" id="abWrap"></div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 2: SLIDE ANATOMY BUILDER (drag) ── -->
+<section class="lesson" id="activity-2" style="background:var(--bg-light)">
+  <div class="container">
+    <span class="lesson-num" style="background:#66BB6A">2</span>
+    <h2 class="lesson-title">Build the slide — put each element where it belongs</h2>
+    <p class="lesson-intro">A clean content slide has a few well-defined zones, and knowing them is how you tell AI Designer where it went wrong. We're building one slide: <strong>"Q3 revenue grew 18% — here's why."</strong> Drag each element to the zone it belongs in — <strong>Focal point</strong> (the one thing the eye lands on first), <strong>Supporting visual</strong> (a chart or image that carries the point), <strong>Brand frame</strong> (logo and consistent theme), or <strong>Whitespace</strong> (deliberate breathing room). Two elements don't belong on this slide at all. Wrong drops turn red — hover them to learn why.</p>
+
+    <div class="lesson-card">
+      <div class="classify-grid">
+        <div class="classify-scenarios" id="fieldList"></div>
+        <div class="wireframe">
+          <div class="wf-chrome"><span></span><span></span><span></span><div class="wf-url">Slide 7 · Q3 Results</div></div>
+          <div class="wf-zone" data-zone="focal">
+            <div class="wf-zone-title">Focal point</div>
+            <div class="wf-zone-sub">What the eye lands on first · 1 element</div>
+            <div class="wf-drop" data-drop="focal"></div>
+          </div>
+          <div class="wf-zone" data-zone="visual">
+            <div class="wf-zone-title">Supporting visual</div>
+            <div class="wf-zone-sub">Carries the point · 1 element</div>
+            <div class="wf-drop" data-drop="visual"></div>
+          </div>
+          <div class="wf-zone" data-zone="brand">
+            <div class="wf-zone-title">Brand frame</div>
+            <div class="wf-zone-sub">Logo &amp; consistent theme · 1 element</div>
+            <div class="wf-drop" data-drop="brand"></div>
+          </div>
+          <div class="wf-zone" data-zone="space">
+            <div class="wf-zone-title">Whitespace</div>
+            <div class="wf-zone-sub">Deliberate breathing room · 1 element</div>
+            <div class="wf-drop" data-drop="space"></div>
+          </div>
+          <div class="wf-zone" data-zone="cut">
+            <div class="wf-zone-title">Cut it — doesn't belong</div>
+            <div class="wf-zone-sub">Clutter or off-brand · 2 elements</div>
+            <div class="wf-drop" data-drop="cut"></div>
+          </div>
+        </div>
+      </div>
+      <div class="activity-feedback" id="feedback2"></div>
+      <div class="activity-toolbar">
+        <button class="btn btn-ghost" onclick="resetActivity2()">↻ Try again</button>
+        <button class="btn btn-primary" onclick="showAnswers2()">Show me the answers</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 3: IMAGE + CHART AUDIT (toggles) ── -->
+<section class="lesson" id="activity-3">
+  <div class="container">
+    <span class="lesson-num" style="background:#4CAF50">3</span>
+    <h2 class="lesson-title">Spot the problem — off-brand images &amp; dishonest charts</h2>
+    <p class="lesson-intro">AI generates images and charts that look polished at a glance — which is exactly why the problems slip through. For each item below, mark <strong>Yes</strong> if the described visual has that flaw, or <strong>No</strong> if it's fine. This is the audit you should run on every AI-generated image or chart before it goes in a deck. Check yourself against the verdict.</p>
+
+    <div class="lesson-card">
+      <div id="auditWrap"></div>
+      <div class="activity-feedback" id="feedback3"></div>
+      <div class="activity-toolbar">
+        <button class="btn btn-ghost" onclick="resetAudit()">↻ Reset choices</button>
+        <button class="btn btn-primary" onclick="checkAudit()">Check my choices</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 4: QUIZ — IMAGES, LICENSING, CHART HONESTY ── -->
+<section class="lesson" id="activity-4" style="background:var(--bg-light)">
+  <div class="container">
+    <span class="lesson-num" style="background:#4CAF50">4</span>
+    <h2 class="lesson-title">Judgement calls — prompting, rights &amp; honest charts</h2>
+    <p class="lesson-intro">AI visuals raise questions a spell-checker never will: is this image licensed for a client deck? Does this chart type flatter the data or distort it? Should there even be an image here? Answer these four. Each locks in with the reasoning.</p>
+    <div class="lesson-card" id="quizWrap"></div>
+  </div>
+</section>
+
+<!-- ── VISUAL SANITY CHECKLIST (teaching) ── -->
+<section class="lesson" id="validate">
+  <div class="container">
+    <span class="lesson-num" style="background:var(--navy)">✓</span>
+    <h2 class="lesson-title">The 30-second visual check before you present it</h2>
+    <p class="lesson-intro">Before any AI-generated slide, image or chart goes in front of an audience, run it past these. Most visual mistakes are caught in under a minute — if you actually look.</p>
+    <div class="lesson-card">
+      <ul class="check-list">
+        <li><div class="check-ico">◎</div><div class="check-txt"><strong>Is there one clear focal point?</strong> Squint at the slide. The first thing your eye finds should be the thing you want the audience to remember. If nothing jumps out — or three things do — hierarchy is broken.</div></li>
+        <li><div class="check-ico">◈</div><div class="check-txt"><strong>Does it look like your deck?</strong> Same fonts, same colours, same icon style as the slides around it. A stray AI image in a different palette screams "pasted in." Match it to your theme or cut it.</div></li>
+        <li><div class="check-ico">📊</div><div class="check-txt"><strong>Is the chart honest?</strong> Check the y-axis starts at zero (unless there's a good, labelled reason), that the chart type fits the data, and that the numbers on the chart match your source. AI can pick a flattering shape you didn't ask for.</div></li>
+        <li><div class="check-ico">✂</div><div class="check-txt"><strong>Does every image earn its place?</strong> A decorative photo that adds no meaning is just clutter competing with your point. If you can delete an image and lose nothing, delete it.</div></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ── REFLECT ── -->
+<section class="lesson" style="padding-bottom:1.5rem;background:var(--bg-light)">
+  <div class="container">
+    <h2 class="lesson-title" style="font-size:1.5rem">Quick reflect — make it stick</h2>
+    <p class="lesson-intro" style="margin-bottom:1rem">A sentence each is enough. Writing it in your own words is what makes it stay. (Nothing is saved or sent.)</p>
+    <div class="reflect-prompt">
+      <div class="reflect-q">
+        <div class="reflect-q-text">You ask AI for an image for a slide about "customer trust." It gives you a generic stock-style handshake. Would you use it? What would you do instead, and why?</div>
+        <textarea placeholder="Probably not — a generic handshake is decorative and adds no meaning. Instead I'd..."></textarea>
+      </div>
+      <div class="reflect-q">
+        <div class="reflect-q-text">Copilot made a bar chart of your monthly sales but started the y-axis at 90 instead of 0, making a tiny rise look huge. What's the problem, and how do you fix it?</div>
+        <textarea placeholder="The truncated axis exaggerates the change and misleads the viewer. I'd set the axis to start at 0 because..."></textarea>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NEXT UP -->
+<section class="lesson" style="padding-top:0">
+  <div class="container">
+    <div class="next-up">
+      <h3>Lesson 4 · Polish, Delivery &amp; Practice</h3>
+      <p>Your deck looks the part — now make it land. Next: a final polish pass, speaker notes and rehearsal AI can help draft, accessibility and export checks, and a practice run that pulls the whole week together into a deck you'd actually stand up and present.</p>
+      <a href="04-polish-delivery-practice.html" class="btn btn-primary">Continue to Lesson 4 →</a>
+    </div>
+  </div>
+</section>
+
+<script>
+/* ─── shared helper ─── */
+function shuffle(arr){ return [...arr].sort(() => Math.random() - 0.5); }
+
+/* ─── ACTIVITY 1: Design choice A/B ─── */
+const PAIRS = [
+  {
+    tag:'Pair 1 · Hierarchy',
+    losing:'A title slide with the headline, a subheadline, three bullet points and a photo caption all set in the same size and colour.',
+    winning:'A title slide where the one headline is large and bold, everything else is smaller and grey, and there is generous space around it.',
+    why:'Hierarchy means the eye knows where to look first. When every element is the same size and colour, nothing leads — the audience has to work out what matters, and they won\'t. Making the headline dominant and pushing supporting text down in size and contrast creates a clear reading order in a fraction of a second. That is the whole job of a title slide.',
+    lesson:'One focal point per slide. Use size, colour and space to say "read this first" — sameness kills hierarchy.'
+  },
+  {
+    tag:'Pair 2 · Less text, more visual',
+    losing:'A slide with a 60-word paragraph explaining Q3 results, which you also plan to read aloud word for word.',
+    winning:'A slide showing "+18% Q3" big, one supporting chart, and six words — the detail lives in what you say out loud.',
+    why:'Slides support a speaker; they are not the script. A dense paragraph forces the audience to read instead of listen, and reading your slides aloud is the fastest way to lose a room. Put the one number and one visual on the slide, keep the words to a headline, and let the explanation come from your mouth. The slide is a signpost, not the destination.',
+    lesson:'The slide carries the idea; you carry the detail. If you\'re reading a paragraph off the screen, it belongs in your notes, not the slide.'
+  },
+  {
+    tag:'Pair 3 · On-brand consistency',
+    losing:'Letting Designer pick a stock photo in cool blues and a rounded font, dropped into a deck that\'s warm orange with a serif brand font.',
+    winning:'Applying your theme first so AI layouts inherit your orange palette and brand fonts, and swapping any image that clashes.',
+    why:'AI Designer optimises for "looks tidy in isolation," not "matches your brand." An element in the wrong palette or font instantly reads as pasted-in and cheapens the whole deck. Setting your theme and brand kit up front means every AI-added layout snaps to your colours and fonts — and when it still drifts, you override it. Consistency is what makes a deck feel professional.',
+    lesson:'Set the brand rules once, then make AI inherit them. Override any element that drifts off palette, font or icon style.'
+  }
+];
+let abDone = 0;
+function renderPairs(){
+  abDone = 0;
+  const wrap = document.getElementById('abWrap');
+  wrap.innerHTML = PAIRS.map((p, i) => {
+    const winFirst = Math.random() < 0.5;
+    const cards = [
+      {label:'A', copy: winFirst ? p.winning : p.losing, win: winFirst},
+      {label:'B', copy: winFirst ? p.losing : p.winning, win: !winFirst}
+    ];
+    return `
+    <div class="ab-pair" data-pair="${i}">
+      <div class="ab-q"><span class="ab-tag">${p.tag}</span>Which slide would you ship?</div>
+      <div class="ab-cards">
+        ${cards.map(c => `
+        <div class="ab-card" data-win="${c.win ? 1 : 0}" onclick="pickAB(this, ${i})">
+          <span class="ab-letter">${c.label}</span>
+          <div class="ab-copy">${c.copy}</div>
+        </div>`).join('')}
+      </div>
+      <div class="ab-verdict" id="verdict${i}"></div>
+    </div>`;
+  }).join('') + `
+    <div class="activity-feedback" id="feedback1"></div>
+    <div class="activity-toolbar">
+      <button class="btn btn-ghost" onclick="resetActivity1()">↻ New round (sides reshuffle)</button>
+    </div>`;
+}
+function pickAB(card, i){
+  const pair = card.closest('.ab-pair');
+  if (pair.dataset.locked) return;
+  pair.dataset.locked = '1';
+  const pickedWin = card.dataset.win === '1';
+  pair.querySelectorAll('.ab-card').forEach(c => {
+    c.classList.add('locked');
+    if (c.dataset.win === '1') c.classList.add('win');
+    else c.classList.add(c === card ? 'picked-wrong' : 'lose');
+  });
+  const v = document.getElementById('verdict' + i);
+  v.className = 'ab-verdict show ' + (pickedWin ? 'good' : 'bad');
+  v.innerHTML = (pickedWin ? '<strong>Right call.</strong> ' : '<strong>The other one wins.</strong> ') + PAIRS[i].why;
+  pair.dataset.score = pickedWin ? '1' : '0';
+  abDone++;
+  if (abDone === PAIRS.length) finishAB();
+}
+function finishAB(){
+  const score = [...document.querySelectorAll('.ab-pair')].reduce((s, p) => s + (p.dataset.score === '1' ? 1 : 0), 0);
+  const fb = document.getElementById('feedback1');
+  if (score === PAIRS.length) {
+    fb.className = 'activity-feedback show success';
+    fb.innerHTML = `<strong>3 for 3 — you design with intent.</strong> The through-line: every slide should have <em>one focal point</em>, <em>few words</em>, and <em>one consistent brand</em>. AI tools speed up the layout, but they don't know which idea matters or what your brand looks like until you tell them. Set the rules, let the AI work inside them, and override the moment it buries your point or drifts off palette.`;
+  } else {
+    fb.className = 'activity-feedback show partial';
+    fb.innerHTML = `<strong>You picked ${score} of 3.</strong> Re-read the verdicts — they are the whole lesson. The test for any slide: could a stranger tell in two seconds what one thing you want them to notice, and does it look like it belongs to the same deck? If not, fix the hierarchy, cut the text, or match the brand. Reshuffle and run it again.`;
+  }
+  document.getElementById('prog1').classList.add('done');
+}
+function resetActivity1(){
+  renderPairs();
+  document.getElementById('prog1').classList.remove('done');
+}
+
+/* ─── ACTIVITY 2: Slide anatomy builder ─── */
+const FIELDS = [
+  {id:'f1', text:'"+18%"  (huge headline number)', zone:'focal', hint:'The whole slide is about an 18% rise — that number, set large and bold, is what the eye should land on first. It is the focal point.'},
+  {id:'f2', text:'Bar chart of Q3 vs Q2 revenue', zone:'visual', hint:'A clean chart comparing the two quarters carries the "here\'s why" — it is the supporting visual that backs up the headline number.'},
+  {id:'f3', text:'Your logo + theme colours in the corner', zone:'brand', hint:'A small consistent logo and your theme palette are the brand frame — present but quiet, tying this slide to the rest of the deck.'},
+  {id:'f4', text:'Deliberate empty margin around the number', zone:'space', hint:'Empty space isn\'t wasted — the margin around the big number is what makes it read as important. That is intentional whitespace.'},
+  {id:'f5', text:'A 55-word paragraph explaining the growth', zone:'cut', hint:'A dense paragraph forces the audience to read instead of listen. The detail belongs in your speaker notes and your mouth — cut it from the slide.'},
+  {id:'f6', text:'A generic AI stock photo of a rocket', zone:'cut', hint:'A decorative rocket adds no meaning and often clashes with your palette. If deleting an image loses nothing, it was clutter — cut it.'}
+];
+const ZONE_NAMES = {focal:'Focal point', visual:'Supporting visual', brand:'Brand frame', space:'Whitespace', cut:'Cut it'};
+let placed2 = {};
+function renderFields(){
+  const list = document.getElementById('fieldList');
+  list.innerHTML = shuffle(FIELDS).map(e => `
+    <div class="scenario-card" draggable="true" data-id="${e.id}">
+      <div class="scenario-text">${e.text}</div>
+    </div>`).join('');
+  list.querySelectorAll('.scenario-card').forEach(card => {
+    card.addEventListener('dragstart', ev => {
+      ev.dataTransfer.setData('field', card.dataset.id);
+      card.classList.add('dragging');
+    });
+    card.addEventListener('dragend', () => card.classList.remove('dragging'));
+  });
+}
+function setupZones2(){
+  document.querySelectorAll('#activity-2 .wf-zone').forEach(z => {
+    z.addEventListener('dragover', e => { e.preventDefault(); z.classList.add('drag-over'); });
+    z.addEventListener('dragleave', () => z.classList.remove('drag-over'));
+    z.addEventListener('drop', e => {
+      e.preventDefault();
+      z.classList.remove('drag-over');
+      const id = e.dataTransfer.getData('field');
+      if (id) handleDrop2(id, z.dataset.zone);
+    });
+  });
+}
+function handleDrop2(id, zone){
+  const el = FIELDS.find(x => x.id === id);
+  if (!el || placed2[id]) return;
+  const correct = el.zone === zone;
+  placed2[id] = {zone, correct};
+  const card = document.querySelector(`#fieldList .scenario-card[data-id="${id}"]`);
+  if (card) card.classList.add('placed', correct ? 'correct' : 'wrong');
+  const drop = document.querySelector(`#activity-2 .wf-drop[data-drop="${zone}"]`);
+  const pill = document.createElement('span');
+  pill.className = 'dropped-pill ' + (correct ? 'correct' : 'wrong');
+  pill.textContent = (correct ? '✓ ' : '✗ ') + el.text.split('  ')[0];
+  pill.title = correct ? el.hint : `Belongs in "${ZONE_NAMES[el.zone]}". ${el.hint}`;
+  drop.appendChild(pill);
+  checkDone2();
+}
+function checkDone2(){
+  if (Object.keys(placed2).length !== FIELDS.length) return;
+  const right = Object.values(placed2).filter(p => p.correct).length;
+  const fb = document.getElementById('feedback2');
+  if (right === FIELDS.length) {
+    fb.className = 'activity-feedback show success';
+    fb.innerHTML = `<strong>Clean slide — 6 of 6.</strong> You built exactly what the headline demanded: the <em>+18%</em> as the focal point, a <em>chart</em> to back it, the <em>logo and theme</em> as a quiet brand frame, and real <em>whitespace</em> to let it breathe. The paragraph and the rocket photo got cut — one buries the point in text, the other adds decoration with no meaning. This is the mental model: focal point, supporting visual, brand frame, breathing room, and ruthless removal of everything else. AI Designer will happily add the rocket for you — knowing the zones is how you catch it and say no.`;
+  } else {
+    fb.className = 'activity-feedback show partial';
+    fb.innerHTML = `<strong>You placed ${right} of 6 correctly.</strong> Hover each red pill for the fix. Map the slide's job to the zones: the big number people should see first → <em>Focal point</em>; the chart that proves it → <em>Supporting visual</em>; the logo and palette → <em>Brand frame</em>; the empty margin that makes the number pop → <em>Whitespace</em>. A dense paragraph and a meaningless stock photo don't belong on the slide at all. Try again and rebuild it.`;
+  }
+  document.getElementById('prog2').classList.add('done');
+}
+function resetActivity2(){
+  placed2 = {};
+  document.getElementById('feedback2').className = 'activity-feedback';
+  document.querySelectorAll('#activity-2 .wf-drop[data-drop]').forEach(d => d.innerHTML = '');
+  renderFields();
+  document.getElementById('prog2').classList.remove('done');
+}
+function showAnswers2(){
+  FIELDS.forEach(e => { if (!placed2[e.id]) handleDrop2(e.id, e.zone); });
+}
+
+/* ─── ACTIVITY 3: Image + chart audit (Yes = has the flaw) ─── */
+const AUDIT = [
+  {name:'An AI image of your product in a font-heavy logo that reads a different brand name, dropped on a client slide.',
+   tag:'Image · brand & rights',
+   flaw:true,
+   why:'Yes — flaw. AI image generators famously garble text and can invent logos or brand marks. A generated logo isn\'t yours to use and mangled text looks amateur. Use AI images for abstract or illustrative backgrounds, and put real text and your real logo in with PowerPoint, not the image generator.'},
+  {name:'A photorealistic AI image used to depict a real, specific customer testimonial as if it were a genuine photo of that person.',
+   tag:'Image · honesty',
+   flaw:true,
+   why:'Yes — flaw. Passing off a synthetic image as a real photo of a real person is misleading and can breach honesty and disclosure rules. If it looks like documentary evidence but is AI-generated, don\'t present it as real. Label AI imagery when it could be mistaken for a genuine photo.'},
+  {name:'A simple AI-generated abstract background in your brand colours, used behind a section-divider slide with no text claims.',
+   tag:'Image · decorative use',
+   flaw:false,
+   why:'No — this is fine. An abstract, on-brand background on a divider slide is a legitimate, low-risk use of AI imagery: no text to garble, no real person to fake, no meaning it needs to carry. Just confirm your tool\'s licence permits commercial use of what it generates.'},
+  {name:'A bar chart where the y-axis starts at 90 instead of 0, making a 2% rise look like the bar tripled in height.',
+   tag:'Chart · honesty',
+   flaw:true,
+   why:'Yes — flaw. A truncated y-axis is the classic misleading chart: it exaggerates a small change into a dramatic one. Unless there\'s a clear, labelled reason, bar charts should start at zero so the bar heights are proportional to the values. AI sometimes auto-scales this way — always check the axis.'},
+  {name:'A pie chart with eleven thin slices used to compare eleven regions\' sales.',
+   tag:'Chart · type choice',
+   flaw:true,
+   why:'Yes — flaw. Pie charts only work for a few parts of a whole (two to four). Eleven wedges are impossible to compare by eye — a bar chart, sorted high to low, would make the ranking instantly readable. The right chart type is a design decision AI won\'t always get right.'},
+  {name:'A line chart showing monthly website visits across a year, with the axis at zero and real numbers matching the source sheet.',
+   tag:'Chart · honesty',
+   flaw:false,
+   why:'No — this is honest. A line chart is the right shape for a value changing over time, the axis starts at zero, and the plotted numbers match the source. Chart type fits the question, the scale isn\'t distorted, and the data checks out — nothing to fix.'}
+];
+let auditState = [];
+function renderAudit(){
+  auditState = AUDIT.map(() => null);
+  const wrap = document.getElementById('auditWrap');
+  wrap.innerHTML = AUDIT.map((a, ai) => `
+    <div class="brand-block" data-a="${ai}">
+      <div class="brand-name"><span class="q-tag">${a.tag}</span>${a.name}</div>
+      <div class="brand-row">
+        <div class="brand-crit">Does this visual have a problem?</div>
+        <div class="tog-group">
+          <button class="tog" id="atog-${ai}-yes" onclick="setAudit(${ai},true)">Yes, flawed</button>
+          <button class="tog" id="atog-${ai}-no" onclick="setAudit(${ai},false)">No, it's fine</button>
+        </div>
+      </div>
+      <div class="brand-why" id="awhy${ai}">${a.why}</div>
+    </div>`).join('');
+}
+function setAudit(ai, val){
+  auditState[ai] = val;
+  document.getElementById(`atog-${ai}-yes`).className = 'tog' + (val === true ? ' on-yes' : '');
+  document.getElementById(`atog-${ai}-no`).className = 'tog' + (val === false ? ' on-yes' : '');
+}
+function checkAudit(){
+  const fb = document.getElementById('feedback3');
+  const unanswered = auditState.filter(v => v === null).length;
+  if (unanswered > 0) {
+    fb.className = 'activity-feedback show partial';
+    fb.innerHTML = `<strong>${unanswered} item${unanswered > 1 ? 's' : ''} still blank.</strong> Mark every visual Yes or No, then check again.`;
+    return;
+  }
+  let hits = 0;
+  AUDIT.forEach((a, ai) => {
+    const mine = auditState[ai];
+    const hit = mine === a.flaw;
+    if (hit) hits++;
+    const chosen = mine ? `atog-${ai}-yes` : `atog-${ai}-no`;
+    document.getElementById(chosen).classList.add(hit ? 'reveal-hit' : 'reveal-miss');
+    if (!hit) {
+      const right = a.flaw ? `atog-${ai}-yes` : `atog-${ai}-no`;
+      document.getElementById(right).classList.add('reveal-hit');
+    }
+    document.getElementById('awhy' + ai).classList.add('show');
+  });
+  if (hits === AUDIT.length) {
+    fb.className = 'activity-feedback show success';
+    fb.innerHTML = `<strong>6 / 6 — a sharp eye.</strong> You caught the garbled-logo image, the fake "real photo," the truncated axis and the unreadable eleven-slice pie — while correctly clearing the honest line chart and the on-brand abstract background. The pattern: AI images are safe for <em>abstract, on-brand, non-factual</em> uses and dangerous when they fake text, logos or real people; AI charts need a <em>zero axis, the right type, and numbers that match the source</em>. Run this audit on every generated visual.`;
+  } else {
+    fb.className = 'activity-feedback show partial';
+    fb.innerHTML = `<strong>You caught ${hits} of 6.</strong> Green marks the right answer wherever you differed; each explanation is now open. The tells: AI images that fake text, logos or real people are flaws; abstract on-brand backgrounds are fine. Charts fail when the axis is truncated or the type doesn't fit — a zero axis, a fitting type and source-matched numbers are honest. Reset and try for a clean sheet.`;
+  }
+  document.getElementById('prog3').classList.add('done');
+}
+function resetAudit(){
+  renderAudit();
+  document.getElementById('feedback3').className = 'activity-feedback';
+  document.getElementById('prog3').classList.remove('done');
+}
+
+/* ─── ACTIVITY 4: Quiz ─── */
+const QUIZ = [
+  {
+    tag:'Q1 · Prompting for images',
+    q:'You want an AI image for a slide on "sustainable packaging." Which prompt is most likely to give you a usable, on-brand result?',
+    opts:[
+      '"Make a nice picture."',
+      '"Minimalist flat illustration of a cardboard box wrapped in a green leaf, warm earthy palette, plenty of empty space, no text."',
+      '"The best packaging image ever, super detailed, trending."',
+      '"A photo of our actual warehouse from last Tuesday."'
+    ],
+    correct:1,
+    explain:'Good image prompts name the subject, the style, the palette and the composition — and often what to avoid (like text, which AI garbles). "Minimalist flat illustration… warm earthy palette… no text" gives the model concrete, brand-aligned direction and leaves room to sit behind a headline. "Make a nice picture" or "the best ever" give it nothing to work with, and AI can\'t produce a real photo of a specific place and time it has never seen.'
+  },
+  {
+    tag:'Q2 · Licensing & rights',
+    q:'You generated an image with an AI tool for a paid client presentation. What should you check before using it?',
+    opts:[
+      'Nothing — if AI made it, it\'s automatically free to use however you like.',
+      'The tool\'s licence and terms: whether commercial use is allowed, whether it may resemble copyrighted characters or brands, and whether attribution is required.',
+      'Only that it looks nice.',
+      'Whether you can add your own watermark to claim copyright over it.'
+    ],
+    correct:1,
+    explain:'"AI made it, so it\'s free" is a myth. Different tools grant different rights — some allow commercial use, some don\'t, some require attribution, and generated images can accidentally resemble trademarked characters or brands you\'re not licensed to use. For anything client-facing or commercial, check the specific tool\'s licence and avoid outputs that echo protected IP. Slapping a watermark on someone else\'s output doesn\'t make it yours.'
+  },
+  {
+    tag:'Q3 · Choosing an honest chart',
+    q:'You want to show how total revenue splits across four product lines. Copilot offers a line chart. What\'s the best move?',
+    opts:[
+      'Accept it — Copilot knows best.',
+      'Override it: a line chart implies a trend over time, which this isn\'t. Use a bar chart (or a pie, since it\'s few parts of a whole) so the split is read honestly.',
+      'Use a 3-D exploded pie to make it look impressive.',
+      'Show the raw table instead and let the audience add it up.'
+    ],
+    correct:1,
+    explain:'Chart type is an argument, and the wrong one misleads. A line chart says "this changed over time" — but a split across product lines is a part-of-a-whole comparison, not a trend, so a line would imply a relationship that doesn\'t exist. A clean bar chart, or a simple pie for four parts, reads honestly. AI picks a default that looks tidy; it\'s your job to pick the type that matches the question. And skip the 3-D exploded pie — the distortion makes slices genuinely hard to compare.'
+  },
+  {
+    tag:'Q4 · When NOT to use a visual',
+    q:'A slide already makes its point clearly with one number and a short label. Designer suggests adding a decorative photo of a sunrise. What do you do?',
+    opts:[
+      'Add it — more visuals always look more professional.',
+      'Decline it: a decorative image with no meaning competes with your focal point and adds clutter. Keep the whitespace.',
+      'Add it and shrink the number to make room.',
+      'Add two photos for balance.'
+    ],
+    correct:1,
+    explain:'Not every slide needs an image, and a decorative-but-empty one actively hurts. It pulls the eye away from the number that matters and eats the whitespace that made the slide readable. The test: if you delete the image and lose no meaning, it was clutter. AI Designer defaults to "fill the space" — you default to "does this earn its place?" Shrinking your focal point to fit decoration is exactly backwards.'
+  }
+];
+let quizDone = 0;
+function renderQuiz(){
+  quizDone = 0;
+  const wrap = document.getElementById('quizWrap');
+  wrap.innerHTML = QUIZ.map((item, qi) => `
+    <div class="quiz-q" data-quiz="${qi}">
+      <div class="quiz-prompt"><span class="q-tag">${item.tag}</span>${item.q}</div>
+      <div class="quiz-opts">
+        ${item.opts.map((o, oi) => `
+        <div class="quiz-opt" onclick="pickQuiz(${qi},${oi})" id="qopt-${qi}-${oi}">
+          <span class="opt-key">${String.fromCharCode(65 + oi)}</span><span>${o}</span>
+        </div>`).join('')}
+      </div>
+      <div class="quiz-explain" id="qexp${qi}"></div>
+    </div>`).join('') + `
+    <div class="activity-feedback" id="feedback4"></div>
+    <div class="activity-toolbar">
+      <button class="btn btn-ghost" onclick="resetQuiz()">↻ Reset quiz</button>
+    </div>`;
+}
+function pickQuiz(qi, oi){
+  const block = document.querySelector(`.quiz-q[data-quiz="${qi}"]`);
+  if (block.dataset.locked) return;
+  block.dataset.locked = '1';
+  const item = QUIZ[qi];
+  const correct = oi === item.correct;
+  block.querySelectorAll('.quiz-opt').forEach((el, i) => {
+    el.classList.add('locked');
+    if (i === item.correct) el.classList.add('correct');
+    else if (i === oi) el.classList.add('wrong');
+  });
+  const exp = document.getElementById('qexp' + qi);
+  exp.className = 'quiz-explain show ' + (correct ? 'good' : 'bad');
+  exp.innerHTML = (correct ? '<strong>Correct.</strong> ' : '<strong>Not quite.</strong> ') + item.explain;
+  block.dataset.score = correct ? '1' : '0';
+  quizDone++;
+  if (quizDone === QUIZ.length) finishQuiz();
+}
+function finishQuiz(){
+  const score = [...document.querySelectorAll('.quiz-q')].reduce((s, b) => s + (b.dataset.score === '1' ? 1 : 0), 0);
+  const fb = document.getElementById('feedback4');
+  if (score === QUIZ.length) {
+    fb.className = 'activity-feedback show success';
+    fb.innerHTML = `<strong>4 / 4 — designer's judgement.</strong> You prompted an image with real direction, checked the licence before shipping it, overrode a chart type that would mislead, and turned down decoration that didn't earn its place. The through-line: AI produces the visual fast, but it doesn't know your brand, your rights, your data, or what your point actually is. You supply the judgement. Make it look like yours, keep it honest, and cut what doesn't help.`;
+  } else {
+    fb.className = 'activity-feedback show partial';
+    fb.innerHTML = `<strong>You got ${score} of 4.</strong> Re-read the explanations — each is a real trap. Prompt with subject, style and palette; check the tool's licence before any client use; pick the chart type that matches the question, not the tidiest default; and decline decorative images that steal focus from your point. Reset and run it again.`;
+  }
+  document.getElementById('prog4').classList.add('done');
+}
+function resetQuiz(){
+  renderQuiz();
+  document.getElementById('prog4').classList.remove('done');
+}
+
+/* ─── INIT ─── */
+window.addEventListener('DOMContentLoaded', () => {
+  renderPairs();
+  renderFields();
+  setupZones2();
+  renderAudit();
+  renderQuiz();
+});
+</script>
+</body>
+</html>
