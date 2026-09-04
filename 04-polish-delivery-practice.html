@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Polish, Delivery &amp; Practice · Lesson 04</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,0,400;9..144,0,600;9..144,0,800;9..144,1,600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+
+:root{
+  --orange:#EF7F1A; --orange-light:#FF9429; --orange-dark:#D55222;
+  --brown:#412C23; --brown-dark:#2F1D19; --tan:#A34E1C;
+  --yellow:#FECC00; --cream:#FBF6EE; --paper:#FFFCF6;
+  --ink:#1C1410; --muted:#6E5C50; --line:#E8DCC8; --accent:#008DD2;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',system-ui,sans-serif;
+  background:var(--paper); color:var(--ink); line-height:1.6; overflow-x:hidden;
+}
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:radial-gradient(circle at 1px 1px,rgba(65,44,35,0.05) 1px,transparent 0);
+  background-size:24px 24px;
+}
+.topbar{
+  position:sticky;top:0;z-index:100;
+  background:rgba(255,252,246,0.92); backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+  padding:14px 40px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.brand{font-family:'Fraunces',serif;font-weight:800;font-size:17px;letter-spacing:-0.01em;color:var(--brown-dark)}
+.brand .dot{color:var(--orange)}
+.brand .sub{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.15em;color:var(--muted);font-weight:500;text-transform:uppercase;margin-left:8px}
+.logo-slot{width:44px;height:44px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.logo-slot svg{width:100%;height:100%;display:block}
+.page{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:50px 40px 100px}
+.hero{padding:30px 0 50px;border-bottom:1px solid var(--line)}
+.eyebrow{
+  font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.18em;
+  text-transform:uppercase;color:var(--orange-dark);font-weight:600;
+  display:inline-flex;align-items:center;gap:10px;
+}
+.eyebrow::before{content:"";width:24px;height:2px;background:var(--orange)}
+h1{
+  font-family:'Fraunces',serif;font-weight:800;
+  font-size:clamp(38px,7vw,80px);line-height:0.98;letter-spacing:-0.03em;
+  margin:18px 0 20px;color:var(--brown-dark);
+}
+h1 em{font-style:italic;color:var(--orange-dark);font-weight:600}
+.lede{font-size:19px;max-width:680px;color:var(--muted)}
+section{padding:70px 0;border-bottom:1px solid var(--line)}
+section:last-of-type{border-bottom:none}
+.section-num{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--orange);font-weight:600;letter-spacing:0.08em}
+h2{
+  font-family:'Fraunces',serif;font-weight:700;
+  font-size:clamp(28px,4.5vw,48px);line-height:1.05;letter-spacing:-0.02em;
+  margin:10px 0 22px;color:var(--brown-dark);max-width:720px;
+}
+h3{font-family:'Fraunces',serif;font-weight:600;font-size:24px;color:var(--brown-dark);margin:28px 0 12px}
+p{max-width:680px;margin-bottom:14px;color:var(--ink)}
+.lead{font-size:17px;color:var(--muted);max-width:680px;margin-bottom:26px}
+code{font-family:'JetBrains Mono',monospace;font-size:0.92em;background:var(--cream);padding:2px 6px;border-radius:4px;color:var(--brown-dark)}
+.illus{
+  background:var(--cream);border:1px solid var(--line);border-radius:18px;
+  padding:32px;margin:24px 0;position:relative;overflow:hidden;
+}
+.illus-title{
+  font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);
+  letter-spacing:0.12em;text-transform:uppercase;
+  margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:10px;
+}
+.controls{display:flex;gap:8px;flex-wrap:wrap}
+.controls button{
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  background:var(--paper);border:1px solid var(--line);color:var(--brown);
+  padding:6px 12px;border-radius:6px;cursor:pointer;
+  text-transform:uppercase;letter-spacing:0.1em;transition:all .2s;
+}
+.controls button:hover{background:var(--orange);color:#fff;border-color:var(--orange)}
+.controls button.active{background:var(--brown-dark);color:#fff;border-color:var(--brown-dark)}
+.takeaway{
+  background:var(--brown-dark);color:var(--paper);
+  border-radius:18px;padding:44px;margin-top:50px;position:relative;overflow:hidden;
+}
+.takeaway::after{
+  content:"";position:absolute;top:-40px;right:-40px;width:180px;height:180px;
+  border-radius:50%;background:radial-gradient(circle,var(--orange),transparent 70%);opacity:0.4;
+}
+.takeaway h2{color:var(--paper);margin-bottom:16px}
+.takeaway p{color:#E8D9C5;font-size:16px;max-width:680px}
+.takeaway ul{list-style:none;margin-top:18px;display:grid;gap:8px}
+.takeaway li{font-family:'JetBrains Mono',monospace;font-size:13px;padding-left:22px;position:relative;color:#FBE7CB}
+.takeaway li::before{content:"→";position:absolute;left:0;color:var(--orange);font-weight:bold}
+footer{text-align:center;padding:36px;color:var(--muted);font-size:12px;font-family:'JetBrains Mono',monospace;letter-spacing:0.1em}
+@media(max-width:700px){
+  .topbar{padding:12px 18px}
+  .page{padding:30px 18px 70px}
+  .illus{padding:20px}
+  .takeaway{padding:28px}
+  .logo-slot{width:42px;height:66px}
+}
+
+/* ── page-specific: polish pipeline ───────────────────────── */
+.pipe{display:flex;flex-direction:column;gap:0}
+.pstep{
+  display:flex;gap:16px;align-items:flex-start;opacity:0;transform:translateX(-14px);
+}
+.pipe.reveal .pstep{animation:pstepIn .5s forwards}
+.pipe.reveal .pstep:nth-child(1){animation-delay:.05s}
+.pipe.reveal .pstep:nth-child(3){animation-delay:.2s}
+.pipe.reveal .pstep:nth-child(5){animation-delay:.35s}
+.pipe.reveal .pstep:nth-child(7){animation-delay:.5s}
+.pipe.reveal .pstep:nth-child(9){animation-delay:.65s}
+@keyframes pstepIn{to{opacity:1;transform:translateX(0)}}
+.pnum{
+  flex-shrink:0;width:40px;height:40px;border-radius:10px;background:var(--brown-dark);color:var(--paper);
+  display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-weight:600;font-size:16px;
+}
+.pstep:nth-child(1) .pnum{background:var(--orange-dark)}
+.pstep:nth-child(3) .pnum{background:var(--tan)}
+.pstep:nth-child(5) .pnum{background:var(--orange)}
+.pstep:nth-child(7) .pnum{background:var(--brown)}
+.pstep:nth-child(9) .pnum{background:var(--accent)}
+.pbody{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:14px 18px;flex:1}
+.pbody h4{font-family:'Fraunces',serif;font-size:17px;color:var(--brown-dark);margin-bottom:4px}
+.pbody p{font-size:13px;color:var(--muted);margin:0;max-width:none;line-height:1.5}
+.pbody .p-tag{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:0.08em;text-transform:uppercase;color:var(--tan);background:var(--cream);padding:2px 8px;border-radius:5px;margin-top:8px}
+.pconn{width:40px;display:flex;justify-content:center;height:22px;opacity:0}
+.pipe.reveal .pconn{animation:pstepIn .4s forwards;animation-delay:.4s}
+.pconn::before{content:"";width:2px;background:var(--line);height:100%}
+
+/* ── page-specific: before/after edit tabs ────────────────── */
+.edit-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+.edit-tab{
+  font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.06em;
+  background:var(--paper);border:1px solid var(--line);color:var(--brown);
+  padding:9px 16px;border-radius:999px;cursor:pointer;transition:all .2s;
+}
+.edit-tab:hover{border-color:var(--orange);color:var(--orange-dark)}
+.edit-tab.active{background:var(--orange);border-color:var(--orange);color:#fff}
+.slide-pair{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.slide-card{
+  background:var(--paper);border:1px solid var(--line);border-radius:14px;
+  overflow:hidden;display:none;
+}
+.slide-card.shown{display:block;animation:nodeIn .4s both}
+@keyframes nodeIn{from{opacity:0;transform:translateY(14px) scale(.97)}to{opacity:1;transform:none}}
+.slide-band{padding:12px 18px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#fff;font-weight:600;display:flex;justify-content:space-between;align-items:center}
+.slide-band.before{background:var(--brown)}
+.slide-band.after{background:#2E7D46}
+.slide-canvas{padding:20px;min-height:220px}
+.slide-canvas h5{font-family:'Fraunces',serif;font-size:20px;color:var(--brown-dark);margin-bottom:12px;line-height:1.15}
+.slide-canvas ul{list-style:none;display:grid;gap:8px}
+.slide-canvas li{font-size:13px;color:var(--ink);padding-left:18px;position:relative;line-height:1.45}
+.slide-canvas li::before{content:"•";position:absolute;left:2px;color:var(--orange);font-weight:700}
+.slide-canvas .cram li{font-size:12px;color:var(--muted);line-height:1.4}
+.slide-canvas .wordy{color:var(--muted);font-size:12.5px;font-style:italic}
+.edit-log{margin-top:16px;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:14px 18px}
+.edit-log .k{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--tan);font-weight:600;display:block;margin-bottom:10px}
+.edit-log ul{list-style:none;display:grid;gap:6px}
+.edit-log li{font-size:12.5px;color:var(--ink);padding-left:20px;position:relative;line-height:1.45}
+.edit-log li::before{content:"✎";position:absolute;left:0;color:#2E7D46;font-weight:700}
+
+/* ── page-specific: speaker coach ─────────────────────────── */
+.coach{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:20px;overflow:hidden}
+.coach-head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid var(--line)}
+.coach-head h4{font-family:'Fraunces',serif;font-size:19px;color:var(--brown-dark)}
+.coach-head .stamp{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:0.08em}
+.coach-metrics{display:grid;gap:12px;margin-bottom:16px}
+.cmetric .clab{display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
+.cmetric .clab .cval{color:var(--brown-dark);font-weight:600}
+.cbar{height:9px;background:var(--cream);border-radius:5px;overflow:hidden;position:relative}
+.cfill{height:100%;border-radius:5px;width:0;transition:width .7s cubic-bezier(.2,.7,.3,1)}
+.cfill.good{background:#2E7D46} .cfill.mid{background:var(--yellow)} .cfill.low{background:var(--orange-dark)}
+.coach-notes{background:var(--cream);border-radius:10px;padding:14px 16px;border-left:3px solid var(--accent)}
+.coach-notes .k{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:6px;font-weight:600}
+.coach-notes p{font-size:13px;color:var(--ink);margin:0;max-width:none;line-height:1.55}
+
+/* ── page-specific: notes describe → output ───────────────── */
+.desc-wrap{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:stretch}
+.desc-col{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:18px 20px;display:flex;flex-direction:column}
+.desc-col .k{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--tan);margin-bottom:12px;font-weight:600}
+.desc-picks{display:grid;gap:8px}
+.desc-pick{
+  font-size:13.5px;color:var(--ink);background:var(--cream);border:1px solid var(--line);
+  border-radius:9px;padding:11px 14px;cursor:pointer;transition:all .2s;line-height:1.45;
+}
+.desc-pick:hover{border-color:var(--orange)}
+.desc-pick.picked{border-color:var(--orange);background:rgba(239,127,26,0.08);color:var(--brown-dark);font-weight:500}
+.desc-out{background:var(--brown-dark);border-radius:12px;padding:0;overflow:hidden;flex:1;min-height:220px;display:flex;flex-direction:column}
+.desc-out .oh{padding:10px 14px;background:rgba(0,0,0,0.25);font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#E8D9C5;display:flex;justify-content:space-between}
+.desc-out pre{margin:0;padding:16px;font-family:'JetBrains Mono',monospace;font-size:11.5px;line-height:1.65;color:#FBE7CB;white-space:pre-wrap;overflow:auto;flex:1}
+.desc-out .cm{color:#9C8A7A}
+.desc-out .kw{color:var(--orange-light)}
+.desc-out .st{color:#FECC00}
+.desc-note{font-size:12.5px;color:var(--muted);margin-top:14px;max-width:none;font-style:italic}
+
+/* ── page-specific: accessibility checker ─────────────────── */
+.a11y-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+.a11y-tab{
+  font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.06em;
+  background:var(--paper);border:1px solid var(--line);color:var(--brown);
+  padding:9px 16px;border-radius:999px;cursor:pointer;transition:all .2s;
+}
+.a11y-tab:hover{border-color:var(--orange);color:var(--orange-dark)}
+.a11y-tab.active{background:var(--orange);border-color:var(--orange);color:#fff}
+.a11y-panel{background:var(--paper);border:1px solid var(--line);border-radius:14px;overflow:hidden;display:none}
+.a11y-panel.shown{display:block;animation:nodeIn .4s both}
+.a11y-band{padding:14px 20px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#fff;font-weight:600;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;background:var(--accent)}
+.a11y-band .lvl{font-size:10px;opacity:.9;letter-spacing:0.1em}
+.a11y-body{padding:20px}
+.a11y-body h4{font-family:'Fraunces',serif;font-size:22px;color:var(--brown-dark);margin-bottom:8px}
+.a11y-body .plain{font-size:14px;color:var(--ink);max-width:none;margin-bottom:16px;line-height:1.55}
+.a11y-check{display:flex;gap:12px;align-items:flex-start;background:var(--cream);border-radius:10px;padding:12px 16px;margin-bottom:10px}
+.a11y-check .badge{flex-shrink:0;width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:#fff}
+.a11y-check.pass .badge{background:#2E7D46}
+.a11y-check.warn .badge{background:var(--orange-dark)}
+.a11y-check .ctext h5{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--brown-dark);margin-bottom:3px}
+.a11y-check .ctext p{font-size:12.5px;color:var(--muted);margin:0;max-width:none;line-height:1.45}
+
+/* ── page-specific: pre-show checklist ────────────────────── */
+.check-list{display:grid;gap:10px}
+.check{
+  display:flex;gap:14px;align-items:flex-start;background:var(--paper);
+  border:1px solid var(--line);border-radius:12px;padding:14px 18px;cursor:pointer;transition:all .2s;
+}
+.check:hover{border-color:var(--orange)}
+.check.on{border-color:#2E7D46;background:rgba(46,125,70,0.05)}
+.check-box{
+  flex-shrink:0;width:24px;height:24px;border-radius:7px;border:2px solid var(--line);
+  display:flex;align-items:center;justify-content:center;transition:all .2s;
+  font-family:'JetBrains Mono',monospace;font-size:14px;color:transparent;font-weight:700;
+}
+.check.on .check-box{background:#2E7D46;border-color:#2E7D46;color:#fff}
+.check-text h4{font-family:'Fraunces',serif;font-size:16.5px;color:var(--brown-dark);margin-bottom:3px}
+.check-text p{font-size:12.5px;color:var(--muted);margin:0;max-width:none;line-height:1.5}
+.check-progress{
+  margin-top:16px;background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:14px 18px;
+  display:flex;align-items:center;gap:14px;
+}
+.cp-bar{flex:1;height:8px;background:var(--cream);border-radius:4px;overflow:hidden}
+.cp-fill{height:100%;background:#2E7D46;width:0;transition:width .4s ease}
+.cp-lab{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--brown-dark);font-weight:600;white-space:nowrap}
+
+@media(max-width:760px){
+  .desc-wrap{grid-template-columns:1fr}
+  .slide-pair{grid-template-columns:1fr}
+}
+
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="brand">MokshPath <span class="dot">·</span> <span class="sub">Lesson 04 · AI Slides</span></div>
+  <div class="logo-slot" aria-label="MokshPath logo">
+    <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="22" cy="22" r="20" fill="#412C23"/>
+      <path d="M12 30V15l6 8 4-9 4 9 6-8v15" stroke="#EF7F1A" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <circle cx="22" cy="10" r="3" fill="#FECC00"/>
+    </svg>
+  </div>
+</div>
+<div class="page">
+
+<section class="hero">
+  <div class="eyebrow">Week 4 · Lesson 04 · AI Slides</div>
+  <h1>The deck is drafted. Now <em>earn</em> the room.</h1>
+  <p class="lede">AI can generate a plausible presentation in minutes — but plausible is not presentation-ready. This final lesson is about the last mile: the polish pass that cuts noise, the speaker notes that steady your nerves, the accessibility work that lets everyone follow along, and the honest truth that AI can rehearse nothing for you. You still have to stand up and own it. Here's how to walk in prepared.</p>
+</section>
+
+<section>
+  <div class="section-num">01 / 04</div>
+  <h2>From rough draft to presentation-ready</h2>
+  <p class="lead">A first AI draft is a starting point, not a finish line. The gap between "the AI made slides" and "I can present these confidently" is a short, repeatable polish pass. It has five moves, always in the same order — because each one depends on the last. Fixing flow before you cut words is wasted effort; rehearsing before you verify facts just memorizes mistakes.</p>
+
+  <p>The order matters. First <strong>cut words</strong>, because a slide with half the text is easier to reason about. Then <strong>fix flow</strong>, so each slide leads naturally to the next. Only then <strong>verify facts</strong> — AI confidently invents statistics, and a wrong number on a slide is a wrong number you'll say out loud. Next, generate <strong>speaker notes</strong> so you're never reading the slide to the audience. Finally, <strong>rehearse</strong> — the one step no tool can do for you. Run the pipeline to watch it assemble.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 1 · The polish pipeline — rough AI deck to ready</span>
+      <div class="controls">
+        <button onclick="runPipe()">▶ Run the polish pass</button>
+      </div>
+    </div>
+    <div class="pipe" id="pipe">
+      <div class="pstep">
+        <div class="pnum">1</div>
+        <div class="pbody"><h4>Cut the words</h4><p>Ask AI to halve the text on every slide. Bullets become phrases, paragraphs vanish. The slide supports you, it doesn't replace you.</p><span class="p-tag">Editing pass</span></div>
+      </div>
+      <div class="pconn"></div>
+      <div class="pstep">
+        <div class="pnum">2</div>
+        <div class="pbody"><h4>Fix the flow</h4><p>Reorder and bridge so each slide sets up the next. A deck with a spine tells a story; a pile of slides just lists facts.</p><span class="p-tag">Structure</span></div>
+      </div>
+      <div class="pconn"></div>
+      <div class="pstep">
+        <div class="pnum">3</div>
+        <div class="pbody"><h4>Verify the facts</h4><p>Check every number, date, and name against a real source. AI invents statistics that sound right. You are the last line of defense.</p><span class="p-tag">Fact-check</span></div>
+      </div>
+      <div class="pconn"></div>
+      <div class="pstep">
+        <div class="pnum">4</div>
+        <div class="pbody"><h4>Generate speaker notes</h4><p>Turn each slide into a short spoken script — the sentences you'll say, not the words on screen. A safety net for nerves.</p><span class="p-tag">Speaker notes</span></div>
+      </div>
+      <div class="pconn"></div>
+      <div class="pstep">
+        <div class="pnum">5</div>
+        <div class="pbody"><h4>Rehearse out loud</h4><p>Stand up, say it, time it. AI can coach the mechanics — but only you can do the reps. This step is yours alone.</p><span class="p-tag">You</span></div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Why the order is non-negotiable</h3>
+  <p>Beginners are tempted to jump straight to rehearsing a fresh draft — it feels like progress. But rehearsing a bloated, unverified deck bakes in every flaw: you memorize the wordy slide and the wrong statistic. Polish first, rehearse last. By the time you're saying it out loud, everything on screen should already be true, tight, and in the right order. The pipeline protects you from practicing your own mistakes.</p>
+</section>
+
+<section>
+  <div class="section-num">02 / 04</div>
+  <h2>The edit pass, shown live</h2>
+  <p class="lead">"Cut the words" sounds obvious until you see how much a raw AI slide actually carries. AI tends to over-explain — full sentences, hedged clauses, three bullets that say one thing. The edit pass strips that back to what an audience can absorb in the three seconds their eyes are on the screen. Flip between the before and after below.</p>
+
+  <p>The rule of thumb: a slide is a <em>headline plus evidence</em>, not a document. If your audience can read it faster than you can say it, they'll read ahead and stop listening. Cut anything you'll say out loud anyway — that belongs in your speaker notes, not on the slide. Watch the same slide before and after a real edit pass.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 2 · Same slide, before and after the cut</span>
+    </div>
+    <div class="edit-tabs">
+      <button class="edit-tab active" onclick="showSlide('before',this)">Rough AI draft</button>
+      <button class="edit-tab" onclick="showSlide('after',this)">After edit pass</button>
+    </div>
+    <div class="slide-pair">
+      <div class="slide-card shown" id="slide-before">
+        <div class="slide-band before"><span>Slide 4 · Before</span><span>92 words</span></div>
+        <div class="slide-canvas">
+          <h5>Our Q3 Results Were Actually Quite Strong Across Several Key Areas</h5>
+          <ul class="cram">
+            <li>Revenue for the third quarter grew by approximately 12% compared to the previous quarter, which we believe is a strong result</li>
+            <li>Customer churn decreased somewhat, dropping from around 5.2% down to roughly 4.1% over the same period of time</li>
+            <li>We successfully onboarded a total of 47 new enterprise customers, which exceeded our internal target of 40 customers</li>
+            <li>Overall team morale and engagement scores also improved based on our latest internal survey feedback results</li>
+          </ul>
+        </div>
+      </div>
+      <div class="slide-card" id="slide-after">
+        <div class="slide-band after"><span>Slide 4 · After</span><span>18 words</span></div>
+        <div class="slide-canvas">
+          <h5>Q3: Growth on every metric that matters</h5>
+          <ul>
+            <li>Revenue <strong>+12%</strong> quarter over quarter</li>
+            <li>Churn down <strong>5.2% → 4.1%</strong></li>
+            <li><strong>47</strong> new enterprise customers <span class="wordy">(target: 40)</span></li>
+            <li>Team engagement up</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="edit-log">
+      <span class="k">What the edit pass did</span>
+      <ul>
+        <li>Cut the title from a hedged sentence to a claim you can defend</li>
+        <li>Removed "approximately," "roughly," "we believe" — the hedging goes in your voice, not the slide</li>
+        <li>Turned prose into numbers: <strong>+12%</strong>, <strong>5.2% → 4.1%</strong>, <strong>47</strong></li>
+        <li>Moved the survey context to speaker notes — it's a talking point, not a bullet</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>What you keep, what you say</h3>
+  <p>Notice nothing true was lost — it just moved. The "exceeded our target of 40" detail survives as a parenthetical; the morale context moves into your spoken notes. That's the whole discipline: the slide holds the claim and the proof, and <em>you</em> hold the explanation. A packed slide makes you redundant. A lean slide makes you necessary — which is exactly where you want to be when you're standing in front of the room.</p>
+</section>
+
+<section>
+  <div class="section-num">03 / 04</div>
+  <h2>Speaker notes, and a coach for your delivery</h2>
+  <p class="lead">Speaker notes are the quiet superpower of a calm presenter. They live under each slide, invisible to the audience, holding the sentences you actually plan to say. AI writes a solid first draft in seconds — you edit it into your own voice. Pick a slide below and watch notes appear.</p>
+
+  <p>Good notes aren't a transcript to read word-for-word; that sounds robotic. They're a scaffold: the opening line, the one statistic you must get right, the transition to the next slide. Enough that if your mind goes blank, a glance gets you back on track. Choose a slide and see what AI drafts.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 3 · Describe the slide → get speaker notes</span>
+    </div>
+    <div class="desc-wrap">
+      <div class="desc-col">
+        <span class="k">1 · Pick a slide to write notes for</span>
+        <div class="desc-picks" id="notePicks">
+          <div class="desc-pick picked" data-note="open" onclick="pickNote(this,'open')">Opening slide — "Why we should double the budget for onboarding next quarter."</div>
+          <div class="desc-pick" data-note="data" onclick="pickNote(this,'data')">Data slide — the Q3 results chart with revenue, churn, and new customers.</div>
+          <div class="desc-pick" data-note="close" onclick="pickNote(this,'close')">Closing slide — the single ask and the three-step plan to get there.</div>
+        </div>
+        <p class="desc-note">Notes are scaffolding, not a script. AI drafts them; you make them sound like you.</p>
+      </div>
+      <div class="desc-col" style="padding:0;background:transparent;border:none">
+        <span class="k" style="padding:0 2px">2 · AI drafts your speaker notes</span>
+        <div class="desc-out">
+          <div class="oh"><span>SpeakerNotes.txt</span><span id="noteMeta">Slide 1 · ~45s spoken</span></div>
+          <pre id="noteCode"></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <p>Notes get you through the words. But <em>how</em> you say them — your pace, your filler words, your energy — is a separate skill. Some AI tools now listen to a practice run and give you feedback. Treat it the way you'd treat a supportive friend in the back row: it's guidance to help you improve, never a scorecard that decides whether you're good enough. Run a mock practice session below.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 4 · Speaker Coach — feedback, not judgment</span>
+      <div class="controls">
+        <button onclick="runCoach()">↻ New practice run</button>
+      </div>
+    </div>
+    <div class="coach" id="coach">
+      <div class="coach-head">
+        <h4>Practice run · Your delivery</h4>
+        <span class="stamp" id="coachStamp">Analyzed · 4m 12s</span>
+      </div>
+      <div class="coach-metrics">
+        <div class="cmetric">
+          <div class="clab"><span>Pace</span><span class="cval" id="paceVal">138 wpm · comfortable</span></div>
+          <div class="cbar"><div class="cfill good" id="paceFill" data-w="72"></div></div>
+        </div>
+        <div class="cmetric">
+          <div class="clab"><span>Filler words</span><span class="cval" id="fillVal">9 · "um", "like"</span></div>
+          <div class="cbar"><div class="cfill mid" id="fillFill" data-w="55"></div></div>
+        </div>
+        <div class="cmetric">
+          <div class="clab"><span>Vocal variety</span><span class="cval" id="toneVal">Some monotone stretches</span></div>
+          <div class="cbar"><div class="cfill low" id="toneFill" data-w="40"></div></div>
+        </div>
+      </div>
+      <div class="coach-notes">
+        <span class="k">Coach's suggestion</span>
+        <p id="coachMsg">Your pace is right in the comfortable zone — nice. Most fillers clustered around slide transitions, so a deliberate pause there would replace them cleanly. Try landing your key numbers with a little more emphasis; your voice flattened out during the data slide.</p>
+      </div>
+    </div>
+  </div>
+
+  <h3>Guidance, not a grade</h3>
+  <p>Read that panel again and notice the framing: "nice," "try," "a little more." No score, no pass/fail, no comparison to anyone else. That's the only healthy way to use a speaker coach. The metrics point at habits you can change — a pause instead of an "um," a beat of emphasis on a number — not at your worth as a presenter. If a tool ever makes you feel measured rather than helped, close it. Nervousness is normal; the coach exists to channel it, not to shame it.</p>
+</section>
+
+<section>
+  <div class="section-num">04 / 04</div>
+  <h2>Make it work for everyone, then walk in ready</h2>
+  <p class="lead">A polished deck that half the room can't follow isn't polished. An accessibility pass is quick, it's the right thing to do, and it makes your deck better for <em>everyone</em> — clearer contrast, sensible order, and text alternatives help the tired and the distracted as much as anyone. AI can run a first check; you make the calls. Click through the four checks below.</p>
+
+  <p>The four workhorses: <strong>alt text</strong> so screen readers can describe your images, <strong>contrast</strong> so text is readable on a projector in a bright room, <strong>reading order</strong> so assistive tech moves through the slide the way you intend, and <strong>captions</strong> for any audio or video. Each has an AI-assisted check — and a human judgment call it can't make for you.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 5 · The accessibility pass, checked</span>
+    </div>
+    <div class="a11y-tabs">
+      <button class="a11y-tab active" onclick="showA11y('alt',this)">Alt text</button>
+      <button class="a11y-tab" onclick="showA11y('contrast',this)">Contrast</button>
+      <button class="a11y-tab" onclick="showA11y('order',this)">Reading order</button>
+      <button class="a11y-tab" onclick="showA11y('caption',this)">Captions</button>
+    </div>
+
+    <div class="a11y-panel shown" id="a11y-alt">
+      <div class="a11y-band"><span>Alt text</span><span class="lvl">Describes images to screen readers</span></div>
+      <div class="a11y-body">
+        <h4>Every image needs a description</h4>
+        <p class="plain">Alt text is the sentence a screen reader speaks in place of an image. AI can draft a literal description of what's in the picture — but only you know why the image is <em>there</em>. "Bar chart" is useless; "Bar chart showing revenue up 12% in Q3" carries the point.</p>
+        <div class="a11y-check pass"><div class="badge">✓</div><div class="ctext"><h5>3 of 4 images described</h5><p>AI generated draft alt text for the logo, headshot, and chart.</p></div></div>
+        <div class="a11y-check warn"><div class="badge">!</div><div class="ctext"><h5>1 decorative image flagged</h5><p>The background texture should be marked decorative so it's skipped, not described.</p></div></div>
+      </div>
+    </div>
+
+    <div class="a11y-panel" id="a11y-contrast">
+      <div class="a11y-band"><span>Contrast</span><span class="lvl">Readable text on any screen</span></div>
+      <div class="a11y-body">
+        <h4>Faint text is invisible text</h4>
+        <p class="plain">Low-contrast text — pale grey on white, thin colour on colour — vanishes on a projector or for anyone with low vision. A contrast checker measures the ratio against a standard. AI flags failures instantly; you decide whether to darken the text or rethink the palette.</p>
+        <div class="a11y-check pass"><div class="badge">✓</div><div class="ctext"><h5>Body text passes AA</h5><p>Dark ink on cream clears the 4.5:1 ratio comfortably.</p></div></div>
+        <div class="a11y-check warn"><div class="badge">!</div><div class="ctext"><h5>Yellow caption fails</h5><p>The pale yellow subtitle on white sits at 1.9:1 — darken it or add a backing.</p></div></div>
+      </div>
+    </div>
+
+    <div class="a11y-panel" id="a11y-order">
+      <div class="a11y-band"><span>Reading order</span><span class="lvl">Assistive tech follows your intent</span></div>
+      <div class="a11y-body">
+        <h4>Order the eye can't see, but the ear needs</h4>
+        <p class="plain">Screen readers walk a slide in a set sequence — often not the visual order you designed. If a text box was added last, it may be read last, out of context. The checker shows the read order; you drag it back into a sequence that makes sense spoken aloud.</p>
+        <div class="a11y-check pass"><div class="badge">✓</div><div class="ctext"><h5>Title reads first</h5><p>Heading, then bullets top-to-bottom — the natural order.</p></div></div>
+        <div class="a11y-check warn"><div class="badge">!</div><div class="ctext"><h5>Callout reads out of place</h5><p>The corner callout is announced before the main point. Move it later in the order.</p></div></div>
+      </div>
+    </div>
+
+    <div class="a11y-panel" id="a11y-caption">
+      <div class="a11y-band"><span>Captions</span><span class="lvl">Nobody misses the audio</span></div>
+      <div class="a11y-body">
+        <h4>If it makes sound, caption it</h4>
+        <p class="plain">Embedded video or audio needs captions for anyone who can't hear it — and for the room where the speakers are broken. AI transcribes reliably now, but timing and names still slip. Generate the captions automatically, then read them once against the video.</p>
+        <div class="a11y-check pass"><div class="badge">✓</div><div class="ctext"><h5>Auto-captions generated</h5><p>AI transcribed the 40-second product clip in one pass.</p></div></div>
+        <div class="a11y-check warn"><div class="badge">!</div><div class="ctext"><h5>Two names to verify</h5><p>Proper nouns are AI's weak spot — confirm the two flagged names before you present.</p></div></div>
+      </div>
+    </div>
+  </div>
+
+  <p>Accessibility done, one thing remains: the final walk-through before you present. A silent slip — an unsaved edit, a broken font, the wrong deck open — can undo hours of polish in the first ten seconds. Run the pre-presentation checklist below. Tick each honestly; don't tick "rehearsed" if you only read it in your head.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 6 · The pre-presentation checklist</span>
+      <div class="controls">
+        <button onclick="checkAll()">Tick all</button>
+        <button onclick="checkClear()">Reset</button>
+      </div>
+    </div>
+    <div class="check-list" id="checkList">
+      <div class="check" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div class="check-text"><h4>Every fact verified against a source</h4><p>Walk the deck one last time confirming each number, date, and name is real — not an AI guess you never checked.</p></div>
+      </div>
+      <div class="check" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div class="check-text"><h4>Rehearsed out loud, and timed</h4><p>Said it standing up, start to finish, with a clock running. Reading it silently is not rehearsing.</p></div>
+      </div>
+      <div class="check" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div class="check-text"><h4>Speaker notes ready, not a crutch</h4><p>Notes are there for the blank moment — but you know the flow well enough to present if they vanished.</p></div>
+      </div>
+      <div class="check" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div class="check-text"><h4>Accessibility pass complete</h4><p>Alt text, contrast, reading order, and captions all checked — the deck works for everyone in the room.</p></div>
+      </div>
+      <div class="check" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div class="check-text"><h4>Tech ready and backed up</h4><p>Fonts embedded, links tested, an offline copy saved. Assume the wifi and the projector will fight you.</p></div>
+      </div>
+    </div>
+    <div class="check-progress">
+      <span class="cp-lab" id="cpLab">0 / 5 ready</span>
+      <div class="cp-bar"><div class="cp-fill" id="cpFill"></div></div>
+    </div>
+  </div>
+
+  <h3>The honest limit: AI can't rehearse for you</h3>
+  <p>Every tool in this course can draft, cut, check, and coach — but not one can stand up and present for you. AI can hand you a tight deck, clean notes, and feedback on your last run, and that's genuine leverage. It cannot give you the reps, steady your voice on the day, or read the room and slow down when eyes glaze over. Those are yours. The deck is a prop; you are the presentation. Do the polish so the tools carry the drudgery — then do the rehearsing, because that part only works when it's you.</p>
+</section>
+
+<div class="takeaway">
+  <h2>What to carry forward</h2>
+  <p>A first AI draft is raw material, not a finished talk. Run the polish pipeline in order — cut, flow, verify, notes, rehearse — because each step depends on the last. Let AI thin your slides, draft your notes, coach your delivery, and check your accessibility. But hold the line on the things only you can do: verify every fact, do the reps out loud, and own the room. Walk in polished, and walk in prepared.</p>
+  <ul>
+    <li>Polish in order: cut words · fix flow · verify facts · write notes · rehearse</li>
+    <li>A slide is a headline plus proof — everything you'd say out loud goes in the notes</li>
+    <li>Speaker Coach is guidance, never a grade — if it shames you, close it</li>
+    <li>Accessibility (alt text · contrast · order · captions) makes the deck better for everyone</li>
+    <li>AI drafts and coaches — but you verify the facts, do the reps, and own the room</li>
+  </ul>
+</div>
+
+</div>
+<footer>MokshPath · Lesson 04 of 04 · Week 4 complete — you can build, polish, and deliver an AI deck →</footer>
+<script>
+
+/* ══ Figure 1 · polish pipeline ══ */
+const pipeEl=document.getElementById('pipe');
+function runPipe(){
+  pipeEl.classList.remove('reveal');void pipeEl.offsetWidth;pipeEl.classList.add('reveal');
+}
+new IntersectionObserver((es,o)=>es.forEach(e=>{
+  if(e.isIntersecting){runPipe();o.unobserve(e.target)}
+}),{threshold:0.2}).observe(pipeEl);
+
+/* ══ Figure 2 · before/after slide ══ */
+function showSlide(key,btn){
+  document.querySelectorAll('.edit-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.slide-card').forEach(p=>p.classList.remove('shown'));
+  const el=document.getElementById('slide-'+key);
+  void el.offsetWidth;
+  el.classList.add('shown');
+}
+
+/* ══ Figure 3 · slide → speaker notes ══ */
+const NOTES={
+  open:
+`<span class="cm">// Opening — set the stakes, then the ask</span>
+<span class="kw">Hook:</span> "Last quarter, one in five new
+  customers left before day 30."
+
+<span class="kw">Pivot:</span> Onboarding is where we lose them —
+  and where we can win them back.
+
+<span class="kw">Ask (say it early):</span> "I'm asking to
+  <span class="st">double the onboarding budget</span> next quarter."
+
+<span class="cm">// Pause here. Let the number land.</span>`,
+  data:
+`<span class="cm">// Data slide — one number per breath</span>
+<span class="kw">Lead with the win:</span> "Revenue up
+  <span class="st">12%</span> — best quarter this year."
+
+<span class="kw">Then the proof:</span> churn fell
+  <span class="st">5.2 to 4.1</span>, and we signed
+  <span class="st">47</span> new enterprise accounts.
+
+<span class="kw">Don't read the chart</span> — point to it,
+  say the one number that matters, move on.
+
+<span class="cm">// Emphasis on each figure. Don't rush.</span>`,
+  close:
+`<span class="cm">// Closing — repeat the ask, give the path</span>
+<span class="kw">Restate:</span> "So the ask is simple:
+  double onboarding investment."
+
+<span class="kw">The plan (three fingers):</span>
+  1. Hire two onboarding specialists
+  2. Rebuild the first-week flow
+  3. Measure day-30 retention
+
+<span class="kw">Close:</span> "Give me one quarter and
+  I'll show you the retention curve bend."
+
+<span class="cm">// Stop. Don't add a new slide after the ask.</span>`
+};
+const NOTE_META={open:'Slide 1 · ~45s spoken',data:'Slide 4 · ~40s spoken',close:'Slide 9 · ~50s spoken'};
+function pickNote(el,key){
+  document.querySelectorAll('#notePicks .desc-pick').forEach(p=>p.classList.remove('picked'));
+  el.classList.add('picked');
+  const pre=document.getElementById('noteCode');
+  pre.style.opacity='0';
+  setTimeout(()=>{
+    pre.innerHTML=NOTES[key];
+    pre.style.transition='opacity .3s';pre.style.opacity='1';
+    document.getElementById('noteMeta').textContent=NOTE_META[key];
+  },120);
+}
+document.getElementById('noteCode').innerHTML=NOTES.open;
+
+/* ══ Figure 4 · speaker coach ══ */
+function paintCoach(){
+  document.querySelectorAll('#coach .cfill').forEach(f=>{f.style.width=f.dataset.w+'%'});
+}
+const COACH_RUNS=[
+  {dur:'4m 12s',pace:'138 wpm · comfortable',paceW:72,paceC:'good',
+   fill:'9 · "um", "like"',fillW:55,fillC:'mid',
+   tone:'Some monotone stretches',toneW:40,toneC:'low',
+   msg:'Your pace is right in the comfortable zone — nice. Most fillers clustered around slide transitions, so a deliberate pause there would replace them cleanly. Try landing your key numbers with a little more emphasis; your voice flattened out during the data slide.'},
+  {dur:'3m 48s',pace:'171 wpm · a touch fast',paceW:52,paceC:'mid',
+   fill:'4 · mostly "so"',fillW:78,fillC:'good',
+   tone:'Good range on the opener',toneW:74,toneC:'good',
+   msg:'Fewer fillers this time — the pauses are working. You did speed up near the end; a breath before your closing ask would give it room to land. Lovely energy on the opening line, keep that.'},
+  {dur:'4m 30s',pace:'124 wpm · steady',paceW:80,paceC:'good',
+   fill:'12 · "um", "you know"',fillW:38,fillC:'low',
+   tone:'Warm and varied throughout',toneW:82,toneC:'good',
+   msg:'Great vocal variety — you sounded like you meant it. The fillers crept back up when you looked at your notes, so a quick glance-then-speak rhythm would smooth those. Nothing here is a problem, just a habit to trim.'}
+];
+let coachIdx=0;
+function runCoach(){
+  coachIdx=(coachIdx+1)%COACH_RUNS.length;
+  const r=COACH_RUNS[coachIdx];
+  document.getElementById('coachStamp').textContent='Analyzed · '+r.dur;
+  document.getElementById('paceVal').textContent=r.pace;
+  document.getElementById('fillVal').textContent=r.fill;
+  document.getElementById('toneVal').textContent=r.tone;
+  const pf=document.getElementById('paceFill'),ff=document.getElementById('fillFill'),tf=document.getElementById('toneFill');
+  pf.className='cfill '+r.paceC; ff.className='cfill '+r.fillC; tf.className='cfill '+r.toneC;
+  pf.dataset.w=r.paceW; ff.dataset.w=r.fillW; tf.dataset.w=r.toneW;
+  pf.style.width='0';ff.style.width='0';tf.style.width='0';
+  void pf.offsetWidth;
+  pf.style.width=r.paceW+'%';ff.style.width=r.fillW+'%';tf.style.width=r.toneW+'%';
+  document.getElementById('coachMsg').textContent=r.msg;
+}
+new IntersectionObserver((es,o)=>es.forEach(e=>{
+  if(e.isIntersecting){paintCoach();o.unobserve(e.target)}
+}),{threshold:0.3}).observe(document.getElementById('coach'));
+
+/* ══ Figure 5 · accessibility tabs ══ */
+function showA11y(key,btn){
+  document.querySelectorAll('.a11y-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.a11y-panel').forEach(p=>p.classList.remove('shown'));
+  const el=document.getElementById('a11y-'+key);
+  void el.offsetWidth;
+  el.classList.add('shown');
+}
+
+/* ══ Figure 6 · pre-presentation checklist ══ */
+function updateProgress(){
+  const total=document.querySelectorAll('#checkList .check').length;
+  const on=document.querySelectorAll('#checkList .check.on').length;
+  document.getElementById('cpFill').style.width=(on/total*100)+'%';
+  document.getElementById('cpLab').textContent=on+' / '+total+' ready';
+}
+function toggleCheck(el){el.classList.toggle('on');updateProgress()}
+function checkAll(){document.querySelectorAll('#checkList .check').forEach(c=>c.classList.add('on'));updateProgress()}
+function checkClear(){document.querySelectorAll('#checkList .check').forEach(c=>c.classList.remove('on'));updateProgress()}
+
+</script>
+</body>
+</html>
