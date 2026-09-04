@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 4 · AI Automation &amp; Capstone — MokshPath</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=JetBrains+Mono:wght@400;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --orange:#E87A2E;--orange-dark:#D06A20;--orange-light:#F5943E;--orange-glow:rgba(232,122,46,0.12);
+  --navy:#2B2D42;--navy-dark:#1A1B2E;
+  --bg:#F3EDE7;--bg-card:#FFFFFF;--bg-light:#F9F5F0;
+  --text-primary:#2B2D42;--text-secondary:#6B6D7B;--text-muted:#9597A6;
+  --border:#E5DDD4;--green:#4CAF50;--green-light:#E8F5E9;--red:#E04E3C;--red-light:#FDECEA;
+  --shadow-sm:0 2px 8px rgba(43,45,66,0.06);--shadow-md:0 8px 24px rgba(43,45,66,0.08);
+  --shadow-lg:0 16px 48px rgba(43,45,66,0.12);
+  --radius:14px;--radius-sm:8px;
+  --mono:'JetBrains Mono',monospace;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text-primary);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+
+/* ── NAV ── */
+.nav{position:sticky;top:0;z-index:100;background:var(--bg-card);border-bottom:1px solid var(--border);padding:0 2rem;height:64px;display:flex;align-items:center;justify-content:space-between;box-shadow:var(--shadow-sm)}
+.nav-left{display:flex;align-items:center;gap:.7rem}
+.lesson-badge{font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--orange);background:var(--orange-glow);padding:.3rem .7rem;border-radius:50px}
+.nav-logo{display:flex;align-items:center;gap:.7rem;text-decoration:none}
+.nav-logo-icon{width:auto;height:48px;display:block;object-fit:contain}
+.nav-logo-text{display:flex;flex-direction:column;line-height:1.15}
+.nav-logo-name{font-family:'DM Serif Display',serif;font-size:1.25rem;color:var(--navy)}
+.nav-logo-name span{color:var(--orange)}
+.nav-logo-tag{font-size:.62rem;color:var(--text-muted);font-weight:500;letter-spacing:.02em}
+
+/* ── HERO ── */
+.hero{padding:3.5rem 2rem 2.5rem;text-align:center;position:relative}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:.45rem;padding:.4rem 1rem;border-radius:50px;background:var(--orange-glow);color:var(--orange);font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:1.2rem}
+.hero-eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--orange);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.hero h1{font-family:'DM Serif Display',serif;font-size:clamp(2rem,4vw,3rem);line-height:1.13;color:var(--navy);margin-bottom:1rem;max-width:780px;margin-left:auto;margin-right:auto}
+.hero h1 em{font-style:normal;color:var(--orange)}
+.hero-sub{font-size:1.02rem;color:var(--text-secondary);line-height:1.7;max-width:620px;margin:0 auto}
+
+/* ── PROGRESS RAIL ── */
+.progress-rail{max-width:760px;margin:1.8rem auto 0;display:flex;align-items:center;gap:.5rem}
+.progress-dot{flex:1;height:6px;background:var(--border);border-radius:3px;transition:background .3s}
+.progress-dot.done{background:linear-gradient(90deg,var(--orange),var(--orange-light))}
+.progress-label{font-size:.7rem;color:var(--text-muted);font-weight:600;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+
+/* ── SECTIONS ── */
+section.lesson{padding:3rem 2rem}
+.container{max-width:1080px;margin:0 auto}
+.lesson-num{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;background:var(--orange);color:#fff;font-family:'DM Serif Display',serif;font-size:1.1rem;margin-bottom:.9rem}
+.lesson-title{font-family:'DM Serif Display',serif;font-size:clamp(1.6rem,2.5vw,2.1rem);color:var(--navy);margin-bottom:.55rem;line-height:1.2}
+.lesson-intro{font-size:.95rem;color:var(--text-secondary);line-height:1.7;max-width:680px;margin-bottom:2rem}
+.lesson-card{background:var(--bg-card);border-radius:var(--radius);box-shadow:var(--shadow-sm);border:1px solid var(--border);padding:2rem;margin-top:1.5rem}
+
+.activity-feedback{margin-top:1.2rem;padding:1rem 1.2rem;border-radius:var(--radius-sm);font-size:.85rem;line-height:1.55;display:none}
+.activity-feedback.show{display:block;animation:fadeIn .4s ease}
+.activity-feedback.success{background:var(--green-light);color:#1F5723;border-left:3px solid var(--green)}
+.activity-feedback.partial{background:#FFF4E5;color:#7A4A0A;border-left:3px solid #E89B2E}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.activity-toolbar{display:flex;gap:.6rem;margin-top:1.2rem;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:.4rem;padding:.6rem 1.2rem;border-radius:8px;font-size:.82rem;font-weight:600;border:none;cursor:pointer;transition:all .2s;font-family:inherit}
+.btn-primary{background:var(--orange);color:#fff}.btn-primary:hover{background:var(--orange-dark);transform:translateY(-1px);box-shadow:0 4px 12px rgba(232,122,46,0.3)}
+.btn-ghost{background:transparent;border:1.5px solid var(--border);color:var(--text-secondary)}.btn-ghost:hover{border-color:var(--orange);color:var(--orange)}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+
+/* ── ACTIVITY 1: TOOL MATCH ── */
+.aud-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+@media (max-width:760px){.aud-grid{grid-template-columns:1fr}}
+.aud-card{background:var(--bg-card);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:1rem 1.1rem;transition:border-color .25s}
+.aud-card.correct{border-color:var(--green);background:var(--green-light)}
+.aud-card.wrong{border-color:var(--red);background:var(--red-light)}
+.aud-name{font-family:'DM Serif Display',serif;font-size:1rem;color:var(--navy)}
+.aud-pain{font-size:.74rem;color:var(--text-muted);margin:.2rem 0 .6rem;font-style:italic}
+.aud-select{width:100%;padding:.55rem .7rem;border:1.5px solid var(--border);border-radius:6px;font-family:inherit;font-size:.8rem;color:var(--text-primary);background:var(--bg-light);cursor:pointer}
+.aud-select:focus{outline:none;border-color:var(--orange)}
+.aud-why{font-size:.74rem;line-height:1.5;margin-top:.55rem;display:none}
+.aud-why.show{display:block}
+.aud-why.good{color:#1F5723}.aud-why.bad{color:#8B2E22}
+
+/* ── ACTIVITY 2: SCRIPT BUILDER ── */
+.seq-wrap{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+@media (max-width:760px){.seq-wrap{grid-template-columns:1fr}}
+.seq-pool{display:flex;flex-direction:column;gap:.6rem}
+.seq-block{background:var(--bg-card);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:.8rem 1rem;cursor:pointer;transition:all .2s;user-select:none}
+.seq-block:hover{border-color:var(--orange);transform:translateX(3px)}
+.seq-block.used{opacity:.3;pointer-events:none}
+.seq-block.shake{animation:shake .35s ease;border-color:var(--red);background:var(--red-light)}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.seq-block-text{font-size:.84rem;font-weight:500;line-height:1.45}
+.seq-slots{display:flex;flex-direction:column;gap:.5rem}
+.seq-slot{border:2px dashed var(--border);border-radius:var(--radius-sm);padding:.7rem .9rem;min-height:52px;font-size:.8rem;color:var(--text-muted);transition:all .3s;background:rgba(255,255,255,.5)}
+.seq-slot.filled{border-style:solid;border-color:var(--green);background:var(--green-light);color:var(--text-primary)}
+.seq-tag{display:inline-block;font-family:var(--mono);font-size:.64rem;font-weight:600;letter-spacing:.06em;color:var(--orange);background:var(--orange-glow);padding:.1rem .45rem;border-radius:4px;margin-bottom:.3rem}
+.seq-hint{margin-top:.8rem;padding:.7rem .9rem;background:#FFF4E5;border-left:3px solid #E89B2E;border-radius:4px;font-size:.78rem;color:#7A4A0A;line-height:1.5;display:none}
+.seq-hint.show{display:block;animation:fadeIn .3s ease}
+.phone{max-width:360px;margin:1.4rem auto 0;background:var(--navy-dark);border-radius:14px;padding:1.1rem .9rem;border:5px solid var(--navy);box-shadow:var(--shadow-lg);display:none}
+.phone.show{display:block;animation:fadeIn .5s ease}
+.phone-notch{width:80px;height:5px;background:rgba(255,255,255,.25);border-radius:3px;margin:0 auto .8rem}
+.phone-line{margin-bottom:.6rem;padding:.55rem .7rem;background:rgba(255,255,255,.07);border-radius:8px}
+.phone-line .seq-tag{background:rgba(232,122,46,.22)}
+.phone-line p{font-size:.76rem;color:#E8E8EC;line-height:1.5;font-family:var(--mono)}
+
+/* ── ACTIVITY 3: SHOULD YOU AUTOMATE (scorer) ── */
+.kos-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+@media (max-width:760px){.kos-grid{grid-template-columns:1fr}}
+.kos-card{background:var(--bg-card);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:1.1rem 1.2rem}
+.kos-title{font-family:'DM Serif Display',serif;font-size:.98rem;color:var(--navy);margin-bottom:.6rem}
+.kos-metrics{display:grid;grid-template-columns:1fr 1fr;gap:.35rem .8rem;margin-bottom:.8rem}
+.kos-metric{font-size:.74rem;color:var(--text-secondary)}
+.kos-metric b{font-family:var(--mono);color:var(--navy);font-weight:600}
+.kos-btns{display:flex;gap:.45rem;flex-wrap:wrap}
+.kos-btn{flex:1;padding:.5rem .4rem;border-radius:6px;border:1.5px solid var(--border);background:var(--bg-light);font-family:inherit;font-size:.74rem;font-weight:700;cursor:pointer;transition:all .2s;color:var(--text-secondary)}
+.kos-btn:hover{border-color:var(--orange);color:var(--orange)}
+.kos-btn.picked-right{background:var(--green-light);border-color:var(--green);color:#1F5723}
+.kos-btn.picked-wrong{background:var(--red-light);border-color:var(--red);color:#8B2E22}
+.kos-btn.reveal-right{border-color:var(--green);color:#1F5723}
+.kos-btn:disabled{cursor:not-allowed;opacity:.75}
+.kos-verdict{font-size:.74rem;line-height:1.55;margin-top:.7rem;padding:.6rem .75rem;border-radius:6px;display:none}
+.kos-verdict.show{display:block;animation:fadeIn .3s ease}
+.kos-verdict.good{background:var(--green-light);color:#1F5723}
+.kos-verdict.bad{background:#FFF4E5;color:#7A4A0A}
+
+/* ── ACTIVITY 4: CAPSTONE WORKFLOW ASSEMBLE ── */
+.cap-wrap{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+@media (max-width:760px){.cap-wrap{grid-template-columns:1fr}}
+.cap-pool{display:flex;flex-direction:column;gap:.6rem}
+.cap-block{background:var(--bg-card);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:.8rem 1rem;cursor:pointer;transition:all .2s;user-select:none}
+.cap-block:hover{border-color:var(--orange);transform:translateX(3px)}
+.cap-block.used{opacity:.3;pointer-events:none}
+.cap-block.shake{animation:shake .35s ease;border-color:var(--red);background:var(--red-light)}
+.cap-block-mod{display:inline-block;font-family:var(--mono);font-size:.62rem;font-weight:600;letter-spacing:.05em;color:var(--orange);background:var(--orange-glow);padding:.1rem .45rem;border-radius:4px;margin-bottom:.3rem}
+.cap-block-text{font-size:.82rem;font-weight:500;line-height:1.45}
+.cap-slots{display:flex;flex-direction:column;gap:.5rem}
+.cap-slot{border:2px dashed var(--border);border-radius:var(--radius-sm);padding:.7rem .9rem;min-height:56px;font-size:.8rem;color:var(--text-muted);transition:all .3s;background:rgba(255,255,255,.5);display:flex;align-items:center;gap:.6rem}
+.cap-slot .snum{flex-shrink:0;width:22px;height:22px;border-radius:50%;background:var(--border);color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:.72rem;font-weight:600}
+.cap-slot.filled{border-style:solid;border-color:var(--green);background:var(--green-light);color:var(--text-primary)}
+.cap-slot.filled .snum{background:var(--green)}
+.cap-hint{margin-top:.8rem;padding:.7rem .9rem;background:#FFF4E5;border-left:3px solid #E89B2E;border-radius:4px;font-size:.78rem;color:#7A4A0A;line-height:1.5;display:none}
+.cap-hint.show{display:block;animation:fadeIn .3s ease}
+
+/* ── ACTIVITY 5: QUIZ ── */
+.quiz-q{background:var(--bg-card);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:1.1rem 1.3rem;margin-bottom:.9rem;transition:border-color .3s}
+.quiz-q.right{border-color:var(--green)}
+.quiz-q.miss{border-color:var(--red)}
+.quiz-q-head{display:flex;gap:.7rem;align-items:baseline;margin-bottom:.7rem}
+.quiz-q-num{font-family:var(--mono);font-size:.7rem;font-weight:600;color:var(--orange);background:var(--orange-glow);padding:.15rem .5rem;border-radius:4px;flex-shrink:0}
+.quiz-q-text{font-size:.9rem;font-weight:600;color:var(--navy);line-height:1.5}
+.quiz-opt{display:flex;align-items:flex-start;gap:.55rem;padding:.5rem .6rem;border-radius:6px;cursor:pointer;font-size:.83rem;color:var(--text-secondary);line-height:1.45;transition:background .15s}
+.quiz-opt:hover{background:var(--bg-light)}
+.quiz-opt input{margin-top:.25rem;accent-color:var(--orange);cursor:pointer}
+.quiz-review{font-size:.76rem;line-height:1.55;margin-top:.6rem;padding:.6rem .8rem;border-radius:6px;display:none}
+.quiz-review.show{display:block;animation:fadeIn .3s ease}
+.quiz-review.good{background:var(--green-light);color:#1F5723}
+.quiz-review.bad{background:#FFF4E5;color:#7A4A0A}
+.quiz-lesson{display:inline-block;font-family:var(--mono);font-size:.64rem;color:var(--text-muted);margin-left:.4rem}
+
+/* ── CHECKLIST ── */
+.check-list{list-style:none;margin-top:1rem}
+.check-item{display:flex;gap:.8rem;align-items:flex-start;padding:.85rem 1rem;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);margin-bottom:.6rem;cursor:pointer;transition:all .2s}
+.check-item:hover{border-color:var(--orange)}
+.check-item.on{border-color:var(--green);background:var(--green-light)}
+.check-box{flex-shrink:0;width:22px;height:22px;border-radius:6px;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.8rem;color:#fff;transition:all .2s;margin-top:.1rem}
+.check-item.on .check-box{background:var(--green);border-color:var(--green)}
+.check-text{font-size:.85rem;line-height:1.5;color:var(--text-secondary)}
+.check-text b{color:var(--navy)}
+.check-count{margin-top:1rem;font-size:.8rem;font-weight:700;color:var(--orange);font-family:var(--mono)}
+
+/* ── REFLECT / FOOTER ── */
+.reflect-prompt{display:grid;grid-template-columns:1fr;gap:.8rem;margin-top:1rem}
+.reflect-q{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:1rem 1.2rem}
+.reflect-q-text{font-size:.88rem;font-weight:600;color:var(--navy);margin-bottom:.5rem}
+.reflect-q textarea{width:100%;border:1px solid var(--border);border-radius:6px;padding:.6rem .8rem;font-family:inherit;font-size:.85rem;color:var(--text-primary);background:var(--bg-light);resize:vertical;min-height:60px}
+.reflect-q textarea:focus{outline:none;border-color:var(--orange)}
+.next-up{background:linear-gradient(135deg,var(--navy-dark),var(--navy));border-radius:var(--radius);padding:2.4rem;color:#fff;margin-top:2rem;text-align:center;position:relative;overflow:hidden}
+.next-up::before{content:'';position:absolute;top:-50px;right:-50px;width:180px;height:180px;border-radius:50%;background:rgba(232,122,46,0.12)}
+.next-up h3{font-family:'DM Serif Display',serif;font-size:1.5rem;margin-bottom:.5rem;position:relative}
+.next-up p{font-size:.92rem;color:rgba(255,255,255,0.75);margin-bottom:1.2rem;position:relative}
+.next-up .btn-primary{position:relative}
+
+/* ── COURSE-COMPLETE CELEBRATION ── */
+.finale{background:linear-gradient(135deg,var(--orange),var(--orange-dark));border-radius:var(--radius);padding:2.8rem 2.4rem;color:#fff;margin-top:1.5rem;text-align:center;position:relative;overflow:hidden;box-shadow:var(--shadow-lg)}
+.finale::before{content:'';position:absolute;top:-60px;left:-40px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,0.10)}
+.finale::after{content:'';position:absolute;bottom:-70px;right:-30px;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,0.08)}
+.finale-badge{display:inline-block;font-family:var(--mono);font-size:.7rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;background:rgba(255,255,255,0.2);padding:.35rem .9rem;border-radius:50px;margin-bottom:1rem;position:relative}
+.finale h3{font-family:'DM Serif Display',serif;font-size:2rem;margin-bottom:.7rem;position:relative;line-height:1.15}
+.finale p{font-size:.95rem;color:rgba(255,255,255,0.92);line-height:1.65;max-width:640px;margin:0 auto 1.3rem;position:relative}
+.finale-modules{display:flex;gap:.5rem;flex-wrap:wrap;justify-content:center;position:relative;margin-bottom:.4rem}
+.finale-mod{background:rgba(255,255,255,0.16);border:1px solid rgba(255,255,255,0.25);border-radius:50px;padding:.4rem .95rem;font-size:.78rem;font-weight:600}
+
+@media (max-width:760px){
+  .nav{padding:0 1rem}
+  .nav-logo-tag{display:none}
+  .hero{padding:2.5rem 1.2rem 2rem}
+  section.lesson{padding:2rem 1.2rem}
+  .lesson-card{padding:1.4rem}
+  .finale{padding:2rem 1.4rem}
+  .finale h3{font-size:1.6rem}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-left">
+    <span class="lesson-badge">Lesson 4 of 4</span>
+  </div>
+  <a href="https://mokshpath.org/" class="nav-logo">
+    <img class="nav-logo-icon" src="hero.svg" alt="MokshPath logo">
+    <div class="nav-logo-text">
+      <span class="nav-logo-name">Moksh<span>Path</span></span>
+      <span class="nav-logo-tag">Guided Path to True Learning</span>
+    </div>
+  </a>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-eyebrow"><span class="dot"></span> Week 5 · AI Project Management</div>
+  <h1>AI Automation &amp; Capstone — <em>the machine handles the busywork; you run the project</em></h1>
+  <p class="hero-sub">The final lesson of the whole course. First you'll learn what project-management work is safe to automate, and how no-code tools turn a trigger into an action with guardrails. Then the capstone: all five course modules — Research, Project Management, Excel, Office, and PowerPoint — working together on one real project. Match jobs to tools, build a safe automation, judge what's safe to hand to a machine, assemble the end-to-end capstone workflow, and prove the whole course with an 8-question, five-week knowledge check.</p>
+  <div class="progress-rail">
+    <span class="progress-label">Progress</span>
+    <div class="progress-dot" id="prog1"></div>
+    <div class="progress-dot" id="prog2"></div>
+    <div class="progress-dot" id="prog3"></div>
+    <div class="progress-dot" id="prog4"></div>
+    <div class="progress-dot" id="prog5"></div>
+  </div>
+</header>
+
+<!-- ── ACTIVITY 1: MATCH THE AUTOMATION TOOL TO THE JOB ── -->
+<section class="lesson" id="activity-1">
+  <div class="container">
+    <span class="lesson-num">1</span>
+    <h2 class="lesson-title">Match the automation tool to the PM job</h2>
+    <p class="lesson-intro">Project-management automation comes in a few flavours, and they're not interchangeable. Native PM rules live inside your board; Power Automate lives in the Microsoft world; Zapier and Make connect thousands of apps as trigger→action recipes. Below are five real PM chores and four tools (one tool fits two jobs). Assign the best tool to each, then check — the notes explain the logic in plain English.</p>
+
+    <div class="lesson-card">
+      <div class="aud-grid" id="audGrid"></div>
+      <div class="activity-feedback" id="feedback1"></div>
+      <div class="activity-toolbar">
+        <button class="btn btn-primary" onclick="checkTools()">Check my matches</button>
+        <button class="btn btn-ghost" onclick="resetTools()">↻ Reset</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 2: BUILD A SAFE TRIGGER→ACTION AUTOMATION ── -->
+<section class="lesson" id="activity-2" style="background:var(--bg-light)">
+  <div class="container">
+    <span class="lesson-num" style="background:#66BB6A">2</span>
+    <h2 class="lesson-title">Build a trigger→action automation — in the order that stays safe</h2>
+    <p class="lesson-intro">Every no-code automation is a recipe: <strong>when this happens, do that</strong>. But a recipe that skips its guardrails can spam clients or corrupt your board at machine speed. Click the five blocks in the order that builds a reliable, safe automation — a wrong click gets you a nudge. Task: when a task is marked <em>Done</em>, notify the team and log it — without ever auto-emailing the client.</p>
+
+    <div class="lesson-card">
+      <div class="seq-wrap">
+        <div>
+          <h4 style="font-family:'DM Serif Display',serif;font-size:1.05rem;color:var(--navy);margin-bottom:.6rem">Recipe blocks (shuffled)</h4>
+          <div class="seq-pool" id="seqPool"></div>
+          <div class="seq-hint" id="seqHint"></div>
+        </div>
+        <div>
+          <h4 style="font-family:'DM Serif Display',serif;font-size:1.05rem;color:var(--navy);margin-bottom:.6rem">Your automation, in order</h4>
+          <div class="seq-slots" id="seqSlots"></div>
+        </div>
+      </div>
+      <div class="phone" id="phonePreview"><div class="phone-notch"></div><div id="phoneLines"></div></div>
+      <div class="activity-feedback" id="feedback2"></div>
+      <div class="activity-toolbar">
+        <button class="btn btn-ghost" onclick="resetSeq()">↻ Start over</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 3: SAFE TO AUTOMATE? ── -->
+<section class="lesson" id="activity-3">
+  <div class="container">
+    <span class="lesson-num" style="background:#5B8FE0">3</span>
+    <h2 class="lesson-title">Which PM tasks are safe to automate?</h2>
+    <p class="lesson-intro">Deciding whether to build is one thing; deciding whether it's <strong>safe to let a machine do unattended</strong> is another. Score each task on <strong>frequency</strong> (how often), <strong>pain</strong> (how tedious), and <strong>stability</strong> (does it stay the same) — but also on <strong>stakes</strong>: anything client-facing needs a human in the loop, never full auto-send. Make the expert call on each real PM task.</p>
+
+    <div class="lesson-card">
+      <div class="kos-grid" id="kosGrid"></div>
+      <div class="activity-feedback" id="feedback3"></div>
+      <div class="activity-toolbar">
+        <button class="btn btn-ghost" onclick="resetKos()">↻ Reset all four</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 4: CAPSTONE — ASSEMBLE THE END-TO-END WORKFLOW ── -->
+<section class="lesson" id="activity-4" style="background:var(--bg-light)">
+  <div class="container">
+    <span class="lesson-num" style="background:#4CAF50">4</span>
+    <h2 class="lesson-title">Capstone — assemble the end-to-end workflow</h2>
+    <p class="lesson-intro">This is the whole course in one project. Your team just won a client: <strong>deliver a "State of the Market" briefing and rollout plan</strong>. Every one of the five modules you've learned has a job, and they run in a natural order — research feeds the plan, the plan drives the data, the data becomes the document, the document becomes the deck. Click the five blocks in the order the real project flows. Each block names the module it belongs to.</p>
+
+    <div class="lesson-card">
+      <div class="cap-wrap">
+        <div>
+          <h4 style="font-family:'DM Serif Display',serif;font-size:1.05rem;color:var(--navy);margin-bottom:.6rem">Project steps (shuffled)</h4>
+          <div class="cap-pool" id="capPool"></div>
+          <div class="cap-hint" id="capHint"></div>
+        </div>
+        <div>
+          <h4 style="font-family:'DM Serif Display',serif;font-size:1.05rem;color:var(--navy);margin-bottom:.6rem">The end-to-end pipeline</h4>
+          <div class="cap-slots" id="capSlots"></div>
+        </div>
+      </div>
+      <div class="activity-feedback" id="feedback4"></div>
+      <div class="activity-toolbar">
+        <button class="btn btn-ghost" onclick="resetCap()">↻ Start over</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SAFE-AUTOMATION CHECKLIST ── -->
+<section class="lesson" id="checklist">
+  <div class="container">
+    <span class="lesson-num" style="background:#E04E3C">✓</span>
+    <h2 class="lesson-title">The safe-automation checklist for PM</h2>
+    <p class="lesson-intro">An automation that runs unattended can also fail unattended — pinging the wrong channel, or worse, emailing a client something half-finished. These are the non-negotiables for project-management automation. Tick each one as you internalise it; the goal is that this list runs in your head before you ever switch a recipe on.</p>
+    <div class="lesson-card">
+      <ul class="check-list" id="checkList"></ul>
+      <div class="check-count" id="checkCount">0 of 6 locked in</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 5: COURSE-WIDE CAPSTONE KNOWLEDGE CHECK ── -->
+<section class="lesson" id="activity-5" style="background:var(--bg-light)">
+  <div class="container">
+    <span class="lesson-num" style="background:var(--navy)">5</span>
+    <h2 class="lesson-title">Course-wide capstone check — 8 questions, all five weeks</h2>
+    <p class="lesson-intro">The final gate of the entire course. These eight questions span every module you've completed: AI Excel, AI Office, AI Research, AI PowerPoint, and AI Project Management. Answer all eight, then submit for a per-question review — and if you miss any, you'll see exactly which week to revisit before you tackle the capstone project.</p>
+
+    <div class="lesson-card">
+      <div id="quizWrap"></div>
+      <div class="activity-feedback" id="feedback5"></div>
+      <div class="activity-toolbar">
+        <button class="btn btn-primary" onclick="submitQuiz()">Submit answers</button>
+        <button class="btn btn-ghost" onclick="resetQuiz()">↻ Reset quiz</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── REFLECT ── -->
+<section class="lesson" style="padding-bottom:1.5rem">
+  <div class="container">
+    <h2 class="lesson-title" style="font-size:1.5rem">Quick reflect — make it stick</h2>
+    <p class="lesson-intro" style="margin-bottom:1rem">A sentence each is enough. Writing it in your own words moves it from "seen" to "known". (Nothing is saved or sent.)</p>
+    <div class="reflect-prompt">
+      <div class="reflect-q">
+        <div class="reflect-q-text">Name one recurring task in your actual project work that is frequent, tedious, stable, AND low-stakes. What trigger→action recipe would you build, and where would you keep a human in the loop?</div>
+        <textarea placeholder="Every time a task hits Done, I move it to the review column and post to our team channel — I'd never auto-notify the client, so I'd keep a manual approval step before anything leaves the team..."></textarea>
+      </div>
+      <div class="reflect-q">
+        <div class="reflect-q-text">Picture your capstone project. Which of the five modules will do the heaviest lifting, and which hand-off between modules worries you most?</div>
+        <textarea placeholder="Research does the heavy lifting up front, but the hand-off I'd double-check is Excel to the document — I want to verify the numbers before they become claims in the briefing..."></textarea>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COURSE COMPLETE CELEBRATION -->
+<section class="lesson" style="padding-top:0">
+  <div class="container">
+    <div class="finale">
+      <div class="finale-badge">Course Complete</div>
+      <h3>You're now an AI-augmented professional.</h3>
+      <p>You started five weeks ago wondering if AI could really help with real work. Now you can pull trustworthy research, run a project, wrangle data in Excel, produce polished Office documents, build a boardroom-ready deck — and automate the busywork safely around all of it. That's not a party trick. That's a working professional who moves faster, ships cleaner, and keeps judgment where it belongs: with you.</p>
+      <div class="finale-modules">
+        <span class="finale-mod">AI Excel</span>
+        <span class="finale-mod">AI Office</span>
+        <span class="finale-mod">AI Research</span>
+        <span class="finale-mod">AI PowerPoint</span>
+        <span class="finale-mod">AI Project Management</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NEXT UP / CAPSTONE PROJECT -->
+<section class="lesson" style="padding-top:1rem">
+  <div class="container">
+    <div class="next-up">
+      <h3>Course wrap-up — your capstone project</h3>
+      <p>One project, all five modules. Take a real deliverable from your own world — a market briefing, a launch plan, a quarterly review — and run it end to end: research the facts, plan the work, crunch the numbers in Excel, write it up in Office, present it in PowerPoint, and automate the repetitive glue safely. Ship it, document it, and you'll have proof of the exact skill that makes you the person the team relies on.</p>
+      <a href="#" class="btn btn-primary">Start the capstone project →</a>
+    </div>
+  </div>
+</section>
+
+<script>
+/* ═══ ACTIVITY 1: PM automation tool ↔ job match ═══ */
+const AUDIENCES = [
+  {id:'a1', name:'Move a card to "Review" when its status flips to Done', pain:'A tidy-up that lives entirely inside your Trello/Asana/Jira board — no other app involved.'},
+  {id:'a2', name:'Post to a Slack channel every time a form is submitted', pain:'Connect a Google Form to Slack — two everyday apps, a simple one-step trigger→action.'},
+  {id:'a3', name:'When a task hits Done, log it to a SharePoint list & email the team', pain:'A multi-step flow across Microsoft 365 — Planner, Outlook, SharePoint, all inside your org.'},
+  {id:'a4', name:'Auto-assign the owner when a new card lands in the backlog', pain:'A rule that fires and reacts entirely within your project board — no external service needed.'},
+  {id:'a5', name:'Sync new leads across 6 apps with branching, filters & delays', pain:'A complex, multi-branch pipeline with conditional paths and data reshaping between many tools.'}
+];
+const HOOKS = [
+  {id:'h1', text:'Native PM rules', aud:'a1', signal:'Your board already automates itself. Trello Butler, Asana Rules, Jira automation — these move cards, set fields, and add checklists inside the tool with zero external plumbing. Reach for native rules first; they\'re the simplest and least likely to break.'},
+  {id:'h2', text:'Zapier', aud:'a2', signal:'Zapier is the friendliest way to wire two popular apps together — "when a form is submitted, post to Slack" is a one-Zap recipe. Huge app library, dead-simple trigger→action model. Perfect for straightforward cross-app links.'},
+  {id:'h3', text:'Power Automate', aud:'a3', signal:'Power Automate is built for the Microsoft 365 world — Planner, Outlook, SharePoint, Teams. If your org runs on Microsoft, its deep native connectors and approval steps make multi-app internal flows the natural fit.'},
+  {id:'h4', text:'Native PM rules', aud:'a4', signal:'Auto-assigning an owner on a new card is a textbook in-board rule — the board sees the trigger and reacts without leaving. Same engine, second job: keep automations native whenever the whole task lives in one tool.'},
+  {id:'h5', text:'Make', aud:'a5', signal:'Make (formerly Integromat) shines when the logic gets complex — visual branching, filters, iterators, delays, and data transformation across many apps. When a simple Zap isn\'t enough, Make gives you the wiring diagram to build it properly.'}
+];
+const AUD_BY_ID = Object.fromEntries(AUDIENCES.map(a=>[a.id,a]));
+function shuffle(arr){return [...arr].sort(()=>Math.random()-0.5);}
+
+function renderTools(){
+  const toolNames = [...new Set(HOOKS.map(h=>h.text))];
+  const shuffled = shuffle(toolNames);
+  document.getElementById('audGrid').innerHTML = AUDIENCES.map(a=>`
+    <div class="aud-card" data-aud="${a.id}">
+      <div class="aud-name">${a.name}</div>
+      <div class="aud-pain">${a.pain}</div>
+      <select class="aud-select" data-aud="${a.id}">
+        <option value="">— choose the best tool for this job —</option>
+        ${shuffled.map(t=>`<option value="${t}">${t}</option>`).join('')}
+      </select>
+      <div class="aud-why" data-why="${a.id}"></div>
+    </div>`).join('');
+}
+function checkTools(){
+  let right = 0, unanswered = 0;
+  AUDIENCES.forEach(a=>{
+    const sel = document.querySelector(`.aud-select[data-aud="${a.id}"]`);
+    const card = document.querySelector(`.aud-card[data-aud="${a.id}"]`);
+    const why = document.querySelector(`.aud-why[data-why="${a.id}"]`);
+    card.classList.remove('correct','wrong');
+    why.className = 'aud-why';
+    if(!sel.value){ unanswered++; return; }
+    const wanted = HOOKS.find(h=>h.aud===a.id);
+    if(sel.value===wanted.text){
+      right++;
+      card.classList.add('correct');
+      why.className='aud-why show good';
+      why.textContent='✓ Right — '+wanted.signal;
+    } else {
+      card.classList.add('wrong');
+      why.className='aud-why show bad';
+      why.textContent=`✗ The best fit here is ${wanted.text}. ${wanted.signal}`;
+    }
+  });
+  const fb = document.getElementById('feedback1');
+  if(unanswered>0){
+    fb.className='activity-feedback show partial';
+    fb.innerHTML=`<strong>${unanswered} job${unanswered>1?'s':''} still without a tool.</strong> Pick a tool for every card, then check again.`;
+    return;
+  }
+  if(right===5){
+    fb.className='activity-feedback show success';
+    fb.innerHTML='<strong>5 of 5 — you can pick the right lever every time.</strong> The plain-English map: <strong>native PM rules</strong> when the whole task lives inside one board; <strong>Zapier</strong> for simple links between two popular apps; <strong>Power Automate</strong> for multi-step flows inside Microsoft 365; <strong>Make</strong> when the logic gets complex with branches, filters, and data reshaping. When in doubt, ask "does this stay in one tool (→ native), connect two apps simply (→ Zapier), live in Microsoft (→ Power Automate), or need real branching logic (→ Make)?"';
+  } else {
+    fb.className='activity-feedback show partial';
+    fb.innerHTML=`<strong>You matched ${right} of 5.</strong> Read the red notes — each is a rule you'll reuse. The clean split: <em>stays inside one board → native PM rules</em>, <em>simple two-app link → Zapier</em>, <em>Microsoft 365 flow → Power Automate</em>, <em>complex multi-branch pipeline → Make</em>. Fix the reds and check again.`;
+  }
+  document.getElementById('prog1').classList.add('done');
+}
+function resetTools(){
+  renderTools();
+  document.getElementById('feedback1').className='activity-feedback';
+  document.getElementById('prog1').classList.remove('done');
+}
+
+/* ═══ ACTIVITY 2: safe trigger→action recipe sequence ═══ */
+const SCRIPT = [
+  {tag:'TRIGGER', text:'"When a task\'s status changes to Done in the project board…"', note:'Every automation starts with the event that kicks it off. Name it precisely so it fires only when you mean it to.', hint:'Every recipe opens with the TRIGGER — the event that starts it. "When a task is marked Done…". Start with the block that names what fires the automation.'},
+  {tag:'CONDITION / FILTER', text:'"…only if the task is tagged \'client-visible\' and has an owner assigned."', note:'A filter stops the automation running on the wrong items. It\'s the difference between "notify on everything" and "notify on the right thing".', hint:'Right after the trigger, add a CONDITION / FILTER so it only runs on the right items. Without it, the automation fires on everything — including things it shouldn\'t touch.'},
+  {tag:'ACTION (internal)', text:'"Post a message to the team\'s Slack channel and log the task to a tracking sheet."', note:'This is the actual work — but note it\'s INTERNAL. Team-facing actions are safe to fully automate.', hint:'Now the ACTION — the work you want done. Keep the fully-automated actions INTERNAL (notify the team, update a log). This block comes after the filter.'},
+  {tag:'HUMAN-IN-THE-LOOP', text:'"Draft (do NOT send) a client update and route it to the PM for one-click approval first."', note:'Anything that reaches a client stops for a human. The automation prepares; a person approves. Never auto-send to clients.', hint:'Before anything client-facing, insert a HUMAN-IN-THE-LOOP step. The automation drafts and routes for approval — a person hits send. Never auto-send to clients.'},
+  {tag:'TEST + GUARDRAIL', text:'"Run it on a test project first; if the board structure is missing, stop and alert instead of doing anything."', note:'Test before you trust, and make it fail loudly. An automation that fails silently corrupts your board for weeks unnoticed.', hint:'Finish with TEST + GUARDRAIL — run it on a test project and make it fail loudly if something\'s off. Never switch on an untested automation. This block comes last.'}
+];
+let seqNext = 0;
+function renderSeq(){
+  seqNext = 0;
+  const order = shuffle(SCRIPT.map((_,i)=>i));
+  document.getElementById('seqPool').innerHTML = order.map(i=>`
+    <div class="seq-block" data-idx="${i}" onclick="pickBlock(${i},this)">
+      <div class="seq-block-text">${SCRIPT[i].text}</div>
+    </div>`).join('');
+  document.getElementById('seqSlots').innerHTML = SCRIPT.map((s,i)=>`
+    <div class="seq-slot" id="slot${i}">Step ${i+1} — waiting…</div>`).join('');
+  document.getElementById('seqHint').className='seq-hint';
+  document.getElementById('phonePreview').className='phone';
+  document.getElementById('feedback2').className='activity-feedback';
+}
+function pickBlock(idx, el){
+  const hint = document.getElementById('seqHint');
+  if(idx!==seqNext){
+    el.classList.add('shake');
+    setTimeout(()=>el.classList.remove('shake'),380);
+    hint.className='seq-hint show';
+    hint.textContent='Not that one yet. '+SCRIPT[seqNext].hint;
+    return;
+  }
+  el.classList.add('used');
+  hint.className='seq-hint';
+  const slot = document.getElementById('slot'+idx);
+  slot.classList.add('filled');
+  slot.innerHTML = `<span class="seq-tag">${SCRIPT[idx].tag}</span><div>${SCRIPT[idx].text}</div><div style="font-size:.7rem;color:var(--text-muted);margin-top:.25rem;font-style:italic">${SCRIPT[idx].note}</div>`;
+  seqNext++;
+  if(seqNext===SCRIPT.length) finishSeq();
+}
+function finishSeq(){
+  document.getElementById('phoneLines').innerHTML = SCRIPT.map(s=>`
+    <div class="phone-line"><span class="seq-tag">${s.tag}</span><p>${s.text}</p></div>`).join('');
+  document.getElementById('phonePreview').className='phone show';
+  const fb=document.getElementById('feedback2');
+  fb.className='activity-feedback show success';
+  fb.innerHTML='<strong>Recipe assembled — TRIGGER → CONDITION → ACTION (internal) → HUMAN-IN-THE-LOOP → TEST + GUARDRAIL.</strong> Why this order: the trigger and filter decide <em>when and on what</em> the automation runs, so they come first — get them wrong and everything after fires on the wrong items. Internal actions (notify the team, update a log) are safe to fully automate. But the moment anything touches a client, you insert a human: the machine drafts, a person approves and sends — <em>never auto-send to clients</em>. And you never switch it on untested: run it on a throwaway project, break it on purpose, and make it stop loudly if the board structure changes. Build it once, safely, and it saves you the same twenty minutes every single week.';
+  document.getElementById('prog2').classList.add('done');
+}
+function resetSeq(){
+  renderSeq();
+  document.getElementById('prog2').classList.remove('done');
+}
+
+/* ═══ ACTIVITY 3: which PM tasks are safe to automate? ═══ */
+const KOS = [
+  {title:'Task A — status change → team channel ping', metrics:['Frequency: <b>Many/day</b>','Pain: <b>Medium</b>','Stability: <b>Fixed rule</b>','Stakes: <b>Internal only</b>'], answer:'automate',
+   why:'<strong>Automate it fully.</strong> It\'s frequent, the rule never changes, and — crucially — it\'s internal. Nothing reaches a client, so a wrong ping costs a shrug, not a relationship. High frequency + stability + low stakes = the ideal fully-automated recipe. Let the machine keep the team in sync.'},
+  {title:'Task B — auto-email the client a status update', metrics:['Frequency: <b>Weekly</b>','Pain: <b>Medium</b>','Stability: <b>Varies</b>','Stakes: <b>Client-facing</b>'], answer:'careful',
+   why:'<strong>Automate the draft — never the send.</strong> The stakes are the whole point: an auto-sent client email with a wrong number or half-finished status damages trust instantly and can\'t be unsent. Let the automation <em>prepare</em> the update and route it for one-click approval, but keep a human on the send button. Automation drafts; a person decides. This is the human-in-the-loop rule in action.'},
+  {title:'Task C — a one-off "reorganise the whole board" cleanup', metrics:['Frequency: <b>Once</b>','Pain: <b>High</b>','Stability: <b>N/A</b>','Stakes: <b>Internal</b>'], answer:'manual',
+   why:'<strong>Do it by hand.</strong> It only happens once, so there\'s no future payoff to bank — the hours you\'d spend building and debugging an automation you\'d never get back. Automation earns its cost through <em>repetition</em>. A one-time reorganisation is just a one-time job. Save automation energy for the tasks you\'ll face again next week.'},
+  {title:'Task D — assign owner on every new backlog card', metrics:['Frequency: <b>Daily</b>','Pain: <b>Low but constant</b>','Stability: <b>Fixed rule</b>','Stakes: <b>Internal</b>'], answer:'automate',
+   why:'<strong>Automate it.</strong> On its own each assignment is trivial, but it happens constantly and the rule is rock-stable — exactly the "small tax paid many times" that automation erases. It\'s internal, so there\'s no client risk. A native board rule handles this in one click of setup and then quietly does it forever. Frequency plus stability plus low stakes = green light.'}
+];
+let kosAnswered = {};
+const KOS_LABELS = {automate:'Automate', careful:'Draft, human approves', manual:'Do it by hand'};
+function renderKos(){
+  kosAnswered = {};
+  document.getElementById('kosGrid').innerHTML = KOS.map((k,i)=>`
+    <div class="kos-card" data-kos="${i}">
+      <div class="kos-title">${k.title}</div>
+      <div class="kos-metrics">${k.metrics.map(m=>`<div class="kos-metric">${m}</div>`).join('')}</div>
+      <div class="kos-btns">
+        <button class="kos-btn" onclick="answerKos(${i},'automate',this)">Automate</button>
+        <button class="kos-btn" onclick="answerKos(${i},'careful',this)">Draft, human approves</button>
+        <button class="kos-btn" onclick="answerKos(${i},'manual',this)">Do by hand</button>
+      </div>
+      <div class="kos-verdict" id="kosV${i}"></div>
+    </div>`).join('');
+  document.getElementById('feedback3').className='activity-feedback';
+}
+function answerKos(i, choice, btn){
+  if(kosAnswered[i]!==undefined) return;
+  const k = KOS[i];
+  const correct = choice===k.answer;
+  kosAnswered[i]=correct;
+  const card = document.querySelector(`.kos-card[data-kos="${i}"]`);
+  card.querySelectorAll('.kos-btn').forEach(b=>{
+    b.disabled=true;
+    if(b===btn) b.classList.add(correct?'picked-right':'picked-wrong');
+    else if(!correct && b.textContent.trim()===KOS_LABELS[k.answer]) b.classList.add('reveal-right');
+  });
+  const v = document.getElementById('kosV'+i);
+  v.className='kos-verdict show '+(correct?'good':'bad');
+  v.innerHTML=(correct?'✓ Expert call. ':'✗ The expert call is <em>'+KOS_LABELS[k.answer]+'</em>. ')+k.why;
+  if(Object.keys(kosAnswered).length===KOS.length){
+    const score = Object.values(kosAnswered).filter(Boolean).length;
+    const fb=document.getElementById('feedback3');
+    if(score===4){
+      fb.className='activity-feedback show success';
+      fb.innerHTML='<strong>4 of 4 — you weigh automation like a pro, not an enthusiast.</strong> The test is <em>frequency × pain × stability × stakes</em>. Frequent, stable, internal → automate fully (A, D). Client-facing → automate the draft but keep a human on the send button (B). One-off → just do it by hand (C). The trap is either automating one-shot tasks for the joy of building, or letting an unattended recipe touch a client. Let repetition earn the build, and let stakes decide where the human stays.';
+    } else {
+      fb.className='activity-feedback show partial';
+      fb.innerHTML=`<strong>You got ${score} of 4.</strong> Re-read the ones you missed — each is a reusable rule: <em>frequent + stable + internal → automate fully</em> (A, D), <em>client-facing → draft only, human approves the send</em> (B), <em>one-off → do it by hand</em> (C). Reset and run all four through the frequency × stability × <strong>stakes</strong> test.`;
+    }
+    document.getElementById('prog3').classList.add('done');
+  }
+}
+function resetKos(){
+  renderKos();
+  document.getElementById('prog3').classList.remove('done');
+}
+
+/* ═══ ACTIVITY 4: CAPSTONE end-to-end workflow assemble ═══ */
+const CAP = [
+  {mod:'Module 1 · AI Research', text:'Pull and verify the market facts, competitors, and sources for the briefing.', note:'The project starts with trustworthy inputs — you can\'t plan or claim anything without verified research first.'},
+  {mod:'Module 2 · AI Project Management', text:'Turn the findings into a scoped plan: tasks, owners, timeline, and the automations that run the work.', note:'Research becomes a project. Now you know what to build, who does it, and by when.'},
+  {mod:'Module 3 · AI Excel', text:'Crunch the numbers — model the market data, build the tables and the metrics the briefing needs.', note:'The plan calls for evidence; Excel turns raw data into the figures and analysis the story rests on.'},
+  {mod:'Module 4 · AI Office', text:'Write it up — draft the full briefing document, pulling in the research and the Excel figures.', note:'The verified facts and finished numbers become a polished, professional written document.'},
+  {mod:'Module 5 · AI PowerPoint', text:'Build the boardroom deck that presents the briefing and the rollout plan to the client.', note:'The written briefing becomes the visual story you actually present. The document informs the deck — not the other way around.'}
+];
+let capNext = 0;
+function renderCap(){
+  capNext = 0;
+  const order = shuffle(CAP.map((_,i)=>i));
+  document.getElementById('capPool').innerHTML = order.map(i=>`
+    <div class="cap-block" data-idx="${i}" onclick="pickCap(${i},this)">
+      <span class="cap-block-mod">${CAP[i].mod}</span>
+      <div class="cap-block-text">${CAP[i].text}</div>
+    </div>`).join('');
+  document.getElementById('capSlots').innerHTML = CAP.map((s,i)=>`
+    <div class="cap-slot" id="capSlot${i}"><span class="snum">${i+1}</span><span>Step ${i+1} — waiting…</span></div>`).join('');
+  document.getElementById('capHint').className='cap-hint';
+  document.getElementById('feedback4').className='activity-feedback';
+}
+function pickCap(idx, el){
+  const hint = document.getElementById('capHint');
+  if(idx!==capNext){
+    el.classList.add('shake');
+    setTimeout(()=>el.classList.remove('shake'),380);
+    hint.className='cap-hint show';
+    hint.innerHTML='Not that one yet. Think about what the next step <em>needs</em> to already exist. Step '+(capNext+1)+' should be: <strong>'+CAP[capNext].mod+'</strong> — '+CAP[capNext].note;
+    return;
+  }
+  el.classList.add('used');
+  hint.className='cap-hint';
+  const slot = document.getElementById('capSlot'+idx);
+  slot.classList.add('filled');
+  slot.innerHTML = `<span class="snum">${idx+1}</span><div><span class="cap-block-mod">${CAP[idx].mod}</span><div style="font-size:.8rem;font-weight:500;margin-top:.15rem">${CAP[idx].text}</div><div style="font-size:.7rem;color:var(--text-muted);margin-top:.2rem;font-style:italic">${CAP[idx].note}</div></div>`;
+  capNext++;
+  if(capNext===CAP.length) finishCap();
+}
+function finishCap(){
+  const fb=document.getElementById('feedback4');
+  fb.className='activity-feedback show success';
+  fb.innerHTML='<strong>Pipeline assembled — Research → Project Management → Excel → Office → PowerPoint.</strong> This is the whole course in one flow, and the order is not arbitrary. <em>Research</em> comes first because every claim downstream needs a verified source. <em>Project management</em> turns those findings into a scoped, owned, scheduled plan — including the automations that run the busywork. <em>Excel</em> produces the evidence the plan demands. <em>Office</em> weaves the verified facts and finished figures into a written briefing. And <em>PowerPoint</em> turns that briefing into the deck you present. Each module hands a finished artifact to the next — and the hand-offs are exactly where you verify before you build on top. That end-to-end workflow, run safely with AI at every step, is what your capstone project proves you can do.';
+  document.getElementById('prog4').classList.add('done');
+}
+function resetCap(){
+  renderCap();
+  document.getElementById('prog4').classList.remove('done');
+}
+
+/* ═══ SAFE-AUTOMATION CHECKLIST ═══ */
+const CHECKS = [
+  {t:'<b>Always test on a throwaway project first.</b> Build and run the recipe on a duplicate or test board, confirm it does exactly what you meant, and only then point it at real work. Automation makes mistakes fast and at scale.'},
+  {t:'<b>Keep a human in the loop for anything client-facing.</b> The machine can draft the email, prepare the update, assemble the report — but a person approves and sends. Never let an automation auto-send to clients. Trust, once broken by a bad auto-send, is expensive to rebuild.'},
+  {t:'<b>Filter before you act.</b> Add a condition so the recipe fires only on the right items. "Notify on Done" without a filter becomes "notify on everything" — and noise trains your team to ignore the alerts that matter.'},
+  {t:'<b>Make it fail loudly, not silently.</b> A recipe that stops with a clear message when the board changes is safe. One that quietly does the wrong thing for six weeks is a problem you discover at the worst possible moment.'},
+  {t:'<b>Keep a manual fallback.</b> Know how to do the task by hand, and don\'t let the automation become the only path. When (not if) it breaks on a busy day, you\'re not stuck waiting to debug a Zap.'},
+  {t:'<b>Document what each automation does and who owns it.</b> Write down the trigger, the action, and the human checkpoints. Future-you — or a teammate inheriting the board — should never have to reverse-engineer a recipe running in the background.'}
+];
+let checkOn = new Set();
+function renderChecks(){
+  checkOn = new Set();
+  document.getElementById('checkList').innerHTML = CHECKS.map((c,i)=>`
+    <li class="check-item" data-c="${i}" onclick="toggleCheck(${i})">
+      <div class="check-box">✓</div>
+      <div class="check-text">${c.t}</div>
+    </li>`).join('');
+  updateCheckCount();
+}
+function toggleCheck(i){
+  const item=document.querySelector(`.check-item[data-c="${i}"]`);
+  if(checkOn.has(i)){checkOn.delete(i);item.classList.remove('on');}
+  else{checkOn.add(i);item.classList.add('on');}
+  updateCheckCount();
+}
+function updateCheckCount(){
+  document.getElementById('checkCount').textContent=`${checkOn.size} of ${CHECKS.length} locked in`;
+}
+
+/* ═══ ACTIVITY 5: COURSE-WIDE capstone knowledge check (all 5 weeks) ═══ */
+const QUIZ = [
+  {lesson:'Week 1 · AI Excel', q:'You must clean the same messy export the same way every week. Which approach is built for this?',
+   opts:['Retype it by hand each time','Record the clean-and-reshape steps once (e.g. Power Query) and refresh forever','A brand-new formula each week','Delete rows manually and hope'], ans:1,
+   why:'Repeatable cleaning of a stable-shaped source is exactly what a recorded query is for — capture the steps once and replay them on every refresh, no code required. This is the same "do the boring task once" logic that underpins all automation.'},
+  {lesson:'Week 1 · AI Excel', q:'Why must you always verify an AI-written formula before you trust it?',
+   opts:['It is illegal to use AI output unchecked','AI can produce confident but wrong results — you own whatever ships','Excel deletes AI content after a day','Verification is only needed for big files'], ans:1,
+   why:'AI can be confidently wrong — a plausible formula that returns the wrong number. Whatever you ship is your responsibility, so spot-check the result against a value you can compute by hand. "Verify before you trust" is the through-line of the whole course.'},
+  {lesson:'Week 2 · AI Office', q:'What is the most reliable way to get a useful first draft of a document from AI?',
+   opts:['Ask "write something good" and hope','Give it the audience, the purpose, the key points, and the tone you want','Only ever let it fix typos','Paste a blank page and wait'], ans:1,
+   why:'AI drafts from your description. Tell it who it\'s for, what it needs to achieve, the points it must cover, and the tone — and you get a usable draft to edit, not a vague blob to rewrite. The clearer the brief, the better the draft.'},
+  {lesson:'Week 2 · AI Office', q:'AI produces a polished-sounding Office document for you. What is the essential next step?',
+   opts:['Send it immediately — it sounds professional','Read every line and verify the facts and figures are actually correct','Delete anything you don\'t understand','Assume polish means accuracy'], ans:1,
+   why:'Fluent writing is not the same as correct writing. AI can produce confident prose around a wrong fact or figure. Read it, verify the substance, and make it yours before it goes out — polish is never proof of accuracy.'},
+  {lesson:'Week 3 · AI Research', q:'An AI research assistant gives you a striking statistic with no source. What should you do?',
+   opts:['Quote it — it sounds authoritative','Treat it as unverified until you trace it to a real, credible source','Assume AI never makes things up','Only check sources for controversial topics'], ans:1,
+   why:'AI can hallucinate confident-looking facts and citations. A claim without a traceable, credible source is unverified — full stop. Track it to the original before you build anything on it. In research, the source is the fact; without it, you have a rumour.'},
+  {lesson:'Week 4 · AI PowerPoint', q:'AI generates a slide crammed with six bullet points of text. What is the better move?',
+   opts:['Keep it all — more information is better','Cut it to one clear idea per slide and let you narrate the rest','Shrink the font so it all fits','Add three more bullets for completeness'], ans:1,
+   why:'A slide is a visual aid, not a document. One clear idea per slide — with you providing the detail out loud — beats a wall of text every time. AI drafts fast, but editing down to the single message is where a good deck is made.'},
+  {lesson:'Week 5 · AI Project Management', q:'Which project-management task is the strongest candidate to automate fully and unattended?',
+   opts:['A one-time board reorganisation','A frequent, stable, INTERNAL rule like pinging the team when a task is Done','An auto-email sent straight to the client','Anything, as long as it\'s fun to build'], ans:1,
+   why:'Automation pays off through repetition, and it\'s safe to run unattended only when the stakes are low. Frequent + stable + internal is the ideal fully-automated recipe. One-off tasks don\'t earn the build, and anything client-facing needs a human in the loop.'},
+  {lesson:'Week 5 · AI Project Management', q:'You\'re building an automation that could touch a client. What is the non-negotiable safeguard?',
+   opts:['Run it as fast as possible to save time','Keep a human in the loop — the machine drafts, a person approves and sends','Skip testing to ship sooner','Auto-send so the client hears immediately'], ans:1,
+   why:'Never auto-send to clients. Let the automation prepare the draft and route it for one-click approval, but keep a person on the send button. Internal actions can be fully automated; anything reaching a client stops for human judgment — and everything gets tested on a copy first.'}
+];
+function renderQuiz(){
+  document.getElementById('quizWrap').innerHTML = QUIZ.map((item,i)=>`
+    <div class="quiz-q" id="qq${i}">
+      <div class="quiz-q-head"><span class="quiz-q-num">Q${i+1}</span><span class="quiz-q-text">${item.q}<span class="quiz-lesson">${item.lesson}</span></span></div>
+      ${item.opts.map((o,j)=>`
+        <label class="quiz-opt"><input type="radio" name="quiz${i}" value="${j}"><span>${o}</span></label>`).join('')}
+      <div class="quiz-review" id="qr${i}"></div>
+    </div>`).join('');
+}
+function submitQuiz(){
+  const fb=document.getElementById('feedback5');
+  const answers = QUIZ.map((_,i)=>{
+    const sel=document.querySelector(`input[name="quiz${i}"]:checked`);
+    return sel? +sel.value : null;
+  });
+  const blank = answers.filter(a=>a===null).length;
+  if(blank>0){
+    fb.className='activity-feedback show partial';
+    fb.innerHTML=`<strong>${blank} question${blank>1?'s':''} unanswered.</strong> Guessing is allowed, blank is not — answer everything and submit again.`;
+    return;
+  }
+  let score=0; const missedLessons=[];
+  QUIZ.forEach((item,i)=>{
+    const card=document.getElementById('qq'+i);
+    const rev=document.getElementById('qr'+i);
+    card.classList.remove('right','miss');
+    const correct = answers[i]===item.ans;
+    if(correct){
+      score++;
+      card.classList.add('right');
+      rev.className='quiz-review show good';
+      rev.innerHTML='✓ Correct. '+item.why;
+    } else {
+      card.classList.add('miss');
+      missedLessons.push(`Q${i+1} → ${item.lesson}`);
+      rev.className='quiz-review show bad';
+      rev.innerHTML=`✗ The answer is "<strong>${item.opts[item.ans]}</strong>". ${item.why}`;
+    }
+  });
+  if(score===8){
+    fb.className='activity-feedback show success';
+    fb.innerHTML='<strong>8 of 8 — full-course mastery.</strong> You hold the entire chain: verified research, a scoped and automated project, data modelled in Excel, a polished Office document, a boardroom deck, and safe automation gluing it together. Every one of these rests on the same two habits the whole course drilled — <em>describe the task clearly, and verify the result</em>. You\'re ready for the capstone. Go build it.';
+  } else if(score>=6){
+    fb.className='activity-feedback show success';
+    fb.innerHTML=`<strong>${score} of 8 — strong grasp of the whole course.</strong> The misses are patchable in minutes — skim the review notes on: <em>${missedLessons.join(' · ')}</em>, then reset and aim for 8. The questions people miss are usually the "verify it" and "keep a human in the loop" ones — the exact habits that separate an AI-augmented professional from someone who just pastes AI output.`;
+  } else {
+    fb.className='activity-feedback show partial';
+    fb.innerHTML=`<strong>${score} of 8 — worth a revisit before the capstone.</strong> No judgment — this quiz spans five full weeks of material. Your misses map to: <em>${missedLessons.join(' · ')}</em>. Reopen those weeks, skim their activities, then reset this quiz. Ten minutes of review now saves real confusion in the capstone project.`;
+  }
+  document.getElementById('prog5').classList.add('done');
+}
+function resetQuiz(){
+  renderQuiz();
+  document.getElementById('feedback5').className='activity-feedback';
+  document.getElementById('prog5').classList.remove('done');
+}
+
+/* ═══ INIT ═══ */
+window.addEventListener('DOMContentLoaded',()=>{
+  renderTools();
+  renderSeq();
+  renderKos();
+  renderCap();
+  renderChecks();
+  renderQuiz();
+});
+</script>
+</body>
+</html>
