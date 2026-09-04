@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>The AI Project Management Landscape · Lesson 01</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,0,400;9..144,0,600;9..144,0,800;9..144,1,600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+
+:root{
+  --orange:#EF7F1A; --orange-light:#FF9429; --orange-dark:#D55222;
+  --brown:#412C23; --brown-dark:#2F1D19; --tan:#A34E1C;
+  --yellow:#FECC00; --cream:#FBF6EE; --paper:#FFFCF6;
+  --ink:#1C1410; --muted:#6E5C50; --line:#E8DCC8; --accent:#008DD2;
+  --sheet-green:#217346;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',system-ui,sans-serif;
+  background:var(--paper); color:var(--ink); line-height:1.6; overflow-x:hidden;
+}
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:radial-gradient(circle at 1px 1px,rgba(65,44,35,0.05) 1px,transparent 0);
+  background-size:24px 24px;
+}
+.topbar{
+  position:sticky;top:0;z-index:100;
+  background:rgba(255,252,246,0.92); backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+  padding:14px 40px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.brand{font-family:'Fraunces',serif;font-weight:800;font-size:17px;letter-spacing:-0.01em;color:var(--brown-dark)}
+.brand .dot{color:var(--orange)}
+.brand .sub{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.15em;color:var(--muted);font-weight:500;text-transform:uppercase;margin-left:8px}
+.logo-slot{width:44px;height:44px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.logo-slot svg{width:100%;height:100%;display:block}
+.page{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:50px 40px 100px}
+.hero{padding:30px 0 50px;border-bottom:1px solid var(--line)}
+.eyebrow{
+  font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.18em;
+  text-transform:uppercase;color:var(--orange-dark);font-weight:600;
+  display:inline-flex;align-items:center;gap:10px;
+}
+.eyebrow::before{content:"";width:24px;height:2px;background:var(--orange)}
+h1{
+  font-family:'Fraunces',serif;font-weight:800;
+  font-size:clamp(38px,7vw,80px);line-height:0.98;letter-spacing:-0.03em;
+  margin:18px 0 20px;color:var(--brown-dark);
+}
+h1 em{font-style:italic;color:var(--orange-dark);font-weight:600}
+.lede{font-size:19px;max-width:680px;color:var(--muted)}
+section{padding:70px 0;border-bottom:1px solid var(--line)}
+section:last-of-type{border-bottom:none}
+.section-num{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--orange);font-weight:600;letter-spacing:0.08em}
+h2{
+  font-family:'Fraunces',serif;font-weight:700;
+  font-size:clamp(28px,4.5vw,48px);line-height:1.05;letter-spacing:-0.02em;
+  margin:10px 0 22px;color:var(--brown-dark);max-width:720px;
+}
+h3{font-family:'Fraunces',serif;font-weight:600;font-size:24px;color:var(--brown-dark);margin:28px 0 12px}
+p{max-width:680px;margin-bottom:14px;color:var(--ink)}
+.lead{font-size:17px;color:var(--muted);max-width:680px;margin-bottom:26px}
+code{font-family:'JetBrains Mono',monospace;font-size:0.92em;background:var(--cream);padding:2px 6px;border-radius:4px;color:var(--brown-dark)}
+.illus{
+  background:var(--cream);border:1px solid var(--line);border-radius:18px;
+  padding:32px;margin:24px 0;position:relative;overflow:hidden;
+}
+.illus-title{
+  font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);
+  letter-spacing:0.12em;text-transform:uppercase;
+  margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:10px;
+}
+.controls{display:flex;gap:8px;flex-wrap:wrap}
+.controls button{
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  background:var(--paper);border:1px solid var(--line);color:var(--brown);
+  padding:6px 12px;border-radius:6px;cursor:pointer;
+  text-transform:uppercase;letter-spacing:0.1em;transition:all .2s;
+}
+.controls button:hover{background:var(--orange);color:#fff;border-color:var(--orange)}
+.controls button.active{background:var(--brown-dark);color:#fff;border-color:var(--brown-dark)}
+.takeaway{
+  background:var(--brown-dark);color:var(--paper);
+  border-radius:18px;padding:44px;margin-top:50px;position:relative;overflow:hidden;
+}
+.takeaway::after{
+  content:"";position:absolute;top:-40px;right:-40px;width:180px;height:180px;
+  border-radius:50%;background:radial-gradient(circle,var(--orange),transparent 70%);opacity:0.4;
+}
+.takeaway h2{color:var(--paper);margin-bottom:16px}
+.takeaway p{color:#E8D9C5;font-size:16px;max-width:680px}
+.takeaway ul{list-style:none;margin-top:18px;display:grid;gap:8px}
+.takeaway li{font-family:'JetBrains Mono',monospace;font-size:13px;padding-left:22px;position:relative;color:#FBE7CB}
+.takeaway li::before{content:"→";position:absolute;left:0;color:var(--orange);font-weight:bold}
+footer{text-align:center;padding:36px;color:var(--muted);font-size:12px;font-family:'JetBrains Mono',monospace;letter-spacing:0.1em}
+@media(max-width:700px){
+  .topbar{padding:12px 18px}
+  .page{padding:30px 18px 70px}
+  .illus{padding:20px}
+  .takeaway{padding:28px}
+  .logo-slot{width:38px;height:38px}
+}
+
+/* ============ Figure 1 · PM lifecycle flow ============ */
+.flow{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:30px 22px 22px;position:relative}
+.flow-row{display:flex;align-items:stretch;gap:0}
+.fnode{
+  flex:0 0 auto;width:126px;text-align:center;padding:16px 8px 13px;
+  background:var(--cream);border:2px solid var(--line);border-radius:12px;
+  transition:border-color .3s,background .3s,transform .3s,box-shadow .3s;
+}
+.fnode h5{font-family:'Fraunces',serif;font-size:15px;color:var(--brown-dark);line-height:1.15;margin-bottom:4px}
+.fnode .fsub{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.06em;text-transform:uppercase;color:var(--muted);line-height:1.4;display:block}
+.fnode .fmark{width:34px;height:34px;border-radius:50%;background:var(--brown-dark);color:var(--paper);font-family:'Fraunces',serif;font-weight:700;font-size:16px;display:flex;align-items:center;justify-content:center;margin:0 auto 8px;transition:background .3s}
+.fnode.on{border-color:var(--orange);background:#FDEBD7;transform:translateY(-4px);box-shadow:0 8px 18px rgba(239,127,26,0.22)}
+.fnode.on .fmark{background:var(--orange)}
+.fconn{flex:1;min-width:20px;align-self:center;height:3px;background:var(--line);position:relative;border-radius:2px}
+.fdot{
+  position:absolute;top:50%;left:0;width:15px;height:15px;border-radius:50%;
+  transform:translate(-50%,-50%);opacity:0;z-index:2;
+}
+.fdot.data{background:var(--yellow);border:2px solid var(--tan);box-shadow:0 0 0 4px rgba(254,204,0,0.25)}
+.fdot.answer{background:var(--sheet-green);border:2px solid var(--brown-dark);box-shadow:0 0 0 4px rgba(33,115,70,0.18)}
+.fconn.go .fdot,.frail.go .fdot{animation:dotR 1.35s ease-in-out forwards}
+.fconn.go.rev .fdot,.frail.go.rev .fdot{animation:dotL 1.35s ease-in-out forwards}
+@keyframes dotR{0%{left:0%;opacity:0}14%{opacity:1}86%{opacity:1}100%{left:100%;opacity:0}}
+@keyframes dotL{0%{left:100%;opacity:0}14%{opacity:1}86%{opacity:1}100%{left:0%;opacity:0}}
+.frail{margin:30px 10px 6px;height:3px;background:var(--line);position:relative;border-radius:2px}
+.frail-label{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);text-align:center;margin-top:8px}
+.fcap-wrap{display:flex;gap:14px;align-items:flex-start;margin-top:20px;background:var(--cream);border:1px solid var(--line);border-radius:10px;padding:14px 16px;min-height:74px}
+.fstep{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;letter-spacing:0.08em;color:#fff;background:var(--orange);border-radius:6px;padding:4px 9px;white-space:nowrap;flex-shrink:0;margin-top:2px}
+.fcap{font-size:14.5px;color:var(--brown-dark);line-height:1.5}
+.fkey{display:flex;gap:22px;margin-top:14px;font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted)}
+.fkey span{display:inline-flex;align-items:center;gap:7px}
+.fkey i{width:12px;height:12px;border-radius:50%;display:inline-block}
+.fkey .km{background:var(--yellow);border:2px solid var(--tan)}
+.fkey .kp{background:var(--sheet-green);border:2px solid var(--brown-dark)}
+@media(max-width:700px){
+  .flow{padding:18px 10px 14px}
+  .fnode{width:82px;padding:10px 4px 9px}
+  .fnode h5{font-size:11.5px}
+  .fnode .fsub{font-size:7.5px}
+  .fnode .fmark{width:24px;height:24px;font-size:12px}
+}
+
+/* ============ Figure 2 · tool comparison matrix ============ */
+.mcalc{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:26px}
+.toolgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.tcard{
+  background:var(--cream);border:2px solid var(--line);border-radius:12px;
+  padding:18px 15px;cursor:pointer;transition:all .25s;position:relative;
+}
+.tcard:hover{border-color:var(--orange);transform:translateY(-3px);box-shadow:0 8px 18px rgba(239,127,26,0.16)}
+.tcard.active{border-color:var(--brown-dark);background:#FDEBD7}
+.tcard .tname{font-family:'Fraunces',serif;font-weight:700;font-size:16px;color:var(--brown-dark);line-height:1.1;margin-bottom:8px}
+.tcard .ttag{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;padding:3px 7px;border-radius:5px;display:inline-block;margin-bottom:12px}
+.ttag.paid{background:#F6E3C8;color:var(--tan)}
+.ttag.free{background:#D9EEDF;color:var(--sheet-green)}
+.ttag.ext{background:#DCEAF4;color:var(--accent)}
+.tcard .tmeta{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--muted);line-height:1.7}
+.tcard .tmeta b{color:var(--brown-dark)}
+.tdetail{
+  margin-top:20px;background:var(--cream);border:1px solid var(--line);
+  border-radius:12px;padding:22px;min-height:130px;
+}
+.tdetail.swap{animation:panelIn .4s ease}
+.tdetail h4{font-family:'Fraunces',serif;font-size:20px;color:var(--brown-dark);margin-bottom:4px}
+.tdetail .dtag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--orange-dark);font-weight:600;display:block;margin-bottom:12px}
+.tdetail .drow{display:flex;gap:10px;align-items:baseline;font-size:14px;color:var(--ink);margin-bottom:8px;line-height:1.45}
+.tdetail .dk{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);font-weight:600;flex:0 0 92px}
+.tdetail .warn{background:#FCEBD6;border-left:3px solid var(--orange);border-radius:0 8px 8px 0;padding:10px 14px;font-size:13px;color:var(--brown);margin-top:6px;line-height:1.5}
+@media(max-width:700px){
+  .toolgrid{grid-template-columns:1fr 1fr}
+  .tdetail .drow{flex-direction:column;gap:2px}
+  .tdetail .dk{flex-basis:auto}
+}
+
+/* ============ Figure 3 · AI-augmented PM model ============ */
+.aimap-chain{display:flex;align-items:center;gap:0;margin-bottom:20px}
+.ainode{
+  flex:1;text-align:center;padding:16px 8px;background:var(--paper);
+  border:2px solid var(--line);border-radius:12px;cursor:pointer;
+  transition:all .25s;font-family:'JetBrains Mono',monospace;
+  font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--brown);font-weight:600;
+}
+.ainode .aidx{display:block;font-family:'Fraunces',serif;font-size:24px;font-weight:800;color:var(--line);margin-bottom:4px;transition:color .25s;text-transform:none;letter-spacing:0}
+.ainode:hover{border-color:var(--orange);transform:translateY(-2px)}
+.ainode.active{background:var(--brown-dark);border-color:var(--brown-dark);color:var(--paper)}
+.ainode.active .aidx{color:var(--orange)}
+.ailink{width:26px;height:3px;background:var(--line);flex-shrink:0;position:relative}
+.ailink::after{content:"";position:absolute;right:-1px;top:50%;transform:translateY(-50%);border-left:7px solid var(--line);border-top:5px solid transparent;border-bottom:5px solid transparent}
+.aipanel{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:26px;min-height:250px}
+.aipanel.swap{animation:panelIn .4s ease}
+@keyframes panelIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.aipanel h4{font-family:'Fraunces',serif;font-size:22px;color:var(--brown-dark);margin-bottom:4px}
+.aipanel .aitag{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:0.12em;text-transform:uppercase;color:var(--orange-dark);font-weight:600;display:block;margin-bottom:14px}
+.splitcols{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px}
+.splitcol h6{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;font-weight:600;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+.splitcol.ai h6{color:var(--orange-dark)}
+.splitcol.human h6{color:var(--sheet-green)}
+.splitcol ul{list-style:none;display:grid;gap:9px;margin:0}
+.splitcol li{font-size:13.5px;color:var(--ink);padding-left:22px;position:relative;line-height:1.45}
+.splitcol.ai li::before{content:"✦";position:absolute;left:0;color:var(--orange);font-size:13px}
+.splitcol.human li::before{content:"◆";position:absolute;left:0;color:var(--sheet-green);font-size:11px;top:2px}
+.ai-human{
+  background:var(--cream);border-left:3px solid var(--brown);border-radius:0 10px 10px 0;
+  padding:13px 16px;font-size:13.5px;color:var(--brown);line-height:1.5;
+}
+.ai-human strong{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--brown-dark);display:block;margin-bottom:3px}
+.aiprompt{font-family:'JetBrains Mono',monospace;font-size:12px;background:var(--brown-dark);color:#F3E7D5;border-radius:8px;padding:12px 14px;margin-bottom:16px;line-height:1.55;overflow-x:auto}
+.aiprompt .plab{color:var(--yellow);font-size:9.5px;letter-spacing:0.12em;text-transform:uppercase;display:block;margin-bottom:6px}
+@media(max-width:700px){
+  .aimap-chain{flex-wrap:wrap;gap:8px}
+  .ainode{flex:1 1 42%}
+  .ailink{display:none}
+  .splitcols{grid-template-columns:1fr}
+}
+
+/* ============ Figure 4 · limitation flip cards ============ */
+.hgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.hcard{height:225px;perspective:1100px;cursor:pointer;opacity:0;transform:translateY(12px)}
+.hgrid.show .hcard{animation:hIn .5s forwards}
+.hgrid.show .hcard:nth-child(1){animation-delay:.05s}
+.hgrid.show .hcard:nth-child(2){animation-delay:.2s}
+.hgrid.show .hcard:nth-child(3){animation-delay:.35s}
+.hgrid.show .hcard:nth-child(4){animation-delay:.5s}
+@keyframes hIn{to{opacity:1;transform:translateY(0)}}
+.hinner{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .65s cubic-bezier(.4,.1,.2,1)}
+.hcard.flipped .hinner{transform:rotateY(180deg)}
+.hface{
+  position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;
+  border-radius:14px;padding:22px;display:flex;flex-direction:column;justify-content:center;
+}
+.hfront{background:linear-gradient(135deg,var(--orange) 0%,var(--orange-dark) 100%);color:#fff;text-align:center;align-items:center}
+.hfront .hclaim{font-family:'Fraunces',serif;font-weight:800;font-size:24px;line-height:1.1;margin-bottom:8px}
+.hfront .hsub{font-size:13px;opacity:.92;max-width:260px}
+.hfront .hhint{position:absolute;bottom:12px;left:0;right:0;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:0.15em;text-transform:uppercase;opacity:.75}
+.hback{background:var(--brown-dark);color:#F3E7D5;transform:rotateY(180deg);border:1px solid var(--brown)}
+.hback .hlab{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--yellow);font-weight:600;margin-bottom:8px}
+.hback p{font-size:13px;line-height:1.5;color:#F3E7D5;margin:0;max-width:none}
+@media(max-width:700px){
+  .hgrid{grid-template-columns:1fr}
+  .hcard{height:210px}
+  .hfront .hclaim{font-size:22px}
+}
+
+/* ============ Figure 5 · five modules meet in a project ============ */
+.modmap{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:26px}
+.modring{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-bottom:20px}
+.modchip{
+  display:flex;align-items:center;gap:10px;
+  background:var(--cream);border:2px solid var(--line);border-radius:999px;
+  padding:9px 16px 9px 10px;cursor:pointer;transition:all .25s;
+}
+.modchip:hover{border-color:var(--orange);transform:translateY(-2px)}
+.modchip.active{border-color:var(--brown-dark);background:#FDEBD7}
+.modchip .mnum{width:26px;height:26px;border-radius:50%;background:var(--brown-dark);color:var(--paper);font-family:'Fraunces',serif;font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center;transition:background .25s;flex-shrink:0}
+.modchip.active .mnum{background:var(--orange)}
+.modchip .mlabel{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:var(--brown-dark);font-weight:600}
+.modpanel{background:var(--cream);border:1px solid var(--line);border-radius:12px;padding:22px;min-height:120px}
+.modpanel.swap{animation:panelIn .4s ease}
+.modpanel h4{font-family:'Fraunces',serif;font-size:20px;color:var(--brown-dark);margin-bottom:6px}
+.modpanel .mrole{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--orange-dark);font-weight:600;display:block;margin-bottom:12px}
+.modpanel p{font-size:14.5px;color:var(--ink);max-width:none;margin:0}
+.modpanel .mex{margin-top:12px;background:var(--paper);border-left:3px solid var(--orange);border-radius:0 8px 8px 0;padding:10px 14px;font-size:13px;color:var(--brown);line-height:1.5}
+@media(max-width:700px){
+  .modchip .mlabel{font-size:9.5px}
+}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="brand">MokshPath <span class="dot">·</span> <span class="sub">Lesson 01 · AI Project Mgmt</span></div>
+  <div class="logo-slot" aria-label="MokshPath logo">
+    <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="4" y="13" width="36" height="27" rx="6" fill="#412C23"/>
+      <path d="M14 13 C14 4.5 30 4.5 30 13" stroke="#EF7F1A" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+      <path d="M12 32 L12 22 L17 28 L22 21 L27 28 L32 22 L32 32" stroke="#FECC00" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="36" cy="9" r="4.5" fill="#EF7F1A"/>
+    </svg>
+  </div>
+</div>
+<div class="page">
+
+<section class="hero">
+  <div class="eyebrow">Week 5 · Lesson 01 · AI Project Management</div>
+  <h1>The AI project management <em>landscape</em>.</h1>
+  <p class="lede">Projects are how work actually gets done — a goal, a plan, a team, a deadline. Project management is the discipline of shepherding that from idea to finished. In the last few years, AI has quietly moved into every major PM tool: drafting plans, summarizing status, chasing updates, flagging risk. This final module gives you the honest map: what project management really is, which AI tools exist, where AI genuinely helps across the project lifecycle — and where a human still has to own the outcome.</p>
+</section>
+
+<section>
+  <div class="section-num">01 / 05</div>
+  <h2>What project management actually is</h2>
+  <p class="lead">Strip away the jargon and project management is simple: taking a goal with a deadline and a team, then organizing the work so it actually finishes — on time, on scope, without dropping the important pieces. Every launch, event, report, migration or campaign is a project. PM is the connective tissue that keeps them from quietly falling apart.</p>
+
+  <p>A <strong>project</strong> has three ingredients: a defined outcome ("ship the new onboarding flow"), a set of tasks with owners and dates, and a boundary — it starts, and it ends. Managing it means answering four questions on repeat: <em>What are we doing? Who owns what? Are we on track? What's about to go wrong?</em> Before AI, keeping those answers current was pure manual labour — chasing people for updates, rewriting the plan when reality shifted, assembling status reports by hand.</p>
+  <p>Most projects move through the same five stages, roughly in order: you <strong>initiate</strong> (define why it exists), <strong>plan</strong> (break it into tasks), <strong>execute</strong> (do the work), <strong>track</strong> (watch progress and risk), and <strong>close</strong> (ship it and capture lessons). AI now plugs into every one of those stages — but in different ways, and never as the person accountable for the result. Press the buttons below to watch a project travel the lifecycle, and see exactly where AI helps at each stop.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 1 · The project lifecycle · where AI plugs in at each stage</span>
+      <div class="controls">
+        <button id="btnRun" class="active" onclick="runFlow('run')">▶ Run the lifecycle</button>
+        <button id="btnAI" onclick="runFlow('ai')">▶ Where AI helps</button>
+        <button onclick="resetFlow(true)">↺ Reset</button>
+      </div>
+    </div>
+    <div class="flow run" id="flow">
+      <div class="flow-row">
+        <div class="fnode" id="fnInit">
+          <div class="fmark">1</div>
+          <h5>Initiate</h5>
+          <span class="fsub">Why · scope · goal</span>
+        </div>
+        <div class="fconn" id="fc1"><div class="fdot data"></div></div>
+        <div class="fnode" id="fnPlan">
+          <div class="fmark">2</div>
+          <h5>Plan</h5>
+          <span class="fsub">Tasks · owners · dates</span>
+        </div>
+        <div class="fconn" id="fc2"><div class="fdot data"></div></div>
+        <div class="fnode" id="fnExec">
+          <div class="fmark">3</div>
+          <h5>Execute</h5>
+          <span class="fsub">Do the work</span>
+        </div>
+        <div class="fconn" id="fc3"><div class="fdot data"></div></div>
+        <div class="fnode" id="fnTrack">
+          <div class="fmark">4</div>
+          <h5>Track</h5>
+          <span class="fsub">Progress · risk</span>
+        </div>
+        <div class="fconn" id="fc4"><div class="fdot answer"></div></div>
+        <div class="fnode" id="fnClose">
+          <div class="fmark">5</div>
+          <h5>Close</h5>
+          <span class="fsub">Ship · retro</span>
+        </div>
+      </div>
+      <div class="frail" id="frail"><div class="fdot answer"></div></div>
+      <div class="frail-label" id="frailLabel">↺ lessons from close feed back into how you initiate the next project</div>
+      <div class="fcap-wrap">
+        <div class="fstep" id="fstep">— / —</div>
+        <div class="fcap" id="fcap">Press ▶ Run the lifecycle to watch a project move through the five stages, or ▶ Where AI helps to see AI's role at each stop.</div>
+      </div>
+      <div class="fkey">
+        <span><i class="km"></i> the work moving forward</span>
+        <span><i class="kp"></i> lessons feeding back</span>
+      </div>
+    </div>
+  </div>
+
+  <h3>Why the lifecycle matters</h3>
+  <p>The stages aren't bureaucracy — they're a checklist against the way projects fail. Skip <em>initiate</em> and you build the wrong thing. Skip <em>plan</em> and nobody knows who owns what. Skip <em>track</em> and you discover you're two weeks behind on the day it's due. AI can accelerate any stage, but it can't decide to skip one for you. Knowing the shape of the lifecycle is what lets you point AI at the right task at the right moment.</p>
+</section>
+
+<section>
+  <div class="section-num">02 / 05</div>
+  <h2>The AI project management landscape</h2>
+  <p class="lead">"AI in project management" isn't one product — it's AI features bolted onto the tools teams already use, plus general assistants used on the side. They differ sharply in price, in what the AI actually does, and in which working style (methodology) they fit. Confusing them is the most common mistake. Click each card to see what its AI does, what it costs, and who it fits.</p>
+
+  <p>There are six practical options today. <strong>Asana AI</strong>, <strong>ClickUp Brain</strong>, <strong>Monday AI</strong> and <strong>Notion AI</strong> live inside those platforms and are strongest at the work you're already doing there. <strong>Microsoft Planner + Copilot</strong> brings AI into the Microsoft 365 world many companies live in. And <strong>general assistants</strong> like ChatGPT and Claude aren't PM tools at all — but they're superb at drafting plans, risk lists and status updates you paste back into whatever tool you use. Same goal, six different doors.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 2 · Six doors into AI project management · click a tool</span>
+      <div class="controls">
+        <button onclick="toolStep(-1)">◀ Prev</button>
+        <button onclick="toolStep(1)">Next ▶</button>
+      </div>
+    </div>
+    <div class="mcalc">
+      <div class="toolgrid" id="toolGrid">
+        <div class="tcard" data-k="asana" onclick="pickTool('asana')">
+          <div class="tname">Asana AI</div>
+          <span class="ttag paid">Paid tier</span>
+          <div class="tmeta"><b>Fit:</b> cross-team<br><b>Style:</b> hybrid</div>
+        </div>
+        <div class="tcard" data-k="clickup" onclick="pickTool('clickup')">
+          <div class="tname">ClickUp Brain</div>
+          <span class="ttag paid">Add-on</span>
+          <div class="tmeta"><b>Fit:</b> all-in-one<br><b>Style:</b> flexible</div>
+        </div>
+        <div class="tcard" data-k="notion" onclick="pickTool('notion')">
+          <div class="tname">Notion AI</div>
+          <span class="ttag paid">Add-on</span>
+          <div class="tmeta"><b>Fit:</b> docs + tasks<br><b>Style:</b> lightweight</div>
+        </div>
+        <div class="tcard" data-k="monday" onclick="pickTool('monday')">
+          <div class="tname">Monday AI</div>
+          <span class="ttag paid">Paid tier</span>
+          <div class="tmeta"><b>Fit:</b> ops + visual<br><b>Style:</b> Kanban</div>
+        </div>
+        <div class="tcard" data-k="planner" onclick="pickTool('planner')">
+          <div class="tname">Planner + Copilot</div>
+          <span class="ttag paid">M365 license</span>
+          <div class="tmeta"><b>Fit:</b> Microsoft shops<br><b>Style:</b> hybrid</div>
+        </div>
+        <div class="tcard" data-k="general" onclick="pickTool('general')">
+          <div class="tname">ChatGPT / Claude</div>
+          <span class="ttag ext">General AI</span>
+          <div class="tmeta"><b>Fit:</b> any tool<br><b>Style:</b> any</div>
+        </div>
+      </div>
+      <div class="tdetail" id="toolDetail"></div>
+    </div>
+  </div>
+
+  <h3>The line to remember: features, not brains</h3>
+  <p>Across all six, the AI does the <em>same family of things</em> — draft a plan, summarize status, chase updates, suggest task breakdowns, flag risk. The differences are price (almost all are paid add-ons on top of the base subscription), how deeply the AI is wired into your existing data, and which working style the tool assumes. Don't pick a tool for its AI badge. Pick the tool your team will actually use daily, then turn its AI on. A general assistant like Claude, used well, closes most of the gap for a fraction of the cost.</p>
+</section>
+
+<section>
+  <div class="section-num">03 / 05</div>
+  <h2>The AI-augmented PM: who does what</h2>
+  <p class="lead">The single most useful mental model in this module: <strong>AI does volume, the project manager does judgment.</strong> AI drafts the plan, the update, the risk list — fast and tireless. The human decides what's true, what matters, and what to commit the team to. Click each lifecycle stage to see the split, stage by stage.</p>
+
+  <p>The honest framing for the whole module: treat AI as a <strong>brilliant, fast junior PM</strong> who has read every project management book but has never met your team, your client, or your politics. It will happily produce a beautiful Gantt chart and a confident timeline — and it has no idea that your designer is on leave next week, or that this client always slips the final approval. AI generates the draft; you supply the reality and own the commitment. Click through the five stages to see exactly where that line falls.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 3 · AI does volume · the PM does judgment</span>
+      <div class="controls">
+        <button onclick="stageStep(-1)">◀ Prev stage</button>
+        <button onclick="stageStep(1)">Next stage ▶</button>
+      </div>
+    </div>
+    <div class="aimap-chain" id="aiChain">
+      <div class="ainode" data-k="initiate" onclick="pickStage('initiate')"><span class="aidx">1</span>Initiate</div>
+      <div class="ailink"></div>
+      <div class="ainode" data-k="plan" onclick="pickStage('plan')"><span class="aidx">2</span>Plan</div>
+      <div class="ailink"></div>
+      <div class="ainode" data-k="execute" onclick="pickStage('execute')"><span class="aidx">3</span>Execute</div>
+      <div class="ailink"></div>
+      <div class="ainode" data-k="track" onclick="pickStage('track')"><span class="aidx">4</span>Track</div>
+      <div class="ailink"></div>
+      <div class="ainode" data-k="close" onclick="pickStage('close')"><span class="aidx">5</span>Close</div>
+    </div>
+    <div class="aipanel" id="aiPanel"></div>
+  </div>
+
+  <h3>The pattern under all five stages</h3>
+  <p>Read the five stages back to back and the shape is always the same: <strong>AI brings speed and a first draft; you bring context, priorities and the decision to commit.</strong> The most productive PMs aren't the ones who let AI run the project — they're the ones who use the hours AI gives back to talk to people, resolve blockers, and manage the human side no model can see. AI removes the busywork of project management. It does not remove the accountability.</p>
+</section>
+
+<section>
+  <div class="section-num">04 / 05</div>
+  <h2>Honest limitations: four claims, flipped</h2>
+  <p class="lead">The marketing says "AI will run your projects for you." Before you lean on it, flip each card and read what the claim looks like once you've actually managed real work with these tools. Honest expectations now save you from a missed deadline and an angry stakeholder later.</p>
+
+  <p>None of this means "don't use AI in project management." It means use it as leverage, not as a manager. The realistic workflow is boring and reliable: let AI draft the plan or the update, read it critically against what you know about your team and timeline, adjust, and then <em>you</em> commit to it in front of the people who depend on it. AI makes each loop faster. It never takes on the responsibility for what you promise.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 4 · Flip the claim</span>
+      <div class="controls">
+        <button onclick="allReal()">Show all realities</button>
+        <button onclick="allHype()">↺ Back to hype</button>
+      </div>
+    </div>
+    <div class="hgrid" id="hgrid">
+      <div class="hcard" onclick="this.classList.toggle('flipped')">
+        <div class="hinner">
+          <div class="hface hfront">
+            <div class="hclaim">"AI plans are ready to ship"</div>
+            <div class="hsub">Just accept the timeline it gives you.</div>
+            <div class="hhint">tap to flip</div>
+          </div>
+          <div class="hface hback">
+            <div class="hlab">Reality</div>
+            <p>AI plans are optimistic. They assume everyone is available, nothing blocks, and estimates are accurate — none of which is true. Treat the AI plan as a first draft, then add buffer, resolve real dependencies, and check it against who's actually free. The confident Gantt chart is a starting point, not a promise.</p>
+          </div>
+        </div>
+      </div>
+      <div class="hcard" onclick="this.classList.toggle('flipped')">
+        <div class="hinner">
+          <div class="hface hfront">
+            <div class="hclaim">"The AI features are free"</div>
+            <div class="hsub">They're just in the tool, right?</div>
+            <div class="hhint">tap to flip</div>
+          </div>
+          <div class="hface hback">
+            <div class="hlab">Reality</div>
+            <p>Almost every PM AI feature sits behind a paywall — a higher plan tier or a per-seat add-on on top of your subscription. ClickUp Brain, Asana AI, Copilot and Notion AI all cost extra. Know exactly what your plan includes before you build a workflow around a feature you may not have.</p>
+          </div>
+        </div>
+      </div>
+      <div class="hcard" onclick="this.classList.toggle('flipped')">
+        <div class="hinner">
+          <div class="hface hfront">
+            <div class="hclaim">"AI can own the commitments"</div>
+            <div class="hsub">Let it manage the deadlines.</div>
+            <div class="hhint">tap to flip</div>
+          </div>
+          <div class="hface hback">
+            <div class="hlab">Reality</div>
+            <p>A commitment is a human promise to other humans. AI can draft it, but it cannot be accountable when a date slips or a client is unhappy — you can. The PM owns the "yes we'll deliver this by Friday." Never let an AI-generated date become a promise you didn't personally sanity-check first.</p>
+          </div>
+        </div>
+      </div>
+      <div class="hcard" onclick="this.classList.toggle('flipped')">
+        <div class="hinner">
+          <div class="hface hfront">
+            <div class="hclaim">"AI knows your team's reality"</div>
+            <div class="hsub">It has all the context it needs.</div>
+            <div class="hhint">tap to flip</div>
+          </div>
+          <div class="hface hback">
+            <div class="hlab">Reality</div>
+            <p>AI sees the tasks in the tool, not the room. It doesn't know your developer is burned out, that this stakeholder always changes scope, or that "done" here means QA-approved. That invisible context is exactly what makes you the manager. Feed AI the context it lacks, and never assume it filled the gaps itself.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Your getting-started path</h3>
+  <p>Start small and safe. <strong>First,</strong> pick the tool your team already uses and find out which AI features your plan actually includes. <strong>Second,</strong> use AI to draft one thing you'd normally write by hand — a project plan, a status update, or a risk list — and edit it hard. <strong>Third,</strong> compare that draft against a general assistant like Claude to feel the difference. <strong>Always,</strong> treat every AI timeline and commitment as a proposal you verify against your real team before you promise it to anyone. Do that a handful of times and AI becomes a genuine part of how you run projects.</p>
+</section>
+
+<section>
+  <div class="section-num">05 / 05</div>
+  <h2>Where the five modules meet: one project</h2>
+  <p class="lead">This is the final module, so here's the payoff. Everything you learned across the course — Excel, documents, presentations, communication, and now project management — doesn't live in separate boxes. In one real project, they all show up. Click each module to see where its skills land inside a single launch.</p>
+
+  <p>Imagine you're running a product launch. It's one project on a lifecycle — but delivering it pulls every skill from this course together. The plan lives in a PM tool, but the budget is a spreadsheet, the brief is a document, the kickoff is a presentation, and the whole thing runs on clear communication. AI helps in each — and project management is the discipline that stitches them into one moving thing. That's the whole course in a single picture.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 5 · How the five course modules meet in one project</span>
+      <div class="controls">
+        <button onclick="modStep(-1)">◀ Prev</button>
+        <button onclick="modStep(1)">Next ▶</button>
+      </div>
+    </div>
+    <div class="modmap">
+      <div class="modring" id="modRing">
+        <div class="modchip active" data-k="excel" onclick="pickMod('excel')"><span class="mnum">1</span><span class="mlabel">Excel + AI</span></div>
+        <div class="modchip" data-k="docs" onclick="pickMod('docs')"><span class="mnum">2</span><span class="mlabel">Documents</span></div>
+        <div class="modchip" data-k="slides" onclick="pickMod('slides')"><span class="mnum">3</span><span class="mlabel">Presentations</span></div>
+        <div class="modchip" data-k="comms" onclick="pickMod('comms')"><span class="mnum">4</span><span class="mlabel">Communication</span></div>
+        <div class="modchip" data-k="pm" onclick="pickMod('pm')"><span class="mnum">5</span><span class="mlabel">Project Mgmt</span></div>
+      </div>
+      <div class="modpanel" id="modPanel"></div>
+    </div>
+  </div>
+
+  <h3>The thread through all five</h3>
+  <p>Notice the pattern that has run through every module: AI drafts, you decide. It's true of a formula, a paragraph, a slide, an email, and a project plan alike. Project management is simply where all those drafts converge and someone — you — takes responsibility for turning them into a finished, delivered thing. Master the loop of "AI proposes, human verifies and commits," and you're not just efficient in one app. You're the person who can steer whole projects to done.</p>
+</section>
+
+<div class="takeaway">
+  <h2>What to carry forward</h2>
+  <p>You now have the honest map of AI in project management — and the through-line of the whole course. Project management is taking a goal and a team and shepherding it to done across five stages: initiate, plan, execute, track, close. AI plugs into every stage, but it does volume while you do judgment. The tools (Asana, ClickUp, Notion, Monday, Planner+Copilot, plus general assistants) mostly do the same things behind paywalls, so pick the tool your team uses. AI plans are optimistic, the features cost money, and only you can own a commitment. And in one real project, every module you learned comes together.</p>
+  <ul>
+    <li>Project management = goal + team + deadline, shepherded to done across five stages</li>
+    <li>Lifecycle: initiate → plan → execute → track → close, with lessons feeding back</li>
+    <li>AI does volume (drafts, summaries, risk lists); the PM does judgment and commits</li>
+    <li>Six doors: Asana AI, ClickUp Brain, Notion AI, Monday AI, Planner+Copilot, general AI</li>
+    <li>Honest limits: plans are optimistic, features are paywalled, humans own commitments</li>
+    <li>One project pulls all five modules together — AI proposes, you verify and deliver</li>
+  </ul>
+</div>
+
+</div>
+<footer>MokshPath · Lesson 01 of Week 5 · The final module: AI Project Management →</footer>
+<script>
+
+function el(id){return document.getElementById(id)}
+
+/* ===== Figure 1 · PM lifecycle flow ===== */
+const flowEl=el('flow'),fcap=el('fcap'),fstep=el('fstep');
+let flowTimers=[];
+const FLOWS={
+  run:[
+    {n:['fnInit'],c:[],cap:'INITIATE — the project is born. Someone defines why it exists, the goal, the rough scope, and who the stakeholders are. "We will ship the new onboarding flow by end of Q3."'},
+    {n:['fnInit','fnPlan'],c:[['fc1','data',false]],cap:'PLAN — the goal is broken into tasks with owners and dates. Dependencies get mapped, a timeline takes shape. This is the blueprint everyone works from.'},
+    {n:['fnPlan','fnExec'],c:[['fc2','data',false]],cap:'EXECUTE — the team does the actual work. Tasks move across the board, updates get posted, questions get answered. Most of the calendar lives here.'},
+    {n:['fnExec','fnTrack'],c:[['fc3','data',false]],cap:'TRACK — progress and risk are watched continuously. Are we on schedule? What is blocked? Who needs a nudge? Status reports go up to stakeholders.'},
+    {n:['fnTrack','fnClose'],c:[['fc4','answer',false]],cap:'CLOSE — the project ships. The team runs a retrospective: what worked, what did not, what to do differently. Those lessons feed the next project.'},
+    {n:['fnClose','fnInit'],c:[['frail','answer',true]],cap:'The loop closes. Lessons captured at CLOSE flow back to how you INITIATE next time. Good project management is a cycle, not a straight line.'}
+  ],
+  ai:[
+    {n:['fnInit'],c:[],cap:'AT INITIATE — AI drafts the project charter, brainstorms scope, and turns a vague idea into a clear one-paragraph goal statement you can react to. You decide if it is the right project.'},
+    {n:['fnInit','fnPlan'],c:[['fc1','data',false]],cap:'AT PLAN — AI shines here: give it the goal and it drafts a full task breakdown, suggests dependencies, and proposes a timeline in seconds. You add real buffer and fix who is actually free.'},
+    {n:['fnPlan','fnExec'],c:[['fc2','data',false]],cap:'AT EXECUTE — AI drafts task descriptions, writes the update you would have typed, and answers "what should I work on next?" You keep the team unblocked and moving.'},
+    {n:['fnExec','fnTrack'],c:[['fc3','data',false]],cap:'AT TRACK — AI summarizes status across dozens of tasks, drafts the stakeholder report, and flags tasks that look at risk of slipping. You confirm what is truly a risk and act on it.'},
+    {n:['fnTrack','fnClose'],c:[['fc4','answer',false]],cap:'AT CLOSE — AI drafts the retrospective, summarizes what the data says went well or badly, and writes the wrap-up. You add the human truths a model cannot see.'},
+    {n:['fnClose','fnInit'],c:[['frail','answer',true]],cap:'The lesson: AI accelerates EVERY stage of the lifecycle — but it drafts, and you decide, verify, and commit. That split is the whole skill of an AI-augmented PM.'}
+  ]
+};
+function clearFlowState(){
+  ['fnInit','fnPlan','fnExec','fnTrack','fnClose'].forEach(id=>el(id).classList.remove('on'));
+  ['fc1','fc2','fc3','fc4','frail'].forEach(id=>el(id).classList.remove('go','rev'));
+}
+function applyFlowStep(s,i,total){
+  clearFlowState();
+  s.n.forEach(id=>el(id).classList.add('on'));
+  s.c.forEach(pair=>{
+    const c=el(pair[0]),d=c.querySelector('.fdot');
+    d.className='fdot '+pair[1];
+    void c.offsetWidth;
+    if(pair[2])c.classList.add('rev');
+    c.classList.add('go');
+  });
+  fstep.textContent=(i+1)+' / '+total;
+  fcap.textContent=s.cap;
+}
+function runFlow(mode){
+  resetFlow(false);
+  el('btnRun').classList.toggle('active',mode==='run');
+  el('btnAI').classList.toggle('active',mode==='ai');
+  flowEl.classList.remove('run','ai');
+  flowEl.classList.add(mode);
+  el('frailLabel').textContent = mode==='run'
+    ? '↺ lessons from close feed back into how you initiate the next project'
+    : '↺ AI accelerates every stage, but the loop of decide-and-commit stays yours';
+  const steps=FLOWS[mode];
+  steps.forEach((s,i)=>{
+    flowTimers.push(setTimeout(()=>applyFlowStep(s,i,steps.length), 300+i*2100));
+  });
+}
+function resetFlow(full){
+  flowTimers.forEach(t=>clearTimeout(t));
+  flowTimers=[];
+  clearFlowState();
+  if(full){
+    fstep.textContent='— / —';
+    fcap.textContent='Press ▶ Run the lifecycle to watch a project move through the five stages, or ▶ Where AI helps to see AI’s role at each stop.';
+  }
+}
+new IntersectionObserver((es,o)=>es.forEach(e=>{if(e.isIntersecting){runFlow('run');o.unobserve(e.target)}}),{threshold:0.3}).observe(flowEl);
+
+/* ===== Figure 2 · tool comparison ===== */
+const TOOLS={
+  asana:{t:'Asana AI',tag:'Inside Asana · paid tiers',rows:[
+    ['AI does','Drafts project plans, writes status updates, summarizes progress, and suggests next steps ("Asana Intelligence").'],
+    ['Cost','Bundled into higher Asana plans — not on the free tier. Priced per seat.'],
+    ['Methodology','Hybrid: strong for lists, timelines and cross-team workflows rather than pure agile.'],
+    ['Best for','Mid-to-large teams coordinating work across several departments in one place.']
+  ],warn:'Great when Asana is already your hub. The AI is only as good as how tidily your team logs work.'},
+  clickup:{t:'ClickUp Brain',tag:'Inside ClickUp · add-on',rows:[
+    ['AI does','Answers questions about your workspace, drafts tasks and docs, summarizes threads, auto-writes updates.'],
+    ['Cost','A paid add-on on top of any ClickUp plan, charged per member per month.'],
+    ['Methodology','Flexible all-in-one: docs, tasks, sprints, whiteboards — bends to most working styles.'],
+    ['Best for','Teams who want one tool for everything and will actually keep it all in ClickUp.']
+  ],warn:'Powerful but broad — the sprawl can overwhelm small teams. Turn on only what you will use.'},
+  notion:{t:'Notion AI',tag:'Inside Notion · add-on',rows:[
+    ['AI does','Drafts and rewrites docs, summarizes pages, answers questions across your workspace, fills databases.'],
+    ['Cost','A per-member add-on on top of your Notion plan.'],
+    ['Methodology','Lightweight: docs-plus-databases rather than heavy Gantt or dependency management.'],
+    ['Best for','Small teams and solo operators who run projects as connected docs and simple boards.']
+  ],warn:'Excellent for writing-heavy projects; weaker if you need serious scheduling or resource views.'},
+  monday:{t:'Monday AI',tag:'Inside monday.com · paid tiers',rows:[
+    ['AI does','Auto-builds boards, drafts task formulas, summarizes items, and suggests automations from plain language.'],
+    ['Cost','Included in higher monday.com tiers; AI credits may be metered.'],
+    ['Methodology','Visual Kanban/board-first — great for operations, marketing and CRM-style pipelines.'],
+    ['Best for','Teams who think in colorful boards and want visual, automation-heavy workflows.']
+  ],warn:'Shines on visual, repeatable processes; can feel heavy for a single short one-off project.'},
+  planner:{t:'Microsoft Planner + Copilot',tag:'Inside Microsoft 365',rows:[
+    ['AI does','Copilot drafts plans, generates tasks, summarizes status, and connects to Teams, Outlook and Project.'],
+    ['Cost','Needs a Microsoft 365 Copilot license on top of your Microsoft subscription.'],
+    ['Methodology','Hybrid, tightly woven into the Microsoft ecosystem (Teams, To Do, Project).'],
+    ['Best for','Companies already living in Microsoft 365 who want AI where their work already is.']
+  ],warn:'Only worth it if your org runs on Microsoft. Confirm the Copilot license is actually enabled.'},
+  general:{t:'ChatGPT / Claude',tag:'General assistants · outside the tool',rows:[
+    ['AI does','Drafts full project plans, risk registers, status updates, meeting agendas and retros from a prompt.'],
+    ['Cost','Free tiers exist; paid tiers add stronger reasoning and file uploads. No PM subscription needed.'],
+    ['Methodology','Any — describe your style and it adapts. Not a tracker; a drafting and reasoning partner.'],
+    ['Best for','Anyone, on any tool. Draft here, then paste into whatever PM tool your team lives in.']
+  ],warn:'Not a project tracker — it forgets your project between chats. Your data leaves the tool, so avoid pasting anything confidential.'}
+};
+const TOOLORDER=['asana','clickup','notion','monday','planner','general'];
+let toolCurrent='asana';
+function pickTool(k){
+  toolCurrent=k;
+  document.querySelectorAll('#toolGrid .tcard').forEach(c=>c.classList.toggle('active',c.dataset.k===k));
+  const d=TOOLS[k],box=el('toolDetail');
+  let html='<span class="dtag">'+d.tag+'</span><h4>'+d.t+'</h4>';
+  d.rows.forEach(r=>{html+='<div class="drow"><span class="dk">'+r[0]+'</span><span>'+r[1]+'</span></div>'});
+  html+='<div class="warn">'+d.warn+'</div>';
+  box.innerHTML=html;
+  box.classList.remove('swap');void box.offsetWidth;box.classList.add('swap');
+}
+function toolStep(dir){
+  let i=TOOLORDER.indexOf(toolCurrent)+dir;
+  if(i<0)i=TOOLORDER.length-1;
+  if(i>=TOOLORDER.length)i=0;
+  pickTool(TOOLORDER[i]);
+}
+pickTool('asana');
+new IntersectionObserver((es,o)=>es.forEach(e=>{if(e.isIntersecting){pickTool('asana');o.unobserve(e.target)}}),{threshold:0.3}).observe(el('toolGrid'));
+
+/* ===== Figure 3 · AI-augmented PM model ===== */
+const AIMAP={
+  initiate:{t:'Initiate',tag:'Stage 1 · define why it exists',prompt:'"Draft a one-paragraph project charter for launching a new onboarding flow: goal, scope, key stakeholders, and success metric."',ai:[
+    'Turn a vague idea into a clear goal statement',
+    'Draft a project charter and scope outline',
+    'Brainstorm stakeholders and success metrics',
+    'List questions to resolve before you commit'
+  ],human:[
+    'Decide if this is the right project at all',
+    'Confirm the real business case and budget',
+    'Get genuine buy-in from stakeholders',
+    'Own the definition of "done"'
+  ],h:'AI drafts the charter in seconds, but it cannot judge whether the project is worth doing or whether leadership truly backs it. That decision is yours.'},
+  plan:{t:'Plan',tag:'Stage 2 · break it into tasks',prompt:'"Break this goal into a task list with owners and rough durations, flag dependencies, and propose a realistic timeline."',ai:[
+    'Draft a full work breakdown into tasks',
+    'Suggest dependencies and a first timeline',
+    'Estimate rough durations for each task',
+    'Generate a Gantt or board structure'
+  ],human:[
+    'Add real buffer — AI plans are optimistic',
+    'Assign owners based on who is actually free',
+    'Cut scope to fit the real deadline',
+    'Sanity-check estimates against your team'
+  ],h:'This is where AI is strongest and most seductive. It produces a beautiful plan that assumes everything goes right. You inject the reality of leave, blockers and slippage.'},
+  execute:{t:'Execute',tag:'Stage 3 · do the work',prompt:'"Write clear task descriptions and acceptance criteria for these five tasks, and suggest what should be worked on first."',ai:[
+    'Draft task descriptions and acceptance criteria',
+    'Answer "what should I do next?" from the board',
+    'Write the routine update you would have typed',
+    'Suggest how to unblock a stalled task'
+  ],human:[
+    'Actually talk to people and remove blockers',
+    'Make the trade-off calls when reality shifts',
+    'Protect the team from scope creep',
+    'Keep morale and momentum alive'
+  ],h:'AI drafts the words, but execution is a human sport. Unblocking a stuck teammate or calming a nervous client is judgment and relationship — not text generation.'},
+  track:{t:'Track',tag:'Stage 4 · progress and risk',prompt:'"Summarize the status of these 30 tasks into a 5-line stakeholder update, and flag anything that looks at risk of slipping."',ai:[
+    'Summarize status across many tasks fast',
+    'Draft the weekly stakeholder report',
+    'Flag tasks that look at risk of slipping',
+    'Spot patterns you would miss scrolling'
+  ],human:[
+    'Confirm which risks are real and act on them',
+    'Decide what to escalate and to whom',
+    'Read the human signals AI cannot see',
+    'Own the "yes, still on track" message'
+  ],h:'AI summarizes what the tool knows, but it can miss the quiet risk a status board never captures. You verify the flag, and you own the reassurance you give.'},
+  close:{t:'Close',tag:'Stage 5 · ship and learn',prompt:'"Draft a retrospective: summarize what went well and badly from these notes, and list three concrete improvements for next time."',ai:[
+    'Draft the project retrospective',
+    'Summarize what the data says went well or badly',
+    'Write the wrap-up and handover doc',
+    'Suggest improvements for next time'
+  ],human:[
+    'Add the honest human truths that hurt',
+    'Give real credit to the people who delivered',
+    'Decide which lessons actually change next time',
+    'Formally close and celebrate the win'
+  ],h:'AI drafts a tidy retro, but the real lessons are often uncomfortable and political — the ones a model will not surface. You bring the honesty that makes a retro worth doing.'}
+};
+const AIORDER=['initiate','plan','execute','track','close'];
+let aiCurrent='initiate';
+function pickStage(k){
+  aiCurrent=k;
+  document.querySelectorAll('#aiChain .ainode').forEach(n=>{
+    n.classList.toggle('active',n.dataset.k===k);
+  });
+  const d=AIMAP[k],panel=el('aiPanel');
+  let html='<span class="aitag">'+d.tag+'</span><h4>'+d.t+'</h4>';
+  html+='<div class="aiprompt"><span class="plab">Try this prompt</span>'+d.prompt+'</div>';
+  html+='<div class="splitcols"><div class="splitcol ai"><h6>AI does the volume</h6><ul>';
+  d.ai.forEach(t=>{html+='<li>'+t+'</li>'});
+  html+='</ul></div><div class="splitcol human"><h6>You do the judgment</h6><ul>';
+  d.human.forEach(t=>{html+='<li>'+t+'</li>'});
+  html+='</ul></div></div>';
+  html+='<div class="ai-human"><strong>The line at this stage</strong>'+d.h+'</div>';
+  panel.innerHTML=html;
+  panel.classList.remove('swap');
+  void panel.offsetWidth;
+  panel.classList.add('swap');
+}
+function stageStep(dir){
+  let i=AIORDER.indexOf(aiCurrent)+dir;
+  if(i<0)i=AIORDER.length-1;
+  if(i>=AIORDER.length)i=0;
+  pickStage(AIORDER[i]);
+}
+pickStage('initiate');
+new IntersectionObserver((es,o)=>es.forEach(e=>{if(e.isIntersecting){pickStage('initiate');o.unobserve(e.target)}}),{threshold:0.3}).observe(el('aiChain'));
+
+/* ===== Figure 4 · limitations flip ===== */
+const hgrid=el('hgrid');
+function allReal(){document.querySelectorAll('.hcard').forEach(c=>c.classList.add('flipped'))}
+function allHype(){document.querySelectorAll('.hcard').forEach(c=>c.classList.remove('flipped'))}
+new IntersectionObserver((es,o)=>es.forEach(e=>{if(e.isIntersecting){hgrid.classList.add('show');o.unobserve(e.target)}}),{threshold:0.25}).observe(hgrid);
+
+/* ===== Figure 5 · five modules meet in a project ===== */
+const MODS={
+  excel:{t:'Excel + AI',role:'Module 1 · the numbers underneath',body:'Every project runs on numbers. The budget, the resource plan, the burn-down and the metrics all live in a spreadsheet. AI helps you build the budget formula, spot the overspend, and chart progress.',ex:'In the launch: AI drafts the SUMIFS that tracks spend by workstream, so you know at a glance if you are over budget.'},
+  docs:{t:'Documents',role:'Module 2 · the written record',body:'Projects generate documents — the brief, the requirements, the charter, the handover. AI drafts and tidies them so the written record stays clear and current instead of going stale.',ex:'In the launch: AI turns your messy kickoff notes into a clean one-page project brief everyone can align on.'},
+  slides:{t:'Presentations',role:'Module 3 · the story you tell',body:'You pitch the project, present the plan, and report the results in slides. AI drafts the deck structure and speaker notes so you can focus on the argument, not the formatting.',ex:'In the launch: AI drafts the stakeholder kickoff deck from your project plan, ready for you to refine and deliver.'},
+  comms:{t:'Communication',role:'Module 4 · keeping everyone aligned',body:'A project is mostly communication — updates, emails, chasing, aligning. AI drafts the status email, the nudge, the escalation, so nothing important goes unsaid or unclear.',ex:'In the launch: AI drafts the weekly update email to stakeholders from your tracked status, in the right tone.'},
+  pm:{t:'Project Management',role:'Module 5 · the discipline that binds it',body:'Project management is the thread that ties the other four together — the lifecycle, the plan, the tracking, the accountability. AI accelerates every stage; you own the outcome.',ex:'In the launch: the PM tool holds the plan and AI keeps status current, while you steer the whole thing to a delivered launch.'}
+};
+const MODORDER=['excel','docs','slides','comms','pm'];
+let modCurrent='excel';
+function pickMod(k){
+  modCurrent=k;
+  document.querySelectorAll('#modRing .modchip').forEach(c=>c.classList.toggle('active',c.dataset.k===k));
+  const d=MODS[k],panel=el('modPanel');
+  let html='<span class="mrole">'+d.role+'</span><h4>'+d.t+'</h4>';
+  html+='<p>'+d.body+'</p><div class="mex">'+d.ex+'</div>';
+  panel.innerHTML=html;
+  panel.classList.remove('swap');void panel.offsetWidth;panel.classList.add('swap');
+}
+function modStep(dir){
+  let i=MODORDER.indexOf(modCurrent)+dir;
+  if(i<0)i=MODORDER.length-1;
+  if(i>=MODORDER.length)i=0;
+  pickMod(MODORDER[i]);
+}
+pickMod('excel');
+new IntersectionObserver((es,o)=>es.forEach(e=>{if(e.isIntersecting){pickMod('excel');o.unobserve(e.target)}}),{threshold:0.3}).observe(el('modRing'));
+
+</script>
+</body>
+</html>
