@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 3 · Synthesis &amp; Analysis — MokshPath</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=JetBrains+Mono:wght@400;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --orange:#E87A2E;--orange-dark:#D06A20;--orange-light:#F5943E;--orange-glow:rgba(232,122,46,0.12);
+  --navy:#2B2D42;--navy-dark:#1A1B2E;
+  --bg:#F3EDE7;--bg-card:#FFFFFF;--bg-light:#F9F5F0;
+  --text-primary:#2B2D42;--text-secondary:#6B6D7B;--text-muted:#9597A6;
+  --border:#E5DDD4;--green:#4CAF50;--green-light:#E8F5E9;--red:#E04E3C;--red-light:#FDECEA;
+  --shadow-sm:0 2px 8px rgba(43,45,66,0.06);--shadow-md:0 8px 24px rgba(43,45,66,0.08);
+  --shadow-lg:0 16px 48px rgba(43,45,66,0.12);
+  --radius:14px;--radius-sm:8px;
+  --mono:'JetBrains Mono',monospace;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text-primary);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+
+/* ── NAV ── */
+.nav{position:sticky;top:0;z-index:100;background:var(--bg-card);border-bottom:1px solid var(--border);padding:0 2rem;height:64px;display:flex;align-items:center;justify-content:space-between;box-shadow:var(--shadow-sm)}
+.nav-left{display:flex;align-items:center;gap:.7rem}
+.lesson-badge{font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--orange);background:var(--orange-glow);padding:.3rem .7rem;border-radius:50px}
+.nav-logo{display:flex;align-items:center;gap:.7rem;text-decoration:none}
+.nav-logo-icon{width:auto;height:48px;display:block;object-fit:contain}
+.nav-logo-text{display:flex;flex-direction:column;line-height:1.15}
+.nav-logo-name{font-family:'DM Serif Display',serif;font-size:1.25rem;color:var(--navy)}
+.nav-logo-name span{color:var(--orange)}
+.nav-logo-tag{font-size:.62rem;color:var(--text-muted);font-weight:500;letter-spacing:.02em}
+
+/* ── HERO ── */
+.hero{padding:3.5rem 2rem 2.5rem;text-align:center;position:relative}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:.45rem;padding:.4rem 1rem;border-radius:50px;background:var(--orange-glow);color:var(--orange);font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:1.2rem}
+.hero-eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--orange);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.hero h1{font-family:'DM Serif Display',serif;font-size:clamp(2rem,4vw,3rem);line-height:1.13;color:var(--navy);margin-bottom:1rem;max-width:780px;margin-left:auto;margin-right:auto}
+.hero h1 em{font-style:normal;color:var(--orange)}
+.hero-sub{font-size:1.02rem;color:var(--text-secondary);line-height:1.7;max-width:620px;margin:0 auto}
+
+/* ── PROGRESS RAIL ── */
+.progress-rail{max-width:760px;margin:1.8rem auto 0;display:flex;align-items:center;gap:.5rem}
+.progress-dot{flex:1;height:6px;background:var(--border);border-radius:3px;transition:background .3s}
+.progress-dot.done{background:linear-gradient(90deg,var(--orange),var(--orange-light))}
+.progress-label{font-size:.7rem;color:var(--text-muted);font-weight:600;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+
+/* ── SECTIONS ── */
+section.lesson{padding:3rem 2rem}
+.container{max-width:1080px;margin:0 auto}
+.lesson-num{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;background:var(--orange);color:#fff;font-family:'DM Serif Display',serif;font-size:1.1rem;margin-bottom:.9rem}
+.lesson-title{font-family:'DM Serif Display',serif;font-size:clamp(1.6rem,2.5vw,2.1rem);color:var(--navy);margin-bottom:.55rem;line-height:1.2}
+.lesson-intro{font-size:.95rem;color:var(--text-secondary);line-height:1.7;max-width:680px;margin-bottom:2rem}
+.lesson-card{background:var(--bg-card);border-radius:var(--radius);box-shadow:var(--shadow-sm);border:1px solid var(--border);padding:2rem;margin-top:1.5rem}
+.lesson-card.alt{background:var(--bg-light)}
+
+/* ── PIPELINE STRIP ── */
+.pipeline{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1.4rem}
+.pipe-step{flex:1 1 140px;background:var(--bg-light);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:.9rem 1rem;position:relative}
+.pipe-step .pipe-n{font-family:var(--mono);font-size:.68rem;font-weight:600;color:var(--orange);letter-spacing:.06em}
+.pipe-step .pipe-t{font-family:'DM Serif Display',serif;font-size:1.05rem;color:var(--navy);margin:.2rem 0 .3rem}
+.pipe-step .pipe-d{font-size:.76rem;color:var(--text-secondary);line-height:1.5}
+.pipe-arrow{align-self:center;color:var(--orange);font-weight:700;font-size:1.1rem}
+@media (max-width:760px){.pipe-arrow{display:none}.pipe-step{flex:1 1 100%}}
+
+/* ── DRAG CARDS + FEEDBACK (shared) ── */
+.classify-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:1.5rem;margin-top:1rem}
+@media (max-width:760px){.classify-grid{grid-template-columns:1fr}}
+.classify-scenarios{display:flex;flex-direction:column;gap:.7rem}
+.scenario-card{background:var(--bg-card);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:.8rem 1rem;cursor:grab;transition:all .25s;position:relative;user-select:none}
+.scenario-card:hover{border-color:var(--orange);box-shadow:var(--shadow-sm);transform:translateY(-1px)}
+.scenario-card.dragging{opacity:.4}
+.scenario-card.placed{opacity:.35;cursor:not-allowed;pointer-events:none}
+.scenario-card.placed.correct{border-color:var(--green);background:var(--green-light)}
+.scenario-card.placed.wrong{border-color:var(--red);background:var(--red-light)}
+.scenario-text{font-size:.85rem;color:var(--text-primary);line-height:1.45;font-weight:500}
+.dropped-pill{background:var(--bg-card);border:1px solid var(--border);border-radius:50px;padding:.3rem .7rem;font-size:.72rem;font-weight:500;color:var(--text-primary);cursor:help}
+.dropped-pill.correct{background:var(--green-light);border-color:var(--green);color:#256B29}
+.dropped-pill.wrong{background:var(--red-light);border-color:var(--red);color:#933}
+.activity-feedback{margin-top:1.2rem;padding:1rem 1.2rem;border-radius:var(--radius-sm);font-size:.85rem;line-height:1.55;display:none}
+.activity-feedback.show{display:block;animation:fadeIn .4s ease}
+.activity-feedback.success{background:var(--green-light);color:#1F5723;border-left:3px solid var(--green)}
+.activity-feedback.partial{background:#FFF4E5;color:#7A4A0A;border-left:3px solid #E89B2E}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.activity-toolbar{display:flex;gap:.6rem;margin-top:1.2rem;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:.4rem;padding:.6rem 1.2rem;border-radius:8px;font-size:.82rem;font-weight:600;border:none;cursor:pointer;transition:all .2s;font-family:inherit;text-decoration:none}
+.btn-primary{background:var(--orange);color:#fff}.btn-primary:hover{background:var(--orange-dark);transform:translateY(-1px);box-shadow:0 4px 12px rgba(232,122,46,0.3)}
+.btn-ghost{background:transparent;border:1.5px solid var(--border);color:var(--text-secondary)}.btn-ghost:hover{border-color:var(--orange);color:var(--orange)}
+
+/* ── ACTIVITY: MATRIX BUILDER (wireframe-style zones) ── */
+.wireframe{border:1.5px solid var(--border);border-radius:var(--radius-sm);overflow:hidden;background:var(--bg-light)}
+.wf-chrome{display:flex;align-items:center;gap:.4rem;background:var(--navy);padding:.5rem .8rem}
+.wf-chrome span{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.35)}
+.wf-chrome .wf-url{flex:1;margin-left:.5rem;background:rgba(255,255,255,.12);border-radius:4px;color:rgba(255,255,255,.7);font-family:var(--mono);font-size:.62rem;padding:.15rem .6rem}
+.wf-zone{border:2px dashed var(--border);margin:.7rem;border-radius:var(--radius-sm);padding:.8rem .9rem;transition:all .25s;background:rgba(255,255,255,.6)}
+.wf-zone.drag-over{border-color:var(--orange);background:var(--orange-glow);border-style:solid}
+.wf-zone-title{font-family:'DM Serif Display',serif;font-size:.98rem;color:var(--navy)}
+.wf-zone-sub{font-size:.68rem;color:var(--text-muted);margin-bottom:.55rem;letter-spacing:.04em;text-transform:uppercase;font-weight:600}
+.wf-drop{display:flex;flex-wrap:wrap;gap:.4rem;min-height:34px}
+
+/* ── ACTIVITY: A/B PAIRS ── */
+.ab-pair{margin-top:1.4rem;padding-top:1.4rem;border-top:1px solid var(--border)}
+.ab-pair:first-child{margin-top:0;padding-top:0;border-top:none}
+.ab-q{font-size:.9rem;font-weight:700;color:var(--navy);margin-bottom:.8rem}
+.ab-q .ab-tag{font-family:var(--mono);font-size:.68rem;color:var(--orange);font-weight:600;letter-spacing:.04em;display:block;margin-bottom:.2rem}
+.ab-cards{display:grid;grid-template-columns:1fr 1fr;gap:.9rem}
+@media (max-width:760px){.ab-cards{grid-template-columns:1fr}}
+.ab-card{background:var(--bg-light);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:1rem 1.1rem;cursor:pointer;transition:all .25s;position:relative}
+.ab-card:hover{border-color:var(--orange);transform:translateY(-2px);box-shadow:var(--shadow-sm)}
+.ab-card.locked{cursor:default;pointer-events:none}
+.ab-card.win{border-color:var(--green);background:var(--green-light)}
+.ab-card.lose{opacity:.55}
+.ab-card.picked-wrong{border-color:var(--red);background:var(--red-light)}
+.ab-letter{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;background:var(--navy);color:#fff;font-size:.72rem;font-weight:700;margin-bottom:.5rem}
+.ab-copy{font-size:.85rem;line-height:1.55;color:var(--text-primary)}
+.ab-verdict{margin-top:.8rem;font-size:.8rem;line-height:1.55;padding:.7rem .9rem;border-radius:6px;display:none}
+.ab-verdict.show{display:block;animation:fadeIn .35s ease}
+.ab-verdict.good{background:var(--green-light);color:#1F5723;border-left:3px solid var(--green)}
+.ab-verdict.bad{background:#FFF4E5;color:#7A4A0A;border-left:3px solid #E89B2E}
+
+/* ── ACTIVITY: CONSENSUS TOGGLE ROWS ── */
+.brand-block{margin-top:1.3rem;padding:1.1rem 1.2rem;background:var(--bg-light);border:1px solid var(--border);border-radius:var(--radius-sm)}
+.brand-block:first-child{margin-top:0}
+.brand-name{font-family:'DM Serif Display',serif;font-size:1.05rem;color:var(--navy);margin-bottom:.7rem}
+.brand-name .q-tag{font-family:var(--mono);font-size:.66rem;color:var(--orange);font-weight:600;letter-spacing:.04em;display:block;margin-bottom:.2rem;text-transform:none}
+.brand-row{display:grid;grid-template-columns:1fr auto;gap:.6rem;align-items:center;padding:.35rem 0}
+.brand-crit{font-size:.82rem;color:var(--text-secondary);font-weight:500}
+.tog-group{display:flex;gap:.35rem}
+.tog{padding:.32rem .85rem;border-radius:50px;border:1.5px solid var(--border);background:var(--bg-card);font-size:.74rem;font-weight:700;cursor:pointer;font-family:inherit;color:var(--text-secondary);transition:all .2s}
+.tog:hover{border-color:var(--orange);color:var(--orange)}
+.tog.on-yes{background:var(--navy);border-color:var(--navy);color:#fff}
+.tog.reveal-hit{background:var(--green-light);border-color:var(--green);color:#256B29}
+.tog.reveal-miss{background:var(--red-light);border-color:var(--red);color:#933}
+.brand-why{margin-top:.6rem;font-size:.78rem;line-height:1.55;color:var(--text-secondary);background:var(--bg-card);border-left:3px solid var(--orange);border-radius:4px;padding:.6rem .8rem;display:none}
+.brand-why.show{display:block;animation:fadeIn .35s ease}
+
+/* ── QUIZ ── */
+.quiz-q{margin-top:1.4rem;padding-top:1.4rem;border-top:1px solid var(--border)}
+.quiz-q:first-child{margin-top:0;padding-top:0;border-top:none}
+.quiz-prompt{font-size:.92rem;font-weight:700;color:var(--navy);margin-bottom:.8rem;line-height:1.5}
+.quiz-prompt .q-tag{font-family:var(--mono);font-size:.68rem;color:var(--orange);font-weight:600;letter-spacing:.04em;display:block;margin-bottom:.2rem}
+.quiz-opts{display:flex;flex-direction:column;gap:.55rem}
+.quiz-opt{background:var(--bg-light);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:.75rem 1rem;cursor:pointer;transition:all .2s;font-size:.85rem;line-height:1.45;color:var(--text-primary);display:flex;gap:.6rem;align-items:flex-start}
+.quiz-opt:hover{border-color:var(--orange)}
+.quiz-opt .opt-key{font-family:var(--mono);font-size:.72rem;font-weight:600;color:var(--orange);flex-shrink:0;margin-top:.05rem}
+.quiz-opt.locked{cursor:default;pointer-events:none}
+.quiz-opt.correct{border-color:var(--green);background:var(--green-light)}
+.quiz-opt.wrong{border-color:var(--red);background:var(--red-light)}
+.quiz-explain{margin-top:.7rem;font-size:.8rem;line-height:1.55;padding:.7rem .9rem;border-radius:6px;display:none}
+.quiz-explain.show{display:block;animation:fadeIn .35s ease}
+.quiz-explain.good{background:var(--green-light);color:#1F5723;border-left:3px solid var(--green)}
+.quiz-explain.bad{background:#FFF4E5;color:#7A4A0A;border-left:3px solid #E89B2E}
+
+/* ── SYNTHESIS CHECKLIST ── */
+.check-list{list-style:none;margin-top:1rem;display:flex;flex-direction:column;gap:.7rem}
+.check-list li{display:flex;gap:.7rem;align-items:flex-start;background:var(--bg-light);border:1px solid var(--border);border-radius:var(--radius-sm);padding:.8rem 1rem}
+.check-ico{width:24px;height:24px;border-radius:6px;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.8rem;font-weight:700;background:linear-gradient(135deg,var(--orange-light),var(--orange))}
+.check-txt{font-size:.85rem;line-height:1.55;color:var(--text-secondary)}
+.check-txt strong{color:var(--navy)}
+
+/* ── REFLECTION ── */
+.reflect-prompt{display:grid;grid-template-columns:1fr;gap:.8rem;margin-top:1rem}
+.reflect-q{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:1rem 1.2rem}
+.reflect-q-text{font-size:.88rem;font-weight:600;color:var(--navy);margin-bottom:.5rem}
+.reflect-q textarea{width:100%;border:1px solid var(--border);border-radius:6px;padding:.6rem .8rem;font-family:inherit;font-size:.85rem;color:var(--text-primary);background:var(--bg-light);resize:vertical;min-height:60px}
+.reflect-q textarea:focus{outline:none;border-color:var(--orange)}
+
+/* ── FOOTER NEXT ── */
+.next-up{background:linear-gradient(135deg,var(--navy-dark),var(--navy));border-radius:var(--radius);padding:2.4rem;color:#fff;margin-top:2rem;text-align:center;position:relative;overflow:hidden}
+.next-up::before{content:'';position:absolute;top:-50px;right:-50px;width:180px;height:180px;border-radius:50%;background:rgba(232,122,46,0.12)}
+.next-up h3{font-family:'DM Serif Display',serif;font-size:1.5rem;margin-bottom:.5rem;position:relative}
+.next-up p{font-size:.92rem;color:rgba(255,255,255,0.75);margin-bottom:1.2rem;position:relative}
+.next-up .btn-primary{position:relative}
+
+@media (max-width:760px){
+  .nav{padding:0 1rem}
+  .nav-logo-tag{display:none}
+  .hero{padding:2.5rem 1.2rem 2rem}
+  section.lesson{padding:2rem 1.2rem}
+  .lesson-card{padding:1.4rem}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-left">
+    <span class="lesson-badge">Lesson 3 of 4</span>
+  </div>
+  <a href="https://mokshpath.org/" class="nav-logo">
+    <img class="nav-logo-icon" src="hero.svg" alt="MokshPath logo">
+    <div class="nav-logo-text">
+      <span class="nav-logo-name">Moksh<span>Path</span></span>
+      <span class="nav-logo-tag">Guided Path to True Learning</span>
+    </div>
+  </a>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-eyebrow"><span class="dot"></span> Week 3 · AI Research</div>
+  <h1>Synthesis &amp; Analysis — <em>turn ten sources into one honest answer</em></h1>
+  <p class="hero-sub">Gathering sources is the easy half of research. The hard half is weaving them together without flattening what makes each one distinct. Four hands-on drills: run the six-step synthesis workflow, decide what a good summary keeps and drops, build a source-by-theme matrix, catch AI when it smooths real disagreement into a fake consensus — then ground your answers in your own documents with NotebookLM.</p>
+  <div class="progress-rail">
+    <span class="progress-label">Progress</span>
+    <div class="progress-dot" id="prog1"></div>
+    <div class="progress-dot" id="prog2"></div>
+    <div class="progress-dot" id="prog3"></div>
+    <div class="progress-dot" id="prog4"></div>
+  </div>
+</header>
+
+<!-- ── WORKFLOW OVERVIEW (teaching) ── -->
+<section class="lesson" id="workflow">
+  <div class="container">
+    <span class="lesson-num" style="background:var(--navy)">•</span>
+    <h2 class="lesson-title">The synthesis workflow — six steps, in order</h2>
+    <p class="lesson-intro">Synthesis is not "summarise everything and mash it together." It is the disciplined move from a pile of sources to a claim you can defend — with each part of the claim traceable to something real. AI can accelerate every step, but "summarise these ten articles" tends to produce a bland average that agrees with everyone and commits to nothing. Follow the order below, and you keep the tension, the caveats and the citations that make research trustworthy.</p>
+    <div class="lesson-card">
+      <div class="pipeline">
+        <div class="pipe-step"><div class="pipe-n">STEP 1</div><div class="pipe-t">Collect</div><div class="pipe-d">Gather your sources and note what each one actually is — a study, an opinion, a vendor page. Provenance matters later.</div></div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-step"><div class="pipe-n">STEP 2</div><div class="pipe-t">Ground</div><div class="pipe-d">Feed the real documents to a grounded tool (like NotebookLM) so answers come from your sources, not the model's memory.</div></div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-step"><div class="pipe-n">STEP 3</div><div class="pipe-t">Extract</div><div class="pipe-d">Pull the key claim, evidence and caveats from each source. Keep the load-bearing detail; drop the filler.</div></div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-step"><div class="pipe-n">STEP 4</div><div class="pipe-t">Compare</div><div class="pipe-d">Line sources up against shared themes. Where do they agree? Where do they genuinely disagree, and why?</div></div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-step"><div class="pipe-n">STEP 5</div><div class="pipe-t">Synthesize</div><div class="pipe-d">Write the claim that the evidence supports — including the disagreements and the limits, not just the tidy part.</div></div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-step"><div class="pipe-n">STEP 6</div><div class="pipe-t">Verify</div><div class="pipe-d">Trace every claim back to a source and check the citation actually says it. AI can attribute things nobody wrote.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 1: SUMMARY KEEP/DROP A/B ── -->
+<section class="lesson" id="activity-1" style="background:var(--bg-light)">
+  <div class="container">
+    <span class="lesson-num">1</span>
+    <h2 class="lesson-title">Summarise well — pick the version that keeps what matters</h2>
+    <p class="lesson-intro">A good summary is not just shorter — it is faithful. It keeps the load-bearing parts (the actual finding, the size of the effect, the conditions and caveats) and drops the filler (throat-clearing, restated background, hedging that adds nothing). A bad summary often keeps the confident-sounding conclusion while quietly deleting the "in a small sample" or "only in one country" that changes what the conclusion means. Below are three pairs. In each, one summary would mislead the reader. Click the one you'd actually trust.</p>
+    <div class="lesson-card" id="abWrap"></div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 2: SYNTHESIS MATRIX BUILDER (drag) ── -->
+<section class="lesson" id="activity-2">
+  <div class="container">
+    <span class="lesson-num" style="background:#5B8FE0">2</span>
+    <h2 class="lesson-title">Build the synthesis matrix — place each finding under its theme</h2>
+    <p class="lesson-intro">A synthesis matrix is a grid: sources down one side, recurring <strong>themes</strong> across the top, and in each cell what that source says about that theme. It turns a stack of articles into a map of the conversation — you can see at a glance who agrees, who disagrees, and where a theme has only one voice. Our research question: <strong>"Does remote work help or hurt team productivity?"</strong> Four themes emerged. Drag each finding onto the theme column it belongs to — <strong>Individual output</strong>, <strong>Collaboration &amp; communication</strong>, <strong>Employee wellbeing</strong>, or <strong>Long-term / onboarding effects</strong>. Two findings don't fit any theme cleanly. Wrong drops turn red — hover them for the fix.</p>
+
+    <div class="lesson-card">
+      <div class="classify-grid">
+        <div class="classify-scenarios" id="fieldList"></div>
+        <div class="wireframe">
+          <div class="wf-chrome"><span></span><span></span><span></span><div class="wf-url">synthesis_matrix · remote_work_review</div></div>
+          <div class="wf-zone" data-zone="output">
+            <div class="wf-zone-title">Individual output</div>
+            <div class="wf-zone-sub">Solo task productivity · 1 finding</div>
+            <div class="wf-drop" data-drop="output"></div>
+          </div>
+          <div class="wf-zone" data-zone="collab">
+            <div class="wf-zone-title">Collaboration &amp; communication</div>
+            <div class="wf-zone-sub">Working together · 1 finding</div>
+            <div class="wf-drop" data-drop="collab"></div>
+          </div>
+          <div class="wf-zone" data-zone="wellbeing">
+            <div class="wf-zone-title">Employee wellbeing</div>
+            <div class="wf-zone-sub">Burnout, satisfaction · 1 finding</div>
+            <div class="wf-drop" data-drop="wellbeing"></div>
+          </div>
+          <div class="wf-zone" data-zone="longterm">
+            <div class="wf-zone-title">Long-term / onboarding</div>
+            <div class="wf-zone-sub">New hires, over time · 1 finding</div>
+            <div class="wf-drop" data-drop="longterm"></div>
+          </div>
+          <div class="wf-zone" data-zone="unused">
+            <div class="wf-zone-title">Doesn't fit a theme</div>
+            <div class="wf-zone-sub">Off-topic or not a finding · 2 items</div>
+            <div class="wf-drop" data-drop="unused"></div>
+          </div>
+        </div>
+      </div>
+      <div class="activity-feedback" id="feedback2"></div>
+      <div class="activity-toolbar">
+        <button class="btn btn-ghost" onclick="resetActivity2()">↻ Try again</button>
+        <button class="btn btn-primary" onclick="showAnswers2()">Show me the answers</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 3: FALSE CONSENSUS DETECTOR ── -->
+<section class="lesson" id="activity-3" style="background:var(--bg-light)">
+  <div class="container">
+    <span class="lesson-num" style="background:#66BB6A">3</span>
+    <h2 class="lesson-title">Real consensus or AI over-smoothing? Spot the false consensus</h2>
+    <p class="lesson-intro">When you ask AI to synthesise conflicting sources, its instinct is to be agreeable — it blends disagreement into a smooth "experts generally find..." that no single source actually supports. That is <strong>false consensus</strong>, and it is one of synthesis's most dangerous failure modes: it reads as balanced while erasing the real debate. For each synthesised statement below, decide: does it reflect <strong>genuine agreement</strong> across the sources, or is it <strong>over-smoothed</strong> — papering over a real split? Mark each, then check yourself against the analyst's verdict.</p>
+
+    <div class="lesson-card">
+      <div id="chartWrap"></div>
+      <div class="activity-feedback" id="feedback3"></div>
+      <div class="activity-toolbar">
+        <button class="btn btn-ghost" onclick="resetChart()">↻ Reset choices</button>
+        <button class="btn btn-primary" onclick="checkChart()">Check my choices</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 4: QUIZ — GROUNDING, NOTEBOOKLM, LIMITS ── -->
+<section class="lesson" id="activity-4">
+  <div class="container">
+    <span class="lesson-num" style="background:#4CAF50">4</span>
+    <h2 class="lesson-title">Ground it and check it — synthesis you can defend</h2>
+    <p class="lesson-intro">A general chatbot answers from everything it ever read; it can't tell you which of <em>your</em> ten documents a claim came from, and it may blend in facts you never uploaded. A grounded tool like <strong>NotebookLM</strong> answers only from the sources you give it and cites the passage — so you can click through and verify. But grounding is not magic: it can still miss caveats, over-smooth, or cite a passage that doesn't quite say what it claims. Answer these four. Each locks in with the reasoning.</p>
+    <div class="lesson-card" id="quizWrap"></div>
+  </div>
+</section>
+
+<!-- ── SYNTHESIS SANITY CHECK (teaching) ── -->
+<section class="lesson" id="validate" style="background:var(--bg-light)">
+  <div class="container">
+    <span class="lesson-num" style="background:var(--navy)">✓</span>
+    <h2 class="lesson-title">The 60-second synthesis check before you cite it</h2>
+    <p class="lesson-intro">Before any AI-synthesised paragraph goes into your report, run it past these. Synthesis errors are quiet — they read fluently and confidently — so you have to look for what's missing, not just what's there.</p>
+    <div class="lesson-card">
+      <ul class="check-list">
+        <li><div class="check-ico">≠</div><div class="check-txt"><strong>Did it keep the disagreement?</strong> If your sources argued and the summary says everyone agrees, the tension was smoothed away. Real synthesis names who differs and why — a suspiciously tidy consensus is a red flag.</div></li>
+        <li><div class="check-ico">*</div><div class="check-txt"><strong>Are the caveats still attached?</strong> "In a small pilot," "only for one team," "self-reported" — these change what a finding means. AI loves to drop them. Check that each claim still carries its conditions.</div></li>
+        <li><div class="check-ico">→</div><div class="check-txt"><strong>Does every claim trace to a source?</strong> For each sentence, ask "which document said this?" If you can't point to one, the AI may have invented it or blended in outside knowledge. Grounded tools cite; verify the citation.</div></li>
+        <li><div class="check-ico">?</div><div class="check-txt"><strong>Does the citation actually say it?</strong> Click through. AI can attach a real-looking source to a claim that source never made. A citation you didn't read is a citation you can't trust.</div></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ── REFLECT ── -->
+<section class="lesson" style="padding-bottom:1.5rem">
+  <div class="container">
+    <h2 class="lesson-title" style="font-size:1.5rem">Quick reflect — make it stick</h2>
+    <p class="lesson-intro" style="margin-bottom:1rem">A sentence each is enough. Writing it in your own words is what makes it stay. (Nothing is saved or sent.)</p>
+    <div class="reflect-prompt">
+      <div class="reflect-q">
+        <div class="reflect-q-text">Your AI summary of five studies says "research consistently shows X." What two things would you check before you believe that word "consistently"?</div>
+        <textarea placeholder="Whether all five actually agree or whether the AI smoothed over a split, and whether each source's caveats survived..."></textarea>
+      </div>
+      <div class="reflect-q">
+        <div class="reflect-q-text">You need to synthesise ten of your own PDFs and be able to defend every claim. Why might you reach for NotebookLM instead of a general chatbot — and what would you still verify yourself?</div>
+        <textarea placeholder="It answers only from my documents and cites the passage, so I can trace claims. I'd still click each citation to confirm the source really says it, and check for dropped caveats..."></textarea>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NEXT UP -->
+<section class="lesson" style="padding-top:0">
+  <div class="container">
+    <div class="next-up">
+      <h3>Lesson 4 · Verification, Citations &amp; Ethics</h3>
+      <p>You can collect, ground, extract, compare and synthesise — now make it bulletproof. Next: how to verify that a citation actually supports the claim, catch fabricated sources, quote and attribute honestly, and stay on the right side of the line between using AI research and passing off work that isn't yours.</p>
+      <a href="04-verification-citations-ethics.html" class="btn btn-primary">Continue to Lesson 4 →</a>
+    </div>
+  </div>
+</section>
+
+<script>
+/* ─── shared helper ─── */
+function shuffle(arr){ return [...arr].sort(() => Math.random() - 0.5); }
+
+/* ─── ACTIVITY 1: Summary keep/drop A/B ─── */
+const PAIRS = [
+  {
+    tag:'Pair 1 · A productivity study',
+    losing:'The study proves remote work makes employees more productive.',
+    winning:'In a 2015 experiment at one Chinese travel firm, call-centre staff who volunteered to work from home were ~13% more productive — mostly from more calls per shift and fewer breaks.',
+    why:'The losing summary keeps the exciting conclusion and deletes everything that bounds it: one company, one job type, a volunteer group, a specific effect size, and "experiment" (not "proves"). Version B keeps the load-bearing detail — the setting, the population, the mechanism, the magnitude — so a reader knows exactly what was and wasn\'t shown. "Proves... employees" over-generalises a narrow, specific finding into a universal law.',
+    lesson:'A faithful summary keeps the who, where, how-much and the conditions. Dropping the caveats is how a specific finding becomes a false universal claim.'
+  },
+  {
+    tag:'Pair 2 · Compressing an argument',
+    losing:'Experts say AI will transform every industry, offering huge opportunities and some challenges, making it an important topic to consider carefully.',
+    winning:'The report\'s core claim: AI will cut routine data-entry roles fastest (est. 30% by 2030) but create demand for oversight roles — so net job impact depends on retraining speed, which the authors call the key uncertainty.',
+    why:'The losing version is filler dressed as a summary — it could describe almost any article and commits to nothing checkable. Version B keeps what actually distinguishes this source: the specific mechanism, a number, and the authors\' own stated uncertainty. Good summarising is ruthless about dropping generic throat-clearing and keeping the one or two claims that carry the argument.',
+    lesson:'If a summary would fit fifty other articles equally well, it kept the filler and dropped the substance. Keep the specific, checkable claim.'
+  },
+  {
+    tag:'Pair 3 · A hedged finding',
+    losing:'A survey found remote workers are less lonely and happier than office workers.',
+    winning:'A self-reported 2022 survey found remote workers rated their work-life balance higher, but also reported more isolation — the authors caution the two findings pull in opposite directions and the sample skewed toward tech workers.',
+    why:'The losing summary doesn\'t just drop a caveat — it reverses part of the finding, replacing "more isolation" with "less lonely." Version B keeps the internal tension (better balance, more isolation), the "self-reported" flag, and the sample limitation. When a source contradicts itself or hedges, faithful synthesis preserves that complexity rather than resolving it into a clean, wrong headline.',
+    lesson:'When a source holds two things in tension, keep both. Collapsing a nuanced finding into a tidy headline often means inventing a claim the source didn\'t make.'
+  }
+];
+let abDone = 0;
+function renderPairs(){
+  abDone = 0;
+  const wrap = document.getElementById('abWrap');
+  wrap.innerHTML = PAIRS.map((p, i) => {
+    const winFirst = Math.random() < 0.5;
+    const cards = [
+      {label:'A', copy: winFirst ? p.winning : p.losing, win: winFirst},
+      {label:'B', copy: winFirst ? p.losing : p.winning, win: !winFirst}
+    ];
+    return `
+    <div class="ab-pair" data-pair="${i}">
+      <div class="ab-q"><span class="ab-tag">${p.tag}</span>Which summary would you actually trust in your report?</div>
+      <div class="ab-cards">
+        ${cards.map(c => `
+        <div class="ab-card" data-win="${c.win ? 1 : 0}" onclick="pickAB(this, ${i})">
+          <span class="ab-letter">${c.label}</span>
+          <div class="ab-copy">${c.copy}</div>
+        </div>`).join('')}
+      </div>
+      <div class="ab-verdict" id="verdict${i}"></div>
+    </div>`;
+  }).join('') + `
+    <div class="activity-feedback" id="feedback1"></div>
+    <div class="activity-toolbar">
+      <button class="btn btn-ghost" onclick="resetActivity1()">↻ New round (sides reshuffle)</button>
+    </div>`;
+}
+function pickAB(card, i){
+  const pair = card.closest('.ab-pair');
+  if (pair.dataset.locked) return;
+  pair.dataset.locked = '1';
+  const pickedWin = card.dataset.win === '1';
+  pair.querySelectorAll('.ab-card').forEach(c => {
+    c.classList.add('locked');
+    if (c.dataset.win === '1') c.classList.add('win');
+    else c.classList.add(c === card ? 'picked-wrong' : 'lose');
+  });
+  const v = document.getElementById('verdict' + i);
+  v.className = 'ab-verdict show ' + (pickedWin ? 'good' : 'bad');
+  v.innerHTML = (pickedWin ? '<strong>Right call.</strong> ' : '<strong>The other one is faithful.</strong> ') + PAIRS[i].why;
+  pair.dataset.score = pickedWin ? '1' : '0';
+  abDone++;
+  if (abDone === PAIRS.length) finishAB();
+}
+function finishAB(){
+  const score = [...document.querySelectorAll('.ab-pair')].reduce((s, p) => s + (p.dataset.score === '1' ? 1 : 0), 0);
+  const fb = document.getElementById('feedback1');
+  if (score === PAIRS.length) {
+    fb.className = 'activity-feedback show success';
+    fb.innerHTML = `<strong>3 for 3 — you summarise like a researcher.</strong> A faithful summary keeps three things a bad one deletes: the <em>specifics</em> (who, where, how much), the <em>caveats</em> (small sample, one setting, self-reported) and the <em>tension</em> (where the source hedges or contradicts itself). It drops only the filler. The test: could a reader be misled by what you left out? If the missing detail would change their conclusion, it wasn't filler — it was the finding.`;
+  } else {
+    fb.className = 'activity-feedback show partial';
+    fb.innerHTML = `<strong>You picked ${score} of 3.</strong> Re-read the verdicts — they are the whole lesson. Shorter is easy; faithful is the job. Watch for summaries that keep the confident headline but quietly delete the sample size, the setting, or a hedge — and especially ones that "resolve" a source's internal tension into a clean claim it never made. Reshuffle and run it again.`;
+  }
+  document.getElementById('prog1').classList.add('done');
+}
+function resetActivity1(){
+  renderPairs();
+  document.getElementById('prog1').classList.remove('done');
+}
+
+/* ─── ACTIVITY 2: Synthesis matrix builder ─── */
+const FIELDS = [
+  {id:'f1', text:'Source A: solo coding tasks were completed ~13% faster at home (fewer interruptions)', zone:'output', hint:'This is about one person\'s task throughput — solo output — so it belongs in the Individual output column.'},
+  {id:'f2', text:'Source B: cross-team problem-solving slowed; fewer spontaneous "hallway" fixes', zone:'collab', hint:'This is about people working together and communicating — that is the Collaboration & communication theme.'},
+  {id:'f3', text:'Source C: 41% reported lower stress and better work-life balance remotely', zone:'wellbeing', hint:'Stress, satisfaction and balance are wellbeing outcomes — this goes under Employee wellbeing.'},
+  {id:'f4', text:'Source D: new hires onboarded remotely took 2 months longer to reach full ramp', zone:'longterm', hint:'This is a time-delayed effect specific to new hires — it belongs under Long-term / onboarding effects.'},
+  {id:'f5', text:'Source E: "Remote work is the future and here to stay" (a vendor blog headline)', zone:'unused', hint:'This is an opinion headline from a vendor with an interest, not a finding about any theme — keep it out of the matrix.'},
+  {id:'f6', text:'The average office temperature preferred by workers is 22°C', zone:'unused', hint:'True but irrelevant to the research question — it maps to none of the four themes, so it does not belong in the matrix.'}
+];
+const ZONE_NAMES = {output:'Individual output', collab:'Collaboration & communication', wellbeing:'Employee wellbeing', longterm:'Long-term / onboarding', unused:'Doesn\'t fit a theme'};
+let placed2 = {};
+function renderFields(){
+  const list = document.getElementById('fieldList');
+  list.innerHTML = shuffle(FIELDS).map(e => `
+    <div class="scenario-card" draggable="true" data-id="${e.id}">
+      <div class="scenario-text">${e.text}</div>
+    </div>`).join('');
+  list.querySelectorAll('.scenario-card').forEach(card => {
+    card.addEventListener('dragstart', ev => {
+      ev.dataTransfer.setData('field', card.dataset.id);
+      card.classList.add('dragging');
+    });
+    card.addEventListener('dragend', () => card.classList.remove('dragging'));
+  });
+}
+function setupZones2(){
+  document.querySelectorAll('#activity-2 .wf-zone').forEach(z => {
+    z.addEventListener('dragover', e => { e.preventDefault(); z.classList.add('drag-over'); });
+    z.addEventListener('dragleave', () => z.classList.remove('drag-over'));
+    z.addEventListener('drop', e => {
+      e.preventDefault();
+      z.classList.remove('drag-over');
+      const id = e.dataTransfer.getData('field');
+      if (id) handleDrop2(id, z.dataset.zone);
+    });
+  });
+}
+function handleDrop2(id, zone){
+  const el = FIELDS.find(x => x.id === id);
+  if (!el || placed2[id]) return;
+  const correct = el.zone === zone;
+  placed2[id] = {zone, correct};
+  const card = document.querySelector(`#fieldList .scenario-card[data-id="${id}"]`);
+  if (card) card.classList.add('placed', correct ? 'correct' : 'wrong');
+  const drop = document.querySelector(`#activity-2 .wf-drop[data-drop="${zone}"]`);
+  const pill = document.createElement('span');
+  pill.className = 'dropped-pill ' + (correct ? 'correct' : 'wrong');
+  pill.textContent = (correct ? '✓ ' : '✗ ') + el.text.split(':')[0];
+  pill.title = correct ? el.hint : `Belongs in the "${ZONE_NAMES[el.zone]}" column. ${el.hint}`;
+  drop.appendChild(pill);
+  checkDone2();
+}
+function checkDone2(){
+  if (Object.keys(placed2).length !== FIELDS.length) return;
+  const right = Object.values(placed2).filter(p => p.correct).length;
+  const fb = document.getElementById('feedback2');
+  if (right === FIELDS.length) {
+    fb.className = 'activity-feedback show success';
+    fb.innerHTML = `<strong>Matrix built — 6 of 6.</strong> Now read across your columns and the synthesis writes itself: remote work helped <em>individual output</em> and <em>wellbeing</em>, but hurt <em>collaboration</em> and slowed <em>onboarding</em> — so the honest answer is "it depends on what you measure," not a single thumbs-up or -down. Notice what you kept <em>out</em>: a vendor's opinion headline (interested party, not evidence) and an irrelevant fact. A matrix is powerful precisely because it forces you to place each finding somewhere — and to admit when something doesn't earn a place at all.`;
+  } else {
+    fb.className = 'activity-feedback show partial';
+    fb.innerHTML = `<strong>You placed ${right} of 6 correctly.</strong> Hover each red pill for the fix. Ask what each finding is <em>about</em>: solo throughput → Individual output; working together → Collaboration; stress and balance → Wellbeing; delayed effects on new hires → Long-term/onboarding. And be strict about the doesn't-fit column: a vendor's opinion isn't a finding, and a true-but-irrelevant fact isn't a theme. Try again and rebuild it.`;
+  }
+  document.getElementById('prog2').classList.add('done');
+}
+function resetActivity2(){
+  placed2 = {};
+  document.getElementById('feedback2').className = 'activity-feedback';
+  document.querySelectorAll('#activity-2 .wf-drop[data-drop]').forEach(d => d.innerHTML = '');
+  renderFields();
+  document.getElementById('prog2').classList.remove('done');
+}
+function showAnswers2(){
+  FIELDS.forEach(e => { if (!placed2[e.id]) handleDrop2(e.id, e.zone); });
+}
+
+/* ─── ACTIVITY 3: False consensus detector ─── */
+const CHART_OPTS = ['Genuine consensus', 'Over-smoothed'];
+const QUESTIONS = [
+  {name:'"All five studies agree that remote work boosts productivity."  — but Sources A and D found productivity fell for collaborative and onboarding tasks.',
+   tag:'Statement · synthesised from 5 sources',
+   answer:'Over-smoothed',
+   why:'Analyst verdict: Over-smoothed. Two of the five sources report the opposite for specific task types, so "all five agree" is false. The AI blended a real split into a fake unanimity. The honest version: "results diverge by task type — solo work improved, collaborative and onboarding work suffered."'},
+  {name:'"Every source in the review reports that self-reported job satisfaction rose under remote work."  — and indeed all six sources measured satisfaction and all six found it higher.',
+   tag:'Statement · synthesised from 6 sources',
+   answer:'Genuine consensus',
+   why:'Analyst verdict: Genuine consensus — when it is real, say so. All six sources measured the same thing and all pointed the same way. This is exactly the case where a confident summary is warranted. Note it still keeps the caveat "self-reported," which is honest synthesis, not over-smoothing.'},
+  {name:'"Experts broadly conclude that hybrid work is the optimal model."  — though three sources argued for fully remote, two for fully in-office, and only one for hybrid.',
+   tag:'Statement · synthesised from 6 sources',
+   answer:'Over-smoothed',
+   why:'Analyst verdict: Over-smoothed. The sources are genuinely split three ways, and hybrid was actually the minority view. "Broadly conclude" manufactures a consensus that would flatter a reader looking for a safe compromise — the most dangerous kind of false consensus, because it sounds so reasonable.'},
+  {name:'"The two clinical trials both found the drug reduced symptoms, though they disagree on the size of the effect (12% vs 34%)."  — which matches what both trials reported.',
+   tag:'Statement · synthesised from 2 sources',
+   answer:'Genuine consensus',
+   why:'Analyst verdict: Genuine consensus on direction — and honestly handled. Both trials agree the drug helps; the summary states that clearly while preserving the real disagreement about magnitude. Keeping the "12% vs 34%" split is the mark of good synthesis: agree where they agree, name the difference where they differ.'}
+];
+let chartState = [];
+function renderCharts(){
+  chartState = QUESTIONS.map(() => null);
+  const wrap = document.getElementById('chartWrap');
+  wrap.innerHTML = QUESTIONS.map((q, qi) => `
+    <div class="brand-block" data-q="${qi}">
+      <div class="brand-name"><span class="q-tag">${q.tag}</span>${q.name}</div>
+      <div class="brand-row">
+        <div class="brand-crit">Is this synthesis honest?</div>
+        <div class="tog-group">
+          ${CHART_OPTS.map((c, ci) => `<button class="tog" id="ctog-${qi}-${ci}" onclick="setChart(${qi},${ci})">${c}</button>`).join('')}
+        </div>
+      </div>
+      <div class="brand-why" id="cwhy${qi}">${q.why}</div>
+    </div>`).join('');
+}
+function setChart(qi, ci){
+  chartState[qi] = ci;
+  QUESTIONS[qi] && CHART_OPTS.forEach((c, i) => {
+    document.getElementById(`ctog-${qi}-${i}`).className = 'tog' + (i === ci ? ' on-yes' : '');
+  });
+}
+function checkChart(){
+  const fb = document.getElementById('feedback3');
+  const unanswered = chartState.filter(v => v === null).length;
+  if (unanswered > 0) {
+    fb.className = 'activity-feedback show partial';
+    fb.innerHTML = `<strong>${unanswered} statement${unanswered > 1 ? 's' : ''} still unmarked.</strong> Judge every statement, then check again.`;
+    return;
+  }
+  let hits = 0;
+  QUESTIONS.forEach((q, qi) => {
+    const correctIdx = CHART_OPTS.indexOf(q.answer);
+    const mine = chartState[qi];
+    const hit = mine === correctIdx;
+    if (hit) hits++;
+    document.getElementById(`ctog-${qi}-${mine}`).classList.add(hit ? 'reveal-hit' : 'reveal-miss');
+    if (!hit) document.getElementById(`ctog-${qi}-${correctIdx}`).classList.add('reveal-hit');
+    document.getElementById('cwhy' + qi).classList.add('show');
+  });
+  if (hits === QUESTIONS.length) {
+    fb.className = 'activity-feedback show success';
+    fb.innerHTML = `<strong>4 / 4 — you can smell a false consensus.</strong> The tell: check the synthesised claim against the actual spread of sources. "All agree" / "experts broadly conclude" is honest only when the sources really do line up — otherwise it's over-smoothing, erasing a debate that mattered. And note: genuine consensus <em>exists</em> — the job isn't to distrust every summary, it's to confirm the agreement is real and to keep the disagreements visible when it isn't.`;
+  } else {
+    fb.className = 'activity-feedback show partial';
+    fb.innerHTML = `<strong>You caught ${hits} of 4.</strong> Green marks the analyst's verdict wherever you differed; each explanation is now open. The rule: compare the sweeping words ("all," "broadly," "consistently") against how the sources actually split. Real consensus is fine to state plainly — but a claim of agreement that a minority of your sources contradict is over-smoothing. Reset to try for a clean sheet.`;
+  }
+  document.getElementById('prog3').classList.add('done');
+}
+function resetChart(){
+  renderCharts();
+  document.getElementById('feedback3').className = 'activity-feedback';
+  document.getElementById('prog3').classList.remove('done');
+}
+
+/* ─── ACTIVITY 4: Quiz ─── */
+const QUIZ = [
+  {
+    tag:'Q1 · Grounded vs general answers',
+    q:'You uploaded ten of your own PDFs and asked a general chatbot "what do my sources say about X?" It gives a fluent answer with no citations. What is the risk — and the better tool?',
+    opts:[
+      'No risk; if it sounds fluent it must be reading your PDFs correctly.',
+      'It may blend your documents with facts from its training data and you can\'t tell which claim came from which PDF. A grounded tool like NotebookLM answers only from your sources and cites the passage, so you can verify.',
+      'General chatbots always refuse to read PDFs, so the answer is fabricated.',
+      'Just ask it to add citations afterward — those will always be accurate.'
+    ],
+    correct:1,
+    explain:'A general model answers from everything it has ever read, so it can silently mix your uploaded sources with its own memorised (and possibly outdated or wrong) knowledge — and it won\'t tell you which is which. A grounded, source-restricted tool like NotebookLM confines answers to the documents you provide and links each claim to the exact passage, so you can click through and confirm. That traceability is the whole point of grounding for synthesis.'
+  },
+  {
+    tag:'Q2 · The limits of grounding',
+    q:'NotebookLM gives you a grounded answer with a citation. Which statement is the honest way to treat it?',
+    opts:[
+      'A citation means it\'s verified; copy the claim straight into your report.',
+      'Grounding narrows the answer to your sources and shows where it came from — but you should still open the citation and confirm the passage actually supports the claim, and check that caveats weren\'t dropped.',
+      'Grounded tools never make mistakes, so no checking is needed.',
+      'The citation is decorative; ignore it and trust the summary.'
+    ],
+    correct:1,
+    explain:'Grounding is a huge upgrade — the answer comes from your documents and points to a source — but it is not a guarantee of correctness. A grounded tool can still cite a passage that doesn\'t quite say what the summary claims, over-smooth a disagreement, or drop a caveat. The citation is an invitation to verify, not proof that verification happened. Click through, read the passage, and confirm it says what the answer says.'
+  },
+  {
+    tag:'Q3 · Dropped caveats',
+    q:'Your synthesis of three studies concludes "the training program improved performance." Reading the sources, you notice all three said "in the first month only." What should the synthesis do?',
+    opts:[
+      'Leave it out — a shorter conclusion is a cleaner conclusion.',
+      'Keep the caveat: "improved performance in the first month, with effects not yet shown to persist." Dropping "first month only" changes what the finding means and could mislead a decision.',
+      'Change it to "permanently improved performance" to sound more confident.',
+      'The caveat is the sources\' problem, not the summary\'s.'
+    ],
+    correct:1,
+    explain:'"In the first month only" is not filler — it is the boundary of the claim. A reader deciding whether to fund the program would act very differently on "improved performance" versus "improved performance that we haven\'t shown lasts past a month." Dropping the caveat manufactures a stronger claim than the evidence supports. Faithful synthesis carries each finding\'s conditions forward, even when it makes the conclusion less tidy.'
+  },
+  {
+    tag:'Q4 · The synthesis instinct',
+    q:'AI hands you a beautifully balanced paragraph synthesising eight sources — smooth, confident, everyone seems to agree. What is the professional response?',
+    opts:[
+      'Ship it; balanced and confident is exactly what a synthesis should be.',
+      'Get suspicious precisely because it\'s so smooth: check whether the sources really agreed or whether genuine disagreement was flattened into a false consensus, and trace each claim to a source.',
+      'Ask the AI to make it sound even more confident and unanimous.',
+      'Assume that if it reads well, the underlying sources must line up.'
+    ],
+    correct:1,
+    explain:'Fluency is not accuracy, and a suspiciously harmonious synthesis is often over-smoothed — the AI\'s agreeableness erasing a real debate. The professional move is to check the smooth paragraph against the actual spread of your sources: did they genuinely agree, or were dissent and caveats sanded off? Then trace each claim back to a document. The easiest synthesis to accept without checking is the one that reads the best — which is exactly why it needs the most scrutiny.'
+  }
+];
+let quizDone = 0;
+function renderQuiz(){
+  quizDone = 0;
+  const wrap = document.getElementById('quizWrap');
+  wrap.innerHTML = QUIZ.map((item, qi) => `
+    <div class="quiz-q" data-quiz="${qi}">
+      <div class="quiz-prompt"><span class="q-tag">${item.tag}</span>${item.q}</div>
+      <div class="quiz-opts">
+        ${item.opts.map((o, oi) => `
+        <div class="quiz-opt" onclick="pickQuiz(${qi},${oi})" id="qopt-${qi}-${oi}">
+          <span class="opt-key">${String.fromCharCode(65 + oi)}</span><span>${o}</span>
+        </div>`).join('')}
+      </div>
+      <div class="quiz-explain" id="qexp${qi}"></div>
+    </div>`).join('') + `
+    <div class="activity-feedback" id="feedback4"></div>
+    <div class="activity-toolbar">
+      <button class="btn btn-ghost" onclick="resetQuiz()">↻ Reset quiz</button>
+    </div>`;
+}
+function pickQuiz(qi, oi){
+  const block = document.querySelector(`.quiz-q[data-quiz="${qi}"]`);
+  if (block.dataset.locked) return;
+  block.dataset.locked = '1';
+  const item = QUIZ[qi];
+  const correct = oi === item.correct;
+  block.querySelectorAll('.quiz-opt').forEach((el, i) => {
+    el.classList.add('locked');
+    if (i === item.correct) el.classList.add('correct');
+    else if (i === oi) el.classList.add('wrong');
+  });
+  const exp = document.getElementById('qexp' + qi);
+  exp.className = 'quiz-explain show ' + (correct ? 'good' : 'bad');
+  exp.innerHTML = (correct ? '<strong>Correct.</strong> ' : '<strong>Not quite.</strong> ') + item.explain;
+  block.dataset.score = correct ? '1' : '0';
+  quizDone++;
+  if (quizDone === QUIZ.length) finishQuiz();
+}
+function finishQuiz(){
+  const score = [...document.querySelectorAll('.quiz-q')].reduce((s, b) => s + (b.dataset.score === '1' ? 1 : 0), 0);
+  const fb = document.getElementById('feedback4');
+  if (score === QUIZ.length) {
+    fb.className = 'activity-feedback show success';
+    fb.innerHTML = `<strong>4 / 4 — you synthesise like a pro.</strong> You chose grounding over guessing, treated citations as invitations to verify rather than proof, kept the caveats attached, and stayed suspicious of the too-smooth paragraph. The through-line: AI can gather and blend fast, but it doesn\'t know which of your sources a claim came from, whether a caveat mattered, or whether the agreement it reports is real. You supply the judgement. Ground it, trace it, verify it — every time.`;
+  } else {
+    fb.className = 'activity-feedback show partial';
+    fb.innerHTML = `<strong>You got ${score} of 4.</strong> Re-read the explanations — each is a real synthesis failure mode. Prefer grounded tools that cite your own sources; treat every citation as something to open and confirm; carry each finding\'s caveats forward; and be most sceptical when the synthesis reads the smoothest. Reset and run it again.`;
+  }
+  document.getElementById('prog4').classList.add('done');
+}
+function resetQuiz(){
+  renderQuiz();
+  document.getElementById('prog4').classList.remove('done');
+}
+
+/* ─── INIT ─── */
+window.addEventListener('DOMContentLoaded', () => {
+  renderPairs();
+  renderFields();
+  setupZones2();
+  renderCharts();
+  renderQuiz();
+});
+</script>
+</body>
+</html>
