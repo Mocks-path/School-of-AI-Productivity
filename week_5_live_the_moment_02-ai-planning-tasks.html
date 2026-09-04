@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 2 · AI Planning &amp; Task Management — MokshPath</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=JetBrains+Mono:wght@400;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --orange:#E87A2E;--orange-dark:#D06A20;--orange-light:#F5943E;--orange-glow:rgba(232,122,46,0.12);
+  --navy:#2B2D42;--navy-dark:#1A1B2E;
+  --bg:#F3EDE7;--bg-card:#FFFFFF;--bg-light:#F9F5F0;
+  --text-primary:#2B2D42;--text-secondary:#6B6D7B;--text-muted:#9597A6;
+  --border:#E5DDD4;--green:#4CAF50;--green-light:#E8F5E9;--red:#E04E3C;--red-light:#FDECEA;
+  --shadow-sm:0 2px 8px rgba(43,45,66,0.06);--shadow-md:0 8px 24px rgba(43,45,66,0.08);
+  --shadow-lg:0 16px 48px rgba(43,45,66,0.12);
+  --radius:14px;--radius-sm:8px;
+  --mono:'JetBrains Mono',monospace;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text-primary);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+
+/* ── NAV ── */
+.nav{position:sticky;top:0;z-index:100;background:var(--bg-card);border-bottom:1px solid var(--border);padding:0 2rem;height:64px;display:flex;align-items:center;justify-content:space-between;box-shadow:var(--shadow-sm)}
+.nav-left{display:flex;align-items:center;gap:.7rem}
+.lesson-badge{font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--orange);background:var(--orange-glow);padding:.3rem .7rem;border-radius:50px}
+.nav-logo{display:flex;align-items:center;gap:.7rem;text-decoration:none}
+.nav-logo-icon{width:auto;height:48px;display:block;object-fit:contain}
+.nav-logo-text{display:flex;flex-direction:column;line-height:1.15}
+.nav-logo-name{font-family:'DM Serif Display',serif;font-size:1.25rem;color:var(--navy)}
+.nav-logo-name span{color:var(--orange)}
+.nav-logo-tag{font-size:.62rem;color:var(--text-muted);font-weight:500;letter-spacing:.02em}
+
+/* ── HERO ── */
+.hero{padding:3.5rem 2rem 2.5rem;text-align:center;position:relative}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:.45rem;padding:.4rem 1rem;border-radius:50px;background:var(--orange-glow);color:var(--orange);font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:1.2rem}
+.hero-eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--orange);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.hero h1{font-family:'DM Serif Display',serif;font-size:clamp(2rem,4vw,3rem);line-height:1.13;color:var(--navy);margin-bottom:1rem;max-width:780px;margin-left:auto;margin-right:auto}
+.hero h1 em{font-style:normal;color:var(--orange)}
+.hero-sub{font-size:1.02rem;color:var(--text-secondary);line-height:1.7;max-width:620px;margin:0 auto}
+
+/* ── PROGRESS RAIL ── */
+.progress-rail{max-width:760px;margin:1.8rem auto 0;display:flex;align-items:center;gap:.5rem}
+.progress-dot{flex:1;height:6px;background:var(--border);border-radius:3px;transition:background .3s}
+.progress-dot.done{background:linear-gradient(90deg,var(--orange),var(--orange-light))}
+.progress-label{font-size:.7rem;color:var(--text-muted);font-weight:600;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+
+/* ── SECTIONS ── */
+section.lesson{padding:3rem 2rem}
+.container{max-width:1080px;margin:0 auto}
+.lesson-num{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;background:var(--orange);color:#fff;font-family:'DM Serif Display',serif;font-size:1.1rem;margin-bottom:.9rem}
+.lesson-title{font-family:'DM Serif Display',serif;font-size:clamp(1.6rem,2.5vw,2.1rem);color:var(--navy);margin-bottom:.55rem;line-height:1.2}
+.lesson-intro{font-size:.95rem;color:var(--text-secondary);line-height:1.7;max-width:680px;margin-bottom:2rem}
+.lesson-card{background:var(--bg-card);border-radius:var(--radius);box-shadow:var(--shadow-sm);border:1px solid var(--border);padding:2rem;margin-top:1.5rem}
+
+/* ── ACTIVITY 1: SORTER ── */
+.classify-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:1rem}
+@media (max-width:760px){.classify-grid{grid-template-columns:1fr}}
+.classify-scenarios{display:flex;flex-direction:column;gap:.7rem}
+.scenario-card{background:var(--bg-card);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:1rem 1.1rem;cursor:grab;transition:all .25s;position:relative;user-select:none}
+.scenario-card:hover{border-color:var(--orange);box-shadow:var(--shadow-sm);transform:translateY(-1px)}
+.scenario-card.dragging{opacity:.4}
+.scenario-card.placed{opacity:.35;cursor:not-allowed;pointer-events:none}
+.scenario-card.placed.correct{border-color:var(--green);background:var(--green-light)}
+.scenario-card.placed.wrong{border-color:var(--red);background:var(--red-light)}
+.scenario-text{font-size:.86rem;color:var(--text-primary);line-height:1.5;font-weight:500}
+.scenario-hint{font-size:.72rem;color:var(--text-muted);margin-top:.3rem;font-style:italic}
+.bucket-stack{display:flex;flex-direction:column;gap:1rem}
+.bucket{border:2px dashed var(--border);border-radius:var(--radius-sm);padding:1rem;min-height:88px;transition:all .25s;background:rgba(255,255,255,0.5)}
+.bucket.drag-over{border-color:var(--orange);background:var(--orange-glow);border-style:solid}
+.bucket-title{font-family:'DM Serif Display',serif;font-size:1rem;color:var(--navy);margin-bottom:.25rem}
+.bucket-sub{font-size:.7rem;color:var(--text-muted);margin-bottom:.6rem;letter-spacing:.04em;text-transform:uppercase;font-weight:600}
+.bucket-drop{display:flex;flex-wrap:wrap;gap:.4rem;min-height:32px}
+.dropped-pill{background:var(--bg-card);border:1px solid var(--border);border-radius:50px;padding:.3rem .7rem;font-size:.72rem;font-weight:500;color:var(--text-primary)}
+.dropped-pill.correct{background:var(--green-light);border-color:var(--green);color:#256B29}
+.dropped-pill.wrong{background:var(--red-light);border-color:var(--red);color:#933}
+.activity-feedback{margin-top:1.2rem;padding:1rem 1.2rem;border-radius:var(--radius-sm);font-size:.85rem;line-height:1.5;display:none}
+.activity-feedback.show{display:block;animation:fadeIn .4s ease}
+.activity-feedback.success{background:var(--green-light);color:#1F5723;border-left:3px solid var(--green)}
+.activity-feedback.partial{background:#FFF4E5;color:#7A4A0A;border-left:3px solid #E89B2E}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+
+.activity-toolbar{display:flex;gap:.6rem;margin-top:1.2rem;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:.4rem;padding:.6rem 1.2rem;border-radius:8px;font-size:.82rem;font-weight:600;border:none;cursor:pointer;transition:all .2s;font-family:inherit}
+.btn-primary{background:var(--orange);color:#fff}.btn-primary:hover{background:var(--orange-dark);transform:translateY(-1px);box-shadow:0 4px 12px rgba(232,122,46,0.3)}
+.btn-ghost{background:transparent;border:1.5px solid var(--border);color:var(--text-secondary)}.btn-ghost:hover{border-color:var(--orange);color:var(--orange)}
+
+/* ── COMPARE CARDS ── */
+.compare-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:1.2rem}
+@media (max-width:760px){.compare-grid{grid-template-columns:1fr}}
+.compare-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:1.2rem;transition:all .3s}
+.compare-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-md);border-color:transparent}
+.compare-icon{width:38px;height:38px;border-radius:8px;display:flex;align-items:center;justify-content:center;margin-bottom:.7rem;font-size:1.05rem;font-weight:700;font-family:'DM Serif Display',serif;color:#fff}
+.compare-card:nth-child(1) .compare-icon{background:linear-gradient(135deg,#66BB6A,#4CAF50)}
+.compare-card:nth-child(2) .compare-icon{background:linear-gradient(135deg,var(--orange),var(--orange-light))}
+.compare-card:nth-child(3) .compare-icon{background:linear-gradient(135deg,#E04E3C,#C43A29)}
+.compare-card h4{font-family:'DM Serif Display',serif;font-size:1.05rem;color:var(--navy);margin-bottom:.3rem}
+.compare-card p{font-size:.82rem;color:var(--text-secondary);line-height:1.55}
+.compare-card ul{list-style:none;padding:0;margin-top:.6rem;border-top:1px dashed var(--border);padding-top:.55rem}
+.compare-card li{font-size:.74rem;color:var(--text-secondary);padding:.15rem 0;display:flex;gap:.4rem;align-items:flex-start;line-height:1.45}
+.compare-card li::before{content:'✓';color:var(--green);font-weight:700;flex-shrink:0}
+.compare-card.warn li::before{content:'⚠';color:var(--orange)}
+.compare-card.danger li::before{content:'✗';color:var(--red)}
+
+/* ── ACTIVITY 2: PROMPT BUILDER ── */
+.prompt-pool{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1rem}
+.frag-chip{background:var(--bg-card);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:.65rem .9rem;font-size:.8rem;line-height:1.45;cursor:pointer;transition:all .2s;max-width:340px;user-select:none;font-weight:500}
+.frag-chip:hover{border-color:var(--orange);box-shadow:var(--shadow-sm);transform:translateY(-1px)}
+.frag-chip.used{opacity:0;pointer-events:none;position:absolute;visibility:hidden}
+.frag-chip.shake{animation:shake .35s ease;border-color:var(--red);background:var(--red-light)}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.prompt-slots{margin-top:1.4rem;border:2px dashed var(--border);border-radius:var(--radius-sm);padding:1rem;min-height:90px;background:rgba(255,255,255,0.5)}
+.slot-line{display:flex;align-items:flex-start;gap:.6rem;padding:.45rem .2rem;font-size:.83rem;line-height:1.5;animation:fadeIn .35s ease}
+.slot-tag{font-family:var(--mono);font-size:.62rem;font-weight:600;letter-spacing:.05em;color:#fff;background:var(--navy);padding:.18rem .5rem;border-radius:4px;flex-shrink:0;margin-top:.1rem;text-transform:uppercase}
+.slot-line.t-goal .slot-tag{background:#5B8FE0}
+.slot-line.t-scope .slot-tag{background:var(--orange)}
+.slot-line.t-team .slot-tag{background:#66BB6A}
+.slot-line.t-output .slot-tag{background:#8E6BC0}
+.prompt-hint{margin-top:.8rem;padding:.7rem .9rem;background:var(--red-light);border-left:3px solid var(--red);border-radius:4px;font-size:.78rem;color:#7A2A1E;line-height:1.55;display:none}
+.prompt-hint.show{display:block;animation:fadeIn .3s ease}
+.prompt-preview{margin-top:1.2rem;background:#1A1B2E;border-radius:var(--radius-sm);padding:1.2rem 1.4rem;font-family:var(--mono);font-size:.78rem;line-height:1.75;color:#E8E8EC;display:none;border:1px solid var(--navy)}
+.prompt-preview.show{display:block;animation:fadeIn .4s ease}
+.prompt-preview .pp-label{color:var(--orange-light);font-weight:600;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;display:block;margin-bottom:.6rem}
+.structure-bar{display:flex;gap:.4rem;margin-top:1rem;flex-wrap:wrap}
+.structure-step{font-size:.68rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:.3rem .7rem;border-radius:50px;color:#fff}
+.structure-step:nth-child(1){background:#5B8FE0}.structure-step:nth-child(3){background:var(--orange)}
+.structure-step:nth-child(5){background:#66BB6A}.structure-step:nth-child(7){background:#8E6BC0}
+.structure-arrow{color:var(--text-muted);font-weight:700;align-self:center;font-size:.75rem}
+
+/* ── GANTT / CODE STRIP ── */
+.formula-strip{margin-top:1.2rem;background:#1A1B2E;border-radius:var(--radius-sm);padding:1rem 1.2rem;font-family:var(--mono);font-size:.8rem;line-height:1.7;color:#E8E8EC;border:1px solid var(--navy);overflow-x:auto}
+.formula-strip .fn{color:var(--orange-light);font-weight:600}
+.formula-strip .cm{color:#7E8AA0;display:block;font-size:.72rem;margin-top:.35rem}
+
+/* ── ACTIVITY 3: ESTIMATE CLINIC ── */
+.validate-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:1rem}
+@media (max-width:760px){.validate-grid{grid-template-columns:1fr}}
+.product-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:1.4rem;box-shadow:var(--shadow-sm)}
+.product-card h4{font-family:'DM Serif Display',serif;font-size:1.15rem;color:var(--navy);margin-bottom:.2rem}
+.product-tag{font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--orange);margin-bottom:.8rem;display:block}
+.stat-row{display:flex;justify-content:space-between;padding:.42rem 0;border-bottom:1px dashed var(--border);font-size:.8rem}
+.stat-row:last-of-type{border-bottom:none}
+.stat-label{color:var(--text-secondary)}
+.stat-value{font-family:var(--mono);font-weight:600;color:var(--navy);text-align:right}
+.check-block{margin-top:1rem;padding-top:.9rem;border-top:2px solid var(--border)}
+.check-block h5{font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-muted);margin-bottom:.6rem}
+.err-opt{display:block;width:100%;text-align:left;background:var(--bg-light);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:.6rem .8rem;font-size:.8rem;line-height:1.45;cursor:pointer;transition:all .2s;font-family:inherit;color:var(--text-primary);margin-bottom:.45rem}
+.err-opt:hover:not(:disabled){border-color:var(--orange);transform:translateX(2px)}
+.err-opt:disabled{cursor:default}
+.err-opt.right{background:var(--green-light);border-color:var(--green);color:#1F5723;font-weight:600}
+.err-opt.wrong{background:var(--red-light);border-color:var(--red);color:#7A2A1E}
+.err-code{font-family:var(--mono);font-size:.78rem;background:#FFF4E5;color:#7A4A0A;border:1px solid var(--orange);border-radius:6px;padding:.5rem .7rem;display:inline-block;margin-bottom:.7rem;font-weight:600}
+.err-note{font-size:.74rem;color:var(--text-secondary);margin-top:.5rem;line-height:1.55;padding:.55rem .7rem;background:var(--bg-light);border-radius:6px;border-left:3px solid var(--orange);display:none}
+.err-note.show{display:block;animation:fadeIn .3s ease}
+
+/* ── ACTIVITY 4: QUIZ ── */
+.quiz-q{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:1.3rem 1.4rem;margin-top:1rem}
+.quiz-q-num{font-family:var(--mono);font-size:.68rem;font-weight:600;color:var(--orange);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.4rem}
+.quiz-q-text{font-size:.92rem;font-weight:600;color:var(--navy);line-height:1.55;margin-bottom:.9rem}
+.quiz-opts{display:grid;gap:.5rem}
+.quiz-opt{text-align:left;background:var(--bg-light);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:.7rem .9rem;font-size:.83rem;line-height:1.5;cursor:pointer;transition:all .2s;font-family:inherit;color:var(--text-primary)}
+.quiz-opt:hover:not(:disabled){border-color:var(--orange);transform:translateX(2px)}
+.quiz-opt:disabled{cursor:default;opacity:.75}
+.quiz-opt.right{background:var(--green-light);border-color:var(--green);color:#1F5723;opacity:1;font-weight:600}
+.quiz-opt.wrong{background:var(--red-light);border-color:var(--red);color:#7A2A1E;opacity:1}
+.quiz-explain{margin-top:.7rem;padding:.7rem .9rem;border-radius:6px;font-size:.78rem;line-height:1.6;display:none}
+.quiz-explain.show{display:block;animation:fadeIn .3s ease}
+.quiz-explain.ok{background:var(--green-light);color:#1F5723;border-left:3px solid var(--green)}
+.quiz-explain.no{background:#FFF4E5;color:#7A4A0A;border-left:3px solid #E89B2E}
+
+/* ── REFLECTION ── */
+.reflect-prompt{display:grid;grid-template-columns:1fr;gap:.8rem;margin-top:1rem}
+.reflect-q{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:1rem 1.2rem}
+.reflect-q-text{font-size:.88rem;font-weight:600;color:var(--navy);margin-bottom:.5rem}
+.reflect-q textarea{width:100%;border:1px solid var(--border);border-radius:6px;padding:.6rem .8rem;font-family:inherit;font-size:.85rem;color:var(--text-primary);background:var(--bg-light);resize:vertical;min-height:60px}
+.reflect-q textarea:focus{outline:none;border-color:var(--orange)}
+
+/* ── FOOTER NEXT ── */
+.next-up{background:linear-gradient(135deg,var(--navy-dark),var(--navy));border-radius:var(--radius);padding:2.4rem;color:#fff;margin-top:2rem;text-align:center;position:relative;overflow:hidden}
+.next-up::before{content:'';position:absolute;top:-50px;right:-50px;width:180px;height:180px;border-radius:50%;background:rgba(232,122,46,0.12)}
+.next-up h3{font-family:'DM Serif Display',serif;font-size:1.5rem;margin-bottom:.5rem;position:relative}
+.next-up p{font-size:.92rem;color:rgba(255,255,255,0.75);margin-bottom:1.2rem;position:relative}
+.next-up .btn-primary{position:relative}
+
+@media (max-width:760px){
+  .nav{padding:0 1rem}
+  .nav-logo-tag{display:none}
+  .hero{padding:2.5rem 1.2rem 2rem}
+  section.lesson{padding:2rem 1.2rem}
+  .lesson-card{padding:1.4rem}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-left">
+    <span class="lesson-badge">Lesson 2 of 4</span>
+  </div>
+  <a href="https://mokshpath.org/" class="nav-logo">
+    <img class="nav-logo-icon" src="hero.svg" alt="MokshPath logo">
+    <div class="nav-logo-text">
+      <span class="nav-logo-name">Moksh<span>Path</span></span>
+      <span class="nav-logo-tag">Guided Path to True Learning</span>
+    </div>
+  </a>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-eyebrow"><span class="dot"></span> Week 5 · AI Project Management</div>
+  <h1>AI Planning &amp; Task Management — <em>turn a fuzzy goal into a plan you can defend</em></h1>
+  <p class="hero-sub">Four hands-on activities. Sort the moves that take a goal from scope to timeline, assemble a planning prompt block by block, run the estimate clinic on three suspiciously optimistic plans, and drill the discipline that keeps you honest — because a plan AI can generate in ten seconds is a draft, not a commitment.</p>
+  <div class="progress-rail">
+    <span class="progress-label">Progress</span>
+    <div class="progress-dot" id="prog1"></div>
+    <div class="progress-dot" id="prog2"></div>
+    <div class="progress-dot" id="prog3"></div>
+    <div class="progress-dot" id="prog4"></div>
+  </div>
+</header>
+
+<!-- ── ACTIVITY 1: PLANNING-STAGE SORTER ── -->
+<section class="lesson" id="activity-1">
+  <div class="container">
+    <span class="lesson-num">1</span>
+    <h2 class="lesson-title">Match each move to the right planning stage</h2>
+    <p class="lesson-intro">A plan isn't one big leap — it's a sequence: <strong>define the scope, break it into a work-breakdown structure (WBS), estimate the tasks, then wire up dependencies and a timeline.</strong> AI can accelerate every stage, but only if you know which stage you're in. Study the three stages below, then drag each planning move into the stage it belongs to. Guess freely — wrong answers explain themselves on hover.</p>
+
+    <div class="compare-grid">
+      <div class="compare-card">
+        <div class="compare-icon">S</div>
+        <h4>Scope &amp; break down</h4>
+        <p>"Decide what's in, what's out, and split the work into chunks." The foundation everything else rests on.</p>
+        <ul>
+          <li>Write the goal + what's explicitly out of scope</li>
+          <li>Draft a WBS: phases → deliverables → tasks</li>
+          <li>Name constraints: deadline, budget, team size</li>
+        </ul>
+      </div>
+      <div class="compare-card warn">
+        <div class="compare-icon">E</div>
+        <h4>Estimate the work</h4>
+        <p>"Put a size on each task." Answers "how long" and "how much" — and where the planning fallacy hides.</p>
+        <ul>
+          <li>Estimate effort per task (hours or days)</li>
+          <li>Add buffers for the unknowns you can't list yet</li>
+          <li>Sanity-check against a similar past project</li>
+        </ul>
+      </div>
+      <div class="compare-card danger">
+        <div class="compare-icon">D</div>
+        <h4>Sequence &amp; schedule</h4>
+        <p>"Wire the tasks together and lay them on a calendar." Turns a task list into a real timeline.</p>
+        <ul>
+          <li>Map dependencies: what blocks what</li>
+          <li>Find the critical path — the longest chain</li>
+          <li>Build the Gantt / timeline with milestones</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="lesson-card" style="margin-top:1.5rem">
+      <div class="classify-grid">
+        <div class="classify-scenarios" id="scenarioList"></div>
+        <div class="bucket-stack">
+          <div class="bucket" data-bucket="scope">
+            <div class="bucket-title">Scope &amp; break down</div>
+            <div class="bucket-sub">Goal · WBS · Constraints</div>
+            <div class="bucket-drop" data-drop="scope"></div>
+          </div>
+          <div class="bucket" data-bucket="estimate">
+            <div class="bucket-title">Estimate the work</div>
+            <div class="bucket-sub">Effort · Buffers · Reference class</div>
+            <div class="bucket-drop" data-drop="estimate"></div>
+          </div>
+          <div class="bucket" data-bucket="sequence">
+            <div class="bucket-title">Sequence &amp; schedule</div>
+            <div class="bucket-sub">Dependencies · Critical path · Gantt</div>
+            <div class="bucket-drop" data-drop="sequence"></div>
+          </div>
+        </div>
+      </div>
+      <div class="activity-feedback" id="feedback1"></div>
+      <div class="activity-toolbar">
+        <button class="btn btn-ghost" onclick="resetActivity1()">↻ Try again</button>
+        <button class="btn btn-primary" onclick="showAnswers1()">Show me the answers</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 2: BUILD-A-PLANNING-PROMPT ── -->
+<section class="lesson" id="activity-2" style="background:var(--bg-light)">
+  <div class="container">
+    <span class="lesson-num" style="background:#5B8FE0">2</span>
+    <h2 class="lesson-title">Build the planning prompt — one block at a time</h2>
+    <p class="lesson-intro">"Make me a project plan" gets you a generic template about a project AI knows nothing about. A planning prompt that actually works describes four things: <strong>GOAL → SCOPE &amp; CONSTRAINTS → TEAM &amp; DEADLINE → OUTPUT FORMAT</strong>. The eight blocks of a professional planning prompt are scrambled below — click them in the order they should appear. A wrong click tells you why it doesn't fit yet.</p>
+
+    <div class="structure-bar">
+      <span class="structure-step">1 · Goal</span><span class="structure-arrow">→</span>
+      <span class="structure-step">2 · Scope</span><span class="structure-arrow">→</span>
+      <span class="structure-step">3 · Team &amp; deadline</span><span class="structure-arrow">→</span>
+      <span class="structure-step">4 · Output</span>
+    </div>
+
+    <div class="lesson-card">
+      <h4 style="font-family:'DM Serif Display',serif;font-size:1.05rem;color:var(--navy)">Click the next block of the prompt</h4>
+      <div class="prompt-pool" id="fragPool"></div>
+      <div class="prompt-hint" id="promptHint"></div>
+      <div class="prompt-slots" id="promptSlots">
+        <div style="font-size:.75rem;color:var(--text-muted);font-style:italic" id="slotPlaceholder">Your assembled prompt will build up here, block by block…</div>
+      </div>
+      <div class="prompt-preview" id="promptPreview"></div>
+      <div class="activity-feedback" id="feedback2"></div>
+      <div class="activity-toolbar">
+        <button class="btn btn-ghost" onclick="resetActivity2()">↻ Start over</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 3: ESTIMATE CLINIC ── -->
+<section class="lesson" id="activity-3">
+  <div class="container">
+    <span class="lesson-num" style="background:#4CAF50">3</span>
+    <h2 class="lesson-title">The estimate clinic — spot what the AI plan got wrong</h2>
+    <p class="lesson-intro">AI drafts plans fast, but its estimates lean <em>optimistic</em> — the classic <strong>planning fallacy</strong>: it costs the happy path and skips the friction. It also invents dependencies that don't exist and quietly drops constraints you stated. Each plan below looks polished. Find the real flaw. Every choice explains itself, so wrong guesses teach too.</p>
+
+    <div class="lesson-card">
+      <div class="validate-grid">
+        <div class="product-card" id="cardA">
+          <span class="product-tag">Plan A</span>
+          <h4>The two-week website</h4>
+          <div class="err-code">AI estimate: 10 working days, start to launch</div>
+          <div class="stat-row"><span class="stat-label">Design mockups</span><span class="stat-value">2 days</span></div>
+          <div class="stat-row"><span class="stat-label">Build all pages</span><span class="stat-value">4 days</span></div>
+          <div class="stat-row"><span class="stat-label">Content + copy</span><span class="stat-value">1 day</span></div>
+          <div class="stat-row"><span class="stat-label">Client review &amp; sign-off</span><span class="stat-value">0 days</span></div>
+          <div class="stat-row"><span class="stat-label">Testing + launch</span><span class="stat-value">3 days</span></div>
+          <div class="check-block">
+            <h5>What's the real flaw?</h5>
+            <div id="checksA"></div>
+          </div>
+          <div class="err-note" id="noteA"></div>
+        </div>
+        <div class="product-card" id="cardB">
+          <span class="product-tag">Plan B</span>
+          <h4>The dependency that isn't</h4>
+          <div class="err-code">AI ordered: Hire vendor → THEN write requirements</div>
+          <div class="stat-row"><span class="stat-label">Task 1</span><span class="stat-value">Select &amp; hire vendor</span></div>
+          <div class="stat-row"><span class="stat-label">Task 2 (blocked by 1)</span><span class="stat-value">Write requirements doc</span></div>
+          <div class="stat-row"><span class="stat-label">Task 3 (blocked by 2)</span><span class="stat-value">Kickoff meeting</span></div>
+          <div class="check-block">
+            <h5>What's the real flaw?</h5>
+            <div id="checksB"></div>
+          </div>
+          <div class="err-note" id="noteB"></div>
+        </div>
+        <div class="product-card" id="cardC" style="grid-column:1/-1">
+          <span class="product-tag">Plan C</span>
+          <h4>The constraint that vanished</h4>
+          <div class="err-code">You said: "One developer, part-time, 5 hrs/week." AI planned: 3 parallel workstreams finishing in 6 weeks.</div>
+          <div class="stat-row"><span class="stat-label">Stated team</span><span class="stat-value">1 dev · 5 hrs/week</span></div>
+          <div class="stat-row"><span class="stat-label">AI's timeline assumes</span><span class="stat-value">3 tasks running at once</span></div>
+          <div class="stat-row"><span class="stat-label">Total work in plan</span><span class="stat-value">~120 hours</span></div>
+          <div class="check-block">
+            <h5>What's the real flaw?</h5>
+            <div id="checksC"></div>
+          </div>
+          <div class="err-note" id="noteC"></div>
+        </div>
+      </div>
+      <div class="activity-feedback" id="feedback3"></div>
+      <div class="activity-toolbar">
+        <button class="btn btn-ghost" onclick="resetActivity3()">↻ Reset clinic</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 4: OWN-THE-PLAN QUIZ ── -->
+<section class="lesson" id="activity-4" style="background:var(--bg-light)">
+  <div class="container">
+    <span class="lesson-num" style="background:#8E6BC0">4</span>
+    <h2 class="lesson-title">The own-the-plan quiz — AI drafts, you decide</h2>
+    <p class="lesson-intro">AI produces a plan that <em>looks</em> complete. Looking complete is not the same as being realistic. This quiz drills the single most important habit in AI-assisted planning: <strong>treat the AI plan as a first draft and pressure-test it against reality before you commit.</strong> Five situations, one honest answer each — the misconceptions are where the real learning is.</p>
+
+    <div id="quizWrap"></div>
+    <div class="activity-feedback" id="feedback4"></div>
+    <div class="activity-toolbar">
+      <button class="btn btn-ghost" onclick="resetQuiz()">↻ Retake quiz</button>
+    </div>
+  </div>
+</section>
+
+<!-- ── REFLECT ── -->
+<section class="lesson" style="padding-bottom:1.5rem">
+  <div class="container">
+    <h2 class="lesson-title" style="font-size:1.5rem">Quick reflect — make it stick</h2>
+    <p class="lesson-intro" style="margin-bottom:1rem">A sentence each is enough. Writing it in your own words is what moves it into memory. (Nothing is saved or sent.)</p>
+    <div class="reflect-prompt">
+      <div class="reflect-q">
+        <div class="reflect-q-text">You need a plan for a real project you're facing. Write the opening of the planning prompt you'd give AI — include the goal, one hard constraint (deadline or team size), and the output format you want (WBS, Gantt, task list…).</div>
+        <textarea placeholder="'Act as a project manager. Goal: ... Constraints: I have X people and a hard deadline of ... Give me a work-breakdown structure with effort estimates and dependencies as a table...'"></textarea>
+      </div>
+      <div class="reflect-q">
+        <div class="reflect-q-text">AI hands you a clean plan with confident dates. Describe the exact check you'd run before you promise those dates to a stakeholder.</div>
+        <textarea placeholder="I'd find the critical path and ask: does any single person own too many parallel tasks? Then compare the total against a similar past project, and add a buffer for the review/rework AI didn't cost in..."></textarea>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NEXT UP -->
+<section class="lesson" style="padding-top:0">
+  <div class="container">
+    <div class="next-up">
+      <h3>Lesson 3 · AI Tracking &amp; Status Updates</h3>
+      <p>You can turn a goal into a plan you'd defend. Next: keep that plan honest once work begins — let AI summarize progress, flag slipping tasks, and write the status update your stakeholders actually read.</p>
+      <a href="03-ai-tracking-status.html" class="btn btn-primary">Continue to Lesson 3 →</a>
+    </div>
+  </div>
+</section>
+
+<script>
+const $ = id => document.getElementById(id);
+
+/* ─── ACTIVITY 1: Planning-Stage Sorter ─── */
+const NEEDS = [
+  {id:'n1', text:'Write a one-line goal and list what is explicitly NOT part of this project', hint:'Deciding what is in and out of the project.', bucket:'scope', why:'Defining the goal and the out-of-scope list is the very first scoping move — it draws the boundary everything else is measured against.'},
+  {id:'n2', text:'Break the project into phases, then deliverables, then individual tasks', hint:'Splitting the whole into a tree of chunks.', bucket:'scope', why:'This is a work-breakdown structure (WBS). Breaking the big goal into a tree of tasks is pure scoping — it happens before you can size or sequence anything.'},
+  {id:'n3', text:'Give each task a size in days, and add a buffer for the surprises you can\'t list yet', hint:'Putting a number on how long each task takes.', bucket:'estimate', why:'Sizing tasks and adding buffers is estimation. Buffers matter because you always forget some tasks — the ones you can\'t see yet are exactly what a buffer covers.'},
+  {id:'n4', text:'Compare your total estimate against how long a similar past project actually took', hint:'Using real history to sanity-check your numbers.', bucket:'estimate', why:'This is reference-class forecasting — checking your estimate against what similar projects really took. It\'s the best defense against optimistic estimates.'},
+  {id:'n5', text:'Mark which tasks can\'t start until another one finishes', hint:'Figuring out what blocks what.', bucket:'sequence', why:'Mapping dependencies (task B can\'t start until task A is done) is sequencing. It\'s how a flat task list becomes an ordered chain.'},
+  {id:'n6', text:'Find the longest chain of dependent tasks and lay milestones on a Gantt chart', hint:'The chain that decides your finish date, on a calendar.', bucket:'sequence', why:'The longest dependent chain is the critical path — it sets your earliest possible finish. Placing it on a Gantt with milestones is the scheduling step.'}
+];
+const BUCKET_NAMES = {scope:'Scope & break down', estimate:'Estimate the work', sequence:'Sequence & schedule'};
+
+let placed = {};
+function renderScenarios(){
+  const list = $('scenarioList');
+  const shuffled = [...NEEDS].sort(()=>Math.random()-0.5);
+  list.innerHTML = shuffled.map(p => `
+    <div class="scenario-card" draggable="true" data-id="${p.id}">
+      <div class="scenario-text">${p.text}</div>
+      <div class="scenario-hint">${p.hint}</div>
+    </div>`).join('');
+  list.querySelectorAll('.scenario-card').forEach(card => {
+    card.addEventListener('dragstart', e => {
+      e.dataTransfer.setData('id', card.dataset.id);
+      card.classList.add('dragging');
+    });
+    card.addEventListener('dragend', () => card.classList.remove('dragging'));
+  });
+}
+function setupBuckets(){
+  document.querySelectorAll('.bucket').forEach(b => {
+    b.addEventListener('dragover', e => { e.preventDefault(); b.classList.add('drag-over'); });
+    b.addEventListener('dragleave', () => b.classList.remove('drag-over'));
+    b.addEventListener('drop', e => {
+      e.preventDefault();
+      b.classList.remove('drag-over');
+      handleDrop(e.dataTransfer.getData('id'), b.dataset.bucket);
+    });
+  });
+}
+function handleDrop(id, bucket){
+  const need = NEEDS.find(p => p.id === id);
+  if (!need || placed[id]) return;
+  const correct = need.bucket === bucket;
+  placed[id] = {bucket, correct};
+  const card = document.querySelector(`.scenario-card[data-id="${id}"]`);
+  card.classList.add('placed', correct ? 'correct' : 'wrong');
+  const pill = document.createElement('span');
+  pill.className = 'dropped-pill ' + (correct ? 'correct' : 'wrong');
+  pill.textContent = (correct ? '✓ ' : '✗ ') + need.text.substring(0, 34) + (need.text.length > 34 ? '…' : '');
+  pill.title = correct ? need.why : `Correct stage: ${BUCKET_NAMES[need.bucket]}. ${need.why}`;
+  document.querySelector(`[data-drop="${bucket}"]`).appendChild(pill);
+  checkActivity1Done();
+}
+function checkActivity1Done(){
+  if (Object.keys(placed).length === NEEDS.length) {
+    const right = Object.values(placed).filter(p => p.correct).length;
+    const fb = $('feedback1');
+    if (right === NEEDS.length) {
+      fb.className = 'activity-feedback show success';
+      fb.innerHTML = `<strong>All six correct — you're thinking in stages, not chaos.</strong> If you're drawing boundaries or breaking work into a tree, it's <em>scope</em>. If you're putting a size on tasks or checking against history, it's <em>estimate</em>. If you're wiring tasks together or laying them on a calendar, it's <em>sequence</em>. Name the stage in your prompt and AI drafts exactly that piece.`;
+    } else {
+      fb.className = 'activity-feedback show partial';
+      fb.innerHTML = `<strong>You got ${right} of 6.</strong> Hover any red pill for the right stage and the reasoning. The usual mix-up: "compare against a past project" feels like scoping, but it's an <em>estimating</em> move — reference-class forecasting is how you sanity-check the numbers. Click <em>Try again</em> for a fresh shuffle.`;
+    }
+    $('prog1').classList.add('done');
+  }
+}
+function resetActivity1(){
+  placed = {};
+  $('feedback1').className = 'activity-feedback';
+  document.querySelectorAll('.bucket-drop').forEach(d => d.innerHTML = '');
+  renderScenarios();
+  $('prog1').classList.remove('done');
+}
+function showAnswers1(){
+  NEEDS.forEach(p => { if (!placed[p.id]) handleDrop(p.id, p.bucket); });
+}
+
+/* ─── ACTIVITY 2: Build-a-Planning-Prompt ─── */
+const FRAGMENTS = [
+  {order:1, tag:'goal',   text:'Act as an experienced project manager. Goal: launch a redesigned company blog with 20 migrated articles.'},
+  {order:2, tag:'goal',   text:'Success = the new blog is live, all articles migrated, and search rankings preserved.'},
+  {order:3, tag:'scope',  text:'In scope: design, build, content migration, testing. Out of scope: writing new articles or a paid ad campaign.'},
+  {order:4, tag:'scope',  text:'Constraints: fixed budget, and we must keep the existing CMS — no platform migration.'},
+  {order:5, tag:'team',   text:'Team: one designer (full-time), one developer (half-time), me coordinating. No dedicated QA.'},
+  {order:6, tag:'team',   text:'Hard deadline: the marketing launch is in 6 weeks and cannot move.'},
+  {order:7, tag:'output', text:'Give me a work-breakdown structure with effort estimates (in days) and dependencies, as a table.'},
+  {order:8, tag:'output', text:'Then flag your top 3 estimation risks and where you assumed the happy path, so I can add buffers.'}
+];
+const STAGE_HINTS = {
+  goal:'Start with the GOAL — AI can\'t plan toward an outcome you haven\'t named. State what "done" looks like before anything else.',
+  scope:'SCOPE & CONSTRAINTS come after the goal: what\'s in, what\'s explicitly out, and the hard limits (budget, platform) AI must respect.',
+  team:'TEAM & DEADLINE come next — who\'s doing the work and by when. Without this, AI invents a team and picks its own timeline.',
+  output:'OUTPUT comes last — the exact format (WBS table, estimates, dependencies) plus a request to surface its own assumptions and risks.'
+};
+let promptStep = 0, promptMistakes = 0;
+function renderFragments(){
+  const shuffled = [...FRAGMENTS].sort(()=>Math.random()-0.5);
+  $('fragPool').innerHTML = shuffled.map(f =>
+    `<div class="frag-chip" data-order="${f.order}" onclick="pickFragment(${f.order}, this)">${f.text}</div>`
+  ).join('');
+}
+function pickFragment(order, chip){
+  const hint = $('promptHint');
+  if (order !== promptStep + 1) {
+    promptMistakes++;
+    chip.classList.remove('shake'); void chip.offsetWidth;
+    chip.classList.add('shake');
+    const expected = FRAGMENTS.find(f => f.order === promptStep + 1);
+    const label = {goal:'GOAL', scope:'SCOPE & CONSTRAINTS', team:'TEAM & DEADLINE', output:'OUTPUT'}[expected.tag];
+    hint.innerHTML = `<strong>Not yet.</strong> ${STAGE_HINTS[expected.tag]} (Block ${promptStep + 1} of 8 — you're building the <strong>${label}</strong> section.)`;
+    hint.classList.add('show');
+    return;
+  }
+  hint.classList.remove('show');
+  promptStep++;
+  chip.classList.add('used');
+  const frag = FRAGMENTS.find(f => f.order === order);
+  const ph = $('slotPlaceholder');
+  if (ph) ph.remove();
+  const line = document.createElement('div');
+  line.className = 'slot-line t-' + frag.tag;
+  const tagLabel = {goal:'goal', scope:'scope', team:'team', output:'output'}[frag.tag];
+  line.innerHTML = `<span class="slot-tag">${tagLabel}</span><span>${frag.text}</span>`;
+  $('promptSlots').appendChild(line);
+  if (promptStep === FRAGMENTS.length) finishPrompt();
+}
+function finishPrompt(){
+  const preview = $('promptPreview');
+  preview.innerHTML = `<span class="pp-label">Your assembled prompt — copy this pattern for any plan</span>` +
+    FRAGMENTS.map(f => f.text).join(' ');
+  preview.classList.add('show');
+  const fb = $('feedback2');
+  const whys = `<ul style="margin:.6rem 0 0 1.1rem;line-height:1.7">
+    <li><strong>Goal</strong> is non-negotiable — a plan is a path to an outcome. Name what "done" looks like or AI plans toward a guess.</li>
+    <li><strong>Scope &amp; constraints</strong> — what's out and what's fixed (budget, platform) — stops AI padding the plan with work you never asked for.</li>
+    <li><strong>Team &amp; deadline</strong> are what make a timeline real. Give AI the actual headcount and hard date, or it will assume a bigger team and a softer deadline than you have.</li>
+    <li><strong>Output</strong> as a WBS with estimates and dependencies — <em>plus a request for its own risks and assumptions</em> — gives you the means to catch the optimism yourself.</li></ul>`;
+  if (promptMistakes === 0) {
+    fb.className = 'activity-feedback show success';
+    fb.innerHTML = `<strong>Perfect assembly — zero wrong clicks.</strong> You've internalized GOAL → SCOPE &amp; CONSTRAINTS → TEAM &amp; DEADLINE → OUTPUT. Why each block earns its place:${whys}`;
+  } else {
+    fb.className = 'activity-feedback show partial';
+    fb.innerHTML = `<strong>Assembled — with ${promptMistakes} wrong click${promptMistakes > 1 ? 's' : ''} on the way.</strong> That's fine: the order <em>is</em> the lesson — name the goal before the scope, give the real team and deadline before you ask for a timeline. Why each block matters:${whys} Hit <em>Start over</em> and try for a clean run.`;
+  }
+  $('prog2').classList.add('done');
+}
+function resetActivity2(){
+  promptStep = 0; promptMistakes = 0;
+  $('promptHint').classList.remove('show');
+  $('promptPreview').className = 'prompt-preview';
+  $('feedback2').className = 'activity-feedback';
+  $('promptSlots').innerHTML = '<div style="font-size:.75rem;color:var(--text-muted);font-style:italic" id="slotPlaceholder">Your assembled prompt will build up here, block by block…</div>';
+  renderFragments();
+  $('prog2').classList.remove('done');
+}
+
+/* ─── ACTIVITY 3: Estimate Clinic ─── */
+const PATIENTS = {
+  A: {
+    correct: 1,
+    opts: [
+      {t:'The design phase should take longer than the build phase', ex:'No — there\'s no universal rule that design outlasts build; it depends on the project. The real problem is a phase that\'s been priced at zero.'},
+      {t:'Client review & sign-off is estimated at 0 days — AI costed the happy path and skipped the waiting', ex:'Correct. This is the planning fallacy in miniature: AI estimates the work it can see (design, build, test) and prices the friction it can\'t — review cycles, sign-off, rework — at nothing. Real client review rarely takes zero days. Add realistic review-and-rework time, or the "10 days" quietly becomes three weeks.'},
+      {t:'You can\'t launch a website in only three days of testing', ex:'Not the core flaw — testing time varies by site. The glaring problem is the 0-day review line: the waiting and rework that AI simply didn\'t cost.'}
+    ]
+  },
+  B: {
+    correct: 0,
+    opts: [
+      {t:'The dependency is backwards — you write requirements FIRST, then hire a vendor to meet them', ex:'Correct. AI invented a dependency in the wrong direction. In reality you scope what you need (requirements) before you can sensibly select and hire a vendor to deliver it. AI often fabricates plausible-sounding orderings; you own the logic and must sanity-check every "blocked by."'},
+      {t:'The kickoff meeting should come first, before any other task', ex:'No — a kickoff after requirements and vendor selection is reasonable. The actual error is that Task 1 and Task 2 are sequenced backwards.'},
+      {t:'These three tasks should all run in parallel', ex:'No — these genuinely are sequential; you can\'t kick off before you\'ve hired. The flaw is the direction of the first dependency, not that dependencies exist.'}
+    ]
+  },
+  C: {
+    correct: 2,
+    opts: [
+      {t:'120 hours is too much work for this project', ex:'No — you can\'t judge whether 120 hours is "too much" without knowing the deliverables. The flaw is what AI did with your stated constraint, not the raw number.'},
+      {t:'Six weeks is simply not enough time for any project', ex:'No — six weeks is plenty for some projects. The problem is that AI\'s timeline ignores the resource limit you explicitly gave it.'},
+      {t:'AI dropped your constraint: one part-time dev at 5 hrs/week can\'t run 3 parallel workstreams — 120 hrs is ~24 weeks, not 6', ex:'Correct. You stated a hard resource limit and AI silently discarded it, assuming parallel work a single part-timer can\'t do. At 5 hrs/week, 120 hours is roughly 24 weeks of calendar time — four times the plan. This is why you always re-check that the timeline respects the team you actually have. The PM owns the constraint; AI will happily forget it.'}
+    ]
+  }
+};
+let clinicAnswered = {};
+function renderChecks(){
+  ['A','B','C'].forEach(p => {
+    const data = PATIENTS[p];
+    $('checks' + p).innerHTML = data.opts.map((o, i) =>
+      `<button class="err-opt" data-p="${p}" data-i="${i}" onclick="answerClinic('${p}', ${i}, this)">${o.t}</button>`
+    ).join('');
+  });
+}
+function answerClinic(p, i, btn){
+  if (clinicAnswered[p]) return;
+  clinicAnswered[p] = true;
+  const data = PATIENTS[p];
+  const wrap = $('checks' + p);
+  wrap.querySelectorAll('.err-opt').forEach((b, bi) => {
+    b.disabled = true;
+    if (bi === data.correct) b.classList.add('right');
+  });
+  if (i !== data.correct) btn.classList.add('wrong');
+  const note = $('note' + p);
+  note.innerHTML = (i === data.correct ? '<strong>Correct diagnosis.</strong> ' : '<strong>Not the core flaw.</strong> ') + data.opts[i].ex;
+  note.classList.add('show');
+  checkClinicDone();
+}
+function checkClinicDone(){
+  if (Object.keys(clinicAnswered).length === 3) {
+    const right = ['A','B','C'].filter(p => {
+      const chosen = $('checks'+p).querySelector('.err-opt.wrong');
+      return !chosen;
+    }).length;
+    const fb = $('feedback3');
+    if (right === 3) {
+      fb.className = 'activity-feedback show success';
+      fb.innerHTML = `<strong>3/3 — you read AI plans like a PM, not a tourist.</strong> The three failure modes to watch: <em>optimistic estimates</em> (the happy path priced as the whole path — add review and rework), <em>invented dependencies</em> (plausible orderings that are actually backwards — check every "blocked by"), and <em>dropped constraints</em> (the team size or deadline you stated, silently ignored). AI drafts; you own the plan.`;
+    } else {
+      fb.className = 'activity-feedback show partial';
+      fb.innerHTML = `<strong>You nailed ${right} of 3.</strong> Re-read the notes on the ones you missed — each is a signature AI mistake. The trap most people hit: trusting a plan because it looks thorough. A 0-day review line, a backwards dependency, and a forgotten constraint all hide inside plans that read beautifully. Hit <em>Reset clinic</em> to run the cases again.`;
+    }
+    $('prog3').classList.add('done');
+  }
+}
+function resetActivity3(){
+  clinicAnswered = {};
+  ['A','B','C'].forEach(p => $('note'+p).classList.remove('show'));
+  $('feedback3').className = 'activity-feedback';
+  renderChecks();
+  $('prog3').classList.remove('done');
+}
+
+/* ─── ACTIVITY 4: Own-the-Plan Quiz ─── */
+const QUIZ = [
+  {
+    q:'AI hands you a polished project plan with confident dates and no error. What should you do before you promise those dates to a stakeholder?',
+    opts:[
+      {t:'Trust it — the plan looks thorough and complete', ok:false, ex:'"Looks thorough" only means it reads well. AI estimates the happy path and can invent dependencies or drop constraints — all while producing a plan that looks airtight. Polish is not proof of realism.'},
+      {t:'Pressure-test it: check the critical path, whether one person is overloaded, and add buffers for review and rework AI didn\'t cost', ok:true, ex:'This is the whole discipline. The AI plan is a first draft. Trace the longest dependent chain, confirm the timeline respects your real team, and add time for the review, rework, and surprises AI systematically underestimates. Then the dates are yours to defend.'},
+      {t:'Ask AI "is this plan realistic?" and go with its answer', ok:false, ex:'AI will confidently say yes — it can\'t see your team\'s real capacity or your history of slippage. Self-certification from the tool that wrote the plan isn\'t verification. You need an independent reality check.'}
+    ]
+  },
+  {
+    q:'Why do AI project estimates tend to come out too optimistic?',
+    opts:[
+      {t:'The models are deliberately trained to please you with short timelines', ok:false, ex:'It\'s not a conspiracy to flatter you. The optimism is structural: AI estimates the work it can enumerate and underweights the friction — the same planning fallacy humans fall into.'},
+      {t:'AI costs the tasks it can list and underweights review, rework, waiting, and the tasks nobody thought of yet — the planning fallacy', ok:true, ex:'Exactly. The planning fallacy is the well-documented tendency to estimate the best case: you price the visible work and skip the hidden friction. AI does the same at speed. The fixes are buffers and reference-class forecasting — comparing against how long similar projects actually took, not how long they "should."'},
+      {t:'Estimates are always optimistic because computers round down', ok:false, ex:'This has nothing to do with rounding. It\'s about which work gets counted: the enumerable tasks, not the review cycles, dependencies, and surprises that eat real calendar time.'}
+    ]
+  },
+  {
+    q:'In plain English, what is the "critical path" of a project?',
+    opts:[
+      {t:'The most important or highest-priority tasks in the project', ok:false, ex:'Not quite — "critical" here doesn\'t mean "important," it means schedule-determining. A low-priority task can sit on the critical path, and a very important task might not.'},
+      {t:'The longest chain of dependent tasks — it sets the earliest date the whole project can finish', ok:true, ex:'Right. The critical path is the longest string of tasks that must happen in order. Its length is your minimum project duration: shorten a task on the critical path and the whole project can finish sooner; a delay on it delays everything. Tasks off the critical path have slack.'},
+      {t:'The path a project takes when everything goes wrong', ok:false, ex:'No — that\'s a risk scenario, not the critical path. The critical path exists in every plan: it\'s simply the longest dependent chain that governs the finish date.'}
+    ]
+  },
+  {
+    q:'AI\'s plan lists "Task B is blocked by Task A." You look and realize B doesn\'t actually depend on A at all. What\'s the right response?',
+    opts:[
+      {t:'Leave it — AI must have a reason, and an extra dependency is safe', ok:false, ex:'Invented dependencies aren\'t safe — they falsely serialize work that could run in parallel, stretching your timeline for no reason. AI fabricates plausible-sounding orderings; a wrong "blocked by" is a real cost.'},
+      {t:'Correct it — remove the false dependency so the tasks can run in parallel, and double-check the rest', ok:true, ex:'Yes. Dependencies drive the whole schedule, so a single invented one distorts the timeline and the critical path. You own the logic: verify each "blocked by" against reality, and unblock what AI serialized by mistake.'},
+      {t:'Delete the entire plan and start over from scratch', ok:false, ex:'Overkill. One wrong dependency doesn\'t invalidate a useful draft — you fix the specific error and sanity-check the neighbors, keeping the parts that hold up.'}
+    ]
+  },
+  {
+    q:'What\'s the single most reliable habit that separates people who plan well with AI from people who get burned by it?',
+    opts:[
+      {t:'Using the most detailed project-management templates available', ok:false, ex:'A fancier template doesn\'t make an estimate realistic — a beautifully formatted plan can still be optimistic and full of invented dependencies. Structure is not the same as reality.'},
+      {t:'Treating the AI plan as a first draft and owning it — checking estimates, dependencies, and constraints against reality before committing', ok:true, ex:'This is the throughline of the whole lesson. Describe the goal, scope, team, and deadline clearly; let AI draft fast; then pressure-test the optimism, verify the dependencies, and confirm your constraints survived. AI accelerates the plan, but the project manager owns it.'},
+      {t:'Writing longer, more detailed planning prompts every time', ok:false, ex:'A good prompt raises your odds of a useful draft — but it never guarantees a realistic one. The prompt gets you a candidate plan; owning and pressure-testing it is what turns it into a commitment you can defend.'}
+    ]
+  }
+];
+let quizAnswered = 0, quizScore = 0;
+function renderQuiz(){
+  quizAnswered = 0; quizScore = 0;
+  $('quizWrap').innerHTML = QUIZ.map((q, qi) => {
+    const order = q.opts.map((_, i) => i).sort(()=>Math.random()-0.5);
+    return `<div class="quiz-q" id="q${qi}">
+      <div class="quiz-q-num">Question ${qi+1} of ${QUIZ.length}</div>
+      <div class="quiz-q-text">${q.q}</div>
+      <div class="quiz-opts">${order.map(oi =>
+        `<button class="quiz-opt" onclick="answerQuiz(${qi}, ${oi}, this)">${q.opts[oi].t}</button>`).join('')}
+      </div>
+      <div class="quiz-explain" id="qx${qi}"></div>
+    </div>`;
+  }).join('');
+  $('feedback4').className = 'activity-feedback';
+}
+function answerQuiz(qi, oi, btn){
+  const q = QUIZ[qi];
+  const box = $('q' + qi);
+  if (box.dataset.done) return;
+  box.dataset.done = '1';
+  const opt = q.opts[oi];
+  const rightText = q.opts.find(o => o.ok).t;
+  box.querySelectorAll('.quiz-opt').forEach(b => {
+    b.disabled = true;
+    if (b.textContent === rightText) b.classList.add('right');
+  });
+  if (!opt.ok) btn.classList.add('wrong');
+  const ex = $('qx' + qi);
+  ex.className = 'quiz-explain show ' + (opt.ok ? 'ok' : 'no');
+  ex.innerHTML = (opt.ok ? '<strong>Right.</strong> ' : '<strong>Not quite.</strong> ') + opt.ex;
+  quizAnswered++;
+  if (opt.ok) quizScore++;
+  if (quizAnswered === QUIZ.length) finishQuiz();
+}
+function finishQuiz(){
+  const fb = $('feedback4');
+  if (quizScore === QUIZ.length) {
+    fb.className = 'activity-feedback show success';
+    fb.innerHTML = `<strong>5/5 — you've got the one habit that matters.</strong> AI is a superb plan-drafter and a superb estimator of the visible work, but it can't see your team's real capacity, your history of slippage, or the friction it doesn't enumerate. So the loop is always the same: describe the goal, scope, team, and deadline; get the draft plan; then pressure-test the estimates, verify the dependencies, and confirm your constraints survived. Draft with AI, commit as a PM.`;
+  } else {
+    fb.className = 'activity-feedback show partial';
+    fb.innerHTML = `<strong>You scored ${quizScore}/5.</strong> Re-read the explanations — the wrong options are the exact traps ("it looks thorough so trust it", "just ask AI if it\'s realistic", "an extra dependency is safe"). The thread through all five: an AI plan is a first draft, not a commitment. Only a reality check on estimates, dependencies, and constraints turns it into something you can defend. Retake for a clean 5/5.`;
+  }
+  $('prog4').classList.add('done');
+}
+function resetQuiz(){
+  renderQuiz();
+  $('prog4').classList.remove('done');
+}
+
+/* ─── INIT ─── */
+window.addEventListener('DOMContentLoaded', () => {
+  renderScenarios();
+  setupBuckets();
+  renderFragments();
+  renderChecks();
+  renderQuiz();
+});
+</script>
+</body>
+</html>
