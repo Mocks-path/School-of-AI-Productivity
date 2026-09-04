@@ -1,0 +1,1142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Productivity Week 3 — Ana's Deadline: Build a Boss-Proof, Well-Sourced Research Brief in One Day</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --orange:#E87A2E;--orange-dark:#D06A20;--orange-light:#F5943E;--orange-glow:rgba(232,122,46,0.12);
+  --navy:#2B2D42;--navy-dark:#1A1B2E;
+  --bg:#F3EDE7;--bg-card:#FFFFFF;--bg-light:#F9F5F0;
+  --text-primary:#2B2D42;--text-secondary:#6B6D7B;--text-muted:#9597A6;
+  --border:#E5DDD4;
+  --green:#4CAF50;--green-light:#E8F5E9;
+  --blue:#3F88C5;--purple:#8B5CF6;--pink:#EC4899;--red:#E74C3C;
+  --shadow-sm:0 2px 8px rgba(43,45,66,0.06);
+  --shadow-md:0 8px 24px rgba(43,45,66,0.08);
+  --shadow-lg:0 16px 48px rgba(43,45,66,0.12);
+  --radius:14px;--radius-sm:8px;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text-primary);overflow-x:hidden;-webkit-font-smoothing:antialiased;line-height:1.6}
+
+/* ─── HEADER ─── */
+.header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:.8rem 2rem;display:flex;align-items:center;justify-content:space-between}
+.header-left{display:flex;align-items:center;gap:.7rem}
+.header-title{font-family:'DM Serif Display',serif;font-size:1.15rem;color:var(--navy);line-height:1.2}
+.header-title span{color:var(--orange)}
+.header-tag{font-size:.65rem;color:var(--text-muted);font-weight:500;letter-spacing:.04em;text-transform:uppercase}
+.logo-mascot{width:44px;height:44px;flex-shrink:0}
+.progress-pill{display:flex;align-items:center;gap:.6rem;padding:.4rem .9rem;background:var(--orange-glow);border-radius:50px;font-size:.72rem;color:var(--orange);font-weight:700}
+.progress-pill .dot{width:7px;height:7px;border-radius:50%;background:var(--orange);animation:pulse 2s infinite}
+
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.9)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes popIn{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:scale(1)}}
+@keyframes shimmer{0%{background-position:-400px 0}100%{background-position:400px 0}}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ─── HERO ─── */
+.hero{padding:3.5rem 2rem 2.5rem;background:linear-gradient(180deg,var(--bg) 0%,var(--bg-light) 100%);position:relative;overflow:hidden}
+.hero-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1.4fr 1fr;gap:2.5rem;align-items:center}
+.hero-badge{display:inline-flex;align-items:center;gap:.45rem;padding:.4rem 1rem;border-radius:50px;background:var(--orange-glow);color:var(--orange);font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:1rem;animation:fadeUp .7s ease}
+.hero h1{font-family:'DM Serif Display',serif;font-size:clamp(1.9rem,4vw,2.8rem);line-height:1.15;color:var(--navy);margin-bottom:.9rem;animation:fadeUp .7s ease .1s both}
+.hero h1 em{font-style:normal;color:var(--orange)}
+.hero-sub{font-size:.95rem;color:var(--text-secondary);line-height:1.7;margin-bottom:1.4rem;animation:fadeUp .7s ease .2s both}
+.usecase-banner{background:#fff;border-radius:var(--radius);padding:1rem 1.2rem;border:1px solid var(--border);box-shadow:var(--shadow-sm);display:flex;align-items:center;gap:1rem;animation:fadeUp .7s ease .3s both}
+.usecase-icon{width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,#8B5CF6,#3F88C5);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.4rem}
+.usecase-text{font-size:.82rem;color:var(--text-secondary);line-height:1.5}
+.usecase-text strong{color:var(--navy);font-weight:700}
+.hero-visual{display:flex;justify-content:center;align-items:center;animation:fadeUp .8s ease .2s both}
+.hero-mascot{width:230px;height:auto;animation:float 3.5s ease-in-out infinite;filter:drop-shadow(0 12px 40px rgba(232,122,46,0.22))}
+.budget-strip{max-width:1100px;margin:1.6rem auto 0;display:grid;grid-template-columns:repeat(4,1fr);gap:.8rem;animation:fadeUp .8s ease .35s both}
+.budget-chip{background:#fff;border:1px solid var(--border);border-radius:10px;padding:.75rem .9rem;text-align:center;box-shadow:var(--shadow-sm)}
+.budget-chip .bv{font-family:'DM Serif Display',serif;font-size:1.25rem;color:var(--orange)}
+.budget-chip .bl{font-size:.64rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;font-weight:700;margin-top:.15rem}
+
+/* ─── SECTION SHELL ─── */
+.section{padding:3rem 2rem;scroll-margin-top:80px}
+.section.alt{background:var(--bg-light)}
+.container{max-width:1100px;margin:0 auto}
+.section-header{margin-bottom:2rem}
+.section-num{display:inline-flex;align-items:center;gap:.5rem;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--orange);margin-bottom:.5rem}
+.section-num .num{width:24px;height:24px;border-radius:50%;background:var(--orange);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.7rem}
+.section-title{font-family:'DM Serif Display',serif;font-size:clamp(1.5rem,2.8vw,2rem);color:var(--navy);line-height:1.25;margin-bottom:.4rem}
+.section-sub{font-size:.92rem;color:var(--text-secondary);line-height:1.65;max-width:720px}
+.story-beat{background:#fff;border-left:4px solid var(--orange);border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:1rem 1.2rem;font-size:.88rem;color:var(--text-primary);line-height:1.65;box-shadow:var(--shadow-sm);margin-bottom:1.6rem}
+.story-beat .sb-tag{display:inline-block;font-size:.62rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--orange);margin-bottom:.3rem}
+.story-beat em{color:var(--text-secondary)}
+
+/* ─── TAB NAV ─── */
+.tab-nav{display:flex;gap:.4rem;overflow-x:auto;padding:.4rem;background:rgba(255,255,255,0.7);backdrop-filter:blur(8px);border-radius:50px;border:1px solid var(--border);box-shadow:var(--shadow-sm);position:sticky;top:72px;z-index:50;margin:0 auto 2rem;max-width:fit-content;flex-wrap:nowrap;-ms-overflow-style:none;scrollbar-width:none}
+.tab-nav::-webkit-scrollbar{display:none}
+.tab-btn{padding:.55rem 1.1rem;border-radius:50px;border:none;background:transparent;color:var(--text-secondary);font-size:.78rem;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap;transition:all .2s}
+.tab-btn:hover{color:var(--orange)}
+.tab-btn.active{background:var(--orange);color:#fff;box-shadow:0 3px 12px rgba(232,122,46,0.35)}
+
+/* ─── GENERIC CARDS/GRIDS ─── */
+.pick-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;margin-bottom:1.5rem}
+.pick-grid.four{grid-template-columns:repeat(4,1fr)}
+.pick-grid.five{grid-template-columns:repeat(5,1fr)}
+.pick-card{background:#fff;border-radius:var(--radius);padding:1.4rem;border:2px solid var(--border);cursor:pointer;transition:all .3s;position:relative;overflow:hidden}
+.pick-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;transition:height .3s}
+.pick-card:nth-child(1)::before{background:linear-gradient(90deg,var(--green),#7BC67E)}
+.pick-card:nth-child(2)::before{background:linear-gradient(90deg,var(--blue),#5DADE2)}
+.pick-card:nth-child(3)::before{background:linear-gradient(90deg,var(--purple),#B39DDB)}
+.pick-card:nth-child(4)::before{background:linear-gradient(90deg,var(--pink),#F48FB1)}
+.pick-card:nth-child(5)::before{background:linear-gradient(90deg,var(--orange),var(--orange-light))}
+.pick-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-md)}
+.pick-card.active{border-color:var(--orange);box-shadow:var(--shadow-md)}
+.pick-card.active::before{height:6px}
+.pick-icon{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;margin-bottom:.8rem;background:var(--bg-light)}
+.pick-card h4{font-family:'DM Serif Display',serif;font-size:1.02rem;color:var(--navy);margin-bottom:.3rem}
+.pick-card .pc-tag{font-size:.64rem;color:var(--orange);font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:.6rem}
+.pick-card p{font-size:.76rem;color:var(--text-secondary);line-height:1.5}
+.pick-detail{background:#fff;border-radius:var(--radius);padding:1.3rem 1.5rem;border:1px solid var(--border);box-shadow:var(--shadow-sm);font-size:.86rem;line-height:1.65;display:none}
+.pick-detail.show{display:block;animation:fadeUp .4s ease}
+.pick-detail strong{color:var(--navy)}
+.pick-detail .verdict-pill{display:inline-block;padding:.2rem .7rem;border-radius:50px;font-size:.68rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;margin-bottom:.5rem}
+.vp-good{background:var(--green-light);color:#2E7D32}
+.vp-mid{background:#FFF3CD;color:#856404}
+.vp-bad{background:#FEE;color:#C62828}
+
+/* ─── SCENARIO QUIZ ─── */
+.scenario-panel{background:#fff;border-radius:var(--radius);padding:1.5rem;border:1px solid var(--border);box-shadow:var(--shadow-sm);margin-top:1.4rem}
+.scenario-title{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-muted);margin-bottom:.6rem}
+.scenario-q{font-size:1rem;color:var(--navy);margin-bottom:1rem;font-weight:600;line-height:1.5}
+.scenario-options{display:grid;grid-template-columns:1fr;gap:.6rem;margin-bottom:1rem}
+.scenario-btn{padding:.75rem .9rem;border-radius:8px;border:1.5px solid var(--border);background:#fff;font-size:.82rem;font-weight:600;color:var(--text-primary);cursor:pointer;font-family:inherit;transition:all .2s;text-align:left;line-height:1.45}
+.scenario-btn:hover{border-color:var(--orange);color:var(--orange)}
+.scenario-btn.correct{background:var(--green-light);border-color:var(--green);color:#2E7D32}
+.scenario-btn.wrong{background:#FEE;border-color:var(--red);color:#C62828}
+.scenario-feedback{padding:.9rem;border-radius:8px;font-size:.83rem;line-height:1.55;display:none}
+.scenario-feedback.show{display:block;animation:fadeUp .4s ease}
+.scenario-feedback.success{background:var(--green-light);color:#2E7D32;border-left:3px solid var(--green)}
+.scenario-feedback.fail{background:#FEE;color:#C62828;border-left:3px solid var(--red)}
+.btn-action{padding:.55rem 1.1rem;border-radius:8px;background:var(--orange);color:#fff;border:none;font-size:.82rem;font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s}
+.btn-action:hover{background:var(--orange-dark);transform:translateY(-1px);box-shadow:0 4px 12px rgba(232,122,46,0.3)}
+.btn-secondary{background:transparent;color:var(--text-primary);border:1.5px solid var(--border);padding:.55rem 1.1rem;border-radius:8px;font-size:.82rem;font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s}
+.btn-secondary:hover{border-color:var(--orange);color:var(--orange)}
+
+/* ─── CHAT MOCK (prompt showdown) ─── */
+.chat-mock{background:#fff;border-radius:var(--radius);border:1px solid var(--border);box-shadow:var(--shadow-sm);overflow:hidden;margin-top:1rem}
+.chat-head{background:var(--navy-dark);color:#fff;padding:.6rem 1rem;font-size:.78rem;font-weight:600;display:flex;align-items:center;gap:.5rem}
+.chat-head .cdot{width:8px;height:8px;border-radius:50%;background:var(--green)}
+.chat-body{padding:1.1rem;display:flex;flex-direction:column;gap:.8rem;min-height:150px}
+.chat-msg{max-width:88%;padding:.8rem 1rem;border-radius:12px;font-size:.83rem;line-height:1.55}
+.chat-msg.user{align-self:flex-end;background:var(--orange-glow);color:var(--text-primary);border:1px solid rgba(232,122,46,0.25);border-bottom-right-radius:3px}
+.chat-msg.ai{align-self:flex-start;background:var(--bg-light);border:1px solid var(--border);border-bottom-left-radius:3px}
+.chat-msg.ai strong{color:var(--orange)}
+.chat-msg .who{display:block;font-size:.62rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--text-muted);margin-bottom:.3rem}
+
+/* ─── SOURCE / DOCUMENT MOCK ─── */
+.sheet-wrap{background:#fff;border-radius:var(--radius);border:1px solid var(--border);box-shadow:var(--shadow-md);overflow:hidden;margin-top:1rem}
+.sheet-chrome{background:#5B3EA6;color:#fff;padding:.5rem 1rem;font-size:.75rem;font-weight:700;display:flex;align-items:center;gap:.5rem}
+.sheet-chrome .xicon{width:18px;height:18px;background:#fff;color:#5B3EA6;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:800}
+.sheet-tabs{background:#F3F2F1;border-bottom:1px solid var(--border);display:flex;font-size:.7rem}
+.sheet-tabs .stab{padding:.4rem .9rem;color:var(--text-secondary);border-right:1px solid var(--border)}
+.sheet-tabs .stab.on{background:#fff;color:#5B3EA6;font-weight:700;border-bottom:2px solid #5B3EA6}
+.sheet-scroll{overflow-x:auto}
+table.sheet{border-collapse:collapse;width:100%;font-size:.74rem;min-width:560px}
+table.sheet th,table.sheet td{border:1px solid #E5E5E5;padding:.35rem .55rem;text-align:left;white-space:nowrap}
+table.sheet thead th{background:#F3F2F1;color:var(--text-secondary);font-weight:700;text-align:center}
+table.sheet tbody th{background:#F3F2F1;color:var(--text-muted);font-weight:600;text-align:center;width:28px}
+table.sheet td.hl-bad{background:#FEE;color:#C62828;font-weight:600}
+table.sheet td.hl-good{background:var(--green-light);color:#2E7D32;font-weight:600}
+table.sheet td.hl-fix{background:var(--orange-glow);color:var(--orange-dark);font-weight:600}
+.sheet-cap{font-size:.76rem;color:var(--text-muted);padding:.6rem 1rem;background:var(--bg-light);border-top:1px solid var(--border)}
+
+/* ─── FORMULA / PROMPT LAB ─── */
+.formula-lab{background:#fff;border-radius:var(--radius);padding:1.4rem;border:1px solid var(--border);box-shadow:var(--shadow-sm);margin-top:1.4rem}
+.fl-tabs{display:flex;gap:.4rem;margin-bottom:1rem;flex-wrap:wrap}
+.fl-tab{padding:.45rem .9rem;border-radius:50px;border:1.5px solid var(--border);background:#fff;font-size:.74rem;font-weight:600;color:var(--text-secondary);cursor:pointer;font-family:inherit;transition:all .2s}
+.fl-tab:hover{border-color:var(--orange);color:var(--orange)}
+.fl-tab.active{background:var(--orange);border-color:var(--orange);color:#fff}
+.fl-prompt{background:var(--orange-glow);border:1px solid rgba(232,122,46,0.25);border-radius:8px;padding:.8rem 1rem;font-size:.83rem;line-height:1.5;margin-bottom:.9rem}
+.fl-prompt .who{display:block;font-size:.62rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--orange);margin-bottom:.3rem}
+.fl-code{background:var(--navy-dark);border-radius:8px;padding:.85rem 1rem;font-family:'Consolas','Courier New',monospace;font-size:.8rem;color:#D8DAE5;overflow-x:auto;line-height:1.5;margin-bottom:.9rem}
+.fl-code .kw{color:#F5943E}.fl-code .st{color:#8BD49C}.fl-code .rf{color:#82AAFF}
+.fl-explain{font-size:.83rem;line-height:1.6;color:var(--text-secondary)}
+.fl-explain strong{color:var(--navy)}
+
+/* review-style two column */
+.review-mine{background:#fff;border-radius:var(--radius);padding:1.4rem;border:1px solid var(--border);box-shadow:var(--shadow-sm);margin-top:1.4rem}
+.review-cols{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:.9rem}
+.review-col{border-radius:var(--radius-sm);padding:1rem 1.1rem}
+.review-col.love{background:var(--green-light)}
+.review-col.hate{background:#FEE}
+.review-col h5{font-size:.72rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.6rem}
+.review-col.love h5{color:#2E7D32}
+.review-col.hate h5{color:#C62828}
+.review-col li{font-size:.8rem;line-height:1.5;margin-left:1.1rem;margin-bottom:.35rem;color:var(--text-primary)}
+
+/* ─── ERROR / VERIFY FIXER ─── */
+.err-panel{background:#fff;border-radius:var(--radius);padding:1.5rem;border:1px solid var(--border);box-shadow:var(--shadow-sm);margin-top:1.4rem}
+.err-badge{display:inline-flex;align-items:center;gap:.4rem;background:#FEE;color:#C62828;font-weight:800;font-size:.85rem;padding:.35rem .8rem;border-radius:7px;font-family:'Consolas',monospace}
+.err-cell{font-family:'Consolas',monospace;background:var(--bg-light);border:1px solid var(--border);border-radius:6px;padding:.6rem .8rem;font-size:.82rem;margin:.8rem 0;color:var(--text-primary)}
+.err-cell b{color:#C62828}
+
+/* ─── SYNTHESIS MATRIX ─── */
+.matrix-wrap{background:#fff;border-radius:var(--radius);border:1px solid var(--border);box-shadow:var(--shadow-md);overflow:hidden;margin-top:1.4rem}
+.matrix-head{background:#F5F5F7;padding:.55rem 1rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:.4rem;font-size:.72rem;color:var(--text-muted)}
+.matrix-head .sdot{width:9px;height:9px;border-radius:50%}
+.matrix-body{padding:1.2rem 1.4rem}
+.matrix-body h4{font-family:'DM Serif Display',serif;font-size:1.05rem;color:var(--navy);margin-bottom:.9rem}
+table.matrix{border-collapse:collapse;width:100%;font-size:.76rem}
+table.matrix th,table.matrix td{border:1px solid var(--border);padding:.5rem .6rem;text-align:left;vertical-align:top;line-height:1.4}
+table.matrix thead th{background:var(--bg-light);color:var(--navy);font-weight:700;font-size:.72rem}
+table.matrix tbody th{background:var(--bg-light);color:var(--navy);font-weight:700;white-space:nowrap}
+table.matrix td.agree{color:#2E7D32}
+table.matrix td.disagree{color:#C62828;font-weight:600}
+.ask-data{margin-top:1.2rem}
+.ask-chip{display:inline-block;margin:.25rem .3rem .25rem 0;padding:.45rem .9rem;border-radius:50px;border:1.5px solid var(--border);background:#fff;font-size:.76rem;font-weight:600;color:var(--text-secondary);cursor:pointer;font-family:inherit;transition:all .2s}
+.ask-chip:hover{border-color:var(--orange);color:var(--orange)}
+.ask-chip.active{background:var(--orange);border-color:var(--orange);color:#fff}
+.ask-answer{margin-top:.9rem;padding:.9rem 1.1rem;border-radius:8px;background:var(--bg-light);border-left:3px solid var(--orange);font-size:.84rem;line-height:1.6;display:none}
+.ask-answer.show{display:block;animation:fadeUp .4s ease}
+.ask-answer strong{color:var(--orange-dark)}
+
+/* checklist + feed */
+.build-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1.5rem}
+.build-card{background:#fff;border-radius:var(--radius);padding:1.3rem;border:1px solid var(--border);box-shadow:var(--shadow-sm)}
+.build-card h4{font-size:.95rem;color:var(--navy);margin-bottom:.7rem;display:flex;align-items:center;gap:.5rem}
+.build-card h4::before{content:'';width:10px;height:10px;border-radius:50%;background:var(--orange)}
+.checklist{list-style:none;padding:0}
+.checklist li{display:flex;align-items:flex-start;gap:.6rem;padding:.42rem 0;font-size:.84rem;color:var(--text-primary);cursor:pointer;line-height:1.45}
+.checklist li .check{width:18px;height:18px;border-radius:5px;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;transition:all .2s}
+.checklist li.done .check{background:var(--green);border-color:var(--green)}
+.checklist li.done .check::after{content:'✓';color:#fff;font-size:.7rem;font-weight:800}
+.checklist li.done{color:var(--text-muted);text-decoration:line-through}
+.feed{background:var(--navy-dark);border-radius:10px;padding:1rem 1.1rem;min-height:220px;max-height:280px;overflow-y:auto}
+.feed-line{display:flex;gap:.6rem;font-size:.78rem;line-height:1.55;padding:.3rem 0;color:#D8DAE5;animation:fadeUp .4s ease}
+.feed-line .ft{color:var(--orange-light);font-weight:700;flex-shrink:0}
+.feed-line.hint-line{color:#8B8DA0;font-style:italic}
+.done-note{margin-top:1rem;padding:.8rem;background:var(--green-light);border-radius:7px;font-size:.78rem;color:#2E7D32;display:none}
+
+/* ─── CITATION TESTER ─── */
+.cite-grid{display:grid;grid-template-columns:1fr;gap:.8rem;margin-top:1.2rem}
+.cite-row{background:#fff;border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:1rem 1.1rem;transition:all .3s}
+.cite-row.tested-real{border-color:var(--green);background:var(--green-light)}
+.cite-row.tested-fake{border-color:var(--red);background:#FEE}
+.cite-top{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.cite-claim{font-size:.85rem;color:var(--navy);font-weight:600;line-height:1.45;flex:1;min-width:200px}
+.cite-src{font-family:'Consolas',monospace;font-size:.74rem;color:var(--text-secondary);margin-top:.3rem;display:block}
+.cite-btn{padding:.45rem .9rem;border-radius:7px;border:1.5px solid var(--orange);background:#fff;color:var(--orange);font-size:.74rem;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap;transition:all .2s}
+.cite-btn:hover{background:var(--orange);color:#fff}
+.cite-btn:disabled{opacity:.55;cursor:default}
+.cite-result{margin-top:.7rem;font-size:.8rem;line-height:1.5;display:none}
+.cite-result.show{display:block;animation:fadeUp .35s ease}
+.cite-result .badge{display:inline-block;font-size:.62rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:.15rem .55rem;border-radius:50px;margin-bottom:.35rem}
+.cite-result .b-real{background:#2E7D32;color:#fff}
+.cite-result .b-fake{background:#C62828;color:#fff}
+.cite-tally{margin-top:1rem;padding:.9rem 1.1rem;border-radius:8px;background:var(--bg-light);border-left:3px solid var(--orange);font-size:.83rem;line-height:1.55;display:none}
+.cite-tally.show{display:block;animation:fadeUp .4s ease}
+.cite-tally strong{color:var(--orange-dark)}
+
+/* ─── DISCLOSURE BUILDER ─── */
+.dash-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:1.4rem;margin-top:1.4rem}
+.dash-controls .prompt-field{display:flex;flex-direction:column;gap:.4rem;margin-bottom:.9rem}
+.dash-controls label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted)}
+.dash-controls select{padding:.6rem .8rem;border:1.5px solid var(--border);border-radius:7px;font-family:inherit;font-size:.83rem;color:var(--text-primary);background:#fff}
+.dash-controls select:focus{outline:none;border-color:var(--orange)}
+.dash-preview{background:#fff;border-radius:var(--radius);border:1px solid var(--border);box-shadow:var(--shadow-md);overflow:hidden}
+.dashp-head{background:var(--navy-dark);color:#fff;padding:.7rem 1rem;display:flex;align-items:center;justify-content:space-between}
+.dashp-title{font-family:'DM Serif Display',serif;font-size:1rem}
+.dashp-when{font-size:.66rem;color:rgba(255,255,255,.6)}
+.dashp-body{padding:1.1rem}
+.dashp-body h5{font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted);margin-bottom:.4rem}
+.dashp-discl{font-size:.82rem;line-height:1.6;color:var(--text-primary);background:var(--bg-light);border-radius:8px;padding:.85rem 1rem;border-left:3px solid var(--orange)}
+.dashp-note{padding:.9rem 1rem 0;font-size:.78rem;line-height:1.55;color:var(--text-secondary)}
+.dashp-note strong{color:var(--navy)}
+
+/* ─── VERDICT ─── */
+.week-verdict{display:none;margin-top:1.4rem;background:var(--navy-dark);border-radius:var(--radius);padding:1.6rem;color:#fff;animation:popIn .5s ease}
+.week-verdict.show{display:block}
+.week-verdict h4{font-family:'DM Serif Display',serif;font-size:1.35rem;margin-bottom:.8rem}
+.week-verdict h4 em{font-style:normal;color:var(--orange-light)}
+.wv-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.7rem;margin-bottom:1rem}
+.wv-tile{background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.14);border-radius:9px;padding:.8rem;text-align:center}
+.wv-tile .v{font-family:'DM Serif Display',serif;font-size:1.3rem;color:var(--orange-light)}
+.wv-tile .l{font-size:.62rem;text-transform:uppercase;letter-spacing:.05em;color:rgba(255,255,255,0.55);font-weight:700;margin-top:.25rem}
+.week-verdict p{font-size:.87rem;line-height:1.65;color:rgba(255,255,255,0.85)}
+.week-verdict p strong{color:var(--orange-light)}
+
+/* ─── FOOTER / RECAP ─── */
+.footer-cta{text-align:center;padding:3rem 2rem 5.5rem;background:var(--navy-dark);color:#fff}
+.footer-cta h2{font-family:'DM Serif Display',serif;font-size:1.9rem;margin-bottom:.6rem}
+.footer-cta h2 em{color:var(--orange);font-style:normal}
+.footer-cta>p{font-size:.92rem;color:rgba(255,255,255,0.7);max-width:600px;margin:0 auto 1.8rem}
+.recap-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.9rem;max-width:1050px;margin:0 auto 1.8rem;text-align:left}
+.recap-card{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.13);border-radius:var(--radius);padding:1.2rem 1.3rem}
+.recap-card .rn{font-size:.62rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--orange-light);margin-bottom:.35rem}
+.recap-card h4{font-family:'DM Serif Display',serif;font-size:1.02rem;margin-bottom:.35rem;color:#fff}
+.recap-card p{font-size:.76rem;color:rgba(255,255,255,0.65);line-height:1.55}
+.footer-note{font-size:.72rem;color:rgba(255,255,255,0.4);margin-top:1.6rem;max-width:640px;margin-left:auto;margin-right:auto;line-height:1.6}
+
+/* ─── COMPLETION BAR ─── */
+.completion-bar{position:fixed;bottom:0;left:0;right:0;background:rgba(255,255,255,0.95);backdrop-filter:blur(10px);border-top:1px solid var(--border);padding:.7rem 2rem;display:flex;align-items:center;justify-content:space-between;z-index:90;box-shadow:0 -2px 12px rgba(0,0,0,0.05)}
+.completion-info{display:flex;align-items:center;gap:.8rem;font-size:.82rem;color:var(--text-primary);font-weight:600}
+.completion-track{flex:1;max-width:280px;height:8px;background:var(--bg-light);border-radius:4px;overflow:hidden;margin:0 1rem}
+.completion-fill{height:100%;background:linear-gradient(90deg,var(--orange),var(--orange-light));border-radius:4px;transition:width .5s ease}
+.completion-percent{font-family:'DM Serif Display',serif;color:var(--orange);font-size:1.15rem}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:880px){
+  .hero-inner{grid-template-columns:1fr;text-align:center}
+  .hero-mascot{width:170px;margin:0 auto}
+  .usecase-banner{text-align:left}
+  .budget-strip{grid-template-columns:repeat(2,1fr)}
+  .pick-grid,.pick-grid.four,.pick-grid.five{grid-template-columns:1fr}
+  .calc-grid,.build-grid,.dash-grid,.review-cols{grid-template-columns:1fr}
+  .wv-grid,.recap-grid{grid-template-columns:repeat(2,1fr)}
+  .header{padding:.7rem 1rem}
+  .section{padding:2.2rem 1rem}
+  .hero{padding:2.5rem 1rem 2rem}
+}
+</style>
+</head>
+<body>
+
+<!-- ─── HEADER ─── -->
+<header class="header">
+  <div class="header-left">
+    <svg class="logo-mascot" viewBox="0 0 955 1486" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="477" cy="380" rx="285" ry="324" fill="#EBE3D6"/>
+      <ellipse cx="477" cy="380" rx="240" ry="270" fill="#412C23"/>
+      <circle cx="389" cy="430" r="36" fill="#fff"/>
+      <circle cx="565" cy="430" r="36" fill="#fff"/>
+      <circle cx="389" cy="430" r="14" fill="#2B2D42"/>
+      <circle cx="565" cy="430" r="14" fill="#2B2D42"/>
+      <path d="M380 1180c30 28 65 42 97 42s67-14 97-42" stroke="#A34E1C" stroke-width="14" stroke-linecap="round" fill="none"/>
+      <ellipse cx="477" cy="1350" rx="430" ry="100" fill="#EF7F1A"/>
+      <ellipse cx="477" cy="1350" rx="380" ry="78" fill="#FF9429"/>
+    </svg>
+    <div>
+      <div class="header-title">MokshPath · <span>AI Productivity</span></div>
+      <div class="header-tag">Week 3 · Fun While You Learn</div>
+    </div>
+  </div>
+  <div class="progress-pill"><span class="dot"></span> <span id="headerProgressText">0 of 5 chapters explored</span></div>
+</header>
+
+<!-- ─── HERO ─── -->
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-badge"><span style="width:7px;height:7px;border-radius:50%;background:var(--orange);display:inline-block"></span> Story Project · One High-Stakes Day</div>
+      <h1>Ana's Deadline — Build a <em>Boss-Proof, Well-Sourced Brief</em> Before the Clock Runs Out</h1>
+      <p class="hero-sub">Ana, a marketing associate at <strong>Nourish &amp; Co.</strong>, just got pulled into her director's office. The ask: <em>"Is the plant-based snacks category actually worth entering? I want a credible, well-sourced brief by end of day — and I check every source."</em> Ana has nine hours, a blank doc, and a director who once returned a report because one footnote led to a page that didn't exist. Over four chapters you'll help her pick the right research tools, run smart searches and trace citations to primary sources, synthesize findings without inventing a false consensus, and fact-check every claim before it ships. AI drafts fast. Ana verifies. That's the whole game.</p>
+      <div class="usecase-banner">
+        <div class="usecase-icon">🔍</div>
+        <div class="usecase-text"><strong>The Mission:</strong> By 5 p.m., turn a vague question into a brief that survives a skeptical source check — using AI research tools as leverage, not as an oracle. Win or lose, you'll leave with the full AI-research playbook: tools, smart search, synthesis, and verification &amp; ethics.</div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <svg class="hero-mascot" viewBox="0 0 955 1486" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="bodyGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#EBE3D6"/><stop offset="1" stop-color="#D1D0CC"/></linearGradient>
+          <linearGradient id="faceGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7A6A48"/><stop offset="1" stop-color="#412C23"/></linearGradient>
+          <linearGradient id="feetGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FF9429"/><stop offset="1" stop-color="#EF7F1A"/></linearGradient>
+        </defs>
+        <ellipse cx="210" cy="408" rx="68" ry="82" fill="#D9DADA"/>
+        <ellipse cx="740" cy="408" rx="68" ry="82" fill="#D9DADA"/>
+        <ellipse cx="477" cy="380" rx="285" ry="324" fill="url(#bodyGrad)"/>
+        <ellipse cx="477" cy="392" rx="240" ry="225" fill="url(#faceGrad)"/>
+        <circle cx="389" cy="430" r="38" fill="#fff"/>
+        <circle cx="565" cy="430" r="38" fill="#fff"/>
+        <circle cx="389" cy="430" r="15" fill="#2B2D42"/>
+        <circle cx="565" cy="430" r="15" fill="#2B2D42"/>
+        <circle cx="395" cy="424" r="5" fill="#fff"/>
+        <circle cx="571" cy="424" r="5" fill="#fff"/>
+        <path d="M380 1180c30 28 65 42 97 42s67-14 97-42" stroke="#A34E1C" stroke-width="16" stroke-linecap="round" fill="none"/>
+        <ellipse cx="477" cy="1350" rx="430" ry="105" fill="url(#feetGrad)"/>
+        <ellipse cx="477" cy="1320" rx="380" ry="78" fill="#FF9429"/>
+      </svg>
+    </div>
+  </div>
+  <div class="budget-strip">
+    <div class="budget-chip"><div class="bv">9 hours</div><div class="bl">Until the brief is due</div></div>
+    <div class="budget-chip"><div class="bv">1 director</div><div class="bl">Who checks every source</div></div>
+    <div class="budget-chip"><div class="bv">0 excuses</div><div class="bl">For a fake citation</div></div>
+    <div class="budget-chip"><div class="bv">4 lessons</div><div class="bl">Woven into 1 story</div></div>
+  </div>
+</section>
+
+<!-- ─── TAB NAVIGATION ─── -->
+<div class="tab-nav" id="tabNav">
+  <button class="tab-btn active" data-target="s1">Ch 1 · Pick the Tools</button>
+  <button class="tab-btn" data-target="s2">Ch 2 · Smart Search</button>
+  <button class="tab-btn" data-target="s3">Ch 3 · Synthesize</button>
+  <button class="tab-btn" data-target="s4">Ch 4 · Verify &amp; Cite</button>
+  <button class="tab-btn" data-target="s5">Ship It · 5 p.m.</button>
+</div>
+
+<!-- ═══════════ CHAPTER 1: THE AI RESEARCH LANDSCAPE ═══════════ -->
+<section class="section" id="s1">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-num"><div class="num">1</div> Chapter One · 9:00 a.m.</div>
+      <h2 class="section-title">The AI Research Landscape — One Job, Many Tools</h2>
+      <p class="section-sub">Rule one of AI research: a plain chatbot is not a search engine. There's a whole toolkit — chatbots, answer engines, Deep Research agents, notebook tools, and academic search — and each is built for a different part of the job. Before Ana types a single query, she matches the tool to the task, and learns exactly why a plain chatbot will happily invent a citation.</p>
+    </div>
+
+    <div class="story-beat">
+      <span class="sb-tag">📖 The story so far</span>
+      9:00 a.m. Ana's director drops the brief on her desk: <em>"Plant-based snacks — is the category worth entering? Credible, sourced, on my desk by five. And I follow the footnotes."</em> Ana's first instinct is to open a chatbot and ask it to "research the market and give me sources." She stops. She remembers a colleague who did exactly that — and got five beautiful, perfectly formatted citations, <em>two of which pointed to studies that never existed.</em> Before touching a keyboard, Ana maps the toolkit. Click each tool to inspect it, then commit.
+    </div>
+
+    <div class="pick-grid five">
+      <div class="pick-card" data-tool="chatbot" onclick="pickTool('chatbot')">
+        <div class="pick-icon">💬</div>
+        <div class="pc-tag">Draft · never source</div>
+        <h4>Plain Chatbot</h4>
+        <p>ChatGPT / Claude / Gemini without live search. Brilliant at outlining, rewording and brainstorming — but it predicts plausible text, so it can invent citations that look perfect and don't exist.</p>
+      </div>
+      <div class="pick-card" data-tool="answer" onclick="pickTool('answer')">
+        <div class="pick-icon">🔎</div>
+        <div class="pc-tag">Sourced answers</div>
+        <h4>Answer Engine</h4>
+        <p>Perplexity, ChatGPT Search, Gemini with search. Searches the live web and answers with inline links you can click. Your fast, cited starting point — but you still open the links.</p>
+      </div>
+      <div class="pick-card" data-tool="deep" onclick="pickTool('deep')">
+        <div class="pick-icon">🧭</div>
+        <div class="pc-tag">Multi-step agent</div>
+        <h4>Deep Research</h4>
+        <p>An agent that runs dozens of searches over minutes and returns a long, cited report. Great for breadth on a big question — slower, and every claim still needs a human to trace it back.</p>
+      </div>
+      <div class="pick-card" data-tool="notebook" onclick="pickTool('notebook')">
+        <div class="pick-icon">📓</div>
+        <div class="pc-tag">Grounded in YOUR docs</div>
+        <h4>NotebookLM</h4>
+        <p>Upload your own sources; it answers only from them, with citations back to the exact passage. Perfect for synthesis once you've gathered trustworthy documents.</p>
+      </div>
+      <div class="pick-card" data-tool="academic" onclick="pickTool('academic')">
+        <div class="pick-icon">🎓</div>
+        <div class="pc-tag">Peer-reviewed lens</div>
+        <h4>Elicit / Consensus</h4>
+        <p>Search engines over real academic papers. They pull findings from peer-reviewed studies with real DOIs — the gold standard when a claim needs scientific weight.</p>
+      </div>
+    </div>
+    <div class="pick-detail" id="toolDetail"></div>
+
+    <div class="chat-mock">
+      <div class="chat-head"><span class="cdot"></span> AI Assistant · Why a plain chatbot invents citations</div>
+      <div class="chat-body" id="promptChat">
+        <div class="chat-msg ai"><span class="who">Narrator</span>A plain chatbot generates the <em>most likely next words</em> — including words that look like a citation. It has no live web access and no list of real papers, so a fake reference is just as "plausible" to it as a real one. Below are three ways Ana could ask for market research. <strong>Pick the request most likely to get her real, checkable sources</strong> — then see what comes back.</div>
+      </div>
+    </div>
+    <div class="scenario-panel">
+      <div class="scenario-title">🎯 Checkpoint · Pick Ana's opening move</div>
+      <div class="scenario-q">How does Ana start gathering credible sources?</div>
+      <div class="scenario-options">
+        <button class="scenario-btn" onclick="pickPrompt(0)">Ask a plain chatbot: "Research the plant-based snacks market and give me 5 sources with links."</button>
+        <button class="scenario-btn" onclick="pickPrompt(1)">Ask a plain chatbot to "just make up some realistic-sounding stats — I'll fix them later."</button>
+        <button class="scenario-btn" onclick="pickPrompt(2)">Use an answer engine (Perplexity / search-enabled AI) so answers come with live, clickable links — then open each link to confirm it's real and says what the AI claims.</button>
+      </div>
+      <div class="scenario-feedback" id="promptFb"></div>
+    </div>
+
+    <div class="scenario-panel">
+      <div class="scenario-title">🧠 Pop Quiz · Tool &amp; hallucination instincts (3 rounds)</div>
+      <div class="scenario-q" id="toolQ">Loading…</div>
+      <div class="scenario-options" id="toolOpts"></div>
+      <div class="scenario-feedback" id="toolFb"></div>
+      <button class="btn-secondary" id="toolNext" onclick="nextToolQ()" style="margin-top:.5rem;display:none">Next round →</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ CHAPTER 2: SMART SEARCH & INFORMATION GATHERING ═══════════ -->
+<section class="section alt" id="s2">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-num"><div class="num">2</div> Chapter Two · 10:30 a.m.</div>
+      <h2 class="section-title">Smart Search &amp; Information Gathering — Ask Well, Then Trace</h2>
+      <p class="section-sub">A weak prompt returns a vague, hard-to-verify blob. A strong research prompt names the question, the scope, the sources you'll accept, and the format. Today Ana writes prompts that earn checkable answers, runs an answer engine, and — the crucial habit — <strong>follows every citation back to the primary source</strong>, catching a confident answer that's simply wrong.</p>
+    </div>
+
+    <div class="story-beat">
+      <span class="sb-tag">📖 The story so far</span>
+      10:30 a.m. Ana opens Perplexity and starts firing off prompts. The first is lazy — "tell me about plant-based snacks" — and gets a Wikipedia-flavoured summary she can't cite. So she tightens it: a clear question, a time window, a request for primary sources and numbers. The answers get sharper. Then one answer engine reply states a market size with total confidence — and links to a <em>press release quoting a blog quoting nobody.</em> Ana traces the chain. Inspect the source trail, then step through the prompt lab.
+    </div>
+
+    <div class="sheet-wrap">
+      <div class="sheet-chrome"><span class="xicon">?</span> source_trail.md — following one "fact" back to its origin</div>
+      <div class="sheet-tabs"><span class="stab on">Citation chain</span><span class="stab">Primary sources</span><span class="stab">Brief draft</span></div>
+      <div class="sheet-scroll">
+        <table class="sheet">
+          <thead><tr><th></th><th>A · Hop</th><th>B · What it says</th><th>C · Actually a source?</th><th>D · Verdict</th></tr></thead>
+          <tbody>
+            <tr><th>1</th><td>AI answer</td><td>"Market is $8.3B, growing 12% a year"</td><td>Cites a blog post</td><td class="hl-bad">Not primary</td></tr>
+            <tr><th>2</th><td>The blog</td><td>Repeats "$8.3B, 12%"</td><td>Links a press release</td><td class="hl-bad">Not primary</td></tr>
+            <tr><th>3</th><td>Press release</td><td>Same numbers, no method</td><td class="hl-bad">Cites "industry reports"</td><td class="hl-bad">Dead end</td></tr>
+            <tr><th>4</th><td>Real report</td><td>$6.9B, 9.7% CAGR (2023–2028)</td><td class="hl-good">Named firm, dated, method</td><td class="hl-good">✓ Primary</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="sheet-cap">⚠️ The circulated "$8.3B / 12%" number traced back to <em>nothing</em>. The real, citable figure — from a named market-research firm with a date and methodology — was different. This is why Ana follows every link to its origin before she writes it down.</div>
+    </div>
+
+    <div class="formula-lab">
+      <div style="font-family:'DM Serif Display',serif;font-size:1.1rem;color:var(--navy);margin-bottom:.9rem">🧪 The Prompt Lab — a weak ask, a strong ask, a traced answer</div>
+      <div class="fl-tabs">
+        <button class="fl-tab active" data-fl="scope" onclick="setFormula('scope')">Scope · define the question</button>
+        <button class="fl-tab" data-fl="sources" onclick="setFormula('sources')">Sources · demand primaries</button>
+        <button class="fl-tab" data-fl="trace" onclick="setFormula('trace')">Trace · follow the link</button>
+        <button class="fl-tab" data-fl="deep" onclick="setFormula('deep')">Deep Research · go wide</button>
+      </div>
+      <div class="fl-prompt" id="flPrompt"><span class="who">Ana → AI</span></div>
+      <div class="fl-code" id="flCode"></div>
+      <div class="fl-explain" id="flExplain"></div>
+    </div>
+
+    <div class="err-panel">
+      <div style="font-family:'DM Serif Display',serif;font-size:1.1rem;color:var(--navy);margin-bottom:.5rem">🚨 The Confident-But-Wrong Answer — <span class="err-badge">looks right</span></div>
+      <p style="font-size:.83rem;color:var(--text-secondary);line-height:1.6">Ana asks the answer engine: <em>"How big is the plant-based snacks market and how fast is it growing?"</em> It replies, crisply: <strong>"$8.3B, growing 12% a year, per industry reports."</strong> No hesitation, no hedge. But when she clicks the citation, it's a marketing blog — and the blog cites a press release, which cites nothing. The number is orphaned.</p>
+      <div class="err-cell">AI: "Market = <b>$8.3B</b>, growth <b>12%/yr</b> [1]" &nbsp;→&nbsp; 🡒 &nbsp; [1] = blog → press release → <b>no primary source</b></div>
+      <div class="scenario-panel" style="margin-top:1rem">
+        <div class="scenario-title">🎯 Checkpoint · A confident number with a broken source trail. Now what?</div>
+        <div class="scenario-q">The AI is sure. The citation isn't. Which understanding is correct?</div>
+        <div class="scenario-options">
+          <button class="scenario-btn" onclick="errQ(0)">Confidence means correctness — the AI stated it plainly, so quote "$8.3B / 12%" and move on.</button>
+          <button class="scenario-btn" onclick="errQ(1)">A citation is only as good as where it ends. Follow the chain to a primary source (a named firm, dated, with a methodology). If it dead-ends, treat the number as unverified — don't cite it.</button>
+          <button class="scenario-btn" onclick="errQ(2)">Just cite the blog — it's a link, and a link looks like a source.</button>
+        </div>
+        <div class="scenario-feedback" id="errFb"></div>
+      </div>
+    </div>
+
+    <div class="scenario-panel">
+      <div class="scenario-title">🧠 Pop Quiz · Smart-search instincts (3 rounds)</div>
+      <div class="scenario-q" id="formQ">Loading…</div>
+      <div class="scenario-options" id="formOpts"></div>
+      <div class="scenario-feedback" id="formFb"></div>
+      <button class="btn-secondary" id="formNext" onclick="nextFormQ()" style="margin-top:.5rem;display:none">Next round →</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ CHAPTER 3: SYNTHESIS & ANALYSIS ═══════════ -->
+<section class="section" id="s3">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-num"><div class="num">3</div> Chapter Three · 1:00 p.m.</div>
+      <h2 class="section-title">Synthesis &amp; Analysis — Turn a Pile of Sources into a Brief</h2>
+      <p class="section-sub">Gathered sources are just a pile until you find the themes. Today Ana loads her vetted documents into NotebookLM, builds a synthesis matrix — who says what, where they agree, where they clash — and drafts the brief. And the crucial beat: she catches the AI smoothing over a real disagreement into a fake "consensus," and dropping a caveat that changes the meaning.</p>
+    </div>
+
+    <div class="story-beat">
+      <span class="sb-tag">📖 The story so far</span>
+      1:00 p.m. Ana has six vetted sources — market reports, a peer-reviewed consumer study, two competitor filings. She uploads them to NotebookLM, which will only answer from <em>those</em> documents and cites the exact passage each time. She asks it to summarise where sources agree and disagree. The draft reads beautifully — maybe too beautifully. One line claims "all sources agree the category is booming," but Ana remembers Source C warned that growth is <em>slowing</em> and hinges on price. AI loves a clean story; reality is messier. Build the matrix, then catch the flattened caveat.
+    </div>
+
+    <div class="matrix-wrap">
+      <div class="matrix-head">
+        <span class="sdot" style="background:#FF5F57"></span><span class="sdot" style="background:#FEBC2E"></span><span class="sdot" style="background:#28C840"></span>
+        <span style="margin-left:.6rem">NotebookLM → Synthesis matrix · what each vetted source claims</span>
+      </div>
+      <div class="matrix-body">
+        <h4>🧩 Theme matrix — grounded only in Ana's six uploaded sources</h4>
+        <table class="matrix">
+          <thead><tr><th>Theme</th><th>Source A (mkt firm)</th><th>Source C (peer-reviewed)</th><th>Source E (competitor filing)</th></tr></thead>
+          <tbody>
+            <tr><th>Market size / growth</th><td class="agree">$6.9B, ~9.7% CAGR</td><td class="disagree">Growth <em>slowing</em>; price-sensitive</td><td class="agree">Segment "high-growth"</td></tr>
+            <tr><th>Who's buying</th><td>Flexitarians, not just vegans</td><td class="agree">Confirms: mostly flexitarian</td><td>Younger urban shoppers</td></tr>
+            <tr><th>Biggest risk</th><td>Crowded shelves</td><td class="disagree">Repeat-purchase depends on taste + price</td><td>Private-label competition</td></tr>
+          </tbody>
+        </table>
+        <div class="ask-data">
+          <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted);margin-bottom:.5rem">💬 Ask your sources (click a question)</div>
+          <span class="ask-chip" onclick="askData(0,this)">Do all sources agree it's booming?</span>
+          <span class="ask-chip" onclick="askData(1,this)">Who is the real customer?</span>
+          <span class="ask-chip" onclick="askData(2,this)">What's the biggest risk?</span>
+          <span class="ask-chip" onclick="askData(3,this)">What's the honest headline?</span>
+          <div class="ask-answer" id="askAnswer"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="err-panel" style="margin-top:1.4rem">
+      <div style="font-family:'DM Serif Display',serif;font-size:1.1rem;color:var(--navy);margin-bottom:.5rem">🕵️ Catch the false consensus — the caveat AI dropped</div>
+      <p style="font-size:.83rem;color:var(--text-secondary);line-height:1.6">Ana asked NotebookLM to write the summary paragraph. It produced: <em>"All sources agree the plant-based snacks category is booming and low-risk."</em> Clean. Confident. <strong>Wrong.</strong> Source C (the peer-reviewed study) explicitly said growth is <em>slowing</em> and repeat purchases hinge on taste and price. The AI flattened a real disagreement into a false consensus and dropped the caveat that changes the recommendation. <em>The whole lesson hides in this one sentence.</em></p>
+      <div class="scenario-panel" style="margin-top:1rem">
+        <div class="scenario-title">🎯 Checkpoint · The AI wrote "all sources agree." One doesn't. Now what?</div>
+        <div class="scenario-q">The draft smooths over a real clash between your sources. What does a pro do?</div>
+        <div class="scenario-options">
+          <button class="scenario-btn" onclick="sanityQ(0)">Keep the clean line — "all sources agree" reads more decisive, and the director likes decisive briefs.</button>
+          <button class="scenario-btn" onclick="sanityQ(1)">Rewrite it to the truth: most sources are bullish, but Source C warns growth is slowing and price-dependent — then reflect that nuance in the recommendation. Disagreement is a finding, not a flaw.</button>
+          <button class="scenario-btn" onclick="sanityQ(2)">Delete Source C so the sources "agree" and the paragraph stays tidy.</button>
+        </div>
+        <div class="scenario-feedback" id="sanityFb"></div>
+      </div>
+    </div>
+
+    <div class="review-mine">
+      <div style="font-family:'DM Serif Display',serif;font-size:1.1rem;color:var(--navy)">🔍 NotebookLM reads 200 pages of sources in seconds</div>
+      <p style="font-size:.82rem;color:var(--text-secondary);margin-top:.3rem">Ana asks NotebookLM: <em>"From my uploaded documents only, list the strongest case FOR entering and the strongest case AGAINST — cite the passage each time."</em> Because it's grounded in her vetted sources, it can't wander to the open web — but she still spot-checks each cited passage to confirm the AI didn't twist it.</p>
+      <div class="review-cols">
+        <div class="review-col love">
+          <h5>💚 The case FOR entering</h5>
+          <ul>
+            <li>"$6.9B category, ~9.7% CAGR through 2028" <strong>[Source A, p.4]</strong></li>
+            <li>"Buyers are mostly flexitarians — a far larger market than vegans" <strong>[Source C]</strong></li>
+            <li>"Competitor filing calls the segment 'high-growth'" <strong>[Source E]</strong></li>
+          </ul>
+        </div>
+        <div class="review-col hate">
+          <h5>💔 The case AGAINST (the caveats)</h5>
+          <ul>
+            <li>"Growth is <strong>slowing</strong>; repeat purchase hinges on taste + price" <strong>[Source C]</strong></li>
+            <li>"Shelves are crowded; private label is undercutting" <strong>[Sources A + E]</strong></li>
+            <li>"Any 'booming, low-risk' framing overstates the evidence" → <strong>Ana's honest caveat</strong></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ CHAPTER 4: VERIFICATION, CITATIONS & ETHICS ═══════════ -->
+<section class="section alt" id="s4">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-num"><div class="num">4</div> Chapter Four · 3:00 p.m.</div>
+      <h2 class="section-title">Verification, Citations &amp; Ethics — Make It Boss-Proof</h2>
+      <p class="section-sub">A draft is not a brief until every claim survives a source check. Today Ana fact-checks the brief line by line, <strong>tests each of five citations</strong> (two are fabricated), fixes the attribution, and adds an honest AI-use disclosure — so the work is credible <em>and</em> ethical. <em>She tests before she trusts, always.</em></p>
+    </div>
+
+    <div class="story-beat">
+      <span class="sb-tag">📖 The story so far</span>
+      3:00 p.m. The brief drafts fast, and the reference list looks immaculate — five clean citations, perfect formatting. That polish is exactly the trap. Ana's colleague once shipped a report with two AI-invented sources and got it bounced. So Ana does the unglamorous work: she opens each citation and asks two questions — <em>does this source exist,</em> and <em>does it actually say what we claim?</em> Then she adds a short disclosure of how AI was used. Work the citation tester, then the disclosure builder.
+    </div>
+
+    <div class="scenario-panel">
+      <div class="scenario-title">🎯 Checkpoint · The golden rule of verification</div>
+      <div class="scenario-q">AI just handed Ana a beautifully formatted reference list. What does she do first?</div>
+      <div class="scenario-options">
+        <button class="scenario-btn" onclick="autoQ(0)">Paste it in — the citations are formatted perfectly, so they must be real.</button>
+        <button class="scenario-btn" onclick="autoQ(1)">Open every single citation, confirm the source exists AND that it actually says what the brief claims, and only keep the ones that pass both tests.</button>
+        <button class="scenario-btn" onclick="autoQ(2)">Spot-check just the first one; if it's real, assume the rest are too.</button>
+      </div>
+      <div class="scenario-feedback" id="autoFb"></div>
+    </div>
+
+    <div class="err-panel">
+      <div style="font-family:'DM Serif Display',serif;font-size:1.1rem;color:var(--navy);margin-bottom:.5rem">🔬 The Citation Tester — click "Verify" on each of the 5 (two are fake)</div>
+      <p style="font-size:.83rem;color:var(--text-secondary);line-height:1.6">Formatting proves nothing. Test each citation against reality: does it exist, and does it back the claim? Ana found <strong>2 of 5</strong> were fabricated or mis-attributed. Test them yourself.</p>
+      <div class="cite-grid" id="citeGrid">
+        <div class="cite-row" data-real="true">
+          <div class="cite-top">
+            <div class="cite-claim">Category is $6.9B with ~9.7% CAGR through 2028.
+              <span class="cite-src">[1] GrandVista Market Research, "Plant-Based Snacks Outlook 2023–2028," Mar 2024.</span></div>
+            <button class="cite-btn" onclick="testCite(this)">Verify</button>
+          </div>
+          <div class="cite-result"></div>
+        </div>
+        <div class="cite-row" data-real="false">
+          <div class="cite-top">
+            <div class="cite-claim">"Category grew 300% last year across all regions."
+              <span class="cite-src">[2] Sharma &amp; Lee (2024), <em>Journal of Snack Economics</em>, Vol. 12, p. 88.</span></div>
+            <button class="cite-btn" onclick="testCite(this)">Verify</button>
+          </div>
+          <div class="cite-result"></div>
+        </div>
+        <div class="cite-row" data-real="true">
+          <div class="cite-top">
+            <div class="cite-claim">Buyers are predominantly flexitarian, not vegan.
+              <span class="cite-src">[3] Consumer Foods Study (2023), peer-reviewed, n=2,400, DOI on record.</span></div>
+            <button class="cite-btn" onclick="testCite(this)">Verify</button>
+          </div>
+          <div class="cite-result"></div>
+        </div>
+        <div class="cite-row" data-real="false">
+          <div class="cite-top">
+            <div class="cite-claim">"Nourish's competitor reported $2B in plant-snack revenue."
+              <span class="cite-src">[4] Competitor Q4 filing — figure cited by AI, page reference blank.</span></div>
+            <button class="cite-btn" onclick="testCite(this)">Verify</button>
+          </div>
+          <div class="cite-result"></div>
+        </div>
+        <div class="cite-row" data-real="true">
+          <div class="cite-top">
+            <div class="cite-claim">Growth is slowing; repeat purchase hinges on taste and price.
+              <span class="cite-src">[5] Consumer Foods Study (2023), Discussion section, p. 14.</span></div>
+            <button class="cite-btn" onclick="testCite(this)">Verify</button>
+          </div>
+          <div class="cite-result"></div>
+        </div>
+      </div>
+      <div class="cite-tally" id="citeTally"></div>
+    </div>
+
+    <div class="dash-grid">
+      <div class="dash-controls">
+        <div style="font-family:'DM Serif Display',serif;font-size:1.1rem;color:var(--navy);margin-bottom:.8rem">🎛️ AI-Use Disclosure Builder — be honest about how AI helped</div>
+        <div class="prompt-field">
+          <label>What AI actually did</label>
+          <select id="dHeadline" onchange="renderDash()">
+            <option value="draft">Drafted &amp; summarized (I wrote the conclusions)</option>
+            <option value="search">Ran searches &amp; suggested sources</option>
+            <option value="all">Both — searched, drafted, and organized</option>
+          </select>
+        </div>
+        <div class="prompt-field">
+          <label>Verification I performed</label>
+          <select id="dChart" onchange="renderDash()">
+            <option value="all">Traced every citation to a primary source</option>
+            <option value="key">Verified all key numbers + spot-checked the rest</option>
+            <option value="none">None yet (never ship this option)</option>
+          </select>
+        </div>
+        <div class="prompt-field">
+          <label>Attribution stance</label>
+          <select id="dSchedule" onchange="renderDash()">
+            <option value="owned">I own the conclusions &amp; verified sources</option>
+            <option value="mixed">AI-assisted; findings human-checked</option>
+          </select>
+        </div>
+        <p style="font-size:.78rem;color:var(--text-muted);line-height:1.55;margin-top:.6rem">💡 The disclosure on the right updates as you choose. A one-line, honest note about AI use builds trust — hiding AI use, or claiming verification you didn't do, destroys it.</p>
+      </div>
+      <div>
+        <div class="dash-preview">
+          <div class="dashp-head">
+            <div class="dashp-title" id="dashTitle">Brief · AI-Use Disclosure</div>
+            <div class="dashp-when" id="dashWhen">Footer note · v1.0</div>
+          </div>
+          <div class="dashp-body">
+            <h5>Methodology &amp; AI disclosure</h5>
+            <div class="dashp-discl" id="dashDiscl">AI tools drafted and summarized sections; the author wrote the conclusions. Every citation was traced to a primary source before inclusion. AI-assisted; all findings human-checked. The author owns the conclusions.</div>
+          </div>
+          <div class="dashp-note" id="dashNote"><strong>Why it matters:</strong> honesty about AI use is now expected in credible work. It signals you verified, not just generated. Ana added this line herself.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ SHIP IT: 5 P.M. ═══════════ -->
+<section class="section" id="s5">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-num"><div class="num">5</div> Ship It · 5:00 p.m.</div>
+      <h2 class="section-title">The Source Check — Read Each Line, Then Send It</h2>
+      <p class="section-sub">The deadline is here, and the director does exactly what she promised: she follows the footnotes. Feelings don't matter now — only whether each claim survives a source check. Ana reviews three lines of the brief and decides whether each is <strong>Verified</strong>, <strong>Flag &amp; fix</strong>, or <strong>Ship as-is</strong> (never that last one blindly). Judge each line.</p>
+    </div>
+
+    <div class="story-beat">
+      <span class="sb-tag">📖 The story so far</span>
+      4:58 p.m. Ana walks the brief to her director's desk. Before she's back at her chair, the director is already clicking a citation. This is the moment the whole day was built for — not the writing, but the thirty seconds of confirming the AI didn't quietly lie. Judge the three lines below the way a professional would, then watch the director's verdict.
+    </div>
+
+    <div class="err-panel">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:.6rem">
+        <div>
+          <div style="font-family:'DM Serif Display',serif;font-size:1.15rem;color:var(--navy)">Nourish &amp; Co. · Plant-Based Snacks Entry Brief</div>
+          <div style="font-size:.78rem;color:var(--text-muted)">Drafted with AI · sources traced by Ana · 5:00 p.m. · awaiting the source check</div>
+        </div>
+      </div>
+
+      <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted);margin:.4rem 0 .8rem">Judge each line before the director does</div>
+
+      <div class="scenario-panel" style="margin-top:0">
+        <div class="scenario-q" style="font-size:.92rem">📊 Line 1 — "Category is <strong>$6.9B, ~9.7% CAGR</strong>" (traced to a named, dated market-research report)</div>
+        <div class="scenario-options" style="grid-template-columns:1fr 1fr 1fr;gap:.5rem">
+          <button class="scenario-btn" style="text-align:center" onclick="judge('A','verify',this)">Verified ✓</button>
+          <button class="scenario-btn" style="text-align:center" onclick="judge('A','flag',this)">Flag &amp; fix</button>
+          <button class="scenario-btn" style="text-align:center" onclick="judge('A','trust',this)">Ship as-is</button>
+        </div>
+        <div class="scenario-feedback" id="fbA"></div>
+      </div>
+
+      <div class="scenario-panel">
+        <div class="scenario-q" style="font-size:.92rem">🤖 Line 2 — "Growth was <strong>300% last year</strong>, per Sharma &amp; Lee (2024)" (that paper doesn't exist — AI invented it)</div>
+        <div class="scenario-options" style="grid-template-columns:1fr 1fr 1fr;gap:.5rem">
+          <button class="scenario-btn" style="text-align:center" onclick="judge('B','verify',this)">Verified ✓</button>
+          <button class="scenario-btn" style="text-align:center" onclick="judge('B','flag',this)">Flag &amp; fix</button>
+          <button class="scenario-btn" style="text-align:center" onclick="judge('B','trust',this)">Ship as-is</button>
+        </div>
+        <div class="scenario-feedback" id="fbB"></div>
+      </div>
+
+      <div class="scenario-panel">
+        <div class="scenario-q" style="font-size:.92rem">⚖️ Line 3 — "Bullish overall, but Source C warns growth is <strong>slowing &amp; price-dependent</strong>" (nuance kept, caveat cited)</div>
+        <div class="scenario-options" style="grid-template-columns:1fr 1fr 1fr;gap:.5rem">
+          <button class="scenario-btn" style="text-align:center" onclick="judge('C','verify',this)">Verified ✓</button>
+          <button class="scenario-btn" style="text-align:center" onclick="judge('C','flag',this)">Flag &amp; fix</button>
+          <button class="scenario-btn" style="text-align:center" onclick="judge('C','trust',this)">Ship as-is</button>
+        </div>
+        <div class="scenario-feedback" id="fbC"></div>
+      </div>
+
+      <div class="week-verdict" id="weekVerdict">
+        <h4>📜 The Source Check: <em>brief approved — with Ana's name on it, honestly.</em></h4>
+        <div class="wv-grid">
+          <div class="wv-tile"><div class="v">1 day</div><div class="l">Instead of a rushed week</div></div>
+          <div class="wv-tile"><div class="v">2 caught</div><div class="l">Fabricated citations removed</div></div>
+          <div class="wv-tile"><div class="v">1 caveat</div><div class="l">Nuance she refused to flatten</div></div>
+          <div class="wv-tile"><div class="v">4:58</div><div class="l">Delivered · 2 min early</div></div>
+        </div>
+        <p>Ana kept Line 1 and Line 3 (both traced to real, cited sources), and she <strong>flagged Line 2</strong> — deleting the invented "Sharma &amp; Lee (2024)" paper and the fake 300% claim before it ever reached the director. When the director followed the footnotes, every one led somewhere real. She looked up: <em>"You're the first person this quarter whose sources actually checked out. This is the brief I wanted."</em> Ana smiled. The secret wasn't researching harder or faster. It was <strong>AI as leverage, verified by a human who follows the footnotes.</strong> 🎉</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FOOTER RECAP ─── -->
+<div class="footer-cta">
+  <h2>🎉 At 9 a.m., it was a <em>vague question</em> and a skeptical boss.</h2>
+  <p>By 5 p.m. it was a credible, well-sourced brief that survived a real source check. Here's what the story secretly taught you — the four lessons of Week 3: AI Research.</p>
+  <div class="recap-grid">
+    <div class="recap-card">
+      <div class="rn">Lesson 1</div>
+      <h4>The AI Research Landscape</h4>
+      <p>Match the tool to the job: plain chatbots draft (and can invent citations), answer engines cite live links, Deep Research goes wide, NotebookLM grounds in your docs, Elicit/Consensus search real papers. Chapter 1.</p>
+    </div>
+    <div class="recap-card">
+      <div class="rn">Lesson 2</div>
+      <h4>Smart Search &amp; Gathering</h4>
+      <p>Strong prompts name the question, scope, sources and format. Run an answer engine or Deep Research, then follow every citation back to a primary source — confidence is not correctness. Chapter 2.</p>
+    </div>
+    <div class="recap-card">
+      <div class="rn">Lesson 3</div>
+      <h4>Synthesis &amp; Analysis</h4>
+      <p>Load vetted sources into NotebookLM, build a theme matrix, draft the brief — and refuse the false consensus. A dropped caveat or a flattened disagreement is the error that matters. Chapter 3.</p>
+    </div>
+    <div class="recap-card">
+      <div class="rn">Lesson 4</div>
+      <h4>Verification, Citations &amp; Ethics</h4>
+      <p>Test every citation twice: does it exist, does it back the claim? Fix attribution, remove fabrications, and disclose how AI helped. Boss-proof means source-proof. Chapter 4.</p>
+    </div>
+  </div>
+  <button class="btn-action" style="font-size:.9rem;padding:.8rem 1.8rem" onclick="document.getElementById('s1').scrollIntoView({behavior:'smooth'})">↻ Replay Ana's day</button>
+  <div class="footer-note">Nourish &amp; Co. is a teaching scenario. Real AI research tools, their web access and their limits change constantly — always confirm what a tool can actually see and cite, and remember the golden rule this whole week was built on: <strong>AI is leverage, not truth. A human who follows the footnotes ships the brief.</strong></div>
+</div>
+
+<!-- ─── COMPLETION BAR ─── -->
+<div class="completion-bar">
+  <div class="completion-info"><span style="font-size:1.1rem">🔍</span><span>Ana's Brief Progress</span></div>
+  <div class="completion-track"><div class="completion-fill" id="completionFill" style="width:0%"></div></div>
+  <div class="completion-percent" id="completionPct">0%</div>
+</div>
+
+<script>
+/* ───────── PROGRESS TRACKING ───────── */
+const visited = new Set();
+function markVisited(id){
+  visited.add(id);
+  const pct = Math.round((visited.size / 5) * 100);
+  document.getElementById('completionFill').style.width = pct + '%';
+  document.getElementById('completionPct').textContent = pct + '%';
+  document.getElementById('headerProgressText').textContent = `${visited.size} of 5 chapters explored`;
+}
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.target).scrollIntoView({behavior:'smooth', block:'start'});
+    markVisited(btn.dataset.target);
+  });
+});
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting && e.intersectionRatio > 0.3) {
+      markVisited(e.target.id);
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.target === e.target.id));
+    }
+  });
+}, {threshold:[0.3]});
+document.querySelectorAll('.section').forEach(s => observer.observe(s));
+
+/* ───────── CHAPTER 1: TOOL PICK ───────── */
+const toolInfo = {
+  chatbot: `<span class="verdict-pill vp-bad">Great writer · terrible librarian</span><br><strong>A plain chatbot</strong> (ChatGPT / Claude / Gemini without live search) is a language model: it predicts the most <em>plausible</em> next words. That makes it superb for outlining, rephrasing and brainstorming — and dangerous for sourcing, because a fabricated citation is just as plausible-looking to it as a real one. With no live web access, it can't check whether a paper exists; it just generates something that <em>reads</em> like a reference. <strong>Use it to draft, never to source.</strong> This is why Ana's colleague got five perfect-looking citations and two of them were fiction.`,
+  answer: `<span class="verdict-pill vp-good">✓ Sourced · your fast starting point</span><br><strong>An answer engine</strong> — Perplexity, ChatGPT Search, Gemini with search — actually queries the live web and returns an answer with <em>inline, clickable links</em>. That's a huge upgrade over a plain chatbot: you can see where each claim came from. The catch: the AI still summarises, so it can misread a source or over-state it. Your job stays the same — <strong>open every link and confirm it says what the AI claims.</strong> This is Ana's Chapter 2 workhorse.`,
+  deep: `<span class="verdict-pill vp-mid">Wide &amp; deep · slow &amp; still needs checking</span><br><strong>Deep Research</strong> agents (in ChatGPT, Gemini, Perplexity and others) run <em>dozens</em> of searches over several minutes and return a long, structured, cited report. They're excellent for breadth on a big question — the kind of scan that would take you an afternoon. But more citations is not more truth: each claim still needs a human to trace back, and agents can still cite weak or mismatched sources. <strong>Use it to map the landscape fast — then verify the load-bearing claims yourself.</strong>`,
+  notebook: `<span class="verdict-pill vp-good">✓ Grounded in YOUR vetted sources</span><br><strong>NotebookLM</strong> flips the usual risk: you upload your own documents, and it answers <em>only</em> from them, citing the exact passage each time. It can't wander to the open web or invent an outside source, which makes it ideal for <strong>synthesis</strong> once you've already gathered trustworthy material. The remaining risk is subtler — it can still misread or flatten <em>your</em> sources — so Ana spot-checks each cited passage. This is her Chapter 3 tool.`,
+  academic: `<span class="verdict-pill vp-good">✓ Peer-reviewed weight</span><br><strong>Elicit and Consensus</strong> are AI search engines built over real academic literature. They pull findings from actual peer-reviewed papers — with real titles, authors and DOIs you can look up — and summarise what the studies found. When a claim needs scientific credibility ("is this backed by research?"), these beat a general chatbot every time. <em>Still</em> confirm the paper says what the tool summarised — but you're starting from real papers, not invented ones. Ana uses one to anchor her consumer-behaviour claim.`
+};
+function pickTool(k){
+  document.querySelectorAll('#s1 .pick-card').forEach(c => c.classList.toggle('active', c.dataset.tool === k));
+  const d = document.getElementById('toolDetail');
+  d.innerHTML = toolInfo[k];
+  d.classList.add('show');
+}
+
+/* prompt showdown */
+const promptResults = [
+  {ok:false, fb:'✗ Risky. A <strong>plain chatbot with no live search</strong> can\'t actually visit the web — so when you demand "5 sources with links," it generates text that <em>looks</em> like citations. Some may be real; some are invented, with plausible titles and dead URLs. This is the exact trap that got Ana\'s colleague\'s report bounced. Use a search-enabled tool instead.',
+   chat:`<div class="chat-msg user"><span class="who">Ana</span>Research the plant-based snacks market and give me 5 sources with links.</div><div class="chat-msg ai"><span class="who">Plain chatbot</span>Here are 5 sources: [1] Sharma &amp; Lee (2024), <em>Journal of Snack Economics</em>… [2] GlobalFoods Institute report… <strong>(Some of these may not exist — a plain chatbot can\'t check the web, so it produces plausible-looking references, real or not. Never cite these unverified.)</strong></div>`},
+  {ok:false, fb:'✗ This is the ethics red line. Asking AI to "make up realistic stats" produces <strong>fabricated data dressed as fact</strong> — the fastest way to destroy your credibility and, in many settings, to cross into misconduct. There is no "fix them later" once a made-up number is in a brief with your name on it. Research means finding what\'s true, not generating what sounds true.',
+   chat:`<div class="chat-msg user"><span class="who">Ana</span>Just make up some realistic-sounding stats — I\'ll fix them later.</div><div class="chat-msg ai"><span class="who">AI</span>I can\'t invent statistics and present them as real — that would be fabrication. <strong>Instead, let\'s find actual figures:</strong> use a search-enabled tool or an academic search, and I\'ll help you phrase the query and trace each number to a primary source. 🚫 Fabrication is never a shortcut.</div>`},
+  {ok:true, fb:'✓ Exactly. An <strong>answer engine</strong> queries the live web and returns inline links, so every claim has a visible origin — and Ana\'s follow-up ("open each link to confirm it\'s real and says what the AI claims") is the whole course in one line. Sourced tool + human verification. This becomes her smart-search workflow in Chapter 2.',
+   chat:`<div class="chat-msg user"><span class="who">Ana</span>Using live web search, find the plant-based snacks market size and growth rate, cite each figure with a clickable link, and prefer named market-research firms or peer-reviewed studies.</div><div class="chat-msg ai"><span class="who">Answer engine</span>Market size ≈ <strong>$6.9B</strong>, ~<strong>9.7% CAGR</strong> through 2028 [GrandVista Market Research, Mar 2024 ↗]. Buyer base skews flexitarian [Consumer Foods Study 2023 ↗]. <strong>← Click each link to confirm the figure and date before citing.</strong></div>`}
+];
+let promptAnswered = false;
+function pickPrompt(i){
+  const r = promptResults[i];
+  const btns = document.querySelectorAll('#s1 .scenario-panel:first-of-type .scenario-btn');
+  if (!promptAnswered){
+    btns.forEach((b,j) => { if (j===2) b.classList.add('correct'); else if (j===i && !r.ok) b.classList.add('wrong'); });
+    if (r.ok) promptAnswered = true;
+  }
+  const fb = document.getElementById('promptFb');
+  fb.className = 'scenario-feedback show ' + (r.ok ? 'success' : 'fail');
+  fb.innerHTML = r.fb;
+  document.getElementById('promptChat').innerHTML = r.chat;
+}
+
+/* tool + hallucination quiz */
+const toolQs = [
+  {q:"You need 5 real, citable studies. Which tool should you NOT rely on to produce them?", opts:["Perplexity (answer engine with live links)","A plain chatbot with no web access — it can invent citations that look real","Elicit or Consensus (academic search)"], correct:1, explain:"A plain chatbot predicts plausible text, so it can fabricate references complete with fake authors and titles. Use a search-enabled or academic tool for anything you'll cite — and still open every link."},
+  {q:"You've gathered six trustworthy documents and want to synthesize them. Best fit?", opts:["A plain chatbot — paste everything and hope","NotebookLM — it answers only from YOUR uploaded sources and cites the passage","A random Google search"], correct:1, explain:"NotebookLM is grounded in the documents you provide and cites the exact passage, so it can't wander to the open web or invent an outside source — ideal for synthesis. You still spot-check each cited passage."},
+  {q:"Why do plain chatbots 'hallucinate' citations?", opts:["They're lying on purpose","They predict the most plausible next words and have no live way to check whether a source actually exists","The internet is down"], correct:1, explain:"A language model generates text that's statistically likely — a fake reference is just as plausible-looking to it as a real one. Without live search or a real database, it cannot verify existence. That's why sourcing needs a tool that actually checks the web."}
+];
+let tqIdx = 0;
+function renderToolQ(){
+  const s = toolQs[tqIdx];
+  document.getElementById('toolQ').textContent = `Round ${tqIdx+1}/3 — ${s.q}`;
+  document.getElementById('toolOpts').innerHTML = s.opts.map((o,i)=>`<button class="scenario-btn" onclick="answerToolQ(${i})">${o}</button>`).join('');
+  const fb = document.getElementById('toolFb');
+  fb.className = 'scenario-feedback'; fb.innerHTML = '';
+  document.getElementById('toolNext').style.display = 'none';
+}
+function answerToolQ(i){
+  const s = toolQs[tqIdx];
+  document.querySelectorAll('#toolOpts .scenario-btn').forEach((b,j)=>{
+    b.disabled = true;
+    if (j===s.correct) b.classList.add('correct'); else if (j===i) b.classList.add('wrong');
+  });
+  const fb = document.getElementById('toolFb');
+  fb.className = 'scenario-feedback show ' + (i===s.correct ? 'success' : 'fail');
+  fb.innerHTML = (i===s.correct ? '✓ Spot on! ' : '✗ Not quite. ') + s.explain + (tqIdx===toolQs.length-1 ? '<br><br>🎉 Chapter 1 complete — Ana will use an answer engine to gather, NotebookLM to synthesize, and academic search to anchor. Next: smart search.' : '');
+  document.getElementById('toolNext').style.display = tqIdx < toolQs.length-1 ? 'inline-block' : 'none';
+}
+function nextToolQ(){ tqIdx++; if (tqIdx < toolQs.length) renderToolQ(); }
+renderToolQ();
+
+/* ───────── CHAPTER 2: PROMPT LAB ───────── */
+const formulas = {
+  scope: {
+    prompt:'Weak: "Tell me about plant-based snacks." → Strong: define the question, the scope, and the time window.',
+    code:`<span class="rf">Ask:</span> <span class="st">"For the </span><span class="kw">US plant-based snacks</span><span class="st"> category, </span><span class="kw">2022–2024</span><span class="st">: what is the market size, growth rate, and who the main buyers are? Answer with </span><span class="kw">numbers + dates</span><span class="st">."</span>`,
+    explain:`A vague ask ("tell me about…") returns a shapeless summary you can't cite. A <strong>scoped</strong> ask names the <strong>subject</strong> (US plant-based snacks), the <strong>time window</strong> (2022–2024) and the <strong>exact outputs</strong> (size, growth, buyers — with numbers and dates). Now the AI knows what "done" looks like, and you know what to verify. <strong>Verify:</strong> a scoped answer is easier to fact-check because each claim is specific.`
+  },
+  sources: {
+    prompt:'Tell the tool which sources you\'ll accept — and which you won\'t.',
+    code:`<span class="rf">Ask:</span> <span class="st">"Prefer </span><span class="kw">named market-research firms</span><span class="st"> and </span><span class="kw">peer-reviewed studies</span><span class="st">. For each figure, give a </span><span class="kw">clickable link</span><span class="st"> and the </span><span class="kw">publication date</span><span class="st">. Flag anything you can't source."</span>`,
+    explain:`Left alone, an AI will happily cite a blog or an SEO listicle. By stating your <strong>evidence standard</strong> up front — named firms, peer-reviewed studies, links, dates — you push it toward primary sources and make weak ones easy to spot. The clause <em>"flag anything you can't source"</em> invites the AI to admit uncertainty instead of inventing a citation. <strong>Verify:</strong> you'll still open each link — but you'll open better links.`
+  },
+  trace: {
+    prompt:'The answer engine gave a number. Now follow its citation to the origin.',
+    code:`<span class="rf">Trace:</span> AI claim <span class="st">→</span> click <span class="kw">[1]</span> <span class="st">→</span> is it the <span class="kw">original</span> report? <span class="st">→</span> if it just quotes <span class="kw">another</span> page, keep clicking until a <span class="kw">named, dated, primary</span> source — or a dead end.`,
+    explain:`Citations form a <em>chain</em>. A trustworthy figure ends at a <strong>primary source</strong>: a named firm or paper, with a date and a method. A hollow one loops through blogs and press releases that quote each other and cite nobody. Ana's "$8.3B / 12%" number dead-ended; the real "$6.9B / 9.7%" came from a named, dated report. <strong>Verify:</strong> if the chain doesn't end somewhere real, the number is unverified — do not cite it.`
+  },
+  deep: {
+    prompt:'For the whole landscape at once, hand a big question to a Deep Research agent.',
+    code:`<span class="rf">Ask Deep Research:</span> <span class="st">"Assess whether </span><span class="kw">Nourish &amp; Co.</span><span class="st"> should enter US plant-based snacks. Cover size, growth, buyers, competitors, and </span><span class="kw">risks</span><span class="st">. Cite every claim; note where sources </span><span class="kw">disagree</span><span class="st">."</span>`,
+    explain:`A <strong>Deep Research</strong> agent runs dozens of searches and returns a long, cited report — a fast way to map a big question. The clause <em>"note where sources disagree"</em> is deliberate: it fights the AI's instinct to smooth everything into one tidy story (the exact trap of Chapter 3). <strong>Verify:</strong> more citations ≠ more truth. Trace the load-bearing claims yourself; an agent can still cite weak or mismatched sources.`
+  }
+};
+function setFormula(k){
+  document.querySelectorAll('.fl-tab').forEach(t => t.classList.toggle('active', t.dataset.fl === k));
+  const f = formulas[k];
+  document.getElementById('flPrompt').innerHTML = '<span class="who">Ana → AI</span>' + f.prompt;
+  document.getElementById('flCode').innerHTML = f.code;
+  document.getElementById('flExplain').innerHTML = f.explain;
+}
+setFormula('scope');
+
+/* confident-but-wrong checkpoint */
+const errFbs = [
+  {ok:false, fb:'✗ Confidence is not correctness. An answer engine will state an orphaned number as flatly as a verified one — tone tells you nothing about the source. Quoting "$8.3B / 12%" here means citing a figure that traces back to nobody. The skill is checking where the citation <em>ends</em>, not how sure the AI sounds.'},
+  {ok:true, fb:'✓ Exactly right. A citation is only as good as its <strong>endpoint</strong>. Follow the chain: if it lands on a <strong>named firm or paper, dated, with a methodology</strong>, you can cite it. If it loops through blogs and press releases that cite each other and dead-end at nothing, the number is <strong>unverified</strong> — leave it out or clearly caveat it. Ana traced "$8.3B" to nowhere and used the real "$6.9B" instead.'},
+  {ok:false, fb:'✗ A link is not a source. A blog re-posting a number it didn\'t produce is a <em>relay</em>, not an origin. Cite the blog and you\'ve just laundered an unverified figure into your brief with your name attached. Keep clicking until you reach the primary source — or treat the claim as unverified.'}
+];
+function errQ(i){
+  const btns = document.querySelectorAll('#s2 .err-panel .scenario-btn');
+  btns.forEach((b,j)=>{ b.disabled = true; if (errFbs[j].ok) b.classList.add('correct'); else if (j===i) b.classList.add('wrong'); });
+  const fb = document.getElementById('errFb');
+  fb.className = 'scenario-feedback show ' + (errFbs[i].ok ? 'success' : 'fail');
+  fb.innerHTML = errFbs[i].fb;
+}
+
+/* smart-search quiz */
+const formQs = [
+  {q:"Your research prompt returns a vague, uncitable blob. Most likely cause?", opts:["The AI is broken","Your prompt didn't define the question, scope, time window, or acceptable sources — so the AI guessed at all of it","You need a paid account"], correct:1, explain:"A scoped prompt (subject + time window + required outputs + evidence standard) gives the AI a clear target and gives you specific claims to verify. Vague in, vague out."},
+  {q:"An answer engine cites a figure, but the link is a blog quoting a press release quoting nobody. What is that figure?", opts:["A verified primary source","Unverified — the citation chain dead-ends before reaching a named, dated origin, so don't cite it","Good enough, it has a link"], correct:1, explain:"A citation is only as strong as where it ends. If the chain never reaches a primary source with a date and method, the number is orphaned. Trace it to the origin or leave it out."},
+  {q:"You need breadth on a big, multi-part question fast. Which is the right move — and the right caution?", opts:["Ask a plain chatbot and trust it","Run a Deep Research agent for the wide scan, then trace the load-bearing claims yourself — more citations isn't more truth","Read every website manually"], correct:1, explain:"Deep Research maps a large question quickly, but an agent can still cite weak or mismatched sources. Use it for coverage, then verify the claims your conclusion rests on."}
+];
+let fqIdx = 0;
+function renderFormQ(){
+  const s = formQs[fqIdx];
+  document.getElementById('formQ').textContent = `Round ${fqIdx+1}/3 — ${s.q}`;
+  document.getElementById('formOpts').innerHTML = s.opts.map((o,i)=>`<button class="scenario-btn" onclick="answerFormQ(${i})">${o}</button>`).join('');
+  const fb = document.getElementById('formFb');
+  fb.className = 'scenario-feedback'; fb.innerHTML = '';
+  document.getElementById('formNext').style.display = 'none';
+}
+function answerFormQ(i){
+  const s = formQs[fqIdx];
+  document.querySelectorAll('#formOpts .scenario-btn').forEach((b,j)=>{
+    b.disabled = true;
+    if (j===s.correct) b.classList.add('correct'); else if (j===i) b.classList.add('wrong');
+  });
+  const fb = document.getElementById('formFb');
+  fb.className = 'scenario-feedback show ' + (i===s.correct ? 'success' : 'fail');
+  fb.innerHTML = (i===s.correct ? '✓ Spot on! ' : '✗ Not quite. ') + s.explain + (fqIdx===formQs.length-1 ? '<br><br>🎉 Chapter 2 complete — Ana has vetted sources, each traced to a primary origin. Next: turn the pile into a brief.' : '');
+  document.getElementById('formNext').style.display = fqIdx < formQs.length-1 ? 'inline-block' : 'none';
+}
+function nextFormQ(){ fqIdx++; if (fqIdx < formQs.length) renderFormQ(); }
+renderFormQ();
+
+/* ───────── CHAPTER 3: SYNTHESIZE ───────── */
+const askAnswers = [
+  '<strong>No — that\'s a false consensus.</strong> Sources A and E are bullish, but <strong>Source C</strong> (peer-reviewed) explicitly says growth is <em>slowing</em> and hinges on price. NotebookLM can draft "all sources agree," but the matrix shows a real disagreement. Report the split — it\'s a finding, not a flaw.',
+  'The real customer is the <strong>flexitarian</strong>, not the vegan — a much larger base. Sources A and C independently agree on this, which is exactly the kind of cross-source confirmation that makes a claim safe to headline. Two grounded sources concurring = a claim you can defend.',
+  'Sources disagree on the <em>biggest</em> risk: A says crowded shelves, E says private-label competition, and <strong>Source C</strong> says repeat purchase depends on taste + price. Don\'t pick one and hide the rest — the honest brief names all three and lets the director weigh them.',
+  'The honest headline: <strong>"Attractive but not effortless."</strong> A ~$6.9B, ~9.7%-CAGR category with a broad flexitarian base — <em>but</em> growth is slowing, shelves are crowded, and repeat purchase is price-sensitive (Source C). That nuance is the difference between a brief that survives scrutiny and one that oversells.'
+];
+function askData(i, el){
+  document.querySelectorAll('.ask-chip').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  const a = document.getElementById('askAnswer');
+  a.innerHTML = askAnswers[i];
+  a.classList.add('show');
+}
+
+/* false-consensus checkpoint */
+const sanityFbs = [
+  {ok:false, fb:'✗ <strong>The credibility-killing mistake.</strong> "All sources agree" is factually false here — Source C disagrees — and a director who reads the sources will catch it in seconds. Sounding decisive by hiding a real caveat is how a brief gets bounced. Decisiveness built on a misrepresentation isn\'t decisiveness; it\'s a liability.'},
+  {ok:true, fb:'✓ <strong>This is the whole chapter in one move.</strong> AI loves a clean story, so it flattened a real clash into a fake consensus and dropped Source C\'s caveat. A pro restores the nuance: most sources are bullish, <em>but</em> growth is slowing and price-dependent — and lets that shape the recommendation. <strong>Disagreement between good sources is a finding, not a flaw to hide.</strong>'},
+  {ok:false, fb:'✗ <strong>Cherry-picking — and it\'s dishonest.</strong> Deleting the source that disagrees so the rest "agree" is manufacturing a consensus, the research equivalent of hiding evidence. Source C is peer-reviewed; it\'s the <em>most</em> credible voice, not the one to silence. Keep it, report the tension, and your brief gets stronger.'}
+];
+function sanityQ(i){
+  const btns = document.querySelectorAll('#s3 .err-panel .scenario-btn');
+  btns.forEach((b,j)=>{ b.disabled = true; if (sanityFbs[j].ok) b.classList.add('correct'); else if (j===i) b.classList.add('wrong'); });
+  const fb = document.getElementById('sanityFb');
+  fb.className = 'scenario-feedback show ' + (sanityFbs[i].ok ? 'success' : 'fail');
+  fb.innerHTML = sanityFbs[i].fb;
+}
+
+/* ───────── CHAPTER 4: VERIFY & CITE ───────── */
+const autoFbs = [
+  {ok:false, fb:'✗ <strong>Formatting is not verification.</strong> A fabricated citation looks exactly as clean as a real one — perfect authors, perfect italics, perfect page number, and a paper that never existed. That polish is the trap, not the proof. Never let neat formatting stand in for actually opening the source.'},
+  {ok:true, fb:'✓ <strong>The golden rule of verification.</strong> Every citation gets tested twice: <em>does the source exist,</em> and <em>does it actually say what the brief claims?</em> Keep only the ones that pass both. This is exactly how Ana caught two fabricated references before the director followed the footnotes. Test, then trust.'},
+  {ok:false, fb:'✗ One good citation tells you nothing about the other four. AI can mix real and invented sources in the same list — that\'s precisely how a fabricated reference slips through. There\'s no shortcut: open every one.'}
+];
+function autoQ(i){
+  const btns = document.querySelectorAll('#s4 .scenario-panel:first-of-type .scenario-btn');
+  btns.forEach((b,j)=>{ b.disabled = true; if (autoFbs[j].ok) b.classList.add('correct'); else if (j===i) b.classList.add('wrong'); });
+  const fb = document.getElementById('autoFb');
+  fb.className = 'scenario-feedback show ' + (autoFbs[i].ok ? 'success' : 'fail');
+  fb.innerHTML = autoFbs[i].fb;
+}
+
+/* citation tester */
+const citeMsgs = {
+  true:{cls:'b-real', text:'<strong>REAL — keep it.</strong> The source exists, the numbers match, and it\'s a named, dated, primary reference. This claim can go in the brief and survive a source check.'},
+  false:[
+    '<strong>FABRICATED — remove it.</strong> No paper by "Sharma &amp; Lee (2024)" in any <em>Journal of Snack Economics</em> exists — the AI invented it, and the 300% figure with it. Delete the claim and the citation.',
+    '<strong>MIS-ATTRIBUTED — fix or remove it.</strong> The competitor\'s filing exists, but the "$2B" figure and its page reference are blank / unverifiable — the AI attached a number the document doesn\'t support. Don\'t cite what you can\'t point to.'
+  ]
+};
+let citeFakeIdx = 0, citeTested = 0, citeFakesFound = 0;
+function testCite(btn){
+  const row = btn.closest('.cite-row');
+  if (row.classList.contains('tested-real') || row.classList.contains('tested-fake')) return;
+  const isReal = row.dataset.real === 'true';
+  const res = row.querySelector('.cite-result');
+  if (isReal){
+    row.classList.add('tested-real');
+    res.innerHTML = `<span class="badge b-real">Verified</span><br>${citeMsgs.true.text}`;
+  } else {
+    row.classList.add('tested-fake');
+    const msg = citeMsgs.false[citeFakeIdx] || citeMsgs.false[0];
+    citeFakeIdx++;
+    citeFakesFound++;
+    res.innerHTML = `<span class="badge b-fake">Failed</span><br>${msg}`;
+  }
+  res.classList.add('show');
+  btn.disabled = true;
+  btn.textContent = isReal ? 'Passed ✓' : 'Failed ✗';
+  citeTested++;
+  if (citeTested === 5){
+    const tally = document.getElementById('citeTally');
+    tally.innerHTML = `🔎 <strong>${citeFakesFound} of 5 citations were fabricated or mis-attributed</strong> — and they looked as polished as the real three. Ana removed both, fixed the attribution, and kept only the three that passed <em>both</em> tests (exists + backs the claim). That is the difference between a researcher and a copy-paste button.`;
+    tally.classList.add('show');
+  }
+}
+
+/* disclosure builder */
+const disclData = {
+  did: {
+    draft:'AI tools drafted and summarized sections; the author wrote the conclusions.',
+    search:'AI tools ran searches and suggested candidate sources; the author selected and vetted them.',
+    all:'AI tools searched, drafted, and organized the material; the author directed the process and wrote the conclusions.'
+  },
+  verify: {
+    all:'Every citation was traced to a primary source before inclusion.',
+    key:'All key figures were verified against primary sources and remaining claims were spot-checked.',
+    none:'⚠️ No verification performed — this brief is not ready to ship.'
+  },
+  stance: {
+    owned:'The author owns the conclusions and the verified sources.',
+    mixed:'AI-assisted; all findings were human-checked.'
+  }
+};
+function renderDash(){
+  const h = document.getElementById('dHeadline').value;
+  const c = document.getElementById('dChart').value;
+  const s = document.getElementById('dSchedule').value;
+  const discl = document.getElementById('dashDiscl');
+  discl.textContent = `${disclData.did[h]} ${disclData.verify[c]} ${disclData.stance[s]}`;
+  const note = document.getElementById('dashNote');
+  if (c === 'none'){
+    discl.style.borderLeftColor = 'var(--red)';
+    note.innerHTML = '<strong>Do not ship this.</strong> An honest disclosure can\'t rescue unverified work — verification comes first, disclosure second. Go back and trace the sources.';
+  } else {
+    discl.style.borderLeftColor = 'var(--orange)';
+    note.innerHTML = '<strong>Why it matters:</strong> honesty about AI use is now expected in credible work. It signals you verified, not just generated. Ana added this line herself.';
+  }
+}
+
+/* ───────── SHIP IT: 5 P.M. JUDGE ───────── */
+const judgeKey = {
+  A: {right:'verify', fb:{
+    verify:'✓ Correct — <strong>VERIFIED.</strong> "$6.9B, ~9.7% CAGR" traces to a named, dated market-research report with a methodology — Ana clicked it herself. She can defend this figure when the director follows the footnote. Ship it.',
+    flag:'△ Over-cautious. This one already survived the trace — a named firm, a date, a method. No flag needed; it\'s clean. Verdict: <strong>VERIFIED</strong>.',
+    trust:'✗ Right answer, wrong reason — never "ship as-is" on faith, even when the number is real. The habit is what matters: it\'s verified because it was traced to a primary source. Verdict: <strong>VERIFIED</strong> (because checked, not because trusted).'}},
+  B: {right:'flag', fb:{
+    flag:'✓ Correct — <strong>FLAG &amp; FIX.</strong> "Sharma &amp; Lee (2024)" doesn\'t exist — the AI fabricated the paper and the 300% claim together. Ana deletes both before they reach the director. This single catch is what separates a researcher from a copy-paste button.',
+    verify:'✗ You can\'t verify a paper that was never published. There is no "Sharma &amp; Lee (2024)" in any such journal — it\'s a hallucination to remove, not a fact to confirm. Verdict: <strong>FLAG &amp; FIX</strong>.',
+    trust:'✗ This is the exact trap the whole day warns about. A confident, perfectly formatted citation to a nonexistent paper, shipped unchecked, is how a report gets bounced — or worse. Verdict: <strong>FLAG &amp; remove it</strong>.'}},
+  C: {right:'verify', fb:{
+    verify:'✓ Correct — <strong>VERIFIED.</strong> The nuance is real and cited: Source C (peer-reviewed) does warn that growth is slowing and price-dependent. Keeping the caveat — instead of flattening it into a fake consensus — is exactly what makes the brief honest and boss-proof.',
+    flag:'△ No flag needed — this line is the <em>fix</em>. It restores the caveat the AI tried to drop and cites the source for it. Reflecting a real disagreement is what "verified" looks like. Verdict: <strong>VERIFIED</strong>.',
+    trust:'✗ It\'s right, but "ship as-is" is never the habit. It\'s verified because the caveat is traced to a real, cited source — honesty backed by evidence, not faith. Verdict: <strong>VERIFIED</strong>.'}}
+};
+const judged = {};
+function judge(line, verdict, btn){
+  if (judged[line]) return;
+  const k = judgeKey[line];
+  judged[line] = true;
+  const panel = btn.closest('.scenario-panel');
+  panel.querySelectorAll('.scenario-btn').forEach(b => {
+    b.disabled = true;
+    if (b.getAttribute('onclick').includes("'"+k.right+"'")) b.classList.add('correct');
+    else if (b === btn) b.classList.add('wrong');
+  });
+  const fb = document.getElementById('fb'+line);
+  fb.className = 'scenario-feedback show ' + (verdict===k.right ? 'success' : 'fail');
+  fb.innerHTML = k.fb[verdict];
+  if (judged.A && judged.B && judged.C){
+    setTimeout(()=>{ document.getElementById('weekVerdict').classList.add('show'); document.getElementById('weekVerdict').scrollIntoView({behavior:'smooth', block:'center'}); }, 600);
+  }
+}
+</script>
+</body>
+</html>
