@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 4 · Verification, Citations &amp; Ethics — MokshPath</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=JetBrains+Mono:wght@400;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --orange:#E87A2E;--orange-dark:#D06A20;--orange-light:#F5943E;--orange-glow:rgba(232,122,46,0.12);
+  --navy:#2B2D42;--navy-dark:#1A1B2E;
+  --bg:#F3EDE7;--bg-card:#FFFFFF;--bg-light:#F9F5F0;
+  --text-primary:#2B2D42;--text-secondary:#6B6D7B;--text-muted:#9597A6;
+  --border:#E5DDD4;--green:#4CAF50;--green-light:#E8F5E9;--red:#E04E3C;--red-light:#FDECEA;
+  --shadow-sm:0 2px 8px rgba(43,45,66,0.06);--shadow-md:0 8px 24px rgba(43,45,66,0.08);
+  --shadow-lg:0 16px 48px rgba(43,45,66,0.12);
+  --radius:14px;--radius-sm:8px;
+  --mono:'JetBrains Mono',monospace;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text-primary);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+
+/* ── NAV ── */
+.nav{position:sticky;top:0;z-index:100;background:var(--bg-card);border-bottom:1px solid var(--border);padding:0 2rem;height:64px;display:flex;align-items:center;justify-content:space-between;box-shadow:var(--shadow-sm)}
+.nav-left{display:flex;align-items:center;gap:.7rem}
+.lesson-badge{font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--orange);background:var(--orange-glow);padding:.3rem .7rem;border-radius:50px}
+.nav-logo{display:flex;align-items:center;gap:.7rem;text-decoration:none}
+.nav-logo-icon{width:auto;height:48px;display:block;object-fit:contain}
+.nav-logo-text{display:flex;flex-direction:column;line-height:1.15}
+.nav-logo-name{font-family:'DM Serif Display',serif;font-size:1.25rem;color:var(--navy)}
+.nav-logo-name span{color:var(--orange)}
+.nav-logo-tag{font-size:.62rem;color:var(--text-muted);font-weight:500;letter-spacing:.02em}
+
+/* ── HERO ── */
+.hero{padding:3.5rem 2rem 2.5rem;text-align:center;position:relative}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:.45rem;padding:.4rem 1rem;border-radius:50px;background:var(--orange-glow);color:var(--orange);font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:1.2rem}
+.hero-eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--orange);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.hero h1{font-family:'DM Serif Display',serif;font-size:clamp(2rem,4vw,3rem);line-height:1.13;color:var(--navy);margin-bottom:1rem;max-width:780px;margin-left:auto;margin-right:auto}
+.hero h1 em{font-style:normal;color:var(--orange)}
+.hero-sub{font-size:1.02rem;color:var(--text-secondary);line-height:1.7;max-width:620px;margin:0 auto}
+
+/* ── PROGRESS RAIL ── */
+.progress-rail{max-width:760px;margin:1.8rem auto 0;display:flex;align-items:center;gap:.5rem}
+.progress-dot{flex:1;height:6px;background:var(--border);border-radius:3px;transition:background .3s}
+.progress-dot.done{background:linear-gradient(90deg,var(--orange),var(--orange-light))}
+.progress-label{font-size:.7rem;color:var(--text-muted);font-weight:600;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+
+/* ── SECTIONS ── */
+section.lesson{padding:3rem 2rem}
+.container{max-width:1080px;margin:0 auto}
+.lesson-num{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;background:var(--orange);color:#fff;font-family:'DM Serif Display',serif;font-size:1.1rem;margin-bottom:.9rem}
+.lesson-title{font-family:'DM Serif Display',serif;font-size:clamp(1.6rem,2.5vw,2.1rem);color:var(--navy);margin-bottom:.55rem;line-height:1.2}
+.lesson-intro{font-size:.95rem;color:var(--text-secondary);line-height:1.7;max-width:680px;margin-bottom:2rem}
+.lesson-card{background:var(--bg-card);border-radius:var(--radius);box-shadow:var(--shadow-sm);border:1px solid var(--border);padding:2rem;margin-top:1.5rem}
+
+.activity-feedback{margin-top:1.2rem;padding:1rem 1.2rem;border-radius:var(--radius-sm);font-size:.85rem;line-height:1.55;display:none}
+.activity-feedback.show{display:block;animation:fadeIn .4s ease}
+.activity-feedback.success{background:var(--green-light);color:#1F5723;border-left:3px solid var(--green)}
+.activity-feedback.partial{background:#FFF4E5;color:#7A4A0A;border-left:3px solid #E89B2E}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.activity-toolbar{display:flex;gap:.6rem;margin-top:1.2rem;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:.4rem;padding:.6rem 1.2rem;border-radius:8px;font-size:.82rem;font-weight:600;border:none;cursor:pointer;transition:all .2s;font-family:inherit}
+.btn-primary{background:var(--orange);color:#fff}.btn-primary:hover{background:var(--orange-dark);transform:translateY(-1px);box-shadow:0 4px 12px rgba(232,122,46,0.3)}
+.btn-ghost{background:transparent;border:1.5px solid var(--border);color:var(--text-secondary)}.btn-ghost:hover{border-color:var(--orange);color:var(--orange)}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+
+/* ── ACTIVITY 1: FLAG → RANK match ── */
+.aud-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+@media (max-width:760px){.aud-grid{grid-template-columns:1fr}}
+.aud-card{background:var(--bg-card);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:1rem 1.1rem;transition:border-color .25s}
+.aud-card.correct{border-color:var(--green);background:var(--green-light)}
+.aud-card.wrong{border-color:var(--red);background:var(--red-light)}
+.aud-name{font-family:'DM Serif Display',serif;font-size:1rem;color:var(--navy)}
+.aud-pain{font-size:.74rem;color:var(--text-muted);margin:.2rem 0 .6rem;font-style:italic}
+.aud-select{width:100%;padding:.55rem .7rem;border:1.5px solid var(--border);border-radius:6px;font-family:inherit;font-size:.8rem;color:var(--text-primary);background:var(--bg-light);cursor:pointer}
+.aud-select:focus{outline:none;border-color:var(--orange)}
+.aud-why{font-size:.74rem;line-height:1.5;margin-top:.55rem;display:none}
+.aud-why.show{display:block}
+.aud-why.good{color:#1F5723}.aud-why.bad{color:#8B2E22}
+
+/* ── ACTIVITY 2: WORKFLOW SEQUENCE ── */
+.seq-wrap{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+@media (max-width:760px){.seq-wrap{grid-template-columns:1fr}}
+.seq-pool{display:flex;flex-direction:column;gap:.6rem}
+.seq-block{background:var(--bg-card);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:.8rem 1rem;cursor:pointer;transition:all .2s;user-select:none}
+.seq-block:hover{border-color:var(--orange);transform:translateX(3px)}
+.seq-block.used{opacity:.3;pointer-events:none}
+.seq-block.shake{animation:shake .35s ease;border-color:var(--red);background:var(--red-light)}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.seq-block-text{font-size:.84rem;font-weight:500;line-height:1.45}
+.seq-slots{display:flex;flex-direction:column;gap:.5rem}
+.seq-slot{border:2px dashed var(--border);border-radius:var(--radius-sm);padding:.7rem .9rem;min-height:52px;font-size:.8rem;color:var(--text-muted);transition:all .3s;background:rgba(255,255,255,.5)}
+.seq-slot.filled{border-style:solid;border-color:var(--green);background:var(--green-light);color:var(--text-primary)}
+.seq-tag{display:inline-block;font-family:var(--mono);font-size:.64rem;font-weight:600;letter-spacing:.06em;color:var(--orange);background:var(--orange-glow);padding:.1rem .45rem;border-radius:4px;margin-bottom:.3rem}
+.seq-hint{margin-top:.8rem;padding:.7rem .9rem;background:#FFF4E5;border-left:3px solid #E89B2E;border-radius:4px;font-size:.78rem;color:#7A4A0A;line-height:1.5;display:none}
+.seq-hint.show{display:block;animation:fadeIn .3s ease}
+.phone{max-width:340px;margin:1.4rem auto 0;background:var(--navy-dark);border-radius:14px;padding:1.1rem .9rem;border:5px solid var(--navy);box-shadow:var(--shadow-lg);display:none}
+.phone.show{display:block;animation:fadeIn .5s ease}
+.phone-notch{width:80px;height:5px;background:rgba(255,255,255,.25);border-radius:3px;margin:0 auto .8rem}
+.phone-line{margin-bottom:.6rem;padding:.55rem .7rem;background:rgba(255,255,255,.07);border-radius:8px}
+.phone-line .seq-tag{background:rgba(232,122,46,.22)}
+.phone-line p{font-size:.76rem;color:#E8E8EC;line-height:1.5;font-family:var(--mono)}
+
+/* ── ACTIVITY 3: CITATION TESTER ── */
+.cit-card{background:var(--bg-light);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:1.1rem 1.3rem;margin-bottom:1rem}
+.cit-ref{font-family:var(--mono);font-size:.78rem;line-height:1.6;color:var(--navy);background:var(--bg-card);border:1px solid var(--border);border-radius:6px;padding:.7rem .85rem;margin-bottom:.8rem}
+.cit-ref b{color:var(--orange)}
+.cit-btns{display:flex;gap:.45rem;flex-wrap:wrap}
+.cit-btn{flex:1;padding:.5rem .4rem;border-radius:6px;border:1.5px solid var(--border);background:var(--bg-card);font-family:inherit;font-size:.76rem;font-weight:700;cursor:pointer;transition:all .2s;color:var(--text-secondary)}
+.cit-btn:hover{border-color:var(--orange);color:var(--orange)}
+.cit-btn.picked-right{background:var(--green-light);border-color:var(--green);color:#1F5723}
+.cit-btn.picked-wrong{background:var(--red-light);border-color:var(--red);color:#8B2E22}
+.cit-btn.reveal-right{border-color:var(--green);color:#1F5723}
+.cit-btn:disabled{cursor:not-allowed;opacity:.85}
+.cit-verdict{font-size:.75rem;line-height:1.55;margin-top:.7rem;padding:.6rem .75rem;border-radius:6px;display:none}
+.cit-verdict.show{display:block;animation:fadeIn .3s ease}
+.cit-verdict.good{background:var(--green-light);color:#1F5723}
+.cit-verdict.bad{background:#FFF4E5;color:#7A4A0A}
+
+/* ── ACTIVITY 4: DISCLOSE SCENARIOS ── */
+.kos-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+@media (max-width:760px){.kos-grid{grid-template-columns:1fr}}
+.kos-card{background:var(--bg-card);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:1.1rem 1.2rem}
+.kos-title{font-family:'DM Serif Display',serif;font-size:.98rem;color:var(--navy);margin-bottom:.6rem}
+.kos-scenario{font-size:.78rem;color:var(--text-secondary);line-height:1.55;margin-bottom:.8rem}
+.kos-btns{display:flex;gap:.45rem;flex-wrap:wrap}
+.kos-btn{flex:1;padding:.5rem .4rem;border-radius:6px;border:1.5px solid var(--border);background:var(--bg-light);font-family:inherit;font-size:.74rem;font-weight:700;cursor:pointer;transition:all .2s;color:var(--text-secondary)}
+.kos-btn:hover{border-color:var(--orange);color:var(--orange)}
+.kos-btn.picked-right{background:var(--green-light);border-color:var(--green);color:#1F5723}
+.kos-btn.picked-wrong{background:var(--red-light);border-color:var(--red);color:#8B2E22}
+.kos-btn.reveal-right{border-color:var(--green);color:#1F5723}
+.kos-btn:disabled{cursor:not-allowed;opacity:.75}
+.kos-verdict{font-size:.74rem;line-height:1.55;margin-top:.7rem;padding:.6rem .75rem;border-radius:6px;display:none}
+.kos-verdict.show{display:block;animation:fadeIn .3s ease}
+.kos-verdict.good{background:var(--green-light);color:#1F5723}
+.kos-verdict.bad{background:#FFF4E5;color:#7A4A0A}
+
+/* ── ACTIVITY 5: QUIZ ── */
+.quiz-q{background:var(--bg-card);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:1.1rem 1.3rem;margin-bottom:.9rem;transition:border-color .3s}
+.quiz-q.right{border-color:var(--green)}
+.quiz-q.miss{border-color:var(--red)}
+.quiz-q-head{display:flex;gap:.7rem;align-items:baseline;margin-bottom:.7rem}
+.quiz-q-num{font-family:var(--mono);font-size:.7rem;font-weight:600;color:var(--orange);background:var(--orange-glow);padding:.15rem .5rem;border-radius:4px;flex-shrink:0}
+.quiz-q-text{font-size:.9rem;font-weight:600;color:var(--navy);line-height:1.5}
+.quiz-opt{display:flex;align-items:flex-start;gap:.55rem;padding:.5rem .6rem;border-radius:6px;cursor:pointer;font-size:.83rem;color:var(--text-secondary);line-height:1.45;transition:background .15s}
+.quiz-opt:hover{background:var(--bg-light)}
+.quiz-opt input{margin-top:.25rem;accent-color:var(--orange);cursor:pointer}
+.quiz-review{font-size:.76rem;line-height:1.55;margin-top:.6rem;padding:.6rem .8rem;border-radius:6px;display:none}
+.quiz-review.show{display:block;animation:fadeIn .3s ease}
+.quiz-review.good{background:var(--green-light);color:#1F5723}
+.quiz-review.bad{background:#FFF4E5;color:#7A4A0A}
+.quiz-lesson{display:inline-block;font-family:var(--mono);font-size:.64rem;color:var(--text-muted);margin-left:.4rem}
+
+/* ── CHECKLIST ── */
+.check-list{list-style:none;margin-top:1rem}
+.check-item{display:flex;gap:.8rem;align-items:flex-start;padding:.85rem 1rem;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);margin-bottom:.6rem;cursor:pointer;transition:all .2s}
+.check-item:hover{border-color:var(--orange)}
+.check-item.on{border-color:var(--green);background:var(--green-light)}
+.check-box{flex-shrink:0;width:22px;height:22px;border-radius:6px;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.8rem;color:#fff;transition:all .2s;margin-top:.1rem}
+.check-item.on .check-box{background:var(--green);border-color:var(--green)}
+.check-text{font-size:.85rem;line-height:1.5;color:var(--text-secondary)}
+.check-text b{color:var(--navy)}
+.check-count{margin-top:1rem;font-size:.8rem;font-weight:700;color:var(--orange);font-family:var(--mono)}
+
+/* ── REFLECT / FOOTER ── */
+.reflect-prompt{display:grid;grid-template-columns:1fr;gap:.8rem;margin-top:1rem}
+.reflect-q{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:1rem 1.2rem}
+.reflect-q-text{font-size:.88rem;font-weight:600;color:var(--navy);margin-bottom:.5rem}
+.reflect-q textarea{width:100%;border:1px solid var(--border);border-radius:6px;padding:.6rem .8rem;font-family:inherit;font-size:.85rem;color:var(--text-primary);background:var(--bg-light);resize:vertical;min-height:60px}
+.reflect-q textarea:focus{outline:none;border-color:var(--orange)}
+.next-up{background:linear-gradient(135deg,var(--navy-dark),var(--navy));border-radius:var(--radius);padding:2.4rem;color:#fff;margin-top:2rem;text-align:center;position:relative;overflow:hidden}
+.next-up::before{content:'';position:absolute;top:-50px;right:-50px;width:180px;height:180px;border-radius:50%;background:rgba(232,122,46,0.12)}
+.next-up h3{font-family:'DM Serif Display',serif;font-size:1.5rem;margin-bottom:.5rem;position:relative}
+.next-up p{font-size:.92rem;color:rgba(255,255,255,0.75);margin-bottom:1.2rem;position:relative}
+.next-up .btn-primary{position:relative}
+
+@media (max-width:760px){
+  .nav{padding:0 1rem}
+  .nav-logo-tag{display:none}
+  .hero{padding:2.5rem 1.2rem 2rem}
+  section.lesson{padding:2rem 1.2rem}
+  .lesson-card{padding:1.4rem}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-left">
+    <span class="lesson-badge">Lesson 4 of 4</span>
+  </div>
+  <a href="https://mokshpath.org/" class="nav-logo">
+    <img class="nav-logo-icon" src="hero.svg" alt="MokshPath logo">
+    <div class="nav-logo-text">
+      <span class="nav-logo-name">Moksh<span>Path</span></span>
+      <span class="nav-logo-tag">Guided Path to True Learning</span>
+    </div>
+  </a>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-eyebrow"><span class="dot"></span> Week 3 · AI Research</div>
+  <h1>Verification, Citations &amp; Ethics — <em>the source is real, the quote is honest, and you say how you got it</em></h1>
+  <p class="hero-sub">AI research is fast, but fast and true are not the same thing. This final lesson gives you the muscle memory of a careful researcher: a five-step fact-check workflow, the tests that expose a fabricated citation, how to quote and attribute without plagiarising, and the honest habit of disclosing AI use. Run the workflow, tell real citations from fake, decide when to disclose, lock in a checklist, then prove the whole week with an 8-question knowledge check.</p>
+  <div class="progress-rail">
+    <span class="progress-label">Progress</span>
+    <div class="progress-dot" id="prog1"></div>
+    <div class="progress-dot" id="prog2"></div>
+    <div class="progress-dot" id="prog3"></div>
+    <div class="progress-dot" id="prog4"></div>
+    <div class="progress-dot" id="prog5"></div>
+  </div>
+</header>
+
+<!-- ── ACTIVITY 1: MATCH THE TEST TO THE CLAIM ── -->
+<section class="lesson" id="activity-1">
+  <div class="container">
+    <span class="lesson-num">1</span>
+    <h2 class="lesson-title">Match the right check to each claim</h2>
+    <p class="lesson-intro">Not every claim deserves the same scrutiny — and not every claim is checked the same way. A high-stakes number needs a primary source; a quoted line needs the original wording; a citation needs to actually exist. Below are five claims an AI handed you. Assign the single best verification move to each, then check — the notes explain the logic a careful researcher uses.</p>
+
+    <div class="lesson-card">
+      <div class="aud-grid" id="audGrid"></div>
+      <div class="activity-feedback" id="feedback1"></div>
+      <div class="activity-toolbar">
+        <button class="btn btn-primary" onclick="checkTools()">Check my matches</button>
+        <button class="btn btn-ghost" onclick="resetTools()">↻ Reset</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 2: FACT-CHECK WORKFLOW SEQUENCE ── -->
+<section class="lesson" id="activity-2" style="background:var(--bg-light)">
+  <div class="container">
+    <span class="lesson-num" style="background:#66BB6A">2</span>
+    <h2 class="lesson-title">Run the fact-check workflow — in the order that works</h2>
+    <p class="lesson-intro">Verification isn't one action; it's a repeatable order. Do it out of sequence and you waste time deep-checking a claim that didn't matter, or trust a source you never traced. Click the five steps in the order a careful researcher runs them on an AI-written brief. A wrong click gets you a nudge. Task: an AI gave you a claim-packed paragraph for a report.</p>
+
+    <div class="lesson-card">
+      <div class="seq-wrap">
+        <div>
+          <h4 style="font-family:'DM Serif Display',serif;font-size:1.05rem;color:var(--navy);margin-bottom:.6rem">Workflow steps (shuffled)</h4>
+          <div class="seq-pool" id="seqPool"></div>
+          <div class="seq-hint" id="seqHint"></div>
+        </div>
+        <div>
+          <h4 style="font-family:'DM Serif Display',serif;font-size:1.05rem;color:var(--navy);margin-bottom:.6rem">Your workflow, in order</h4>
+          <div class="seq-slots" id="seqSlots"></div>
+        </div>
+      </div>
+      <div class="phone" id="phonePreview"><div class="phone-notch"></div><div id="phoneLines"></div></div>
+      <div class="activity-feedback" id="feedback2"></div>
+      <div class="activity-toolbar">
+        <button class="btn btn-ghost" onclick="resetSeq()">↻ Start over</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 3: CITATION TESTER ── -->
+<section class="lesson" id="activity-3">
+  <div class="container">
+    <span class="lesson-num" style="background:#5B8FE0">3</span>
+    <h2 class="lesson-title">Vet the brief — spot the fabricated citations</h2>
+    <p class="lesson-intro">AI models are fluent, which means they can invent a citation that <em>looks</em> flawless: a real-sounding journal, a plausible author, a valid-format DOI — for a paper that never existed. An AI brief handed you five references. Two are fabricated. Use the tests — <strong>does the DOI resolve, does the title/author/journal actually match, does the content say what's claimed?</strong> — to judge each as real or fake.</p>
+
+    <div class="lesson-card">
+      <div id="citGrid"></div>
+      <div class="activity-feedback" id="feedback3"></div>
+      <div class="activity-toolbar">
+        <button class="btn btn-ghost" onclick="resetCit()">↻ Reset all five</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 4: SHOULD YOU DISCLOSE AI USE? ── -->
+<section class="lesson" id="activity-4" style="background:var(--bg-light)">
+  <div class="container">
+    <span class="lesson-num" style="background:#4CAF50">4</span>
+    <h2 class="lesson-title">Should you disclose the AI use here?</h2>
+    <p class="lesson-intro">Disclosure isn't about guilt — it's about honesty and following the rules that apply. The honest test: <strong>did AI shape the substance</strong> (ideas, analysis, wording that ships), <strong>does a policy or instructor require it</strong>, and <strong>would a reader feel misled if they knew?</strong> If yes to any, disclose — clearly and specifically. Make the call on each real scenario.</p>
+
+    <div class="lesson-card">
+      <div class="kos-grid" id="kosGrid"></div>
+      <div class="activity-feedback" id="feedback4"></div>
+      <div class="activity-toolbar">
+        <button class="btn btn-ghost" onclick="resetKos()">↻ Reset all four</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── INTEGRITY CHECKLIST ── -->
+<section class="lesson" id="checklist">
+  <div class="container">
+    <span class="lesson-num" style="background:#E04E3C">✓</span>
+    <h2 class="lesson-title">The research-integrity checklist</h2>
+    <p class="lesson-intro">These are the non-negotiables that separate research you can stand behind from research that quietly embarrasses you later. Tick each one as you internalise it; the goal is that this list runs in your head before you ever hit "send" on anything AI helped you write.</p>
+    <div class="lesson-card">
+      <ul class="check-list" id="checkList"></ul>
+      <div class="check-count" id="checkCount">0 of 6 locked in</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY 5: WEEK 3 KNOWLEDGE CHECK ── -->
+<section class="lesson" id="activity-5" style="background:var(--bg-light)">
+  <div class="container">
+    <span class="lesson-num" style="background:var(--navy)">5</span>
+    <h2 class="lesson-title">Week 3 knowledge check — 8 questions, whole week</h2>
+    <p class="lesson-intro">The final gate of Week 3, spanning all four lessons: getting real research help from AI, searching and synthesising sources, reading and summarising documents, and today's verification, citations &amp; ethics. Answer all eight, then submit for a per-question review — and if you miss any, you'll see exactly which lesson to revisit.</p>
+
+    <div class="lesson-card">
+      <div id="quizWrap"></div>
+      <div class="activity-feedback" id="feedback5"></div>
+      <div class="activity-toolbar">
+        <button class="btn btn-primary" onclick="submitQuiz()">Submit answers</button>
+        <button class="btn btn-ghost" onclick="resetQuiz()">↻ Reset quiz</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── REFLECT ── -->
+<section class="lesson" style="padding-bottom:1.5rem">
+  <div class="container">
+    <h2 class="lesson-title" style="font-size:1.5rem">Personal accountability — make it stick</h2>
+    <p class="lesson-intro" style="margin-bottom:1rem">A sentence each is enough. The whole point of this lesson is that the responsibility is yours, not the model's — writing it in your own words is how it becomes a habit. (Nothing is saved or sent.)</p>
+    <div class="reflect-prompt">
+      <div class="reflect-q">
+        <div class="reflect-q-text">An AI hands you a perfect-sounding statistic with a citation for a report going to your boss. Walk through the exact steps you'll take before you paste that number in.</div>
+        <textarea placeholder="First I flag it as high-risk because it's a number in a report; then I look up the citation to confirm it exists; then I open the primary source and check the number actually says..."></textarea>
+      </div>
+      <div class="reflect-q">
+        <div class="reflect-q-text">Where in your real work would disclosing AI use feel awkward — and why is doing it anyway the honest call?</div>
+        <textarea placeholder="I'd feel awkward telling my team the report draft was AI-assisted, but they're relying on it being accurate, so a one-line note that I used AI and verified every claim actually builds trust because..."></textarea>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NEXT UP -->
+<section class="lesson" style="padding-top:0">
+  <div class="container">
+    <div class="next-up">
+      <h3>Week 3 complete — your project: the verified research brief</h3>
+      <p>You can now direct AI research, search and synthesise sources, read and summarise long documents, and — the skill that makes all the others safe — verify every claim, trace every citation, and disclose your process honestly. Put it together in the Week 3 wrap-up project: produce one real research brief where every fact is traced to a primary source, every citation is confirmed real, and your AI use is disclosed — the exact standard that makes your research trustworthy.</p>
+      <a href="#" class="btn btn-primary">Start the Week 3 project →</a>
+    </div>
+  </div>
+</section>
+
+<script>
+/* ═══ ACTIVITY 1: Claim ↔ Check match ═══ */
+const AUDIENCES = [
+  {id:'a1', name:'"Revenue grew 47% in Q3 2024" — going into a board report', pain:'A specific, high-stakes number that decisions will rest on.'},
+  {id:'a2', name:'AI gives a direct quote: "…the only sustainable moat is trust."', pain:'A quotation attributed to a named person — the words themselves matter.'},
+  {id:'a3', name:'A reference: Journal of X, 2021, doi:10.1234/abcd', pain:'You need to know this paper actually exists before you cite it.'},
+  {id:'a4', name:'"Most experts agree remote work boosts productivity"', pain:'A sweeping, hedge-word claim with no named source behind it.'},
+  {id:'a5', name:'AI cites a real paper — but claims it says the opposite', pain:'The source exists and is credible; the question is whether it backs the claim.'}
+];
+const HOOKS = [
+  {id:'h1', text:'Trace to the primary source', aud:'a1', signal:'A specific number in a high-stakes document must be checked against the original — the company filing, the report, the dataset. Never let an AI-stated statistic into a decision document without seeing where it came from and confirming the figure matches.'},
+  {id:'h2', text:'Verify the exact wording & speaker', aud:'a2', signal:'For a quotation, find the original and confirm both the words and who actually said them. AI frequently paraphrases, merges quotes, or misattributes — a "quote" that isn\'t verbatim from the named person is a fabrication, however good it sounds.'},
+  {id:'h3', text:'Confirm the citation is real', aud:'a3', signal:'Before you cite anything, confirm the paper exists: resolve the DOI, search the title, check the author-journal-year actually line up. AI invents citations that pass every format test but point to nothing. If it doesn\'t resolve, it isn\'t real.'},
+  {id:'h4', text:'Demand a named, credible source', aud:'a4', signal:'"Most experts agree" is a red flag, not a fact. Hedge-word generalisations need a specific, credible source or they don\'t belong in your work. Ask "which experts, which study?" — if there\'s no answer, cut the claim or find real evidence.'},
+  {id:'h5', text:'Read the source to check it supports the claim', aud:'a5', signal:'A real, credible citation is worthless if it doesn\'t actually say what\'s claimed. The final test is content: open the source and read the relevant part. AI regularly attaches genuine papers to claims those papers never made — the citation-content mismatch.'}
+];
+const AUD_BY_ID = Object.fromEntries(AUDIENCES.map(a=>[a.id,a]));
+function shuffle(arr){return [...arr].sort(()=>Math.random()-0.5);}
+
+function renderTools(){
+  const toolNames = [...new Set(HOOKS.map(h=>h.text))];
+  const shuffled = shuffle(toolNames);
+  document.getElementById('audGrid').innerHTML = AUDIENCES.map(a=>`
+    <div class="aud-card" data-aud="${a.id}">
+      <div class="aud-name">${a.name}</div>
+      <div class="aud-pain">${a.pain}</div>
+      <select class="aud-select" data-aud="${a.id}">
+        <option value="">— choose the best check for this claim —</option>
+        ${shuffled.map(t=>`<option value="${t}">${t}</option>`).join('')}
+      </select>
+      <div class="aud-why" data-why="${a.id}"></div>
+    </div>`).join('');
+}
+function checkTools(){
+  let right = 0, unanswered = 0;
+  AUDIENCES.forEach(a=>{
+    const sel = document.querySelector(`.aud-select[data-aud="${a.id}"]`);
+    const card = document.querySelector(`.aud-card[data-aud="${a.id}"]`);
+    const why = document.querySelector(`.aud-why[data-why="${a.id}"]`);
+    card.classList.remove('correct','wrong');
+    why.className = 'aud-why';
+    if(!sel.value){ unanswered++; return; }
+    const wanted = HOOKS.find(h=>h.aud===a.id);
+    if(sel.value===wanted.text){
+      right++;
+      card.classList.add('correct');
+      why.className='aud-why show good';
+      why.textContent='✓ Right — '+wanted.signal;
+    } else {
+      card.classList.add('wrong');
+      why.className='aud-why show bad';
+      why.textContent=`✗ The best check here is "${wanted.text}". ${wanted.signal}`;
+    }
+  });
+  const fb = document.getElementById('feedback1');
+  if(unanswered>0){
+    fb.className='activity-feedback show partial';
+    fb.innerHTML=`<strong>${unanswered} claim${unanswered>1?'s':''} still without a check.</strong> Pick a verification move for every card, then check again.`;
+    return;
+  }
+  if(right===5){
+    fb.className='activity-feedback show success';
+    fb.innerHTML='<strong>5 of 5 — you check like a researcher, not a reader.</strong> The plain-English map: high-stakes <strong>numbers → trace to the primary source</strong>; <strong>quotes → verify wording &amp; speaker</strong>; <strong>references → confirm the citation is real</strong>; <strong>vague "experts agree" → demand a named source</strong>; and a real citation still needs the <strong>content check</strong> — does the source actually say it? The claim type tells you the test.';
+  } else {
+    fb.className='activity-feedback show partial';
+    fb.innerHTML=`<strong>You matched ${right} of 5.</strong> Read the red notes — each is a rule you'll reuse. The clean split: <em>number → primary source</em>, <em>quote → exact wording &amp; speaker</em>, <em>reference → does it exist</em>, <em>"experts agree" → who, specifically</em>, <em>real citation → does it support the claim</em>. Fix the reds and check again.`;
+  }
+  document.getElementById('prog1').classList.add('done');
+}
+function resetTools(){
+  renderTools();
+  document.getElementById('feedback1').className='activity-feedback';
+  document.getElementById('prog1').classList.remove('done');
+}
+
+/* ═══ ACTIVITY 2: Fact-check workflow sequence ═══ */
+const SCRIPT = [
+  {tag:'FLAG THE CLAIMS', text:'"Underline every factual claim in the paragraph: each statistic, quote, date, and cited source."', note:'You can\'t verify what you haven\'t spotted. Separate claims from filler first.', hint:'Start by FLAGGING every factual claim — numbers, quotes, dates, citations. You can only check claims you\'ve identified, so this comes first.'},
+  {tag:'RANK THE RISK', text:'"Rate each flagged claim: how much damage if it\'s wrong, and how load-bearing is it to the argument?"', note:'Verification is finite; spend it on what matters. High-stakes claims get the deep check.', hint:'Next, RANK the risk of each claim. You have limited time — a wrong headline number is a disaster, a wrong side-detail is not. Triage before you dig.'},
+  {tag:'CHECK PRIMARY SOURCE', text:'"For each high-risk claim, open the original source — the filing, dataset, or paper — not a summary of it."', note:'Go to where the fact was born, not to another retelling. Summaries drift.', hint:'Now CHECK against the primary source for the high-risk claims — the original document, not a blog about it. This is where you confirm the fact is real and accurate.'},
+  {tag:'TRACE THE CITATION', text:'"Confirm each citation resolves — the DOI works, the title/author/journal match — and actually supports the claim."', note:'A citation must both exist and say what\'s claimed. Test both.', hint:'Before deciding, TRACE the citation: does it resolve, do the details match, and does the source actually support the claim? Existence and content are two separate tests.'},
+  {tag:'DECIDE & DISCLOSE', text:'"Keep verified claims, cut or hedge the unverifiable, and note how AI was used and that you checked it."', note:'End with a clear call on each claim and an honest word on your process.', hint:'Finish by DECIDING on each claim — keep, cut, or hedge — and disclosing that AI helped and you verified. The decision and the honesty come last, after the checking.'}
+];
+let seqNext = 0;
+function renderSeq(){
+  seqNext = 0;
+  const order = shuffle(SCRIPT.map((_,i)=>i));
+  document.getElementById('seqPool').innerHTML = order.map(i=>`
+    <div class="seq-block" data-idx="${i}" onclick="pickBlock(${i},this)">
+      <div class="seq-block-text">${SCRIPT[i].text}</div>
+    </div>`).join('');
+  document.getElementById('seqSlots').innerHTML = SCRIPT.map((s,i)=>`
+    <div class="seq-slot" id="slot${i}">Step ${i+1} — waiting…</div>`).join('');
+  document.getElementById('seqHint').className='seq-hint';
+  document.getElementById('phonePreview').className='phone';
+  document.getElementById('feedback2').className='activity-feedback';
+}
+function pickBlock(idx, el){
+  const hint = document.getElementById('seqHint');
+  if(idx!==seqNext){
+    el.classList.add('shake');
+    setTimeout(()=>el.classList.remove('shake'),380);
+    hint.className='seq-hint show';
+    hint.textContent='Not that one yet. '+SCRIPT[seqNext].hint;
+    return;
+  }
+  el.classList.add('used');
+  hint.className='seq-hint';
+  const slot = document.getElementById('slot'+idx);
+  slot.classList.add('filled');
+  slot.innerHTML = `<span class="seq-tag">${SCRIPT[idx].tag}</span><div>${SCRIPT[idx].text}</div><div style="font-size:.7rem;color:var(--text-muted);margin-top:.25rem;font-style:italic">${SCRIPT[idx].note}</div>`;
+  seqNext++;
+  if(seqNext===SCRIPT.length) finishSeq();
+}
+function finishSeq(){
+  document.getElementById('phoneLines').innerHTML = SCRIPT.map(s=>`
+    <div class="phone-line"><span class="seq-tag">${s.tag}</span><p>${s.text}</p></div>`).join('');
+  document.getElementById('phonePreview').className='phone show';
+  const fb=document.getElementById('feedback2');
+  fb.className='activity-feedback show success';
+  fb.innerHTML='<strong>Workflow assembled — FLAG → RANK → CHECK PRIMARY SOURCE → TRACE CITATION → DECIDE &amp; DISCLOSE.</strong> Why this order: you can\'t verify claims you haven\'t <em>flagged</em>, and you can\'t afford to deep-check everything, so you <em>rank</em> by risk and spend your effort where a mistake would hurt. Then you go to the <em>primary source</em> — the original, not a retelling — and <em>trace the citation</em> to confirm it both exists and actually supports the claim. Only then do you <em>decide</em>: keep what held up, cut or hedge what didn\'t, and <em>disclose</em> honestly that AI helped and you verified. Run this on every AI-written paragraph before it leaves your hands.';
+  document.getElementById('prog2').classList.add('done');
+}
+function resetSeq(){
+  renderSeq();
+  document.getElementById('prog2').classList.remove('done');
+}
+
+/* ═══ ACTIVITY 3: Citation tester — real or fabricated? ═══ */
+const CITS = [
+  {ref:'Kahneman, D. (2011). <b>Thinking, Fast and Slow</b>. Farrar, Straus and Giroux.', answer:'real',
+   why:'<strong>Real.</strong> A widely known book by a real author and publisher — the title, author, and year all check out, and it\'s easy to confirm in any catalogue. A well-known, verifiable work like this passes every test. The lesson: fame doesn\'t make it real, but <em>verifiability</em> does — you can confirm this one exists in seconds.'},
+  {ref:'Reyes, M. &amp; Okoro, T. (2019). "Neural correlates of habit formation in remote teams." <b>Journal of Applied Organizational Neuroscience</b>, 14(3), 220–238. doi:10.1080/joan.2019.0453', answer:'fake',
+   why:'<strong>Fabricated.</strong> The DOI won\'t resolve and the "Journal of Applied Organizational Neuroscience" doesn\'t exist — it\'s a plausible-sounding blend of buzzwords. This is exactly how AI fabricates: real-looking authors, a valid DOI <em>format</em>, and a title that sits neatly on your topic. Format is not existence. Always resolve the DOI and confirm the journal is real.'},
+  {ref:'Deci, E. L., &amp; Ryan, R. M. (2000). "The \'what\' and \'why\' of goal pursuits: Human needs and the self-determination of behavior." <b>Psychological Inquiry</b>, 11(4), 227–268.', answer:'real',
+   why:'<strong>Real.</strong> This is a genuine, heavily cited paper by the actual founders of self-determination theory, in a real journal, with correct volume and page numbers. When author, title, journal, year, and pages all line up and the paper is findable, it\'s real. The test isn\'t "does it sound academic" — it\'s "does every detail check out against the record."'},
+  {ref:'Chen, L. (2022). "Large language models and the decline of independent citation verification." <b>Nature Human Behaviour</b>, 6, 1102–1119. doi:10.1038/s41562-022-01399-w', answer:'fake',
+   why:'<strong>Fabricated.</strong> <em>Nature Human Behaviour</em> is a real, prestigious journal — which is the trap. AI attached a real journal name to a paper that was never published there; searching the exact title returns nothing and the DOI doesn\'t match this article. A real journal on the reference does NOT make the citation real. Always confirm the specific article, not just the venue.'},
+  {ref:'Sweller, J. (1988). "Cognitive load during problem solving: Effects on learning." <b>Cognitive Science</b>, 12(2), 257–285.', answer:'real',
+   why:'<strong>Real.</strong> A foundational, easily verified paper — correct author, journal, year, volume, and pages, and it\'s cited thousands of times. Everything resolves. The pattern across this activity: the fakes had unresolvable DOIs, invented journals, or real journals with fabricated articles. The reals survive every test — title, author, venue, and content all confirmable.'}
+];
+let citAnswered = {};
+const CIT_LABELS = {real:'Real', fake:'Fabricated'};
+function renderCit(){
+  citAnswered = {};
+  document.getElementById('citGrid').innerHTML = CITS.map((c,i)=>`
+    <div class="cit-card" data-cit="${i}">
+      <div class="cit-ref">${c.ref}</div>
+      <div class="cit-btns">
+        <button class="cit-btn" onclick="answerCit(${i},'real',this)">✓ Real — I can verify it</button>
+        <button class="cit-btn" onclick="answerCit(${i},'fake',this)">✗ Fabricated</button>
+      </div>
+      <div class="cit-verdict" id="citV${i}"></div>
+    </div>`).join('');
+  document.getElementById('feedback3').className='activity-feedback';
+}
+function answerCit(i, choice, btn){
+  if(citAnswered[i]!==undefined) return;
+  const c = CITS[i];
+  const correct = choice===c.answer;
+  citAnswered[i]=correct;
+  const card = document.querySelector(`.cit-card[data-cit="${i}"]`);
+  card.querySelectorAll('.cit-btn').forEach(b=>{
+    b.disabled=true;
+    if(b===btn) b.classList.add(correct?'picked-right':'picked-wrong');
+    else if(!correct) b.classList.add('reveal-right');
+  });
+  const v = document.getElementById('citV'+i);
+  v.className='cit-verdict show '+(correct?'good':'bad');
+  v.innerHTML=(correct?'✓ Correct. ':'✗ Not quite — it\'s <em>'+CIT_LABELS[c.answer]+'</em>. ')+c.why;
+  if(Object.keys(citAnswered).length===CITS.length){
+    const score = Object.values(citAnswered).filter(Boolean).length;
+    const fb=document.getElementById('feedback3');
+    if(score===5){
+      fb.className='activity-feedback show success';
+      fb.innerHTML='<strong>5 of 5 — you caught both fakes and trusted neither the DOI format nor a famous journal name.</strong> The four tests that expose a fabricated citation: <em>DOI test</em> (does it actually resolve?), <em>title test</em> (does searching the exact title find the paper?), <em>author/journal test</em> (do the people and the venue really line up?), and <em>content test</em> (does the source say what\'s claimed?). AI\'s fakes are fluent by design — a valid-format DOI and a real journal name are traps, not proof. Confirm the specific article, every time.';
+    } else {
+      fb.className='activity-feedback show partial';
+      fb.innerHTML=`<strong>You got ${score} of 5.</strong> Re-read the ones you missed — the two fakes used the two classic AI tricks: an <em>invented journal with a valid-format DOI</em>, and a <em>real, prestigious journal attached to an article that was never published in it</em>. Neither format nor venue proves existence. Run all four tests — DOI resolves, title searches, author/journal match, content supports — on every reference before you cite it.`;
+    }
+    document.getElementById('prog3').classList.add('done');
+  }
+}
+function resetCit(){
+  renderCit();
+  document.getElementById('prog3').classList.remove('done');
+}
+
+/* ═══ ACTIVITY 4: Should you disclose AI use? ═══ */
+const KOS = [
+  {title:'Scenario A — the graded essay', scenario:'You used AI to draft whole paragraphs of a graded university essay, then lightly edited. Your course policy is silent on AI. Do you disclose?', answer:'disclose',
+   why:'<strong>Disclose.</strong> AI shaped the substance — the wording that gets graded — and academic work is judged as your own effort. "The policy was silent" is not permission; when a policy is unclear, the honest and safe move is to ask your instructor and disclose. Passing AI-drafted paragraphs off as unaided writing is exactly what academic-integrity rules exist to catch, whether or not an AI-detector could prove it.'},
+  {title:'Scenario B — grammar polish on your own ideas', scenario:'You wrote a report entirely yourself, then asked AI only to fix grammar and tighten sentences — no new content or ideas. Do you disclose?', answer:'optional',
+   why:'<strong>Optional / usually fine.</strong> Using AI as a spell-and-grammar checker on your own ideas is like using autocorrect — it didn\'t shape the substance. Unless a specific policy requires disclosing any tool use, a light-touch grammar pass generally doesn\'t need a disclosure. The line is substance: if AI supplied ideas, analysis, or wording that carries meaning, disclose; if it only cleaned up your own words, you\'re in the clear.'},
+  {title:'Scenario C — AI-assisted analysis for a client deliverable', scenario:'You used AI to analyse data and draft the key findings in a paid client report. The client assumes it\'s your expert human analysis. Do you disclose?', answer:'disclose',
+   why:'<strong>Disclose.</strong> The client is paying for — and assuming — your judgement, and AI shaped the core findings they\'ll act on. A reader who\'d feel misled if they knew is the clearest possible signal to disclose. This isn\'t about admitting weakness; a line like "analysis was AI-assisted and independently verified by me" is honest, protects you, and builds trust. Hiding it risks both the relationship and your credibility if it surfaces later.'},
+  {title:'Scenario D — brainstorming that you then abandoned', scenario:'You asked AI for ten angles on a topic, rejected all of them, and wrote something completely different from your own thinking. Do you disclose?', answer:'optional',
+   why:'<strong>Optional.</strong> If none of the AI output made it into the final work — you used it only as a discarded thinking prompt, like talking it over with a friend — there\'s nothing substantive to disclose. The test is whether AI shaped what actually shipped. That said, if a specific policy asks you to disclose <em>any</em> use including brainstorming, follow it. When in doubt, a sentence of honesty costs nothing.'}
+];
+let kosAnswered = {};
+const KOS_LABELS = {disclose:'Disclose', optional:'Usually optional'};
+function renderKos(){
+  kosAnswered = {};
+  document.getElementById('kosGrid').innerHTML = KOS.map((k,i)=>`
+    <div class="kos-card" data-kos="${i}">
+      <div class="kos-title">${k.title}</div>
+      <div class="kos-scenario">${k.scenario}</div>
+      <div class="kos-btns">
+        <button class="kos-btn" onclick="answerKos(${i},'disclose',this)">Disclose</button>
+        <button class="kos-btn" onclick="answerKos(${i},'optional',this)">Usually optional</button>
+      </div>
+      <div class="kos-verdict" id="kosV${i}"></div>
+    </div>`).join('');
+  document.getElementById('feedback4').className='activity-feedback';
+}
+function answerKos(i, choice, btn){
+  if(kosAnswered[i]!==undefined) return;
+  const k = KOS[i];
+  const correct = choice===k.answer;
+  kosAnswered[i]=correct;
+  const card = document.querySelector(`.kos-card[data-kos="${i}"]`);
+  card.querySelectorAll('.kos-btn').forEach(b=>{
+    b.disabled=true;
+    if(b===btn) b.classList.add(correct?'picked-right':'picked-wrong');
+    else if(!correct && b.textContent.trim()===KOS_LABELS[k.answer]) b.classList.add('reveal-right');
+  });
+  const v = document.getElementById('kosV'+i);
+  v.className='kos-verdict show '+(correct?'good':'bad');
+  v.innerHTML=(correct?'✓ Honest call. ':'✗ The honest call is <em>'+KOS_LABELS[k.answer]+'</em>. ')+k.why;
+  if(Object.keys(kosAnswered).length===KOS.length){
+    const score = Object.values(kosAnswered).filter(Boolean).length;
+    const fb=document.getElementById('feedback4');
+    if(score===4){
+      fb.className='activity-feedback show success';
+      fb.innerHTML='<strong>4 of 4 — you disclose on substance, not on guilt.</strong> The test: did AI <em>shape the substance</em> that ships (ideas, analysis, meaningful wording), does a <em>policy or instructor require it</em>, and would a <em>reader feel misled</em> if they knew? Any yes → disclose, clearly and specifically. A grammar-only pass or a discarded brainstorm generally doesn\'t need one, unless a rule says otherwise. And a fair warning that underlies all of this: <em>AI-detectors are unreliable</em> — they falsely flag human writing and miss AI writing, so never rely on them to police others, and never assume a detector\'s "clean" verdict makes non-disclosure honest. Integrity is a choice you make, not a test you pass.';
+    } else {
+      fb.className='activity-feedback show partial';
+      fb.innerHTML=`<strong>You got ${score} of 4.</strong> Re-read the ones you missed against the test: <em>did AI shape the substance, does a rule require it, would a reader feel misled?</em> Substance-shaping (graded essay, client analysis) → disclose; light grammar polish or a discarded brainstorm → usually optional. And remember the backdrop: AI-detectors are unreliable in both directions, so disclosure is about your honesty, not about what a tool can or can\'t catch.`;
+    }
+    document.getElementById('prog4').classList.add('done');
+  }
+}
+function resetKos(){
+  renderKos();
+  document.getElementById('prog4').classList.remove('done');
+}
+
+/* ═══ RESEARCH-INTEGRITY CHECKLIST ═══ */
+const CHECKS = [
+  {t:'<b>Verify before you trust — every claim, every time.</b> Treat AI output as an unverified draft. Flag each factual claim, rank it by risk, and check the load-bearing ones against a primary source before anything ships with your name on it.'},
+  {t:'<b>Confirm every citation is real AND supports the claim.</b> Resolve the DOI, search the exact title, check the author-journal-year line up — then read the source to confirm it actually says what\'s claimed. Format is not existence, and a real paper can be misattributed.'},
+  {t:'<b>Quote exactly and attribute clearly.</b> A quotation must be the original\'s words, in quotation marks, credited to whoever actually said them. Paraphrase in your own words with the source named. Presenting a source\'s ideas as your own is plagiarism, even if AI did the paraphrasing.'},
+  {t:'<b>Evaluate the source, not just its existence.</b> Real isn\'t the same as credible. Check who published it, when, whether they have expertise or an agenda, and whether other sources agree. A real but biased or outdated source can be as misleading as a fake one.'},
+  {t:'<b>Disclose AI use when it shaped the substance.</b> If AI supplied ideas, analysis, or wording that ships — or a policy requires it, or a reader would feel misled — say so, clearly and specifically. Honesty about your process protects your credibility.'},
+  {t:'<b>Don\'t trust AI-detectors — trust your own integrity.</b> AI-detectors falsely flag human writing and miss AI writing; they\'re not reliable evidence for accusing anyone or for reassuring yourself. Accountability for what you publish is yours, not the model\'s and not a detector\'s.'}
+];
+let checkOn = new Set();
+function renderChecks(){
+  checkOn = new Set();
+  document.getElementById('checkList').innerHTML = CHECKS.map((c,i)=>`
+    <li class="check-item" data-c="${i}" onclick="toggleCheck(${i})">
+      <div class="check-box">✓</div>
+      <div class="check-text">${c.t}</div>
+    </li>`).join('');
+  updateCheckCount();
+}
+function toggleCheck(i){
+  const item=document.querySelector(`.check-item[data-c="${i}"]`);
+  if(checkOn.has(i)){checkOn.delete(i);item.classList.remove('on');}
+  else{checkOn.add(i);item.classList.add('on');}
+  updateCheckCount();
+}
+function updateCheckCount(){
+  document.getElementById('checkCount').textContent=`${checkOn.size} of ${CHECKS.length} locked in`;
+}
+
+/* ═══ ACTIVITY 5: Week 3 knowledge check ═══ */
+const QUIZ = [
+  {lesson:'Lesson 1 · Getting Started with AI Research', q:'What is the most reliable way to get useful research help from an AI assistant?',
+   opts:['Ask a one-word topic and accept whatever comes back','State the question, the scope, the audience, and the kind of sources you need','Only ask it for opinions, never facts','Trust the first answer because it sounds confident'], ans:1,
+   why:'AI research is only as good as your framing. Naming the specific question, how deep to go, who it\'s for, and what evidence counts gets you a focused, useful result instead of a vague overview.'},
+  {lesson:'Lesson 1 · Getting Started with AI Research', q:'Why can\'t you treat an AI research answer as automatically true?',
+   opts:['AI is banned from stating facts','AI can produce fluent, confident text that is partly or wholly wrong — hallucinated','It only makes mistakes on obscure topics','Answers expire after 24 hours'], ans:1,
+   why:'AI generates plausible-sounding text, and plausibility is not truth. It can hallucinate facts, numbers, and sources with total confidence — which is exactly why verification is a required step, not an optional one.'},
+  {lesson:'Lesson 2 · Searching & Synthesising Sources', q:'You need to synthesise findings from several sources. What\'s the sound approach?',
+   opts:['Copy the longest source and call it a synthesis','Pull the key point from each source, compare where they agree and differ, and cite each','Use only the one source that agrees with you','Average the word counts'], ans:1,
+   why:'Synthesis means combining sources honestly — noting agreement, disagreement, and gaps — with each claim traceable to where it came from. Cherry-picking one agreeable source isn\'t research; it\'s confirmation bias.'},
+  {lesson:'Lesson 2 · Searching & Synthesising Sources', q:'How should you judge whether a source is worth using?',
+   opts:['If it appears first in the results','By its credibility: who published it, their expertise, recency, and whether others corroborate it','Only sources with the most images','Any source an AI recommends is automatically fine'], ans:1,
+   why:'Credibility is about author, publisher, expertise, date, and corroboration — not rank or presentation. A source that scores poorly on these can quietly poison an otherwise careful piece of research.'},
+  {lesson:'Lesson 3 · Reading & Summarising Documents', q:'When AI summarises a long document for you, what must you still do?',
+   opts:['Nothing — the summary replaces the document','Check the summary against the source for anything dropped, distorted, or invented','Delete the original to save space','Assume the longest summary is the most accurate'], ans:1,
+   why:'A summary is a lossy compression and can drop crucial caveats or invent claims the document never made. Spot-checking the summary against the actual text keeps you from repeating an error you never noticed.'},
+  {lesson:'Lesson 3 · Reading & Summarising Documents', q:'You need a specific figure from a 60-page report. What\'s the safe move?',
+   opts:['Accept the number the AI states without opening the report','Have AI point you to the section, then open the report and read the figure in context','Assume the number is on page 1','Guess based on the summary'], ans:1,
+   why:'Let AI help you navigate — find the section, the table, the page — but read the actual figure and its context yourself. Numbers pulled from context (or hallucinated) are a classic and costly research error.'},
+  {lesson:'Lesson 4 · Verification, Citations & Ethics', q:'An AI gives you a citation with a valid-format DOI and a prestigious journal name. What does that prove?',
+   opts:['That the paper definitely exists and is credible','Nothing on its own — you must confirm the DOI resolves and the specific article is real','That you can skip reading the source','That the claim it supports is true'], ans:1,
+   why:'AI fabricates citations that pass format checks and borrow real journal names. Only resolving the DOI, searching the exact title, and confirming the specific article — then checking it supports the claim — proves anything.'},
+  {lesson:'Lesson 4 · Verification, Citations & Ethics', q:'Which statement about disclosing AI use and AI-detectors is correct?',
+   opts:['AI-detectors are reliable, so a "clean" result means you needn\'t disclose','Disclose when AI shaped the substance; AI-detectors are unreliable and prove nothing','Never disclose AI use under any circumstances','Only disclose if a detector flags you'], ans:1,
+   why:'Disclosure is an honesty decision tied to whether AI shaped the substance, a policy requires it, or a reader would feel misled. AI-detectors falsely flag human writing and miss AI writing, so they can neither excuse nor force disclosure.'}
+];
+function renderQuiz(){
+  document.getElementById('quizWrap').innerHTML = QUIZ.map((item,i)=>`
+    <div class="quiz-q" id="qq${i}">
+      <div class="quiz-q-head"><span class="quiz-q-num">Q${i+1}</span><span class="quiz-q-text">${item.q}<span class="quiz-lesson">${item.lesson}</span></span></div>
+      ${item.opts.map((o,j)=>`
+        <label class="quiz-opt"><input type="radio" name="quiz${i}" value="${j}"><span>${o}</span></label>`).join('')}
+      <div class="quiz-review" id="qr${i}"></div>
+    </div>`).join('');
+}
+function submitQuiz(){
+  const fb=document.getElementById('feedback5');
+  const answers = QUIZ.map((_,i)=>{
+    const sel=document.querySelector(`input[name="quiz${i}"]:checked`);
+    return sel? +sel.value : null;
+  });
+  const blank = answers.filter(a=>a===null).length;
+  if(blank>0){
+    fb.className='activity-feedback show partial';
+    fb.innerHTML=`<strong>${blank} question${blank>1?'s':''} unanswered.</strong> Guessing is allowed, blank is not — answer everything and submit again.`;
+    return;
+  }
+  let score=0; const missedLessons=[];
+  QUIZ.forEach((item,i)=>{
+    const card=document.getElementById('qq'+i);
+    const rev=document.getElementById('qr'+i);
+    card.classList.remove('right','miss');
+    const correct = answers[i]===item.ans;
+    if(correct){
+      score++;
+      card.classList.add('right');
+      rev.className='quiz-review show good';
+      rev.innerHTML='✓ Correct. '+item.why;
+    } else {
+      card.classList.add('miss');
+      missedLessons.push(`Q${i+1} → ${item.lesson}`);
+      rev.className='quiz-review show bad';
+      rev.innerHTML=`✗ The answer is "<strong>${item.opts[item.ans]}</strong>". ${item.why}`;
+    }
+  });
+  if(score===8){
+    fb.className='activity-feedback show success';
+    fb.innerHTML='<strong>8 of 8 — Week 3 mastery.</strong> You hold the full chain: directing AI research, searching and synthesising sources, reading and summarising long documents, and verifying every claim, citation, and disclosure. Every one rests on the same two habits — frame the research clearly, and verify the result before you trust it. Take that into the Week 3 project.';
+  } else if(score>=6){
+    fb.className='activity-feedback show success';
+    fb.innerHTML=`<strong>${score} of 8 — solid grasp of the week.</strong> The misses are patchable in minutes — read the review notes on: <em>${missedLessons.join(' · ')}</em>, then reset and aim for 8. The questions people miss are usually the "verify it" and "confirm the citation" habits — the ones that keep a good-looking brief from being quietly wrong.`;
+  } else {
+    fb.className='activity-feedback show partial';
+    fb.innerHTML=`<strong>${score} of 8 — worth a revisit before the project.</strong> No judgment — this week packed four lessons of AI research into your head. Your misses map to: <em>${missedLessons.join(' · ')}</em>. Reopen those lessons, skim their activities, then reset this quiz. Ten minutes of review now saves real confusion in the project.`;
+  }
+  document.getElementById('prog5').classList.add('done');
+}
+function resetQuiz(){
+  renderQuiz();
+  document.getElementById('feedback5').className='activity-feedback';
+  document.getElementById('prog5').classList.remove('done');
+}
+
+/* ═══ INIT ═══ */
+window.addEventListener('DOMContentLoaded',()=>{
+  renderTools();
+  renderSeq();
+  renderCit();
+  renderKos();
+  renderChecks();
+  renderQuiz();
+});
+</script>
+</body>
+</html>
