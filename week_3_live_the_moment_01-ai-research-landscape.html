@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 1 · The AI Research Landscape — MokshPath</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=JetBrains+Mono:wght@400;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --orange:#E87A2E;--orange-dark:#D06A20;--orange-light:#F5943E;--orange-glow:rgba(232,122,46,0.12);
+  --navy:#2B2D42;--navy-dark:#1A1B2E;
+  --bg:#F3EDE7;--bg-card:#FFFFFF;--bg-light:#F9F5F0;
+  --text-primary:#2B2D42;--text-secondary:#6B6D7B;--text-muted:#9597A6;
+  --border:#E5DDD4;--green:#4CAF50;--green-light:#E8F5E9;--red:#E04E3C;--red-light:#FDECEA;
+  --shadow-sm:0 2px 8px rgba(43,45,66,0.06);--shadow-md:0 8px 24px rgba(43,45,66,0.08);
+  --shadow-lg:0 16px 48px rgba(43,45,66,0.12);
+  --radius:14px;--radius-sm:8px;
+  --mono:'JetBrains Mono',monospace;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text-primary);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+
+/* ── NAV ── */
+.nav{position:sticky;top:0;z-index:100;background:var(--bg-card);border-bottom:1px solid var(--border);padding:0 2rem;height:64px;display:flex;align-items:center;justify-content:space-between;box-shadow:var(--shadow-sm)}
+.nav-left{display:flex;align-items:center;gap:.7rem}
+.lesson-badge{font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--orange);background:var(--orange-glow);padding:.3rem .7rem;border-radius:50px}
+.nav-logo{display:flex;align-items:center;gap:.7rem;text-decoration:none}
+.nav-logo-icon{width:auto;height:48px;display:block;object-fit:contain}
+.nav-logo-text{display:flex;flex-direction:column;line-height:1.15}
+.nav-logo-name{font-family:'DM Serif Display',serif;font-size:1.25rem;color:var(--navy)}
+.nav-logo-name span{color:var(--orange)}
+.nav-logo-tag{font-size:.62rem;color:var(--text-muted);font-weight:500;letter-spacing:.02em}
+
+/* ── HERO ── */
+.hero{padding:3.5rem 2rem 2.5rem;text-align:center;position:relative}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:.45rem;padding:.4rem 1rem;border-radius:50px;background:var(--orange-glow);color:var(--orange);font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:1.2rem}
+.hero-eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--orange);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.hero h1{font-family:'DM Serif Display',serif;font-size:clamp(2rem,4vw,3rem);line-height:1.13;color:var(--navy);margin-bottom:1rem;max-width:780px;margin-left:auto;margin-right:auto}
+.hero h1 em{font-style:normal;color:var(--orange)}
+.hero-sub{font-size:1.02rem;color:var(--text-secondary);line-height:1.7;max-width:620px;margin:0 auto}
+
+/* ── PROGRESS RAIL ── */
+.progress-rail{max-width:760px;margin:1.8rem auto 0;display:flex;align-items:center;gap:.5rem}
+.progress-dot{flex:1;height:6px;background:var(--border);border-radius:3px;transition:background .3s}
+.progress-dot.done{background:linear-gradient(90deg,var(--orange),var(--orange-light))}
+.progress-label{font-size:.7rem;color:var(--text-muted);font-weight:600;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+
+/* ── SECTIONS ── */
+section.lesson{padding:3rem 2rem}
+.container{max-width:1080px;margin:0 auto}
+.lesson-num{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;background:var(--orange);color:#fff;font-family:'DM Serif Display',serif;font-size:1.1rem;margin-bottom:.9rem}
+.lesson-title{font-family:'DM Serif Display',serif;font-size:clamp(1.6rem,2.5vw,2.1rem);color:var(--navy);margin-bottom:.55rem;line-height:1.2}
+.lesson-intro{font-size:.95rem;color:var(--text-secondary);line-height:1.7;max-width:680px;margin-bottom:2rem}
+.lesson-card{background:var(--bg-card);border-radius:var(--radius);box-shadow:var(--shadow-sm);border:1px solid var(--border);padding:2rem;margin-top:1.5rem}
+
+/* ── IS / ISN'T PANEL ── */
+.isnt-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1.2rem}
+@media (max-width:640px){.isnt-grid{grid-template-columns:1fr}}
+.isnt-col{border-radius:var(--radius-sm);padding:1.2rem 1.3rem;border:1px solid var(--border)}
+.isnt-col.is{background:var(--green-light);border-color:var(--green)}
+.isnt-col.isnt{background:var(--red-light);border-color:var(--red)}
+.isnt-col h4{font-family:'DM Serif Display',serif;font-size:1.05rem;color:var(--navy);margin-bottom:.6rem;display:flex;align-items:center;gap:.4rem}
+.isnt-col ul{list-style:none;display:flex;flex-direction:column;gap:.5rem}
+.isnt-col li{font-size:.82rem;line-height:1.55;color:var(--text-primary);padding-left:1.2rem;position:relative}
+.isnt-col.is li::before{content:'✓';position:absolute;left:0;color:#2E6B30;font-weight:700}
+.isnt-col.isnt li::before{content:'✕';position:absolute;left:0;color:#A03A2C;font-weight:700}
+
+/* ── COMPARE CARDS ── */
+.compare-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-top:1.2rem}
+@media (max-width:900px){.compare-grid{grid-template-columns:1fr 1fr}}
+@media (max-width:560px){.compare-grid{grid-template-columns:1fr}}
+.compare-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:1.2rem;transition:all .3s}
+.compare-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-md);border-color:transparent}
+.compare-icon{width:38px;height:38px;border-radius:8px;display:flex;align-items:center;justify-content:center;margin-bottom:.7rem;font-size:1.05rem;font-weight:700;font-family:'DM Serif Display',serif;color:#fff}
+.compare-card:nth-child(1) .compare-icon{background:linear-gradient(135deg,var(--orange),var(--orange-light))}
+.compare-card:nth-child(2) .compare-icon{background:linear-gradient(135deg,#5B8FE0,#3D72C9)}
+.compare-card:nth-child(3) .compare-icon{background:linear-gradient(135deg,#66BB6A,#4CAF50)}
+.compare-card:nth-child(4) .compare-icon{background:linear-gradient(135deg,#9C6ADE,#7A4CC0)}
+.compare-card:nth-child(5) .compare-icon{background:linear-gradient(135deg,#E0698C,#C64C72)}
+.compare-card h4{font-family:'DM Serif Display',serif;font-size:1.02rem;color:var(--navy);margin-bottom:.3rem}
+.compare-card p{font-size:.8rem;color:var(--text-secondary);line-height:1.55}
+.compare-pros{margin-top:.6rem;font-size:.73rem;line-height:1.6;border-top:1px dashed var(--border);padding-top:.55rem}
+.compare-pros .pro{color:#2E6B30;display:block}
+.compare-pros .con{color:#A03A2C;display:block}
+.tip-note{margin-top:.9rem;padding:.7rem .9rem;background:var(--orange-glow);border-left:3px solid var(--orange);border-radius:4px;font-size:.78rem;color:var(--text-primary);line-height:1.55}
+
+/* ── HALLUCINATION EXPLAINER ── */
+.places-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-top:1rem}
+@media (max-width:900px){.places-grid{grid-template-columns:1fr 1fr}}
+@media (max-width:560px){.places-grid{grid-template-columns:1fr}}
+.place-card{background:var(--bg-light);border:1px solid var(--border);border-radius:var(--radius-sm);padding:1.1rem;transition:all .25s}
+.place-card:hover{border-color:var(--orange);box-shadow:var(--shadow-sm);transform:translateY(-2px)}
+.place-num{font-family:var(--mono);font-size:.72rem;font-weight:600;color:var(--orange);letter-spacing:.08em}
+.place-card h4{font-family:'DM Serif Display',serif;font-size:1rem;color:var(--navy);margin:.25rem 0 .35rem}
+.place-card p{font-size:.78rem;color:var(--text-secondary);line-height:1.55}
+.place-card code{font-family:var(--mono);font-size:.72rem;background:var(--bg-card);border:1px solid var(--border);border-radius:4px;padding:.1rem .35rem;color:var(--navy)}
+
+/* ── ACTIVITY: DRAG CLASSIFIER ── */
+.classify-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:1rem}
+@media (max-width:760px){.classify-grid{grid-template-columns:1fr}}
+.classify-scenarios{display:flex;flex-direction:column;gap:.7rem}
+.scenario-card{background:var(--bg-card);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:1rem 1.1rem;cursor:grab;transition:all .25s;position:relative;user-select:none}
+.scenario-card:hover{border-color:var(--orange);box-shadow:var(--shadow-sm);transform:translateY(-1px)}
+.scenario-card.dragging{opacity:.4}
+.scenario-card.placed{opacity:.35;cursor:not-allowed;pointer-events:none}
+.scenario-card.placed.correct{border-color:var(--green);background:var(--green-light)}
+.scenario-card.placed.wrong{border-color:var(--red);background:var(--red-light)}
+.scenario-text{font-size:.84rem;color:var(--text-primary);line-height:1.5;font-weight:500}
+.bucket-stack{display:flex;flex-direction:column;gap:1rem}
+.bucket{border:2px dashed var(--border);border-radius:var(--radius-sm);padding:1rem;min-height:80px;transition:all .25s;background:rgba(255,255,255,0.5)}
+.bucket.drag-over{border-color:var(--orange);background:var(--orange-glow);border-style:solid}
+.bucket-title{font-family:'DM Serif Display',serif;font-size:1rem;color:var(--navy);margin-bottom:.25rem}
+.bucket-sub{font-size:.7rem;color:var(--text-muted);margin-bottom:.6rem;letter-spacing:.04em;text-transform:uppercase;font-weight:600}
+.bucket-drop{display:flex;flex-wrap:wrap;gap:.4rem;min-height:28px}
+.dropped-pill{background:var(--bg-card);border:1px solid var(--border);border-radius:50px;padding:.3rem .7rem;font-size:.72rem;font-weight:500;color:var(--text-primary)}
+.dropped-pill.correct{background:var(--green-light);border-color:var(--green);color:#256B29}
+.dropped-pill.wrong{background:var(--red-light);border-color:var(--red);color:#933}
+.activity-feedback{margin-top:1.2rem;padding:1rem 1.2rem;border-radius:var(--radius-sm);font-size:.85rem;line-height:1.5;display:none}
+.activity-feedback.show{display:block;animation:fadeIn .4s ease}
+.activity-feedback.success{background:var(--green-light);color:#1F5723;border-left:3px solid var(--green)}
+.activity-feedback.partial{background:#FFF4E5;color:#7A4A0A;border-left:3px solid #E89B2E}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+
+.activity-toolbar{display:flex;gap:.6rem;margin-top:1.2rem;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:.4rem;padding:.6rem 1.2rem;border-radius:8px;font-size:.82rem;font-weight:600;border:none;cursor:pointer;transition:all .2s;font-family:inherit}
+.btn-primary{background:var(--orange);color:#fff}.btn-primary:hover{background:var(--orange-dark);transform:translateY(-1px);box-shadow:0 4px 12px rgba(232,122,46,0.3)}
+.btn-ghost{background:transparent;border:1.5px solid var(--border);color:var(--text-secondary)}.btn-ghost:hover{border-color:var(--orange);color:var(--orange)}
+
+/* ── ACTIVITY: WILL IT FABRICATE (SAFE / RISKY) ── */
+.mf-grid{display:grid;gap:.8rem;margin-top:.5rem}
+.mf-card{background:var(--bg-card);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:1rem 1.2rem;transition:all .25s}
+.mf-card.right{border-color:var(--green);background:var(--green-light)}
+.mf-card.miss{border-color:var(--red);background:var(--red-light)}
+.mf-statement{font-size:.88rem;font-weight:600;color:var(--navy);line-height:1.55;margin-bottom:.7rem}
+.mf-buttons{display:flex;gap:.5rem}
+.mf-btn{padding:.4rem 1.1rem;border-radius:50px;border:1.5px solid var(--border);background:var(--bg-card);font-size:.76rem;font-weight:700;letter-spacing:.03em;cursor:pointer;transition:all .2s;font-family:inherit;color:var(--text-secondary)}
+.mf-btn:hover{border-color:var(--orange);color:var(--orange)}
+.mf-btn:disabled{cursor:not-allowed;opacity:.55}
+.mf-btn.picked-right{background:var(--green);border-color:var(--green);color:#fff;opacity:1}
+.mf-btn.picked-wrong{background:var(--red);border-color:var(--red);color:#fff;opacity:1}
+.mf-explain{display:none;margin-top:.7rem;font-size:.8rem;line-height:1.6;color:var(--text-secondary);border-top:1px dashed var(--border);padding-top:.6rem}
+.mf-explain.show{display:block;animation:fadeIn .3s ease}
+.mf-verdict{font-weight:700;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase}
+.mf-verdict.v-right{color:#256B29}
+.mf-verdict.v-miss{color:#A03A2C}
+
+/* ── QUIZ ── */
+.math-options{display:grid;gap:.6rem;margin-top:1rem}
+.math-option{display:flex;align-items:flex-start;gap:.7rem;background:var(--bg-card);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:.85rem 1rem;cursor:pointer;transition:all .2s;font-size:.86rem;line-height:1.5}
+.math-option:hover{border-color:var(--orange)}
+.math-option input{margin-top:.25rem;accent-color:var(--orange)}
+.math-option.reveal-right{border-color:var(--green);background:var(--green-light)}
+.math-option.reveal-wrong{border-color:var(--red);background:var(--red-light)}
+.prompt-box{background:var(--navy-dark);border-radius:var(--radius-sm);padding:1rem 1.1rem;margin:1rem 0;font-family:var(--mono);font-size:.82rem;line-height:1.6;color:#E8E6F0;position:relative;overflow-x:auto}
+.prompt-box .lbl{position:absolute;top:.5rem;right:.7rem;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--orange-light);font-family:'Plus Jakarta Sans',sans-serif;font-weight:700}
+
+/* ── REFLECTION ── */
+.reflect-prompt{display:grid;grid-template-columns:1fr;gap:.8rem;margin-top:1rem}
+.reflect-q{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:1rem 1.2rem}
+.reflect-q-text{font-size:.88rem;font-weight:600;color:var(--navy);margin-bottom:.5rem}
+.reflect-q textarea{width:100%;border:1px solid var(--border);border-radius:6px;padding:.6rem .8rem;font-family:inherit;font-size:.85rem;color:var(--text-primary);background:var(--bg-light);resize:vertical;min-height:60px}
+.reflect-q textarea:focus{outline:none;border-color:var(--orange)}
+
+/* ── GOLDEN RULE BANNER ── */
+.golden{background:linear-gradient(135deg,#FFF4E5,#FDEBD3);border:1px solid var(--orange);border-radius:var(--radius);padding:1.5rem 1.8rem;margin-top:1.5rem;display:flex;gap:1rem;align-items:flex-start}
+.golden .g-icon{font-size:1.8rem;line-height:1}
+.golden h4{font-family:'DM Serif Display',serif;font-size:1.15rem;color:var(--navy);margin-bottom:.35rem}
+.golden p{font-size:.85rem;color:var(--text-primary);line-height:1.6}
+
+/* ── FOOTER NEXT ── */
+.next-up{background:linear-gradient(135deg,var(--navy-dark),var(--navy));border-radius:var(--radius);padding:2.4rem;color:#fff;margin-top:2rem;text-align:center;position:relative;overflow:hidden}
+.next-up::before{content:'';position:absolute;top:-50px;right:-50px;width:180px;height:180px;border-radius:50%;background:rgba(232,122,46,0.12)}
+.next-up h3{font-family:'DM Serif Display',serif;font-size:1.5rem;margin-bottom:.5rem;position:relative}
+.next-up p{font-size:.92rem;color:rgba(255,255,255,0.75);margin-bottom:1.2rem;position:relative}
+.next-up .btn-primary{position:relative}
+
+@media (max-width:760px){
+  .nav{padding:0 1rem}
+  .nav-logo-tag{display:none}
+  .hero{padding:2.5rem 1.2rem 2rem}
+  section.lesson{padding:2rem 1.2rem}
+  .lesson-card{padding:1.4rem}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-left">
+    <span class="lesson-badge">Lesson 1 of 4</span>
+  </div>
+  <a href="https://mokshpath.org/" class="nav-logo">
+    <img class="nav-logo-icon" src="hero.svg" alt="MokshPath logo">
+    <div class="nav-logo-text">
+      <span class="nav-logo-name">Moksh<span>Path</span></span>
+      <span class="nav-logo-tag">Guided Path to True Learning</span>
+    </div>
+  </a>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-eyebrow"><span class="dot"></span> Week 3 · AI Research</div>
+  <h1>The AI Research Landscape — <em>the right tool for the right question</em></h1>
+  <p class="hero-sub">Four hands-on activities. Learn what AI research really is (and isn't), map the tools from plain chatbots to Deep Research agents, understand why AI invents fake citations — then match tasks to tools, judge which tools fabricate, and lock in the golden rule: verify against primary sources.</p>
+  <div class="progress-rail">
+    <span class="progress-label">Progress</span>
+    <div class="progress-dot" id="prog1"></div>
+    <div class="progress-dot" id="prog2"></div>
+    <div class="progress-dot" id="prog3"></div>
+    <div class="progress-dot" id="prog4"></div>
+  </div>
+</header>
+
+<!-- ── SECTION 1: WHAT AI RESEARCH IS / ISN'T + TOOL MAP ── -->
+<section class="lesson" id="activity-1">
+  <div class="container">
+    <span class="lesson-num">1</span>
+    <h2 class="lesson-title">What "AI research" actually is — and the tool map</h2>
+    <p class="lesson-intro">"AI can do my research" is a promise that's <strong>half true</strong>. Used well, AI turns a five-hour literature scan into thirty minutes of reading. Used blindly, it hands you confident, well-written answers that are simply wrong. The difference is understanding what each tool can and can't see — starting with what AI research really is.</p>
+
+    <div class="isnt-grid">
+      <div class="isnt-col is">
+        <h4>✓ What it IS</h4>
+        <ul>
+          <li>A faster way to <strong>find, summarize, and organize</strong> sources you'll still read yourself</li>
+          <li>A drafting partner for questions, outlines, and comparisons</li>
+          <li>A shortcut to the <em>right documents</em> — that you then verify</li>
+          <li>Best when it shows you <strong>citations you can click and check</strong></li>
+        </ul>
+      </div>
+      <div class="isnt-col isnt">
+        <h4>✕ What it ISN'T</h4>
+        <ul>
+          <li>A source of truth — it predicts likely text, it doesn't "know" facts</li>
+          <li>A replacement for reading the actual paper, law, or report</li>
+          <li>Reliable on very recent, niche, or specialist topics without live web access</li>
+          <li>Trustworthy just because the answer <em>sounds</em> authoritative</li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="lesson-intro" style="margin-top:2rem;margin-bottom:0">The tools differ on <strong>one thing that matters most</strong>: can it actually reach the live web and show you real, clickable sources — or is it answering from memory? Study the five cards, then Activity 2 has you match research tasks to the right one.</p>
+
+    <div class="compare-grid">
+      <div class="compare-card">
+        <div class="compare-icon">CB</div>
+        <h4>Plain chatbot</h4>
+        <p>ChatGPT, Claude, Gemini answering from <strong>training memory</strong>. Fast and fluent — but no live web unless a search mode is on. Great for explaining, brainstorming, drafting.</p>
+        <div class="compare-pros">
+          <span class="pro">+ Instant, flexible, free tiers</span>
+          <span class="pro">+ Best at explaining a concept</span>
+          <span class="con">− No live web = highest fabrication risk</span>
+          <span class="con">− Citations, if given, may be invented</span>
+        </div>
+      </div>
+      <div class="compare-card">
+        <div class="compare-icon">AE</div>
+        <h4>Answer engines</h4>
+        <p><strong>Perplexity</strong> and similar search the live web in real time, then write an answer with <strong>numbered links</strong> to the pages it used.</p>
+        <div class="compare-pros">
+          <span class="pro">+ Live web + clickable citations</span>
+          <span class="pro">+ Great for current, factual questions</span>
+          <span class="con">− Can still misread or over-trust a source</span>
+          <span class="con">− You must open the links to confirm</span>
+        </div>
+      </div>
+      <div class="compare-card">
+        <div class="compare-icon">DR</div>
+        <h4>Deep Research agents</h4>
+        <p>Multi-step agents (ChatGPT/Gemini/Perplexity "Deep Research") that <strong>run many searches</strong> over minutes and return a long, cited report.</p>
+        <div class="compare-pros">
+          <span class="pro">+ Broad, structured, many sources</span>
+          <span class="pro">+ Best for a first landscape scan</span>
+          <span class="con">− Slower; can still cite weak sources</span>
+          <span class="con">− Long ≠ correct; still needs checking</span>
+        </div>
+      </div>
+      <div class="compare-card">
+        <div class="compare-icon">NB</div>
+        <h4>NotebookLM</h4>
+        <p>Google's tool that answers <strong>only from documents you upload</strong>. It's grounded in <em>your</em> sources, with citations pointing back to your files.</p>
+        <div class="compare-pros">
+          <span class="pro">+ Grounded in your own PDFs/notes</span>
+          <span class="pro">+ Very low fabrication — cites your text</span>
+          <span class="con">− Only knows what you give it</span>
+          <span class="con">− Not for open-web discovery</span>
+        </div>
+      </div>
+      <div class="compare-card">
+        <div class="compare-icon">AC</div>
+        <h4>Academic tools</h4>
+        <p><strong>Elicit &amp; Consensus</strong> search real peer-reviewed papers, pull findings, and link to the actual studies — built for evidence, not chit-chat.</p>
+        <div class="compare-pros">
+          <span class="pro">+ Real papers with DOIs / links</span>
+          <span class="pro">+ Best for scientific / evidence questions</span>
+          <span class="con">− Narrow to academic literature</span>
+          <span class="con">− Still read the paper, not just the summary</span>
+        </div>
+      </div>
+    </div>
+    <div class="tip-note">💡 <strong>The one rule that ties them together:</strong> a tool that <em>reaches the live web or your own documents and shows you clickable sources</em> (answer engines, Deep Research, NotebookLM, Elicit/Consensus) is far safer for facts than a plain chatbot answering from memory. When a tool can't point you to a real source, treat its "facts" as a <em>draft to verify</em>, not an answer.</div>
+  </div>
+</section>
+
+<!-- ── SECTION 2: WHY LLMs HALLUCINATE + MATCH TASK TO TOOL ── -->
+<section class="lesson" id="activity-2" style="background:var(--bg-light)">
+  <div class="container">
+    <span class="lesson-num" style="background:#5B8FE0">2</span>
+    <h2 class="lesson-title">Why AI hallucinates — and how grounding fixes it</h2>
+    <p class="lesson-intro">A large language model doesn't look facts up; it <strong>predicts the next most likely words</strong>. That's why it writes so fluently — and why it can produce a citation that <em>looks</em> perfectly real (plausible author, journal, year, even a DOI) but doesn't exist. It's not lying; it's pattern-completing. Here's the mechanism, and the fix.</p>
+
+    <div class="places-grid">
+      <div class="place-card">
+        <div class="place-num">01</div>
+        <h4>It predicts, not knows</h4>
+        <p>An LLM generates text that's <em>statistically likely</em>, not text it has verified. Where facts are fuzzy, it fills the gap with something plausible-sounding.</p>
+      </div>
+      <div class="place-card">
+        <div class="place-num">02</div>
+        <h4>Fake citations form</h4>
+        <p>Asked for a source, a plain chatbot can assemble a <em>realistic-looking</em> reference from patterns — real-sounding author, title, and year that lead nowhere.</p>
+      </div>
+      <div class="place-card">
+        <div class="place-num">03</div>
+        <h4>Grounding = give it sources</h4>
+        <p><strong>Grounding</strong> means the tool retrieves real documents first, then answers <em>from them</em> — answer engines, NotebookLM, Elicit all do this. Far less made-up.</p>
+      </div>
+      <div class="place-card">
+        <div class="place-num">04</div>
+        <h4>You still verify</h4>
+        <p>Grounding reduces fabrication; it doesn't eliminate misreads. A grounded tool can still cite a real page that <em>doesn't actually say</em> what the summary claims.</p>
+      </div>
+    </div>
+
+    <div class="lesson-card">
+      <h4 style="font-family:'DM Serif Display',serif;font-size:1.05rem;color:var(--navy);margin-bottom:.4rem">Match the research task to the right tool</h4>
+      <p style="font-size:.85rem;color:var(--text-secondary);line-height:1.6;margin-bottom:.4rem">Six real research jobs, three tool families. Drag each job into the tool you'd reach for first. There's often more than one workable answer — we're grading the <em>most sensible</em> first choice. Wrong pills carry a hover hint with the reasoning.</p>
+      <div class="classify-grid">
+        <div class="classify-scenarios" id="scenarioList"></div>
+        <div class="bucket-stack">
+          <div class="bucket" data-bucket="answer">
+            <div class="bucket-title">Answer engine / Deep Research</div>
+            <div class="bucket-sub">Live web · clickable citations</div>
+            <div class="bucket-drop" data-drop="answer"></div>
+          </div>
+          <div class="bucket" data-bucket="notebook">
+            <div class="bucket-title">NotebookLM</div>
+            <div class="bucket-sub">Grounded in your own documents</div>
+            <div class="bucket-drop" data-drop="notebook"></div>
+          </div>
+          <div class="bucket" data-bucket="academic">
+            <div class="bucket-title">Elicit / Consensus</div>
+            <div class="bucket-sub">Peer-reviewed papers · evidence</div>
+            <div class="bucket-drop" data-drop="academic"></div>
+          </div>
+        </div>
+      </div>
+      <div class="activity-feedback" id="feedback1"></div>
+      <div class="activity-toolbar">
+        <button class="btn btn-ghost" onclick="resetActivity1()">↻ Try again</button>
+        <button class="btn btn-primary" onclick="showAnswers1()">Show me the answers</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SECTION 3: WILL THIS TOOL FABRICATE? ── -->
+<section class="lesson" id="activity-3">
+  <div class="container">
+    <span class="lesson-num" style="background:#66BB6A">3</span>
+    <h2 class="lesson-title">Will this tool make up a citation? — grounded or guessing?</h2>
+    <p class="lesson-intro">The single best predictor of whether an AI answer might be fabricated is simple: <em>does the tool have access to a real source right now, or is it answering from memory?</em> For each scenario below, decide whether the setup is <strong>grounded</strong> (low fabrication risk — it's working from real sources) or <strong>guessing</strong> (high risk — it may invent details). Click for instant feedback; answer all six for your score.</p>
+
+    <div class="lesson-card">
+      <div class="mf-grid" id="mfGrid"></div>
+      <div class="activity-feedback" id="feedback3"></div>
+      <div class="activity-toolbar">
+        <button class="btn btn-ghost" onclick="resetMF()">↻ Try again</button>
+      </div>
+      <div class="tip-note">💡 <strong>The safe habit:</strong> when a tool gives you a citation, <em>click it</em>. If it opens a real page that says what the tool claims, trust it. If the link is dead, the paper doesn't exist, or the page doesn't actually support the claim — you just caught a hallucination. Grounded tools make this check quick; plain chatbots make it essential.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SECTION 4: QUIZ — VERIFY AGAINST PRIMARY SOURCES ── -->
+<section class="lesson" id="activity-4" style="background:var(--bg-light)">
+  <div class="container">
+    <span class="lesson-num" style="background:#9C6ADE">4</span>
+    <h2 class="lesson-title">Do it now — and then verify the source</h2>
+    <p class="lesson-intro">AI is fast and confident — and sometimes confidently wrong. It can cite a study that doesn't exist, or summarize a real page as saying the <em>opposite</em> of what it says. Here's a real answer with a citation. Your job isn't to write it — it's to <strong>verify</strong> it, the single most important AI-research skill.</p>
+
+    <div class="lesson-card">
+      <p style="font-size:.88rem;color:var(--navy);font-weight:600;margin-bottom:.2rem">You asked a plain chatbot:</p>
+      <div class="prompt-box"><span class="lbl">your prompt</span>"What's the most-cited study proving that four-day work weeks raise productivity? Give me the reference."</div>
+      <p style="font-size:.88rem;color:var(--navy);font-weight:600;margin-bottom:.2rem">It replied with a confident answer and this citation. What should you do <em>before</em> trusting it?</p>
+
+      <div class="math-options" id="mathOptions">
+        <label class="math-option" data-opt="a"><input type="radio" name="mathQ" value="a"><span>Copy the citation straight into your report. It has an author, a journal, and a year, so it must be a real paper.</span></label>
+        <label class="math-option" data-opt="b"><input type="radio" name="mathQ" value="b"><span>Reject everything the AI said and start from scratch on Google — never use anything an AI produces.</span></label>
+        <label class="math-option" data-opt="c"><input type="radio" name="mathQ" value="c"><span>Verify it against the primary source: search the title/DOI in Google Scholar or the journal, confirm the paper exists, and read whether it actually says what the AI claims.</span></label>
+        <label class="math-option" data-opt="d"><input type="radio" name="mathQ" value="d"><span>Ask the chatbot "is this citation real?" and take its "yes" as confirmation the paper exists.</span></label>
+      </div>
+
+      <div class="prompt-box" style="margin-top:1.2rem"><span class="lbl">AI's citation</span>Henderson, J. &amp; Patel, R. (2021). "Compressed Work Schedules and Output." Journal of Organizational Efficiency, 44(3), 210–228.</div>
+
+      <div class="activity-feedback" id="feedback4"></div>
+
+      <div class="activity-toolbar">
+        <button class="btn btn-primary" onclick="checkMath()">Check my answer</button>
+        <button class="btn btn-ghost" onclick="resetMath()">↻ Reset</button>
+      </div>
+    </div>
+
+    <div class="golden">
+      <div class="g-icon">🏅</div>
+      <div>
+        <h4>The Golden Rule of AI Research</h4>
+        <p><strong>Always verify against the primary source.</strong> AI points you to information faster than ever — but the moment a fact matters, open the original paper, page, law, or dataset and confirm it with your own eyes. Grounded tools make this quick; ungrounded ones make it non-negotiable. An AI answer is a <em>lead to check</em>, never the final word.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── REFLECT ── -->
+<section class="lesson" style="padding-bottom:1.5rem">
+  <div class="container">
+    <h2 class="lesson-title" style="font-size:1.5rem">Quick reflect — make it stick</h2>
+    <p class="lesson-intro" style="margin-bottom:1rem">Type a sentence each. Writing it down helps the idea settle. (Nothing is saved or sent.)</p>
+    <div class="reflect-prompt">
+      <div class="reflect-q">
+        <div class="reflect-q-text">Think of a real question you'd research this week. Which tool from the map (plain chatbot, answer engine, Deep Research, NotebookLM, Elicit/Consensus) fits it best — and why?</div>
+        <textarea placeholder="I need current market share figures, so I'd use an answer engine like Perplexity because it searches the live web and shows me clickable sources I can check..."></textarea>
+      </div>
+      <div class="reflect-q">
+        <div class="reflect-q-text">Describe one moment you've trusted (or nearly trusted) an AI fact without checking. What would verifying against the primary source have looked like?</div>
+        <textarea placeholder="A chatbot quoted a statistic with a confident source. To verify I'd search the study title in Google Scholar and read whether it actually says that..."></textarea>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NEXT UP -->
+<section class="lesson" style="padding-top:0">
+  <div class="container">
+    <div class="next-up">
+      <h3>Lesson 2 · Smart Search &amp; Gathering</h3>
+      <p>You know the landscape and why AI can fabricate. Next: run smart searches with answer engines and Deep Research agents — writing queries that surface strong sources, and gathering them so you can verify fast.</p>
+      <a href="02-smart-search-gathering.html" class="btn btn-primary">Continue to Lesson 2 →</a>
+    </div>
+  </div>
+</section>
+
+<script>
+/* ─── ACTIVITY 1: Drag & Drop — Match research task to tool ─── */
+const SCENARIOS = [
+  {id:'s1', text:'You need today\'s figures on global electric-vehicle sales, with links to the reports the numbers came from.', bucket:'answer', hint:'Current, factual, needs live web + clickable sources = an answer engine like Perplexity.'},
+  {id:'s2', text:'You uploaded three long PDF contracts and want to ask "which one has the shortest notice period?" — answered only from those files.', bucket:'notebook', hint:'Questions answered strictly from your own uploaded documents = NotebookLM, grounded in your files.'},
+  {id:'s3', text:'You want to know what peer-reviewed studies actually found about whether intermittent fasting improves blood sugar.', bucket:'academic', hint:'Evidence from real scientific papers with links = Elicit / Consensus.'},
+  {id:'s4', text:'You need a broad, structured first landscape of "the state of solid-state batteries in 2026", pulling from many sources.', bucket:'answer', hint:'A wide, cited, multi-source scan = a Deep Research agent (same family as answer engines).'},
+  {id:'s5', text:'You have a folder of your company\'s own research notes and want a summary that cites which note each point came from.', bucket:'notebook', hint:'Grounded summaries of documents you provide, citing your own text = NotebookLM.'},
+  {id:'s6', text:'You want to see how many studies support vs. dispute a claim, with each study\'s finding listed side by side.', bucket:'academic', hint:'Comparing findings across real papers is exactly what Consensus / Elicit are built for.'}
+];
+const BUCKET_NAMES = {answer:'Answer engine / Deep Research', notebook:'NotebookLM', academic:'Elicit / Consensus'};
+
+let placed = {};
+function renderScenarios(){
+  const list = document.getElementById('scenarioList');
+  const shuffled = [...SCENARIOS].sort(()=>Math.random()-0.5);
+  list.innerHTML = shuffled.map(s => `
+    <div class="scenario-card" draggable="true" data-id="${s.id}">
+      <div class="scenario-text">${s.text}</div>
+    </div>`).join('');
+  list.querySelectorAll('.scenario-card').forEach(card => {
+    card.addEventListener('dragstart', (e) => {
+      e.dataTransfer.setData('id', card.dataset.id);
+      card.classList.add('dragging');
+    });
+    card.addEventListener('dragend', () => card.classList.remove('dragging'));
+  });
+}
+function setupBuckets(){
+  document.querySelectorAll('.bucket').forEach(b => {
+    b.addEventListener('dragover', e => { e.preventDefault(); b.classList.add('drag-over'); });
+    b.addEventListener('dragleave', () => b.classList.remove('drag-over'));
+    b.addEventListener('drop', e => {
+      e.preventDefault();
+      b.classList.remove('drag-over');
+      const id = e.dataTransfer.getData('id');
+      handleDrop(id, b.dataset.bucket);
+    });
+  });
+}
+function handleDrop(id, bucket){
+  const scenario = SCENARIOS.find(s => s.id === id);
+  if (!scenario || placed[id]) return;
+  const correct = scenario.bucket === bucket;
+  placed[id] = {bucket, correct};
+  const card = document.querySelector(`.scenario-card[data-id="${id}"]`);
+  card.classList.add('placed', correct ? 'correct' : 'wrong');
+  const dropZone = document.querySelector(`[data-drop="${bucket}"]`);
+  const pill = document.createElement('span');
+  pill.className = 'dropped-pill ' + (correct ? 'correct' : 'wrong');
+  pill.textContent = (correct ? '✓ ' : '✗ ') + scenario.text.substring(0, 40) + (scenario.text.length > 40 ? '…' : '');
+  pill.title = correct ? scenario.hint : `Better fit: ${BUCKET_NAMES[scenario.bucket]}. ${scenario.hint}`;
+  dropZone.appendChild(pill);
+  checkActivity1Done();
+}
+function checkActivity1Done(){
+  if (Object.keys(placed).length === SCENARIOS.length) {
+    const right = Object.values(placed).filter(p => p.correct).length;
+    const fb = document.getElementById('feedback1');
+    if (right === SCENARIOS.length) {
+      fb.className = 'activity-feedback show success';
+      fb.innerHTML = `<strong>All six matched.</strong> The pattern: reach for an <em>answer engine or Deep Research</em> when you need the live web with citations; use <em>NotebookLM</em> when the answer must come strictly from your own documents; use <em>Elicit / Consensus</em> when you need real peer-reviewed evidence. Every one of these grounds its answer in a source you can open.`;
+    } else {
+      fb.className = 'activity-feedback show partial';
+      fb.innerHTML = `<strong>You got ${right} of 6.</strong> Hover any red pill for the reasoning. Quick test: <em>Live web with links?</em> → answer engine / Deep Research. <em>Only my own files?</em> → NotebookLM. <em>Peer-reviewed evidence?</em> → Elicit / Consensus. Hit <em>Try again</em> for a fresh shuffle.`;
+    }
+    document.getElementById('prog1').classList.add('done');
+    document.getElementById('prog2').classList.add('done');
+  }
+}
+function resetActivity1(){
+  placed = {};
+  document.getElementById('feedback1').className = 'activity-feedback';
+  document.querySelectorAll('.bucket-drop').forEach(d => d.innerHTML = '');
+  renderScenarios();
+  document.getElementById('prog1').classList.remove('done');
+  document.getElementById('prog2').classList.remove('done');
+}
+function showAnswers1(){
+  SCENARIOS.forEach(s => { if (!placed[s.id]) handleDrop(s.id, s.bucket); });
+}
+
+/* ─── ACTIVITY 3: Grounded vs Guessing ─── */
+const MF = [
+  {s:'You ask a plain chatbot (no web search on) for "three peer-reviewed papers on gut bacteria and mood", and it gives you neat citations with authors and DOIs.', a:'risky',
+   e:'This is answering from memory with no live source. The citations look real but may be fabricated — plausible authors, titles, and even DOIs that lead nowhere. Classic hallucination setup: always click and verify each one.'},
+  {s:'You use Perplexity, which searches the live web and returns an answer with numbered links you can click to the exact pages it used.', a:'safe',
+   e:'This is grounded: the tool retrieved real pages first and cited them. Fabrication risk is much lower. You should still open a couple of links to confirm the pages really support the claim — but this is the safe pattern.'},
+  {s:'In NotebookLM you upload your five source PDFs and ask a question; every answer cites which of your documents it came from.', a:'safe',
+   e:'NotebookLM answers only from the documents you gave it and points back to them. It essentially can\'t invent an outside source — it\'s grounded in your files. Very low fabrication risk (though it can still misread your text).'},
+  {s:'You ask a chatbot with web browsing turned off "what did the 2025 UN climate report conclude?" and it answers confidently in detail.', a:'risky',
+   e:'Without live access, the model is reconstructing a recent, specific document from patterns — a prime setting for confident errors and invented details. Use a tool that can actually open the report, then read the primary source.'},
+  {s:'You run a Consensus search on "does meditation lower blood pressure?" and it lists real studies with each one\'s finding and a link.', a:'safe',
+   e:'Consensus pulls from actual published papers and links each finding to its study. It\'s grounded in the literature — low fabrication risk. Best practice remains: open the studies that matter and read the methods, not just the summary.'},
+  {s:'A chatbot gives you a specific statistic ("73% of firms reported gains") with a confident tone but no link or source at all.', a:'risky',
+   e:'A precise-sounding number with no source is a red flag. It may be real, misremembered, or invented. Never repeat an unsourced AI statistic — track it back to the primary source before you use it anywhere.'}
+];
+let mfAnswered = {};
+function renderMF(){
+  const grid = document.getElementById('mfGrid');
+  grid.innerHTML = MF.map((m, i) => `
+    <div class="mf-card" id="mfCard${i}">
+      <div class="mf-statement">${i+1}. ${m.s}</div>
+      <div class="mf-buttons">
+        <button class="mf-btn" id="mfM${i}" onclick="answerMF(${i},'safe')">GROUNDED · LOW RISK</button>
+        <button class="mf-btn" id="mfF${i}" onclick="answerMF(${i},'risky')">GUESSING · HIGH RISK</button>
+      </div>
+      <div class="mf-explain" id="mfEx${i}"></div>
+    </div>`).join('');
+}
+function answerMF(i, choice){
+  if (mfAnswered[i] !== undefined) return;
+  const m = MF[i];
+  const right = choice === m.a;
+  mfAnswered[i] = right;
+  const card = document.getElementById('mfCard' + i);
+  const pickedBtn = document.getElementById(choice === 'safe' ? 'mfM'+i : 'mfF'+i);
+  const otherBtn = document.getElementById(choice === 'safe' ? 'mfF'+i : 'mfM'+i);
+  card.classList.add(right ? 'right' : 'miss');
+  pickedBtn.classList.add(right ? 'picked-right' : 'picked-wrong');
+  pickedBtn.disabled = true; otherBtn.disabled = true;
+  const ex = document.getElementById('mfEx' + i);
+  ex.className = 'mf-explain show';
+  const label = m.a === 'safe' ? 'GROUNDED (low fabrication risk)' : 'GUESSING (high fabrication risk)';
+  ex.innerHTML = `<span class="mf-verdict ${right ? 'v-right' : 'v-miss'}">${right ? '✓ Correct' : '✗ Not quite'} — this is ${label}.</span><br>${m.e}`;
+  if (Object.keys(mfAnswered).length === MF.length) {
+    const score = Object.values(mfAnswered).filter(Boolean).length;
+    const fb = document.getElementById('feedback3');
+    if (score === MF.length) {
+      fb.className = 'activity-feedback show success';
+      fb.innerHTML = `<strong>6 of 6 — you can read the risk.</strong> The rule you just practised: if the tool retrieved a real source and links to it, fabrication risk is low. If it's answering from memory with no clickable source, treat every "fact" as unverified — click, or don't use it.`;
+    } else {
+      fb.className = 'activity-feedback show partial';
+      fb.innerHTML = `<strong>You scored ${score} of 6.</strong> Re-read the red cards. The dividing line: <em>is there a real, clickable source right now?</em> If yes → grounded, lower risk. If it's memory-only or sourceless → guessing, high risk. Hit <em>Try again</em> to retake it.`;
+    }
+    document.getElementById('prog3').classList.add('done');
+  }
+}
+function resetMF(){
+  mfAnswered = {};
+  document.getElementById('feedback3').className = 'activity-feedback';
+  renderMF();
+  document.getElementById('prog3').classList.remove('done');
+}
+
+/* ─── ACTIVITY 4: Verify against primary sources ─── */
+const MATH_FEEDBACK = {
+  a:`<strong>"Looks like a real paper" is the trap.</strong> A plausible author, journal, and year are exactly what a hallucinated citation is made of — the model pattern-completes a reference that <em>looks</em> real but may not exist. Never paste a citation you haven't found in a real database. Try again.`,
+  b:`<strong>Too far the other way.</strong> Throwing out everything AI gives you wastes its real value as a fast lead-finder. The goal isn't distrust; it's <em>verification</em>. Take the lead, then confirm it against the primary source. Try again.`,
+  c:`<strong>Correct — verify against the primary source.</strong> You search the exact title (or DOI) in Google Scholar or the journal, confirm the paper genuinely exists, and read whether it actually supports the claim. If it doesn't turn up, it was almost certainly fabricated — and you just avoided putting a fake reference in your work. That check is the real AI-research skill.`,
+  d:`<strong>Asking the AI "is this real?" proves nothing.</strong> A chatbot will often reassure you "yes, that's a real study" even when it invented it — it can't actually check. Confidence is not correctness. You have to find the source yourself in a real database. Try again.`
+};
+function checkMath(){
+  const picked = document.querySelector('input[name="mathQ"]:checked');
+  const fb = document.getElementById('feedback4');
+  if (!picked) {
+    fb.className = 'activity-feedback show partial';
+    fb.innerHTML = `<strong>Pick one of the four options first</strong> — then hit "Check my answer".`;
+    return;
+  }
+  const val = picked.value;
+  document.querySelectorAll('.math-option').forEach(o => o.classList.remove('reveal-right','reveal-wrong'));
+  if (val === 'c') {
+    document.querySelector('.math-option[data-opt="c"]').classList.add('reveal-right');
+    fb.className = 'activity-feedback show success';
+    fb.innerHTML = MATH_FEEDBACK.c;
+    document.getElementById('prog4').classList.add('done');
+  } else {
+    document.querySelector(`.math-option[data-opt="${val}"]`).classList.add('reveal-wrong');
+    fb.className = 'activity-feedback show partial';
+    fb.innerHTML = MATH_FEEDBACK[val];
+  }
+}
+function resetMath(){
+  document.querySelectorAll('input[name="mathQ"]').forEach(r => r.checked = false);
+  document.querySelectorAll('.math-option').forEach(o => o.classList.remove('reveal-right','reveal-wrong'));
+  document.getElementById('feedback4').className = 'activity-feedback';
+  document.getElementById('prog4').classList.remove('done');
+}
+
+/* ─── INIT ─── */
+window.addEventListener('DOMContentLoaded', () => {
+  renderScenarios();
+  setupBuckets();
+  renderMF();
+});
+</script>
+</body>
+</html>
