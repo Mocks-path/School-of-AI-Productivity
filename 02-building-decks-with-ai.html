@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Building Decks with AI · Lesson 02</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,0,400;9..144,0,600;9..144,0,800;9..144,1,600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+
+:root{
+  --orange:#EF7F1A; --orange-light:#FF9429; --orange-dark:#D55222;
+  --brown:#412C23; --brown-dark:#2F1D19; --tan:#A34E1C;
+  --yellow:#FECC00; --cream:#FBF6EE; --paper:#FFFCF6;
+  --ink:#1C1410; --muted:#6E5C50; --line:#E8DCC8; --accent:#008DD2;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',system-ui,sans-serif;
+  background:var(--paper); color:var(--ink); line-height:1.6; overflow-x:hidden;
+}
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:radial-gradient(circle at 1px 1px,rgba(65,44,35,0.05) 1px,transparent 0);
+  background-size:24px 24px;
+}
+.topbar{
+  position:sticky;top:0;z-index:100;
+  background:rgba(255,252,246,0.92); backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+  padding:14px 40px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.brand{font-family:'Fraunces',serif;font-weight:800;font-size:17px;letter-spacing:-0.01em;color:var(--brown-dark)}
+.brand .dot{color:var(--orange)}
+.brand .sub{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.15em;color:var(--muted);font-weight:500;text-transform:uppercase;margin-left:8px}
+.logo-slot{width:44px;height:44px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.logo-slot svg{width:100%;height:100%;display:block}
+.page{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:50px 40px 100px}
+.hero{padding:30px 0 50px;border-bottom:1px solid var(--line)}
+.eyebrow{
+  font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.18em;
+  text-transform:uppercase;color:var(--orange-dark);font-weight:600;
+  display:inline-flex;align-items:center;gap:10px;
+}
+.eyebrow::before{content:"";width:24px;height:2px;background:var(--orange)}
+h1{
+  font-family:'Fraunces',serif;font-weight:800;
+  font-size:clamp(38px,7vw,80px);line-height:0.98;letter-spacing:-0.03em;
+  margin:18px 0 20px;color:var(--brown-dark);
+}
+h1 em{font-style:italic;color:var(--orange-dark);font-weight:600}
+.lede{font-size:19px;max-width:680px;color:var(--muted)}
+section{padding:70px 0;border-bottom:1px solid var(--line)}
+section:last-of-type{border-bottom:none}
+.section-num{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--orange);font-weight:600;letter-spacing:0.08em}
+h2{
+  font-family:'Fraunces',serif;font-weight:700;
+  font-size:clamp(28px,4.5vw,48px);line-height:1.05;letter-spacing:-0.02em;
+  margin:10px 0 22px;color:var(--brown-dark);max-width:720px;
+}
+h3{font-family:'Fraunces',serif;font-weight:600;font-size:24px;color:var(--brown-dark);margin:28px 0 12px}
+p{max-width:680px;margin-bottom:14px;color:var(--ink)}
+.lead{font-size:17px;color:var(--muted);max-width:680px;margin-bottom:26px}
+code{font-family:'JetBrains Mono',monospace;font-size:0.92em;background:var(--cream);padding:2px 6px;border-radius:4px;color:var(--brown-dark)}
+.illus{
+  background:var(--cream);border:1px solid var(--line);border-radius:18px;
+  padding:32px;margin:24px 0;position:relative;overflow:hidden;
+}
+.illus-title{
+  font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);
+  letter-spacing:0.12em;text-transform:uppercase;
+  margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:10px;
+}
+.controls{display:flex;gap:8px;flex-wrap:wrap}
+.controls button{
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  background:var(--paper);border:1px solid var(--line);color:var(--brown);
+  padding:6px 12px;border-radius:6px;cursor:pointer;
+  text-transform:uppercase;letter-spacing:0.1em;transition:all .2s;
+}
+.controls button:hover{background:var(--orange);color:#fff;border-color:var(--orange)}
+.controls button.active{background:var(--brown-dark);color:#fff;border-color:var(--brown-dark)}
+.takeaway{
+  background:var(--brown-dark);color:var(--paper);
+  border-radius:18px;padding:44px;margin-top:50px;position:relative;overflow:hidden;
+}
+.takeaway::after{
+  content:"";position:absolute;top:-40px;right:-40px;width:180px;height:180px;
+  border-radius:50%;background:radial-gradient(circle,var(--orange),transparent 70%);opacity:0.4;
+}
+.takeaway h2{color:var(--paper);margin-bottom:16px}
+.takeaway p{color:#E8D9C5;font-size:16px;max-width:680px}
+.takeaway ul{list-style:none;margin-top:18px;display:grid;gap:8px}
+.takeaway li{font-family:'JetBrains Mono',monospace;font-size:13px;padding-left:22px;position:relative;color:#FBE7CB}
+.takeaway li::before{content:"→";position:absolute;left:0;color:var(--orange);font-weight:bold}
+footer{text-align:center;padding:36px;color:var(--muted);font-size:12px;font-family:'JetBrains Mono',monospace;letter-spacing:0.1em}
+@media(max-width:700px){
+  .topbar{padding:12px 18px}
+  .page{padding:30px 18px 70px}
+  .illus{padding:20px}
+  .takeaway{padding:28px}
+  .logo-slot{width:42px;height:66px}
+}
+
+/* ===== anatomy cards (section 02) ===== */
+.crit-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;margin:22px 0}
+.crit{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:18px}
+.crit .k{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;font-weight:600;color:#fff;background:var(--tan);display:inline-block;padding:3px 8px;border-radius:4px;margin-bottom:8px}
+.crit h4{font-family:'Fraunces',serif;font-size:17px;color:var(--brown-dark);margin-bottom:5px}
+.crit p{font-size:13px;color:var(--muted);margin:0;max-width:none}
+
+/* ===== transformer (figure 1) ===== */
+.tf-wrap{display:grid;grid-template-columns:1fr auto 1fr;gap:18px;align-items:stretch}
+.tf-col{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:20px;min-width:0}
+.tf-lab{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;font-weight:600;color:#fff;padding:4px 10px;border-radius:4px;display:inline-block;margin-bottom:12px}
+.tf-lab.en{background:var(--tan)}
+.tf-lab.fx{background:var(--orange-dark)}
+.tf-en{font-size:15px;color:var(--brown);line-height:1.55;min-height:120px}
+.tf-fx{font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--brown-dark);background:var(--cream);border:1px solid var(--line);border-radius:8px;padding:14px;min-height:120px;word-break:break-word;opacity:0;transform:translateY(8px);transition:opacity .5s,transform .5s;line-height:1.55}
+.tf-fx.show{opacity:1;transform:translateY(0)}
+.tf-note{font-size:12px;color:var(--muted);margin-top:12px;max-width:none}
+.tf-arrow{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:var(--orange)}
+.tf-arrow svg{width:44px;height:44px}
+.tf-arrow .spin{transform-origin:center;animation:tfSpin 2.6s linear infinite;animation-play-state:paused}
+.tf-wrap.working .tf-arrow .spin{animation-play-state:running}
+@keyframes tfSpin{to{transform:rotate(360deg)}}
+.tf-arrow .cap{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted)}
+@media(max-width:700px){.tf-wrap{grid-template-columns:1fr}.tf-arrow svg{transform:rotate(90deg)}}
+
+/* ===== source cards / tabs (figure 2) ===== */
+.pat-tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.pat-tab{font-family:'JetBrains Mono',monospace;font-size:11px;background:var(--paper);border:1px solid var(--line);color:var(--brown);padding:8px 14px;border-radius:8px;cursor:pointer;text-transform:uppercase;letter-spacing:0.08em;transition:all .2s}
+.pat-tab:hover{border-color:var(--orange)}
+.pat-tab.active{background:var(--brown-dark);color:#fff;border-color:var(--brown-dark)}
+.pat-body{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:24px;min-height:200px}
+.pat-body h4{font-family:'Fraunces',serif;font-size:22px;color:var(--brown-dark);margin-bottom:4px}
+.pat-use{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--orange-dark);margin-bottom:14px}
+.pat-code{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--brown-dark);background:var(--cream);border:1px solid var(--line);border-left:3px solid var(--orange);border-radius:8px;padding:14px;margin-bottom:14px;word-break:break-word;line-height:1.55}
+.pat-desc{font-size:14px;color:var(--muted);max-width:none;margin:0}
+.pat-panel{display:none;animation:patIn .35s}
+.pat-panel.on{display:block}
+@keyframes patIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* ===== narrative structure cards (figure 3) ===== */
+.narr-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px}
+.narr{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:22px;cursor:pointer;transition:all .25s;position:relative;overflow:hidden}
+.narr:hover{border-color:var(--orange);transform:translateY(-4px)}
+.narr .nk{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;font-weight:600;color:var(--orange-dark);margin-bottom:8px}
+.narr h4{font-family:'Fraunces',serif;font-size:20px;color:var(--brown-dark);margin-bottom:8px}
+.narr .nquick{font-size:13.5px;color:var(--muted);margin:0;max-width:none}
+.narr .nmore{max-height:0;opacity:0;overflow:hidden;transition:max-height .4s,opacity .3s,margin .3s;margin-top:0}
+.narr.open .nmore{max-height:280px;opacity:1;margin-top:12px}
+.narr .nmore p{font-size:13px;color:var(--brown);max-width:none;margin:0 0 8px}
+.narr .nmore .nchip{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--brown-dark);background:var(--cream);border:1px solid var(--line);border-left:3px solid var(--orange);border-radius:6px;padding:8px 10px;margin:0}
+.narr .nhint{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.06em;color:var(--orange);margin-top:12px;display:block}
+.narr.open .nhint{display:none}
+
+/* ===== before/after slide demo (figure 4) ===== */
+.ba-wrap{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:stretch}
+.slide{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:0;overflow:hidden;display:flex;flex-direction:column;transition:all .3s}
+.slide-head{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;font-weight:600;padding:10px 16px;color:#fff}
+.slide.before .slide-head{background:var(--tan)}
+.slide.after .slide-head{background:var(--orange-dark)}
+.slide-canvas{padding:22px;flex:1;background:var(--paper);position:relative}
+.slide-title{font-family:'Fraunces',serif;font-weight:600;font-size:20px;color:var(--brown-dark);margin-bottom:14px;line-height:1.2}
+.slide.before .slide-title{font-size:16px;color:var(--muted);font-weight:400}
+.slide-canvas ul{list-style:none;display:grid;gap:9px}
+.slide-canvas li{font-size:13.5px;color:var(--brown);padding-left:18px;position:relative;line-height:1.45}
+.slide-canvas li::before{content:"▪";position:absolute;left:0;color:var(--orange)}
+.slide.before li{font-size:12.5px;color:var(--muted)}
+.slide.before li::before{color:var(--tan)}
+.slide-foot{font-size:11px;color:var(--muted);padding:0 22px 18px;font-style:italic;max-width:none;margin:0}
+.ba-toggle{display:flex;justify-content:center;margin-top:18px}
+.ba-metric{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}
+.bm{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:14px;text-align:center}
+.bm .bmn{font-family:'Fraunces',serif;font-size:26px;color:var(--orange-dark);line-height:1}
+.bm .bml{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-top:6px;display:block}
+@media(max-width:700px){.ba-wrap{grid-template-columns:1fr}}
+
+/* ===== speaker notes reveal (figure 5) ===== */
+.sn-wrap{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:stretch}
+.sn-slide{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:22px}
+.sn-lab{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;font-weight:600;color:#fff;background:var(--tan);padding:4px 10px;border-radius:4px;display:inline-block;margin-bottom:14px}
+.sn-slidetitle{font-family:'Fraunces',serif;font-weight:600;font-size:19px;color:var(--brown-dark);margin-bottom:12px}
+.sn-slide ul{list-style:none;display:grid;gap:8px}
+.sn-slide li{font-size:13.5px;color:var(--brown);padding-left:16px;position:relative}
+.sn-slide li::before{content:"▪";position:absolute;left:0;color:var(--orange)}
+.sn-notes{background:var(--brown-dark);border-radius:14px;padding:22px;color:#F3E4D0;position:relative;overflow:hidden}
+.sn-notes .sn-lab{background:var(--orange-dark)}
+.sn-note-line{font-size:14px;line-height:1.6;color:#F3E4D0;max-width:none;margin:0 0 10px;opacity:0;transform:translateY(8px);transition:opacity .5s,transform .5s}
+.sn-notes.reveal .sn-note-line{opacity:1;transform:translateY(0)}
+.sn-notes.reveal .sn-note-line:nth-child(2){transition-delay:.1s}
+.sn-notes.reveal .sn-note-line:nth-child(3){transition-delay:.25s}
+.sn-notes.reveal .sn-note-line:nth-child(4){transition-delay:.4s}
+.sn-notes.reveal .sn-note-line:nth-child(5){transition-delay:.55s}
+.sn-placeholder{font-family:'JetBrains Mono',monospace;font-size:12px;color:#B79C86;letter-spacing:0.04em}
+.sn-notes.reveal .sn-placeholder{display:none}
+@media(max-width:700px){.sn-wrap{grid-template-columns:1fr}}
+
+/* ===== iterate checklist (figure 6) ===== */
+.vwrap{display:grid;grid-template-columns:1.15fr 1fr;gap:26px;align-items:start}
+.vprod{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+.vprod strong{color:var(--orange-dark)}
+#vlist{display:grid;gap:8px}
+.vitem{display:flex;gap:12px;align-items:flex-start;background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:12px 14px;cursor:pointer;font-size:14px;color:var(--brown);transition:border-color .2s;opacity:0;transform:translateX(-14px)}
+.vitem:hover{border-color:var(--orange)}
+.vitem input{width:18px;height:18px;margin-top:2px;accent-color:var(--orange);cursor:pointer;flex-shrink:0}
+#vlist.go .vitem{animation:vIn .45s forwards}
+#vlist.go .vitem:nth-child(1){animation-delay:.05s}
+#vlist.go .vitem:nth-child(2){animation-delay:.13s}
+#vlist.go .vitem:nth-child(3){animation-delay:.21s}
+#vlist.go .vitem:nth-child(4){animation-delay:.29s}
+#vlist.go .vitem:nth-child(5){animation-delay:.37s}
+#vlist.go .vitem:nth-child(6){animation-delay:.45s}
+@keyframes vIn{to{opacity:1;transform:translateX(0)}}
+.vside{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:22px;position:sticky;top:90px}
+.vbar{height:16px;background:var(--cream);border:1px solid var(--line);border-radius:8px;overflow:hidden;margin:8px 0 10px}
+#vfill{height:100%;width:0%;background:linear-gradient(90deg,var(--orange),var(--orange-dark));transition:width .5s ease;border-radius:8px}
+.vscore-row{display:flex;justify-content:space-between;align-items:baseline;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted)}
+.vscore-row strong{font-family:'Fraunces',serif;font-size:34px;color:var(--brown-dark)}
+.vpanel{margin-top:16px;border-left:3px solid var(--line);padding-left:14px;transition:border-color .3s}
+.vpanel.v-bad{border-color:var(--brown-dark)}
+.vpanel.v-warn{border-color:var(--tan)}
+.vpanel.v-good{border-color:var(--orange)}
+.vpanel.v-great{border-color:var(--yellow)}
+.vtag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;font-weight:600;color:var(--brown-dark)}
+.vpanel p{font-size:14px;color:var(--muted);margin:6px 0 0;max-width:none}
+
+/* ===== limits list (figure 7) ===== */
+.lim-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:24px;align-items:start}
+.lim-list{display:grid;gap:10px}
+.lim-item{display:flex;gap:14px;align-items:center;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:14px 16px;cursor:pointer;transition:all .2s}
+.lim-item:hover{border-color:var(--orange);transform:translateX(4px)}
+.lim-item.active{border-color:var(--orange-dark);background:var(--cream)}
+.lim-code{font-family:'JetBrains Mono',monospace;font-weight:600;font-size:13px;color:#fff;background:var(--brown-dark);padding:8px 12px;border-radius:8px;white-space:nowrap;flex-shrink:0}
+.lim-item.active .lim-code{background:var(--orange-dark)}
+.lim-cause{font-size:13px;color:var(--muted);margin:0;max-width:none}
+.lim-panel{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:24px;position:sticky;top:90px}
+.lim-big{font-family:'Fraunces',serif;font-size:22px;color:var(--orange-dark);margin-bottom:14px}
+.lim-row{margin-bottom:14px}
+.lim-rk{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--orange-dark);font-weight:600;display:block;margin-bottom:4px}
+.lim-rv{font-size:14px;color:var(--brown);max-width:none;margin:0}
+.lim-prompt{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--brown-dark);background:var(--cream);border:1px solid var(--line);border-left:3px solid var(--orange);border-radius:8px;padding:12px}
+
+@media(max-width:700px){
+  .lim-grid,.vwrap{grid-template-columns:1fr}
+  .lim-panel,.vside{position:static}
+}
+
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="brand">MokshPath <span class="dot">·</span> <span class="sub">Lesson 02 · AI Slides</span></div>
+  <div class="logo-slot" aria-label="MokshPath logo">
+    <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="22" cy="22" r="20" fill="#412C23"/>
+      <path d="M12 31V15l10 10 10-10v16" stroke="#EF7F1A" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="22" cy="10.5" r="3" fill="#FECC00"/>
+    </svg>
+  </div>
+</div>
+<div class="page">
+
+<section class="hero">
+  <div class="eyebrow">Week 4 · Lesson 02 · AI Slides</div>
+  <h1>Describe the talk. <em>Get</em> the deck.</h1>
+  <p class="lede">AI will build a slide deck from a sentence — but a sentence produces a generic deck. This lesson teaches the part that turns "make me some slides" into a presentation worth standing behind: how to write a brief that carries audience and goal, how to feed AI a document or an outline, how to give slides a spine instead of a bullet-dump, and how to cut the wordy, invented filler AI loves to add.</p>
+</section>
+
+<section>
+  <div class="section-num">01 / 06</div>
+  <h2>A vague ask makes a vague deck</h2>
+  <p class="lead">"Make me a presentation about our Q3 results" gets you fifteen forgettable slides. The generator isn't guessing at your talk — it's guessing at everything, because you told it almost nothing.</p>
+
+  <p>The shift is the same one from the whole course: you no longer assemble slides by hand, you describe the presentation you want. But a deck brief has to carry more than a topic. It needs the <em>audience</em> you're speaking to, the <em>goal</em> you want them to walk away with, the <em>length</em>, the <em>tone</em>, and ideally the <em>structure</em> and the <em>source material</em>. Drop those in and the AI stops improvising a generic corporate deck. Watch a bare topic and a full brief produce very different decks below.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 1 · The vague-ask transformer</span>
+      <div class="controls">
+        <button id="tb0" onclick="tfSet(0)">Vague</button>
+        <button id="tb1" onclick="tfSet(1)">Better</button>
+        <button id="tb2" onclick="tfSet(2)">Strong brief</button>
+      </div>
+    </div>
+    <div class="tf-wrap" id="tfWrap">
+      <div class="tf-col">
+        <span class="tf-lab en">Your brief</span>
+        <div class="tf-en" id="tfEn">Pick a version above to see the ask.</div>
+      </div>
+      <div class="tf-arrow" aria-hidden="true">
+        <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <g class="spin"><circle cx="22" cy="22" r="16" stroke="#EF7F1A" stroke-width="3" stroke-dasharray="16 10" stroke-linecap="round"/></g>
+          <path d="M16 22h12m0 0-4-4m4 4-4 4" stroke="#D55222" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="cap">AI drafts</span>
+      </div>
+      <div class="tf-col">
+        <span class="tf-lab fx">Deck it builds</span>
+        <div class="tf-fx" id="tfFx"></div>
+      </div>
+    </div>
+    <p class="tf-note" id="tfNote">The more your brief pins down who's listening and what they should do next, the less the AI fills with generic filler — and the less you rewrite afterwards.</p>
+  </div>
+
+  <p>The vague ask wasn't wrong, it was <strong>under-specified</strong> — so the AI defaulted to a bland, everyone-and-no-one deck. A brief that names the audience, the goal, and the shape gives the generator a target to hit. Which brings us to what a strong brief actually contains.</p>
+</section>
+
+<section>
+  <div class="section-num">02 / 06</div>
+  <h2>The six ingredients of a deck brief</h2>
+  <p class="lead">A brief that produces a usable first draft answers six questions before AI builds a single slide: who, why, how long, what voice, what shape, and from what.</p>
+
+  <p>Think of briefing AI like briefing a designer you've just met. "Make me slides" leaves them to invent your whole context. Hand them these six, and the draft comes back aimed at the right room. You don't need slick prose — a labelled list works fine — but leave one out and the AI quietly decides it for you, usually toward the generic.</p>
+
+  <div class="crit-grid">
+    <div class="crit"><span class="k">Audience</span><h4>Who's in the room</h4><p>Executives skimming for the decision, engineers who want the detail, customers who need the benefit. The same content is three different decks depending on who's watching.</p></div>
+    <div class="crit"><span class="k">Goal</span><h4>The one takeaway</h4><p>What should they think, feel, or do when the lights come up? "Approve the budget," "trust the roadmap," "book the demo." State the outcome; the slides serve it.</p></div>
+    <div class="crit"><span class="k">Length &amp; tone</span><h4>Time and voice</h4><p>"Eight slides for a ten-minute standup, plain and direct" versus "twenty for a board review, formal." Length caps rambling; tone stops it sounding like a stranger.</p></div>
+    <div class="crit"><span class="k">Structure &amp; source</span><h4>Shape and material</h4><p>Give it a spine — problem, insight, action — and point it at real material: your notes, a report, a doc. Structure prevents drift; source prevents invention.</p></div>
+  </div>
+
+  <p>Notice that none of these require design skill or knowing your slide tool's menus. You describe the <em>situation and the outcome</em>; the AI drafts the deck. That division — you own the intent and the judgement, AI owns the drafting speed — is the method of this lesson, and it repeats in every figure below.</p>
+</section>
+
+<section>
+  <div class="section-num">03 / 06</div>
+  <h2>Prompt, document, or outline?</h2>
+  <p class="lead">You can start a deck three ways, and they trade control for effort differently. Knowing which to reach for saves the most time.</p>
+
+  <p>AI will build a deck from a one-line prompt, from a document you already wrote, or from an outline you sketch first. Each gives you a different balance of speed, accuracy, and control. The prompt is fastest and loosest; the document is most faithful to real content; the outline gives you the most control over the story. Click through the three to see when each wins.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 2 · Three ways to start a deck</span>
+    </div>
+    <div class="pat-tabs" id="patTabs">
+      <button class="pat-tab active" onclick="patSet(0)">From a prompt</button>
+      <button class="pat-tab" onclick="patSet(1)">From a document</button>
+      <button class="pat-tab" onclick="patSet(2)">From an outline</button>
+    </div>
+    <div class="pat-body" id="patBody"></div>
+  </div>
+
+  <p>A good rule of thumb: <strong>if the content already exists, feed the document</strong> — you'll get slides grounded in your real material instead of the AI's imagination. If you're starting cold but you know the story, write the outline first and let AI expand it. Reach for the one-line prompt only for throwaway drafts or when you genuinely want the AI's take on structure.</p>
+</section>
+
+<section>
+  <div class="section-num">04 / 06</div>
+  <h2>Give the deck a spine</h2>
+  <p class="lead">The difference between a deck that lands and one that's endured is structure. AI defaults to a flat list of topics; you have to ask it for a story.</p>
+
+  <p>Left to itself, a generator produces slides that each state a fact and never build toward anything — a bullet-dump. A presentation that persuades has a <em>spine</em>: it sets up a problem, delivers an insight, and points to an action, with one idea carrying each slide. These are the narrative moves worth naming in your brief, so the AI arranges content into an argument instead of a list. Click each card to open it.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 3 · Narrative moves to ask for</span>
+      <div class="controls">
+        <button onclick="narrAll(true)">Open all</button>
+        <button onclick="narrAll(false)">↺ Collapse</button>
+      </div>
+    </div>
+    <div class="narr-grid" id="narrGrid">
+      <div class="narr" onclick="narrTog(this)">
+        <div class="nk">Move 01</div>
+        <h4>Problem → Insight → Action</h4>
+        <p class="nquick">The three-beat spine that turns a report into an argument.</p>
+        <div class="nmore">
+          <p>Open on the problem the audience feels, reveal the insight they haven't seen, then name the action you want. Every slide earns its place by advancing one of these three beats.</p>
+          <p class="nchip">"Structure this as problem, then insight, then a clear ask — one beat per section."</p>
+        </div>
+        <span class="nhint">▸ Click to expand</span>
+      </div>
+      <div class="narr" onclick="narrTog(this)">
+        <div class="nk">Move 02</div>
+        <h4>One idea per slide</h4>
+        <p class="nquick">If a slide needs two headlines, it's two slides.</p>
+        <div class="nmore">
+          <p>A slide the audience can grasp in five seconds beats a dense one they read instead of listening to you. Ask AI to split any slide carrying more than a single point.</p>
+          <p class="nchip">"Limit each slide to one idea and one headline. Split anything that has two."</p>
+        </div>
+        <span class="nhint">▸ Click to expand</span>
+      </div>
+      <div class="narr" onclick="narrTog(this)">
+        <div class="nk">Move 03</div>
+        <h4>Story over bullet-dump</h4>
+        <p class="nquick">A sequence that builds beats a list that just sits there.</p>
+        <div class="nmore">
+          <p>Bullets state; stories move. Ask the AI to make each slide set up the next, so the deck reads as one line of reasoning rather than disconnected fragments.</p>
+          <p class="nchip">"Make each slide lead into the next so the deck reads as one connected story."</p>
+        </div>
+        <span class="nhint">▸ Click to expand</span>
+      </div>
+    </div>
+  </div>
+
+  <p>None of these are the AI's default — a generator optimises for covering the topic, not for making a point. So you name the spine in the brief, and you check the draft has one. The structure is the part of the deck that is most yours, because it encodes what you're actually trying to say.</p>
+</section>
+
+<section>
+  <div class="section-num">05 / 06</div>
+  <h2>Cut the wordy slide down</h2>
+  <p class="lead">AI's biggest slide sin is words. It writes paragraphs where a slide needs a phrase. The fix is one instruction — and the difference is stark.</p>
+
+  <p>A raw AI slide often reads like a report page: full sentences, three clauses each, everything the model could think of. But a slide is a visual aid, not a script — the words on screen should support you, not replace you. Ask AI to "cut this to a headline and three short phrases, move the detail to speaker notes," and the slide transforms. Toggle the demo below.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 4 · Wordy slide → tight slide</span>
+      <div class="controls">
+        <button id="baBtn0" class="active" onclick="baSet(0)">Before</button>
+        <button id="baBtn1" onclick="baSet(1)">After</button>
+      </div>
+    </div>
+    <div class="ba-wrap">
+      <div class="slide before">
+        <div class="slide-head">Raw AI draft</div>
+        <div class="slide-canvas">
+          <div class="slide-title">Our customer retention performance during the third quarter of the fiscal year</div>
+          <ul>
+            <li>Our overall customer retention rate improved considerably over the course of Q3, reaching a level of 87%, which represents a meaningful increase.</li>
+            <li>This improvement was largely driven by the successful rollout of our new onboarding flow, which reduced early churn among first-time users significantly.</li>
+            <li>Additionally, the introduction of proactive support outreach contributed to keeping at-risk accounts engaged throughout the quarter.</li>
+          </ul>
+        </div>
+        <p class="slide-foot">61 words on screen. The audience reads instead of listening — and can't find the point.</p>
+      </div>
+      <div class="slide after">
+        <div class="slide-head">After "tighten it"</div>
+        <div class="slide-canvas">
+          <div class="slide-title">Retention hit 87% in Q3 — up 6 points</div>
+          <ul>
+            <li>New onboarding flow cut early churn</li>
+            <li>Proactive outreach saved at-risk accounts</li>
+            <li>Best quarterly retention on record</li>
+          </ul>
+        </div>
+        <p class="slide-foot">14 words on screen. One clear headline, three phrases you can talk around. Detail goes to notes.</p>
+      </div>
+    </div>
+    <div class="ba-metric">
+      <div class="bm"><div class="bmn" id="bmA">61</div><span class="bml">Words before</span></div>
+      <div class="bm"><div class="bmn" id="bmB">14</div><span class="bml">Words after</span></div>
+      <div class="bm"><div class="bmn" id="bmC">−77%</div><span class="bml">Read time cut</span></div>
+    </div>
+  </div>
+
+  <p>The tight slide isn't dumber — it's <em>doing its job</em>. The words that got cut weren't deleted; the good ones moved to the speaker notes, where they belong. Which is the next thing AI is quietly good at: writing what you'll actually say.</p>
+</section>
+
+<section>
+  <div class="section-num">06 / 06</div>
+  <h2>Notes, iteration, and honest limits</h2>
+  <p class="lead">A finished deck needs the words you'll speak, a slide-by-slide polish pass — and a clear-eyed sense of where AI reliably lets you down.</p>
+
+  <p>Once slides are tight, ask AI to draft the <strong>speaker notes</strong>: the sentences you say aloud while each slide sits on screen. It turns the detail you cut into a natural script you can rehearse and adapt. Reveal the notes it generates for the tightened slide below.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 5 · Generate the speaker notes</span>
+      <div class="controls">
+        <button onclick="snReveal()">Draft notes</button>
+        <button onclick="snClear()">↺ Hide</button>
+      </div>
+    </div>
+    <div class="sn-wrap">
+      <div class="sn-slide">
+        <span class="sn-lab">The slide</span>
+        <div class="sn-slidetitle">Retention hit 87% in Q3 — up 6 points</div>
+        <ul>
+          <li>New onboarding flow cut early churn</li>
+          <li>Proactive outreach saved at-risk accounts</li>
+          <li>Best quarterly retention on record</li>
+        </ul>
+      </div>
+      <div class="sn-notes" id="snNotes">
+        <span class="sn-lab">Speaker notes</span>
+        <p class="sn-placeholder" id="snPh">Click "Draft notes" to see the script AI writes for this slide.</p>
+        <p class="sn-note-line">Eighty-seven percent — that's our strongest retention quarter yet, six points up from Q2.</p>
+        <p class="sn-note-line">Two things moved it. First, the new onboarding flow: first-time users who used to drop off in week one are staying.</p>
+        <p class="sn-note-line">Second, we stopped waiting for accounts to churn. Proactive outreach caught at-risk customers early.</p>
+        <p class="sn-note-line">The headline for the board: this isn't a blip, it's the highest quarterly retention we've ever recorded.</p>
+      </div>
+    </div>
+  </div>
+
+  <h3>Refine slide by slide, not all at once</h3>
+  <p>The first draft is a starting point, never the final deck. The productive loop is to work one slide at a time — "make slide 3 punchier," "this transition is weak, bridge it," "the ask on the last slide is buried" — accepting and rejecting until each slide earns its place. Run this six-point pass across the deck AI hands you.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 6 · The slide-by-slide iteration pass</span>
+      <div class="controls">
+        <button onclick="vPreset()">Run a careful pass</button>
+        <button onclick="vClear()">↺ Clear</button>
+      </div>
+    </div>
+    <div class="vwrap">
+      <div>
+        <div class="vprod">Refining: <strong>an AI first-draft deck before you present it</strong></div>
+        <div id="vlist">
+          <label class="vitem"><input type="checkbox" onchange="vUpdate()"><span>Confirmed the deck opens on the problem and closes on a clear ask</span></label>
+          <label class="vitem"><input type="checkbox" onchange="vUpdate()"><span>Checked each slide carries exactly one idea — split or merged where it didn't</span></label>
+          <label class="vitem"><input type="checkbox" onchange="vUpdate()"><span>Cut wordy slides to a headline and a few phrases; moved detail to notes</span></label>
+          <label class="vitem"><input type="checkbox" onchange="vUpdate()"><span>Verified every number, name, and claim against a real source</span></label>
+          <label class="vitem"><input type="checkbox" onchange="vUpdate()"><span>Replaced generic filler slides with something specific to this audience</span></label>
+          <label class="vitem"><input type="checkbox" onchange="vUpdate()"><span>Read the speaker notes aloud once to catch what doesn't sound like you</span></label>
+        </div>
+      </div>
+      <div class="vside">
+        <div class="vscore-row"><span>Deck ready?</span><strong id="vnum">0 / 6</strong></div>
+        <div class="vbar"><div id="vfill"></div></div>
+        <div class="vpanel" id="vpanel">
+          <span class="vtag" id="vtag">Verdict</span>
+          <p id="vmsg">Tick each pass you actually made — a deck that looks finished can still be a bullet-dump full of invented facts.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Where AI reliably lets you down</h3>
+  <p>AI drafts fast, but it has three habits you must correct every time. It pads with generic filler, it over-writes, and — most dangerous — it invents facts that sound plausible. Click each limit below to see what it looks like and the prompt that keeps it honest.</p>
+
+  <div class="illus">
+    <div class="illus-title">
+      <span>Figure 7 · The three honest limits</span>
+    </div>
+    <div class="lim-grid">
+      <div class="lim-list" id="limList">
+        <div class="lim-item active" onclick="limSet(0)"><span class="lim-code">Filler</span><p class="lim-cause">Generic "Agenda," "Overview," and "Thank you" slides that say nothing.</p></div>
+        <div class="lim-item" onclick="limSet(1)"><span class="lim-code">Wordiness</span><p class="lim-cause">Full sentences and dense paragraphs where a slide needs a phrase.</p></div>
+        <div class="lim-item" onclick="limSet(2)"><span class="lim-code">Invented facts</span><p class="lim-cause">Confident statistics, quotes, and figures that were never in your source.</p></div>
+      </div>
+      <div class="lim-panel" id="limPanel">
+        <div class="lim-big" id="limBig">Generic filler</div>
+        <div class="lim-row"><span class="lim-rk">What it looks like</span><p class="lim-rv" id="limCause"></p></div>
+        <div class="lim-row"><span class="lim-rk">How you fix it</span><p class="lim-rv" id="limFix"></p></div>
+        <div class="lim-row"><span class="lim-rk">Ask AI</span><div class="lim-prompt" id="limPrompt"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <p>The rule that keeps you safe is simple: <strong>AI drafts, you verify — and you never let a number onto a slide you haven't confirmed.</strong> A deck that looks polished carries just as much authority when its facts are wrong, which is exactly what makes invented facts the one limit you can't afford to skip. Draft with AI; own the truth of every slide yourself.</p>
+</section>
+
+<div class="takeaway">
+  <h2>What to carry forward</h2>
+  <p>You don't build decks slide by slide anymore — you brief AI and refine what it drafts. But writing the brief, giving the deck a spine, cutting the wordiness, and verifying every claim are skills that stay firmly yours. That's where the value moved.</p>
+  <ul>
+    <li>A strong brief carries audience, goal, length, tone, structure, and source</li>
+    <li>Feed a document when content exists · sketch an outline when you know the story</li>
+    <li>Ask for a spine · problem → insight → action, one idea per slide, story over bullets</li>
+    <li>AI over-writes · cut to a headline and phrases, push the detail into speaker notes</li>
+    <li>Edit and verify · AI adds filler, over-writes, and invents facts — you own the truth</li>
+  </ul>
+</div>
+
+</div>
+<footer>MokshPath · Lesson 02 of 04 · Next up: Designing Slides that Look Professional →</footer>
+<script>
+
+/* ============ Figure 1 · Transformer ============ */
+const tfWrap=document.getElementById('tfWrap');
+const tfEn=document.getElementById('tfEn'),tfFx=document.getElementById('tfFx'),tfNote=document.getElementById('tfNote');
+const TF=[
+  {
+    en:'"Make me a presentation about our Q3 results."',
+    fx:'15 slides · Title → Agenda → "Company Overview" → generic charts → "Key Highlights" → "Challenges" → "Thank You". Corporate, tone-neutral, aimed at no one in particular.',
+    note:'Under-specified. The AI guessed the audience (everyone), the goal (none), and the length (default long). It padded with filler slides because you gave it nothing real to say.'
+  },
+  {
+    en:'"Make a 10-slide Q3 results deck for our leadership team. Keep it concise and focus on retention and revenue."',
+    fx:'10 slides · leadership-oriented · retention and revenue sections · fewer filler slides · a "Highlights" and a "Next Quarter" slide. Concise tone, but still no clear ask.',
+    note:'Clearer. Audience, length, and focus are pinned, so the filler shrinks. Still missing the one takeaway and a spine — so the slides list facts without building to a decision.'
+  },
+  {
+    en:'"Build an 8-slide Q3 deck for our board. Goal: get sign-off on next year\'s growth budget. Structure it problem → insight → action. Plain, confident tone. Use the attached results memo — don\'t invent numbers."',
+    fx:'8 slides · opens on the growth problem · insight from your memo\'s real numbers · closes on a budget ask · one idea per slide · confident tone · every figure sourced from the memo.',
+    note:'Strong. Audience, goal, length, tone, structure, and source are all present — the AI has almost nothing left to invent, so the draft lands close to presentable the first time.'
+  }
+];
+let tfCur=-1,tfTimer=null;
+function tfSet(i){
+  if(tfCur===i)return;
+  tfCur=i;
+  [0,1,2].forEach(j=>document.getElementById('tb'+j).classList.toggle('active',j===i));
+  tfEn.textContent=TF[i].en;
+  tfFx.classList.remove('show');
+  tfWrap.classList.add('working');
+  clearTimeout(tfTimer);
+  tfTimer=setTimeout(()=>{
+    tfFx.textContent=TF[i].fx;
+    tfFx.classList.add('show');
+    tfNote.textContent=TF[i].note;
+    tfWrap.classList.remove('working');
+  },820);
+}
+new IntersectionObserver((es,o)=>es.forEach(e=>{if(e.isIntersecting){tfSet(0);o.unobserve(e.target)}}),{threshold:0.4}).observe(tfWrap);
+
+/* ============ Figure 2 · Source tabs ============ */
+const PAT=[
+  {name:'From a prompt',use:'Fastest · loosest · least accurate',code:'"Make an 8-slide deck introducing our new billing feature to customers."',desc:'The job: get a rough shape out of nothing. You type a sentence and the AI invents a whole structure and content. Fastest way to a first draft — but everything on the slides is the AI\'s guess, so expect generic points and possibly invented specifics. Best for brainstorming a structure or a throwaway draft, not for anything with real numbers.'},
+  {name:'From a document',use:'Most faithful · grounded in real content',code:'"Turn this product spec into a 10-slide customer deck. Use only what\'s in the doc."',desc:'The job: reshape content you already have into slides. You paste or attach a report, spec, or notes, and AI extracts and arranges the real material. The slides stay grounded in your actual content, so far fewer invented facts. Best when the substance already exists and you just need it presented — which is most business decks.'},
+  {name:'From an outline',use:'Most control · best story',code:'"Expand this outline into slides: 1 Problem 2 What we found 3 The fix 4 The ask."',desc:'The job: you own the story, AI fills the slides. You write the spine first — the sequence of points you want to make — and AI expands each into a slide. Gives you the most control over narrative and flow while still saving the drafting time. Best when you know exactly what you want to say but not how to lay it out.'}
+];
+const patBody=document.getElementById('patBody'),patTabs=document.getElementById('patTabs');
+function patSet(i){
+  Array.prototype.forEach.call(patTabs.children,(b,j)=>b.classList.toggle('active',j===i));
+  const p=PAT[i];
+  patBody.innerHTML='<div class="pat-panel on"><h4>'+p.name+'</h4><div class="pat-use">'+p.use+'</div><div class="pat-code">'+p.code+'</div><p class="pat-desc">'+p.desc+'</p></div>';
+}
+patSet(0);
+
+/* ============ Figure 3 · Narrative cards ============ */
+function narrTog(el){el.classList.toggle('open')}
+function narrAll(open){Array.prototype.forEach.call(document.getElementById('narrGrid').children,el=>el.classList.toggle('open',open))}
+
+/* ============ Figure 4 · Before/after slide ============ */
+function baSet(i){
+  document.getElementById('baBtn0').classList.toggle('active',i===0);
+  document.getElementById('baBtn1').classList.toggle('active',i===1);
+  document.querySelector('.slide.before').style.opacity=i===0?'1':'0.4';
+  document.querySelector('.slide.after').style.opacity=i===1?'1':'0.4';
+}
+baSet(0);
+
+/* ============ Figure 5 · Speaker notes reveal ============ */
+function snReveal(){document.getElementById('snNotes').classList.add('reveal')}
+function snClear(){document.getElementById('snNotes').classList.remove('reveal')}
+new IntersectionObserver((es,o)=>es.forEach(e=>{if(e.isIntersecting){snReveal();o.unobserve(e.target)}}),{threshold:0.35}).observe(document.getElementById('snNotes'));
+
+/* ============ Figure 6 · Iteration checklist ============ */
+const vboxes=Array.prototype.slice.call(document.querySelectorAll('#vlist input'));
+function vUpdate(){
+  const n=vboxes.filter(b=>b.checked).length;
+  document.getElementById('vfill').style.width=(n/6*100)+'%';
+  document.getElementById('vnum').textContent=n+' / 6';
+  const panel=document.getElementById('vpanel'),tag=document.getElementById('vtag'),msg=document.getElementById('vmsg');
+  panel.className='vpanel';
+  if(n===0){tag.textContent='Verdict';msg.textContent='Tick each pass you actually made — a deck that looks finished can still be a bullet-dump full of invented facts.';return}
+  if(n<=2){panel.classList.add('v-bad');tag.textContent='First draft only — not ready';msg.textContent='This is still the AI\'s guess. Presenting it now means presenting filler and unverified numbers as if they were yours.'}
+  else if(n<=3){panel.classList.add('v-warn');tag.textContent='Half-refined — keep going';msg.textContent='Better, but gaps remain. The one-idea rule and the fact-check are exactly where an AI draft quietly undermines you on stage.'}
+  else if(n<=5){panel.classList.add('v-good');tag.textContent='Well refined — nearly there';msg.textContent='Strong pass. Finish the last checks — especially verifying every claim and reading the notes aloud — and the deck is yours.'}
+  else{panel.classList.add('v-great');tag.textContent='Fully refined — present it';msg.textContent='This is the standard. The AI drafted it, but the story, the tightness, and every fact are now things you own. Go present.'}
+}
+function vPreset(){
+  const run=[1,1,1,0,1,1];
+  vboxes.forEach((b,i)=>b.checked=!!run[i]);
+  vUpdate();
+}
+function vClear(){vboxes.forEach(b=>b.checked=false);vUpdate()}
+const vlist=document.getElementById('vlist');
+new IntersectionObserver((es,o)=>es.forEach(e=>{if(e.isIntersecting){vlist.classList.remove('go');void vlist.offsetWidth;vlist.classList.add('go');o.unobserve(e.target)}}),{threshold:0.25}).observe(vlist);
+
+/* ============ Figure 7 · Limits explainer ============ */
+const LIM=[
+  {big:'Generic filler',cause:'Slides titled "Agenda," "Overview," "Our Mission," and "Thank You" that could belong to any deck on any topic — the AI adds them to look complete, but they carry no information and steal time from your real points.',fix:'Delete filler slides outright, or ask AI to replace each with something specific to this audience and this decision. Every slide should either advance the argument or go.',prompt:'"Remove every generic slide — agenda, overview, thank-you — and replace them with slides that make a specific point for a board deciding on our budget."'},
+  {big:'Wordiness',cause:'Full sentences, three-clause bullets, and paragraphs the AI treats as slide content. The audience ends up reading the screen instead of listening to you, and the actual point drowns in supporting text.',fix:'Ask AI to cut each slide to a headline and a few short phrases, and push the sentences it removes into the speaker notes where they belong.',prompt:'"Cut this slide to one headline and at most three short phrases. Move all the detail and full sentences into the speaker notes."'},
+  {big:'Invented facts',cause:'Confident statistics, quotes, market sizes, and figures that read as authoritative but were never in your source — the AI fills gaps with plausible-sounding numbers rather than admitting it doesn\'t know.',fix:'Verify every number, name, and claim against a real source before it goes near an audience. Tell AI up front to use only your material and to flag anything it can\'t source.',prompt:'"Go through this deck and flag every statistic, quote, and figure that isn\'t in the document I gave you. Do not invent numbers — mark gaps as [VERIFY]."'}
+];
+function limSet(i){
+  Array.prototype.forEach.call(document.getElementById('limList').children,(el,j)=>el.classList.toggle('active',j===i));
+  const e=LIM[i];
+  document.getElementById('limBig').textContent=e.big;
+  document.getElementById('limCause').textContent=e.cause;
+  document.getElementById('limFix').textContent=e.fix;
+  document.getElementById('limPrompt').textContent=e.prompt;
+}
+limSet(0);
+
+</script>
+</body>
+</html>
