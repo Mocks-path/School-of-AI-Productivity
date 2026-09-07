@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>An Industry Perspective on Your Week 1 Topic — AI SEO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+  :root{
+    --orange:#E87A2E;--orange-dark:#D06A20;--orange-light:#F5943E;--orange-glow:rgba(232,122,46,0.12);
+    --navy:#2B2D42;--navy-dark:#1A1B2E;
+    --bg:#F3EDE7;--bg-card:#FFFFFF;--bg-light:#F9F5F0;
+    --text-primary:#2B2D42;--text-secondary:#6B6D7B;--text-muted:#9597A6;
+    --border:#E5DDD4;
+    --green:#4CAF50;--green-light:#E8F5E9;--blue:#4285F4;--red:#EA4335;--purple:#8B5CF6;
+    --shadow-sm:0 2px 8px rgba(43,45,66,0.06);
+    --shadow-md:0 8px 24px rgba(43,45,66,0.08);
+    --shadow-lg:0 16px 48px rgba(43,45,66,0.12);
+    --radius:14px;--radius-sm:8px;
+  }
+  html,body{height:100%}
+  body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text-primary);overflow:hidden;-webkit-font-smoothing:antialiased}
+
+  .deck{position:fixed;inset:0;overflow:hidden}
+  .slide{position:absolute;inset:0;padding:4.5rem 5.5rem 5rem;display:flex;flex-direction:column;opacity:0;pointer-events:none;transition:opacity .55s ease;background:var(--bg)}
+  .slide.active{opacity:1;pointer-events:auto;z-index:2}
+  .slide::before{content:'';position:absolute;top:-15%;right:-10%;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle, rgba(232,122,46,0.08) 0%, rgba(232,122,46,0) 70%);pointer-events:none;z-index:0}
+  .slide::after{content:'';position:absolute;bottom:-20%;left:-12%;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle, rgba(43,45,66,0.04) 0%, rgba(43,45,66,0) 70%);pointer-events:none;z-index:0}
+  .slide.dark{background:var(--navy-dark)}
+  .slide.dark::before{background:radial-gradient(circle, rgba(232,122,46,0.14) 0%, rgba(232,122,46,0) 70%)}
+  .slide.dark::after{background:radial-gradient(circle, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 70%)}
+
+  .deck-logo{position:fixed;top:1.3rem;right:2rem;width:52px;height:auto;z-index:50;filter:drop-shadow(0 4px 12px rgba(43,45,66,0.10));animation:logoFloat 5s ease-in-out infinite}
+  @keyframes logoFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+  .deck-wordmark{position:fixed;top:1.55rem;right:5.6rem;z-index:50;text-align:right;line-height:1.1;user-select:none}
+  .deck-wordmark .wm-name{font-family:'DM Serif Display',serif;font-size:1.05rem;color:var(--navy)}
+  .deck-wordmark .wm-name span{color:var(--orange)}
+  .deck-wordmark .wm-tag{font-size:.58rem;color:var(--text-muted);font-weight:500;letter-spacing:.04em;text-transform:uppercase}
+  body.dark-slide .deck-wordmark .wm-name{color:#fff}
+  body.dark-slide .deck-wordmark .wm-tag{color:rgba(255,255,255,0.5)}
+
+  .slide-inner{position:relative;z-index:2;flex:1;display:flex;flex-direction:column;max-width:1280px;margin:0 auto;width:100%}
+  .eyebrow{display:inline-flex;align-items:center;gap:.5rem;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--orange);margin-bottom:1.1rem}
+  .eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--orange);animation:pulse 2s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+
+  h2.slide-title{font-family:'DM Serif Display',serif;font-size:clamp(1.9rem,3.4vw,2.9rem);line-height:1.12;color:var(--navy);margin-bottom:.9rem}
+  h2.slide-title em{font-style:normal;color:var(--orange)}
+  .slide.dark h2.slide-title{color:#fff}
+  .slide-sub{font-size:1.02rem;color:var(--text-secondary);line-height:1.6;max-width:760px;margin-bottom:1.6rem}
+  .slide.dark .slide-sub{color:rgba(255,255,255,0.72)}
+
+  .anim{opacity:0;transform:translateY(22px)}
+  .slide.active .anim{animation:fadeUp .75s cubic-bezier(.2,.7,.2,1) forwards}
+  .slide.active .anim.d1{animation-delay:.05s}
+  .slide.active .anim.d2{animation-delay:.18s}
+  .slide.active .anim.d3{animation-delay:.32s}
+  .slide.active .anim.d4{animation-delay:.46s}
+  .slide.active .anim.d5{animation-delay:.6s}
+  .slide.active .anim.d6{animation-delay:.74s}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+  .anim-scale{opacity:0;transform:scale(.92)}
+  .slide.active .anim-scale{animation:scaleIn .75s cubic-bezier(.2,.7,.2,1) forwards}
+  .slide.active .anim-scale.d1{animation-delay:.1s}
+  .slide.active .anim-scale.d2{animation-delay:.25s}
+  .slide.active .anim-scale.d3{animation-delay:.4s}
+  .slide.active .anim-scale.d4{animation-delay:.55s}
+  @keyframes scaleIn{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:scale(1)}}
+
+  /* ── SLIDE 1: TITLE ── */
+  .title-slide .slide-inner{align-items:center;justify-content:center;text-align:center}
+  .title-badge{display:inline-flex;align-items:center;gap:.5rem;padding:.5rem 1.2rem;border-radius:50px;background:var(--orange-glow);color:var(--orange);font-size:.76rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:1.8rem}
+  .title-slide h1{font-family:'DM Serif Display',serif;font-size:clamp(2.6rem,5.4vw,4.6rem);line-height:1.06;color:var(--navy);margin-bottom:1rem;letter-spacing:-.01em}
+  .title-slide h1 em{font-style:normal;color:var(--orange)}
+  .title-slide .subtitle{font-size:1.15rem;color:var(--text-secondary);max-width:700px;line-height:1.55;margin-bottom:2.4rem}
+  .title-meta{display:flex;gap:2.2rem;justify-content:center;color:var(--text-muted);font-size:.82rem;font-weight:500;letter-spacing:.05em;text-transform:uppercase}
+  .title-meta span{display:inline-flex;align-items:center;gap:.5rem}
+  .title-meta span::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--orange)}
+
+  /* ── SLIDE 2: HOOK ── */
+  .hook-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.1rem;margin-top:1rem;max-width:1100px}
+  .hook-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:1.4rem 1.5rem;box-shadow:var(--shadow-sm);transition:transform .3s, box-shadow .3s}
+  .hook-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-md)}
+  .hook-icon{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.35rem;margin-bottom:.8rem}
+  .hook-card:nth-child(1) .hook-icon{background:rgba(66,133,244,0.1)}
+  .hook-card:nth-child(2) .hook-icon{background:var(--orange-glow)}
+  .hook-card:nth-child(3) .hook-icon{background:rgba(76,175,80,0.1)}
+  .hook-card h4{font-family:'DM Serif Display',serif;font-size:1.08rem;color:var(--navy);margin-bottom:.3rem;line-height:1.3}
+  .hook-card p{font-size:.84rem;color:var(--text-secondary);line-height:1.55}
+  .hook-bottom{margin-top:1.6rem;padding:1.1rem 1.4rem;background:var(--navy-dark);color:#fff;border-radius:var(--radius);font-size:1rem;font-weight:500;line-height:1.55;max-width:1100px;box-shadow:var(--shadow-md)}
+  .hook-bottom em{color:var(--orange-light);font-style:normal;font-weight:700}
+  .engine-row{display:flex;align-items:center;gap:.6rem;margin-top:1.4rem;flex-wrap:wrap;max-width:1100px}
+  .engine-step{padding:.6rem 1.2rem;border-radius:50px;background:var(--bg-card);border:1.5px solid var(--border);font-size:.85rem;font-weight:700;color:var(--navy);box-shadow:var(--shadow-sm)}
+  .engine-step span{color:var(--orange);margin-right:.35rem}
+  .engine-arrow{color:var(--orange);font-weight:800;font-size:1.1rem}
+
+  /* ── SLIDE 3: REVEAL ── */
+  .reveal-slide .slide-inner{align-items:center;justify-content:center;text-align:center}
+  .reveal-headline{font-family:'DM Serif Display',serif;font-size:clamp(2.2rem,4.4vw,3.7rem);line-height:1.12;color:var(--navy);max-width:1050px;margin-bottom:1.8rem}
+  .reveal-headline .strike{position:relative;color:var(--text-muted)}
+  .reveal-headline .strike::after{content:'';position:absolute;left:-3%;right:-3%;top:55%;height:4px;background:var(--orange);transform:scaleX(0);transform-origin:left}
+  .slide.active .reveal-headline .strike::after{animation:strike .6s ease forwards .8s}
+  @keyframes strike{to{transform:scaleX(1)}}
+  .reveal-headline em{font-style:normal;color:var(--orange)}
+  .reveal-compare{display:grid;grid-template-columns:1fr auto 1fr;gap:1.2rem;align-items:stretch;max-width:980px;width:100%;margin-bottom:1.6rem}
+  .reveal-col{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:1.2rem 1.4rem;text-align:left;box-shadow:var(--shadow-sm)}
+  .reveal-col h5{font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.7rem}
+  .reveal-col.then h5{color:var(--text-muted)}
+  .reveal-col.now h5{color:var(--orange)}
+  .reveal-col ul{list-style:none}
+  .reveal-col li{font-size:.85rem;color:var(--text-secondary);line-height:1.5;padding:.3rem 0 .3rem 1.2rem;position:relative}
+  .reveal-col.then li::before{content:'✕';position:absolute;left:0;color:var(--text-muted);font-size:.75rem}
+  .reveal-col.now li::before{content:'✓';position:absolute;left:0;color:var(--green);font-weight:800;font-size:.8rem}
+  .reveal-col.now{border-color:rgba(232,122,46,0.4)}
+  .reveal-mid{display:flex;align-items:center;justify-content:center;font-size:1.6rem;color:var(--orange);font-weight:800}
+  .reveal-caution{padding:.8rem 1.4rem;border-radius:50px;background:rgba(234,67,53,0.08);border:1px solid rgba(234,67,53,0.25);color:#B3362B;font-size:.9rem;font-weight:600}
+
+  /* ── INDUSTRY STOPS (4–6) ── */
+  .industry-layout{display:grid;grid-template-columns:1fr 1.05fr;gap:2.6rem;align-items:center;flex:1}
+  .industry-left{display:flex;flex-direction:column;justify-content:center}
+  .industry-tag{display:inline-flex;align-items:center;gap:.5rem;padding:.4rem 1rem;border-radius:50px;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:1.1rem;width:fit-content}
+  .industry-left h2{font-family:'DM Serif Display',serif;font-size:clamp(1.9rem,3.4vw,2.9rem);color:var(--navy);line-height:1.12;margin-bottom:1.1rem}
+  .industry-left h2 em{font-style:normal;color:var(--orange)}
+  .industry-left p.lede{font-size:.98rem;color:var(--text-secondary);line-height:1.65;margin-bottom:1.5rem}
+  .industry-key{background:var(--navy-dark);color:#fff;padding:1.05rem 1.3rem;border-radius:var(--radius);font-size:.94rem;font-weight:500;line-height:1.5;border-left:4px solid var(--orange)}
+  .industry-key em{font-style:normal;color:var(--orange-light);font-weight:700}
+  .industry-right{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:1.7rem;box-shadow:var(--shadow-md)}
+  .industry-right h5{font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:1.1rem}
+  .use-list{display:flex;flex-direction:column;gap:.8rem}
+  .use-item{display:flex;align-items:flex-start;gap:.85rem;padding:.8rem .95rem;background:var(--bg-light);border-radius:var(--radius-sm);border-left:3px solid var(--orange)}
+  .use-item .num{width:26px;height:26px;border-radius:50%;background:var(--orange);color:#fff;font-size:.76rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .use-item p{font-size:.88rem;color:var(--text-primary);line-height:1.5}
+  .use-item p strong{color:var(--navy);font-weight:700}
+  .industry-founder .industry-tag{background:rgba(66,133,244,0.1);color:var(--blue)}
+  .industry-agency .industry-tag{background:var(--orange-glow);color:var(--orange)}
+  .industry-supplier .industry-tag{background:rgba(76,175,80,0.1);color:var(--green)}
+  .stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:.7rem;margin-bottom:1.1rem}
+  .stat-card{padding:.85rem .6rem;background:var(--bg-light);border-radius:var(--radius-sm);text-align:center;border:1px solid var(--border)}
+  .stat-card .sv{font-family:'DM Serif Display',serif;font-size:1.5rem;color:var(--orange);line-height:1.1}
+  .stat-card .sl{font-size:.62rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em;font-weight:700;margin-top:.3rem}
+
+  /* flow diagram (slide 6) */
+  .flow-col{display:flex;flex-direction:column;gap:.45rem}
+  .flow-node{display:flex;align-items:center;gap:.8rem;padding:.7rem .95rem;background:var(--bg-light);border-radius:var(--radius-sm);border:1.5px solid var(--border);font-size:.86rem;font-weight:600;color:var(--navy)}
+  .flow-node .fi{width:32px;height:32px;border-radius:8px;background:var(--orange-glow);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+  .flow-node.auto{border-color:rgba(76,175,80,0.45)}
+  .flow-node.auto .fi{background:rgba(76,175,80,0.12)}
+  .flow-node .tag-auto{margin-left:auto;font-size:.6rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--green);background:var(--green-light);padding:.2rem .5rem;border-radius:4px}
+  .flow-down{text-align:center;color:var(--orange);font-weight:800;font-size:.95rem;line-height:1}
+
+  /* ── SLIDE 7: PATTERN ── */
+  .pattern-slide .slide-inner{align-items:center;justify-content:center;text-align:center}
+  .pattern-quote{font-family:'DM Serif Display',serif;font-size:clamp(2.2rem,4.4vw,3.6rem);line-height:1.14;color:var(--navy);max-width:1050px;margin-bottom:1.2rem}
+  .pattern-quote em{font-style:normal;color:var(--orange)}
+  .pattern-divide{width:80px;height:3px;background:var(--orange);margin:1.2rem auto 1.8rem;border-radius:2px}
+  .pattern-loop{display:flex;align-items:center;gap:.7rem;flex-wrap:wrap;justify-content:center;margin-bottom:1.6rem}
+  .loop-chip{padding:.65rem 1.3rem;border-radius:50px;background:var(--bg-card);border:1.5px solid var(--border);font-size:.9rem;font-weight:700;color:var(--navy);box-shadow:var(--shadow-sm)}
+  .loop-chip.hot{background:var(--orange);border-color:var(--orange);color:#fff;box-shadow:0 6px 20px rgba(232,122,46,0.3)}
+  .loop-arrow{color:var(--orange);font-weight:800;font-size:1.15rem}
+  .pattern-tag{font-size:1.08rem;color:var(--text-secondary);max-width:760px;line-height:1.55}
+  .pattern-tag strong{color:var(--navy);font-weight:700}
+
+  /* ── SLIDE 8: CURRICULUM BRIDGE ── */
+  .bridge-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.1rem;margin-top:.6rem;max-width:1080px}
+  .bridge-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:1.35rem 1.5rem;box-shadow:var(--shadow-sm);position:relative;overflow:hidden}
+  .bridge-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px}
+  .bridge-card:nth-child(1)::before{background:linear-gradient(90deg,var(--blue),#7BAAF7)}
+  .bridge-card:nth-child(2)::before{background:linear-gradient(90deg,var(--orange),var(--orange-light))}
+  .bridge-card:nth-child(3)::before{background:linear-gradient(90deg,var(--purple),#A78BFA)}
+  .bridge-card:nth-child(4)::before{background:linear-gradient(90deg,var(--green),#7BC67E)}
+  .bridge-num{font-size:.66rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--orange);margin-bottom:.4rem}
+  .bridge-card h4{font-family:'DM Serif Display',serif;font-size:1.15rem;color:var(--navy);margin-bottom:.35rem}
+  .bridge-card p{font-size:.85rem;color:var(--text-secondary);line-height:1.55}
+  .bridge-card .maps{margin-top:.6rem;font-size:.72rem;font-weight:700;color:var(--orange);text-transform:uppercase;letter-spacing:.05em}
+
+  /* ── CONCEPT SLIDES (9–12) ── */
+  .concept-layout{display:grid;grid-template-columns:1fr 1fr;gap:2.6rem;align-items:center;flex:1}
+  .concept-left h2{font-family:'DM Serif Display',serif;font-size:clamp(1.8rem,3.2vw,2.7rem);color:var(--navy);line-height:1.14;margin-bottom:1rem}
+  .concept-left h2 em{font-style:normal;color:var(--orange)}
+  .concept-left p.lede{font-size:.96rem;color:var(--text-secondary);line-height:1.65;margin-bottom:1.3rem}
+  .concept-visual{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:1.6rem;box-shadow:var(--shadow-md)}
+  .concept-visual h5{font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:1rem}
+  .score-list{display:flex;flex-direction:column;gap:.7rem}
+  .score-item{display:flex;align-items:center;gap:.8rem}
+  .score-item .sn{font-size:.84rem;font-weight:700;color:var(--navy);width:120px;flex-shrink:0}
+  .score-track{flex:1;height:10px;background:var(--bg-light);border-radius:5px;overflow:hidden;border:1px solid var(--border)}
+  .score-fill{height:100%;border-radius:5px;background:linear-gradient(90deg,var(--orange),var(--orange-light));width:0}
+  .slide.active .score-fill{transition:width 1s ease .6s}
+  .score-item .sp{font-size:.78rem;font-weight:800;color:var(--orange);width:36px;text-align:right}
+  .copy-compare{display:flex;flex-direction:column;gap:.8rem}
+  .copy-block{padding:.95rem 1.05rem;border-radius:var(--radius-sm);font-size:.86rem;line-height:1.55}
+  .copy-block .cb-tag{display:inline-block;font-size:.6rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:.18rem .55rem;border-radius:4px;margin-bottom:.45rem}
+  .copy-block.generic{background:var(--bg-light);border:1.5px dashed var(--border);color:var(--text-muted)}
+  .copy-block.generic .cb-tag{background:#E5E0DA;color:var(--text-secondary)}
+  .copy-block.directed{background:var(--orange-glow);border:1.5px solid rgba(232,122,46,0.35);color:var(--text-primary)}
+  .copy-block.directed .cb-tag{background:var(--orange);color:#fff}
+  .ad-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.7rem;margin-bottom:1rem}
+  .ad-card{border-radius:var(--radius-sm);border:1.5px solid var(--border);padding:.8rem .7rem;background:var(--bg-light);text-align:center}
+  .ad-card .ah{font-size:.78rem;font-weight:700;color:var(--navy);line-height:1.35;margin-bottom:.5rem;min-height:2.6em}
+  .ad-card .am{font-size:.68rem;font-weight:800;color:var(--text-muted)}
+  .ad-card.winner{background:var(--green-light);border-color:var(--green)}
+  .ad-card.winner .am{color:#2E7D32}
+  .ad-card.loser{opacity:.55}
+  .ad-note{font-size:.8rem;color:var(--text-secondary);line-height:1.5;text-align:center}
+  .metric-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.8rem;margin-bottom:1rem}
+  .metric-tile{padding:1rem;background:var(--bg-light);border-radius:var(--radius-sm);border:1px solid var(--border);text-align:center}
+  .metric-tile .mv{font-family:'DM Serif Display',serif;font-size:1.55rem;color:var(--navy);line-height:1.1}
+  .metric-tile .ml{font-size:.64rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;font-weight:700;margin-top:.35rem}
+  .verdict-row{display:flex;gap:.7rem}
+  .verdict{flex:1;padding:.75rem;border-radius:var(--radius-sm);text-align:center;font-weight:800;font-size:.88rem}
+  .verdict.scale{background:var(--green-light);color:#2E7D32;border:1.5px solid var(--green)}
+  .verdict.kill{background:rgba(234,67,53,0.08);color:#B3362B;border:1.5px solid rgba(234,67,53,0.4)}
+
+  /* ── SLIDE 13: HONEST (dark) ── */
+  .honest-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.1rem;margin:1.4rem 0;max-width:1080px}
+  .honest-card{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.14);border-radius:var(--radius);padding:1.4rem 1.5rem}
+  .honest-card .hv{font-family:'DM Serif Display',serif;font-size:2rem;color:var(--orange-light);line-height:1.1;margin-bottom:.45rem}
+  .honest-card p{font-size:.86rem;color:rgba(255,255,255,0.75);line-height:1.55}
+  .honest-key{max-width:1080px;padding:1.05rem 1.35rem;border-radius:var(--radius);background:rgba(232,122,46,0.14);border-left:4px solid var(--orange);color:#fff;font-size:.98rem;font-weight:500;line-height:1.55}
+  .honest-key em{font-style:normal;color:var(--orange-light);font-weight:700}
+
+  /* ── SLIDE 14: VALUE ── */
+  .value-layout{display:grid;grid-template-columns:1.05fr 1fr;gap:2.6rem;align-items:center;flex:1}
+  .value-list{display:flex;flex-direction:column;gap:.8rem}
+  .value-item{display:flex;align-items:flex-start;gap:.9rem;padding:.9rem 1.05rem;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);box-shadow:var(--shadow-sm)}
+  .value-item .vi{width:38px;height:38px;border-radius:10px;background:var(--orange-glow);display:flex;align-items:center;justify-content:center;font-size:1.05rem;flex-shrink:0}
+  .value-item h4{font-size:.92rem;color:var(--navy);font-weight:700;margin-bottom:.15rem}
+  .value-item p{font-size:.8rem;color:var(--text-secondary);line-height:1.5}
+  .proof-card{background:var(--navy-dark);border-radius:var(--radius);padding:1.7rem;color:#fff;box-shadow:var(--shadow-lg)}
+  .proof-card h5{font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--orange-light);margin-bottom:1rem}
+  .proof-card .doc{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:var(--radius-sm);padding:1.05rem 1.2rem}
+  .proof-card .doc h4{font-family:'DM Serif Display',serif;font-size:1.15rem;margin-bottom:.6rem}
+  .proof-card .doc ul{list-style:none}
+  .proof-card .doc li{font-size:.84rem;color:rgba(255,255,255,0.78);padding:.28rem 0 .28rem 1.3rem;position:relative;line-height:1.45}
+  .proof-card .doc li::before{content:'✓';position:absolute;left:0;color:var(--orange-light);font-weight:800}
+  .proof-card .verdict-line{margin-top:.9rem;font-size:.88rem;color:rgba(255,255,255,0.85);line-height:1.5}
+  .proof-card .verdict-line em{font-style:normal;color:var(--orange-light);font-weight:700}
+
+  /* ── SLIDE 15: WHO WINS ── */
+  .roles-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-top:1.2rem;max-width:1160px}
+  .role-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:1.4rem 1.3rem;box-shadow:var(--shadow-sm);transition:transform .3s}
+  .role-card:hover{transform:translateY(-4px)}
+  .role-icon{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;margin-bottom:.8rem}
+  .role-card:nth-child(1) .role-icon{background:rgba(66,133,244,0.1)}
+  .role-card:nth-child(2) .role-icon{background:var(--orange-glow)}
+  .role-card:nth-child(3) .role-icon{background:rgba(139,92,246,0.1)}
+  .role-card:nth-child(4) .role-icon{background:rgba(76,175,80,0.1)}
+  .role-card h4{font-family:'DM Serif Display',serif;font-size:1.05rem;color:var(--navy);margin-bottom:.35rem}
+  .role-card p{font-size:.82rem;color:var(--text-secondary);line-height:1.55}
+  .roles-footer{margin-top:1.5rem;font-size:1rem;color:var(--text-secondary);max-width:1160px}
+  .roles-footer strong{color:var(--orange)}
+
+  /* ── SLIDE 16: BELONG ── */
+  .belong-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;margin-top:.8rem;max-width:1000px}
+  .belong-item{display:flex;align-items:flex-start;gap:.9rem;padding:1rem 1.15rem;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow-sm)}
+  .belong-item .bi{width:40px;height:40px;border-radius:10px;background:var(--orange-glow);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
+  .belong-item p{font-size:.88rem;color:var(--text-primary);line-height:1.55}
+  .belong-item p strong{color:var(--navy)}
+  .belong-banner{margin-top:1.4rem;max-width:1000px;padding:1.05rem 1.35rem;background:var(--navy-dark);color:#fff;border-radius:var(--radius);font-size:.98rem;line-height:1.55;font-weight:500}
+  .belong-banner em{font-style:normal;color:var(--orange-light);font-weight:700}
+
+  /* ── SLIDE 17: CLOSING (dark) ── */
+  .closing-slide .slide-inner{align-items:center;justify-content:center;text-align:center}
+  .closing-quote{font-family:'DM Serif Display',serif;font-size:clamp(2.2rem,4.6vw,3.9rem);line-height:1.12;color:#fff;max-width:1050px;margin-bottom:1.6rem}
+  .closing-quote em{font-style:normal;color:var(--orange-light)}
+  .closing-sub{font-size:1.1rem;color:rgba(255,255,255,0.72);max-width:760px;line-height:1.6;margin-bottom:2.2rem}
+  .closing-pills{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center}
+  .closing-pill{padding:.7rem 1.6rem;border-radius:50px;background:var(--orange);color:#fff;font-weight:700;font-size:1rem;letter-spacing:.03em;box-shadow:0 6px 20px rgba(232,122,46,0.35)}
+  .closing-pill.alt{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.25);box-shadow:none}
+
+  /* ── DECK CHROME ── */
+  .deck-progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--orange),var(--orange-light));width:0;z-index:60;transition:width .4s ease}
+  .deck-chrome{position:fixed;bottom:1.4rem;left:0;right:0;z-index:40;display:flex;justify-content:space-between;align-items:center;padding:0 2rem;pointer-events:none}
+  .deck-counter{pointer-events:auto;background:var(--bg-card);border:1px solid var(--border);box-shadow:var(--shadow-sm);padding:.45rem .9rem;border-radius:50px;font-size:.78rem;font-weight:700;color:var(--navy);font-variant-numeric:tabular-nums;letter-spacing:.04em}
+  .deck-counter .total{color:var(--text-muted);font-weight:500}
+  .deck-controls{pointer-events:auto;display:flex;gap:.5rem}
+  .deck-btn{width:38px;height:38px;border-radius:50%;border:1px solid var(--border);background:var(--bg-card);box-shadow:var(--shadow-sm);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--navy);transition:all .2s}
+  .deck-btn:hover{background:var(--orange);color:#fff;border-color:var(--orange);transform:translateY(-2px)}
+  .deck-btn:disabled{opacity:.35;cursor:not-allowed;pointer-events:none}
+  .deck-btn svg{width:16px;height:16px}
+  body.dark-slide .deck-counter{background:rgba(255,255,255,0.1);color:#fff;border-color:rgba(255,255,255,0.2)}
+  body.dark-slide .deck-btn{background:rgba(255,255,255,0.1);color:#fff;border-color:rgba(255,255,255,0.2)}
+  .hint{position:fixed;bottom:1.55rem;left:50%;transform:translateX(-50%);pointer-events:none;font-size:.68rem;color:var(--text-muted);letter-spacing:.08em;text-transform:uppercase;font-weight:600;opacity:.6;z-index:30}
+  .hint kbd{background:var(--bg-card);border:1px solid var(--border);border-bottom-width:2px;border-radius:5px;padding:.15rem .4rem;font-family:inherit;font-size:.68rem;color:var(--navy);margin:0 .15rem}
+  body.dark-slide .hint{color:rgba(255,255,255,0.5)}
+  body.dark-slide .hint kbd{background:rgba(255,255,255,0.1);color:#fff;border-color:rgba(255,255,255,0.2)}
+
+  @media (max-width:1100px){
+    .slide{padding:3.5rem 2.5rem 5rem}
+    .industry-layout,.concept-layout,.value-layout{grid-template-columns:1fr;gap:1.4rem}
+    .roles-grid{grid-template-columns:repeat(2,1fr)}
+    .hook-grid,.bridge-grid,.honest-grid,.belong-grid{grid-template-columns:1fr}
+    .reveal-compare{grid-template-columns:1fr}
+    .reveal-mid{transform:rotate(90deg)}
+    .deck-wordmark{display:none}
+    .hint{display:none}
+  }
+</style>
+</head>
+<body>
+
+<div class="deck-progress" id="progress"></div>
+
+<!-- Persistent MokshPath mascot logo -->
+<svg class="deck-logo" viewBox="0 0 955 1486" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect x="453" y="314" width="48" height="55" rx="6" fill="#EF7F1A"/>
+  <ellipse cx="210" cy="408" rx="68" ry="82" fill="#D9DADA"/>
+  <ellipse cx="740" cy="408" rx="68" ry="82" fill="#D9DADA"/>
+  <ellipse cx="477" cy="380" rx="285" ry="324" fill="#EBE3D6"/>
+  <ellipse cx="477" cy="392" rx="240" ry="225" fill="#412C23"/>
+  <circle cx="389" cy="430" r="38" fill="#fff"/>
+  <circle cx="565" cy="430" r="38" fill="#fff"/>
+  <circle cx="389" cy="430" r="15" fill="#2B2D42"/>
+  <circle cx="565" cy="430" r="15" fill="#2B2D42"/>
+  <circle cx="395" cy="424" r="5" fill="#fff"/>
+  <circle cx="571" cy="424" r="5" fill="#fff"/>
+  <path d="M380 1180c30 28 65 42 97 42s67-14 97-42" stroke="#A34E1C" stroke-width="16" stroke-linecap="round" fill="none"/>
+  <ellipse cx="477" cy="1350" rx="430" ry="105" fill="#EF7F1A"/>
+  <ellipse cx="477" cy="1320" rx="380" ry="78" fill="#FF9429"/>
+</svg>
+
+<div class="deck-wordmark">
+  <div class="wm-name">AI Marketing<span> · SEO</span></div>
+  <div class="wm-tag">Week 1 · Industry Perspective</div>
+</div>
+
+<div class="deck" id="deck">
+
+  <!-- ═══ SLIDE 1: TITLE ═══ -->
+  <section class="slide title-slide active" data-slide="1">
+    <div class="slide-inner">
+      <div class="title-badge anim d1"><span style="width:8px;height:8px;border-radius:50%;background:var(--orange);animation:pulse 2s infinite"></span> Hello and Welcome</div>
+      <h1 class="anim d2">An <em>Industry Perspective</em><br>on Your Week 1 Topic</h1>
+      <p class="subtitle anim d3">Who really does AI SEO, how AI industrialized every step of the work, and which skills — the ones you build this week — separate a page invisible on page nine from one that quietly brings in customers every day.</p>
+      <div class="title-meta anim d4">
+        <span>School of AI Marketing: Zero to Job-Ready</span>
+        <span>Week 1 · AI SEO</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SLIDE 2: HOOK ═══ -->
+  <section class="slide" data-slide="2">
+    <div class="slide-inner">
+      <div class="eyebrow anim d1"><span class="dot"></span> The Hook</div>
+      <h2 class="slide-title anim d2">The Quiet <em>Practitioners</em></h2>
+      <p class="slide-sub anim d3">No gurus. No conference stages. Just ordinary, patient, disciplined people running the same four-step engine.</p>
+      <div class="hook-grid">
+        <div class="hook-card anim-scale d1">
+          <div class="hook-icon">💻</div>
+          <h4>The small-town freelancer</h4>
+          <p>Ranks the sites of local plumbers, dentists, and driving schools — from her kitchen table.</p>
+        </div>
+        <div class="hook-card anim-scale d2">
+          <div class="hook-icon">🌿</div>
+          <h4>The solo blogger</h4>
+          <p>Turned a hobby site about houseplants into a monthly income — one helpful page at a time.</p>
+        </div>
+        <div class="hook-card anim-scale d3">
+          <div class="hook-icon">🗓️</div>
+          <h4>The junior in-house marketer</h4>
+          <p>Two years out of college, quietly running the content calendar for a mid-sized software company.</p>
+        </div>
+      </div>
+      <div class="engine-row anim d4">
+        <div class="engine-step"><span>1</span>Understand the search</div><div class="engine-arrow">→</div>
+        <div class="engine-step"><span>2</span>Find the keywords</div><div class="engine-arrow">→</div>
+        <div class="engine-step"><span>3</span>Create the page</div><div class="engine-arrow">→</div>
+        <div class="engine-step"><span>4</span>Measure what happened</div>
+      </div>
+      <div class="hook-bottom anim d5">The people making this work are not gurus. They run a four-step engine — and that engine is <em>your Week 1</em>.</div>
+    </div>
+  </section>
+
+  <!-- ═══ SLIDE 3: REVEAL ═══ -->
+  <section class="slide reveal-slide" data-slide="3">
+    <div class="slide-inner">
+      <div class="eyebrow anim d1" style="justify-content:center"><span class="dot"></span> The Reveal</div>
+      <div class="reveal-headline anim d2">SEO was <span class="strike">a manual grind</span>.<br>AI <em>industrialized</em> every step.</div>
+      <div class="reveal-compare">
+        <div class="reveal-col then anim-scale d2">
+          <h5>The old grind</h5>
+          <ul>
+            <li>Keyword lists built one search at a time</li>
+            <li>Reading ten competitor pages by hand</li>
+            <li>Writing every article from a blank page</li>
+            <li>Auditing a site link by link in a sheet</li>
+          </ul>
+        </div>
+        <div class="reveal-mid anim d3">→</div>
+        <div class="reveal-col now anim-scale d3">
+          <h5>The AI production line</h5>
+          <ul>
+            <li>Keyword research: a week → an afternoon</li>
+            <li>Content outline: hours → minutes</li>
+            <li>Site audit: days → runs while you make coffee</li>
+            <li>More ground covered, faster learning</li>
+          </ul>
+        </div>
+      </div>
+      <div class="reveal-caution anim d4">⚠ AI industrialized the <strong>work</strong>, not the <strong>ranking</strong>. Google still decides who wins — AI is leverage, not magic.</div>
+    </div>
+  </section>
+
+  <!-- ═══ SLIDE 4: INDUSTRY STOP 1 ═══ -->
+  <section class="slide industry-founder" data-slide="4">
+    <div class="slide-inner">
+      <div class="industry-layout">
+        <div class="industry-left">
+          <div class="industry-tag anim d1">Industry Stop 1 · Solo Freelancer</div>
+          <h2 class="anim d2">The Freelancer's <em>Research Machine</em></h2>
+          <p class="lede anim d3">She used to research one client's keywords over an entire afternoon. Today AI clusters hundreds of related searches into topics in seconds, reads the top-ranking pages, and sorts keywords by intent — buyer versus browser.</p>
+          <div class="industry-key anim d4">Her advantage isn't a secret keyword — there are none anymore. It's <em>research velocity</em>: more topics, clearer intent, faster plans.</div>
+        </div>
+        <div class="industry-right anim-scale d3">
+          <h5>Before AI → With AI</h5>
+          <div class="stat-row">
+            <div class="stat-card"><div class="sv">1 → many</div><div class="sl">Client plans / morning</div></div>
+            <div class="stat-card"><div class="sv">100s</div><div class="sl">Searches clustered in seconds</div></div>
+            <div class="stat-card"><div class="sv">Intent</div><div class="sl">Labelled buyer vs browser</div></div>
+          </div>
+          <div class="use-list">
+            <div class="use-item"><div class="num">1</div><p><strong>Topic clustering:</strong> AI groups hundreds of related searches into clean topics in seconds.</p></div>
+            <div class="use-item"><div class="num">2</div><p><strong>Gap reading:</strong> summarises what top pages cover — and, crucially, what they miss.</p></div>
+            <div class="use-item"><div class="num">3</div><p><strong>Intent sorting:</strong> which keywords a buyer types versus which a browser types.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SLIDE 5: INDUSTRY STOP 2 ═══ -->
+  <section class="slide industry-agency" data-slide="5">
+    <div class="slide-inner">
+      <div class="industry-layout">
+        <div class="industry-left">
+          <div class="industry-tag anim d1">Industry Stop 2 · Content Agency</div>
+          <h2 class="anim d2">The Agency's <em>Content Factory</em></h2>
+          <p class="lede anim d3">Two years ago a team published four or five articles per client a month — each needing a writer, editor, and revisions. Today AI drafts outlines, first drafts, meta descriptions, and FAQs at a pace no human could match.</p>
+          <div class="industry-key anim d4">The humans didn't disappear — their job changed. <em>AI writes the draft, humans earn the trust.</em> And trust is what actually ranks.</div>
+        </div>
+        <div class="industry-right anim-scale d3">
+          <h5>The volume workflow</h5>
+          <div class="stat-row">
+            <div class="stat-card"><div class="sv">5 → many</div><div class="sl">Articles / client / month</div></div>
+            <div class="stat-card"><div class="sv">Curate</div><div class="sl">Humans edit &amp; fact-check</div></div>
+            <div class="stat-card"><div class="sv">E-E-A-T</div><div class="sl">Experience · expertise · trust</div></div>
+          </div>
+          <div class="use-list">
+            <div class="use-item"><div class="num">1</div><p><strong>Generate:</strong> AI drafts outlines, first drafts, meta descriptions, and FAQ sections in batches.</p></div>
+            <div class="use-item"><div class="num">2</div><p><strong>Curate &amp; edit:</strong> humans fact-check every claim — taste and accuracy are the human job.</p></div>
+            <div class="use-item"><div class="num">3</div><p><strong>Add what AI can't fake:</strong> real experience, first-hand examples, genuine expertise.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SLIDE 6: INDUSTRY STOP 3 ═══ -->
+  <section class="slide industry-supplier" data-slide="6">
+    <div class="slide-inner">
+      <div class="industry-layout">
+        <div class="industry-left">
+          <div class="industry-tag anim d1">Industry Stop 3 · Technical &amp; Automation</div>
+          <h2 class="anim d2">The Invisible <em>Technical Layer</em></h2>
+          <p class="lede anim d3">Behind the content sits work most beginners never see: AI tools that crawl a thousand-page site and flag every broken link, slow page, and duplicate; systems that suggest internal links; monitors that watch rankings and ping a human the moment a key page drops.</p>
+          <div class="industry-key anim d4">The specialist's job shifts from <em>finding</em> every problem to <em>deciding</em> which ones matter. The audits run themselves. The judgment doesn't.</div>
+        </div>
+        <div class="industry-right anim-scale d3">
+          <h5>The audit runs itself — the human decides</h5>
+          <div class="flow-col">
+            <div class="flow-node auto"><div class="fi">🔎</div>Crawls 1,000 pages · flags broken links<span class="tag-auto">auto</span></div>
+            <div class="flow-down">↓</div>
+            <div class="flow-node auto"><div class="fi">🐢</div>Slow pages &amp; missing titles surfaced<span class="tag-auto">auto</span></div>
+            <div class="flow-down">↓</div>
+            <div class="flow-node auto"><div class="fi">🔗</div>Internal links suggested automatically<span class="tag-auto">auto</span></div>
+            <div class="flow-down">↓</div>
+            <div class="flow-node auto"><div class="fi">📉</div>Rankings watched daily · alert on a drop<span class="tag-auto">auto</span></div>
+            <div class="flow-down">↓</div>
+            <div class="flow-node"><div class="fi">🧠</div>Specialist reads the list → <strong>&nbsp;decides what to fix first</strong></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SLIDE 7: PATTERN ═══ -->
+  <section class="slide pattern-slide" data-slide="7">
+    <div class="slide-inner">
+      <div class="eyebrow anim d1" style="justify-content:center"><span class="dot"></span> The Pattern Across All Three</div>
+      <div class="pattern-quote anim d2">AI does the <em>volume</em>.<br>Humans do the <em>judgment</em>.</div>
+      <div class="pattern-divide anim d3"></div>
+      <div class="pattern-loop anim d4">
+        <div class="loop-chip">Generate options cheaply</div><div class="loop-arrow">→</div>
+        <div class="loop-chip">Judge with taste &amp; data</div><div class="loop-arrow">→</div>
+        <div class="loop-chip">Publish · measure honestly</div><div class="loop-arrow">→</div>
+        <div class="loop-chip hot">Refresh or kill</div><div class="loop-arrow">↺</div>
+      </div>
+      <p class="pattern-tag anim d5">Freelancer, agency, technical specialist — different work, the exact same loop. <strong>That loop is not a trick. It's a skill — and it's what this week teaches you.</strong></p>
+    </div>
+  </section>
+
+  <!-- ═══ SLIDE 8: CURRICULUM BRIDGE ═══ -->
+  <section class="slide" data-slide="8">
+    <div class="slide-inner">
+      <div class="eyebrow anim d1"><span class="dot"></span> Curriculum Bridge</div>
+      <h2 class="slide-title anim d2">Your Four Lessons — <em>Four Stations</em> on the Line</h2>
+      <p class="slide-sub anim d3">By Friday you won't have studied SEO. You'll have walked the entire assembly line once, end to end.</p>
+      <div class="bridge-grid">
+        <div class="bridge-card anim-scale d1">
+          <div class="bridge-num">Lesson 1</div>
+          <h4>SEO in the AI Era</h4>
+          <p>How search actually works now, what Google rewards, and where AI changes the game.</p>
+          <div class="maps">↳ maps to: the whole machine</div>
+        </div>
+        <div class="bridge-card anim-scale d2">
+          <div class="bridge-num">Lesson 2</div>
+          <h4>AI Keyword &amp; Topic Research</h4>
+          <p>The freelancer's research machine, in your hands — topics and intent, not magic words.</p>
+          <div class="maps">↳ maps to: the freelancer's research machine</div>
+        </div>
+        <div class="bridge-card anim-scale d3">
+          <div class="bridge-num">Lesson 3</div>
+          <h4>AI On-Page &amp; Content</h4>
+          <p>The content factory, done right — real E-E-A-T instead of thin filler.</p>
+          <div class="maps">↳ maps to: the content factory</div>
+        </div>
+        <div class="bridge-card anim-scale d4">
+          <div class="bridge-num">Lesson 4</div>
+          <h4>Technical SEO, Links &amp; Measurement</h4>
+          <p>The invisible layer — audits, internal linking, and reading the numbers that prove your work.</p>
+          <div class="maps">↳ maps to: the invisible technical layer</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SLIDE 9: CONCEPT 1 ═══ -->
+  <section class="slide" data-slide="9">
+    <div class="slide-inner">
+      <div class="concept-layout">
+        <div class="concept-left">
+          <div class="eyebrow anim d1"><span class="dot"></span> Concept 1 of 4</div>
+          <h2 class="anim d2">SEO in the <em>AI Era</em></h2>
+          <p class="lede anim d3">Google is trying to do one thing — answer a person's question with the most helpful, trustworthy page it can find. Ranking isn't a magic phrase; it's a checkable profile: intent match, topic coverage, trusted source, fast and clean.</p>
+          <div class="industry-key anim d4">AI <em>describes</em> the game — it doesn't <em>win</em> it for you. Winning still means being the best answer for a real human question.</div>
+        </div>
+        <div class="concept-visual anim-scale d3">
+          <h5>What Google is really checking · "best espresso machine"</h5>
+          <div class="score-list">
+            <div class="score-item"><div class="sn">Intent match</div><div class="score-track"><div class="score-fill" data-w="86%"></div></div><div class="sp">8.6</div></div>
+            <div class="score-item"><div class="sn">Topic coverage</div><div class="score-track"><div class="score-fill" data-w="78%"></div></div><div class="sp">7.8</div></div>
+            <div class="score-item"><div class="sn">Source trust</div><div class="score-track"><div class="score-fill" data-w="92%"></div></div><div class="sp">9.2</div></div>
+            <div class="score-item"><div class="sn">Speed &amp; UX</div><div class="score-track"><div class="score-fill" data-w="70%"></div></div><div class="sp">7.0</div></div>
+            <div class="score-item"><div class="sn">Freshness</div><div class="score-track"><div class="score-fill" data-w="54%"></div></div><div class="sp">5.4</div></div>
+          </div>
+          <p style="font-size:.78rem;color:var(--text-muted);margin-top:1rem;line-height:1.5">AI can tell you what the top pages cover and where the gaps are. Verdict: <strong style="color:var(--orange)">be genuinely the best answer.</strong></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SLIDE 10: CONCEPT 2 ═══ -->
+  <section class="slide" data-slide="10">
+    <div class="slide-inner">
+      <div class="concept-layout">
+        <div class="concept-left">
+          <div class="eyebrow anim d1"><span class="dot"></span> Concept 2 of 4</div>
+          <h2 class="anim d2">AI Keyword &amp; <em>Topic Research</em></h2>
+          <p class="lede anim d3">You're not hunting single magic words anymore — you're mapping <em>topics</em> and <em>intent</em>. "Coffee grinder" could be a shopper ready to buy or a curious reader. AI clusters thousands of searches and labels each by intent in seconds.</p>
+          <div class="industry-key anim d4">But AI will happily hand you keywords nobody profitable searches. The skill is judgment: which of these can <em>I</em> realistically rank for? <em>AI builds the map. You choose the road.</em></div>
+        </div>
+        <div class="concept-visual anim-scale d3">
+          <h5>Same phrase · Two intents</h5>
+          <div class="copy-compare">
+            <div class="copy-block generic">
+              <span class="cb-tag">Raw AI keyword dump</span>
+              "coffee grinder" · "best coffee grinder" · "coffee grinder reviews" · "how to use a coffee grinder" · "coffee grinder amazon" — a flat list with no judgment attached.
+            </div>
+            <div class="copy-block directed">
+              <span class="cb-tag">Clustered by intent · your judgment</span>
+              Commercial: "best burr grinder under $100" — a buyer, and one I can realistically rank for. Informational: "how to clean a coffee grinder" — a reader, easy win, real traffic.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SLIDE 11: CONCEPT 3 ═══ -->
+  <section class="slide" data-slide="11">
+    <div class="slide-inner">
+      <div class="concept-layout">
+        <div class="concept-left">
+          <div class="eyebrow anim d1"><span class="dot"></span> Concept 3 of 4</div>
+          <h2 class="anim d2">On-Page &amp; <em>Content Optimization</em></h2>
+          <p class="lede anim d3">AI can draft a whole article in minutes — title, headings, meta, FAQ. That's the easy part. The hard part, the part that ranks, is what you add on top. Google buries content that's technically fine but says nothing new.</p>
+          <div class="industry-key anim d4">Your job isn't to publish what AI wrote — it's to <em>elevate</em> it into the single most helpful page on the topic. <em>AI gets you to the starting line. Your taste crosses the finish.</em></div>
+        </div>
+        <div class="concept-visual anim-scale d3">
+          <h5>The AI draft · what you add on top</h5>
+          <div class="ad-grid">
+            <div class="ad-card loser">
+              <div class="ah">Competent AI draft: correct, complete, forgettable</div>
+              <div class="am">buried · nothing new</div>
+            </div>
+            <div class="ad-card winner">
+              <div class="ah">A real example · first-hand observation · a fact AI got wrong, corrected</div>
+              <div class="am">ranks ✓</div>
+            </div>
+            <div class="ad-card loser">
+              <div class="ah">100 thin articles, published as-is</div>
+              <div class="am">ignored · penalized</div>
+            </div>
+          </div>
+          <p class="ad-note">Google is very good at spotting content that says nothing new. Elevation is the whole job.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SLIDE 12: CONCEPT 4 ═══ -->
+  <section class="slide" data-slide="12">
+    <div class="slide-inner">
+      <div class="concept-layout">
+        <div class="concept-left">
+          <div class="eyebrow anim d1"><span class="dot"></span> Concept 4 of 4</div>
+          <h2 class="anim d2">Technical SEO, Links &amp; <em>Measurement</em></h2>
+          <p class="lede anim d3">After you publish, feelings are worthless and a few numbers are everything. Is the page even indexed? Is it fast and free of broken links? Are your pages linking to each other? Then the truth-teller: Search Console.</p>
+          <div class="industry-key anim d4">AI runs the audit and flags the problems. <em>You</em> read the dashboard and decide what happens next. Beginners publish and forget. <em>Professionals publish and measure.</em></div>
+        </div>
+        <div class="concept-visual anim-scale d3">
+          <h5>The checks that decide what happens next</h5>
+          <div class="metric-grid">
+            <div class="metric-tile"><div class="mv">Indexed?</div><div class="ml">Did Google add the page?</div></div>
+            <div class="metric-tile"><div class="mv">Fast?</div><div class="ml">Speed, mobile, no broken links</div></div>
+            <div class="metric-tile"><div class="mv">Linked?</div><div class="ml">Do your pages connect?</div></div>
+            <div class="metric-tile"><div class="mv">GSC</div><div class="ml">Queries, rank, real clicks</div></div>
+          </div>
+          <div class="verdict-row">
+            <div class="verdict scale">Gaining traction → REFRESH</div>
+            <div class="verdict kill">Never landed → KILL THE POST</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SLIDE 13: HONEST (dark) ═══ -->
+  <section class="slide dark" data-slide="13">
+    <div class="slide-inner">
+      <div class="eyebrow anim d1"><span class="dot"></span> The Honest Slide</div>
+      <h2 class="slide-title anim d2">The Long Game &amp; <em>No Guarantees</em></h2>
+      <p class="slide-sub anim d3">The slide most courses skip. Anyone promising guaranteed rankings or overnight traffic is selling you something.</p>
+      <div class="honest-grid">
+        <div class="honest-card anim-scale d1">
+          <div class="hv">Weeks–months</div>
+          <p>A brand-new page rarely ranks overnight — Google takes time to trust it and move it up. SEO is a long game.</p>
+        </div>
+        <div class="honest-card anim-scale d2">
+          <div class="hv">Thin content</div>
+          <p>Google actively <strong style="color:#fff">devalues mass-produced AI content</strong>. A hundred hollow articles is a fast way to get ignored or penalized.</p>
+        </div>
+        <div class="honest-card anim-scale d3">
+          <div class="hv">GEO shift</div>
+          <p>AI Overviews and generative search now answer some questions on the results page — fewer clicks for certain queries.</p>
+        </div>
+      </div>
+      <div class="honest-key anim d4">The realistic first-project goal isn't to conquer Google. It's <em>a real page, genuinely improved, honestly measured</em> — the experiment that makes you better at the next one.</div>
+    </div>
+  </section>
+
+  <!-- ═══ SLIDE 14: VALUE ═══ -->
+  <section class="slide" data-slide="14">
+    <div class="slide-inner">
+      <div class="eyebrow anim d1"><span class="dot"></span> Career Note</div>
+      <h2 class="slide-title anim d2">What Clients &amp; Recruiters <em>Actually Value</em></h2>
+      <div class="value-layout">
+        <div class="value-list">
+          <div class="value-item anim d2"><div class="vi">🔍</div><div><h4>AI-assisted keyword research</h4><p>Businesses pay people who can run the research machine, not just talk about it.</p></div></div>
+          <div class="value-item anim d3"><div class="vi">✍️</div><div><h4>Content with real E-E-A-T</h4><p>Optimizing content that carries genuine experience and expertise — not thin filler.</p></div></div>
+          <div class="value-item anim d4"><div class="vi">🔧</div><div><h4>Technical site audits</h4><p>Auditing a site's health and fixing what actually moves rankings.</p></div></div>
+          <div class="value-item anim d5"><div class="vi">📊</div><div><h4>Reading Search Console without flinching</h4><p>Refresh-or-kill decisions backed by numbers, not hopes.</p></div></div>
+        </div>
+        <div class="proof-card anim-scale d3">
+          <h5>What impresses most — not a certificate</h5>
+          <div class="doc">
+            <h4>📁 One Documented Project</h4>
+            <ul>
+              <li>A real page or site, improved end to end</li>
+              <li>Before-and-after Search Console screenshots</li>
+              <li>An honest write-up of what changed and what happened</li>
+            </ul>
+          </div>
+          <p class="verdict-line">Even a modest win, that document says: <em>this person can do the work and tell the truth.</em> You'll have it by Friday.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SLIDE 15: WHO WINS ═══ -->
+  <section class="slide" data-slide="15">
+    <div class="slide-inner">
+      <div class="eyebrow anim d1"><span class="dot"></span> From Inside the Industry</div>
+      <h2 class="slide-title anim d2">Who Actually <em>Wins</em> at AI SEO</h2>
+      <p class="slide-sub anim d3">Not the most technical — there's no coding here. Not the biggest budgets — free tools do most of the job. The winners share four traits — and every one is a habit, not a talent.</p>
+      <div class="roles-grid">
+        <div class="role-card anim-scale d1">
+          <div class="role-icon">📅</div>
+          <h4>Consistent</h4>
+          <p>They publish and improve steadily, month after month — because SEO rewards patience.</p>
+        </div>
+        <div class="role-card anim-scale d2">
+          <div class="role-icon">🔢</div>
+          <h4>Honest with data</h4>
+          <p>They believe Search Console over their own hopes — even when it says "kill it."</p>
+        </div>
+        <div class="role-card anim-scale d3">
+          <div class="role-icon">🎨</div>
+          <h4>Editorial taste</h4>
+          <p>They can look at an AI draft and feel exactly what's missing — and add it.</p>
+        </div>
+        <div class="role-card anim-scale d4">
+          <div class="role-icon">🌱</div>
+          <h4>Patient</h4>
+          <p>They don't panic when a page takes months to climb — they keep tending it.</p>
+        </div>
+      </div>
+      <p class="roles-footer anim d5">Habits can be built. <strong>Starting this week.</strong></p>
+    </div>
+  </section>
+
+  <!-- ═══ SLIDE 16: YOU BELONG ═══ -->
+  <section class="slide" data-slide="16">
+    <div class="slide-inner">
+      <div class="eyebrow anim d1"><span class="dot"></span> Whatever You're Bringing</div>
+      <h2 class="slide-title anim d2">You <em>Belong</em> Here</h2>
+      <div class="belong-grid">
+        <div class="belong-item anim d2"><div class="bi">😤</div><p>Ever felt annoyed by a useless Google result? You already understand what a <strong>good page</strong> should do.</p></div>
+        <div class="belong-item anim d3"><div class="bi">💬</div><p>Ever explained something clearly to a friend? You can <strong>edit AI content</strong> into something genuinely helpful.</p></div>
+        <div class="belong-item anim d4"><div class="bi">🔎</div><p>Noticed which of two articles actually <em>answered</em> your question? That's <strong>editorial taste</strong>.</p></div>
+        <div class="belong-item anim d5"><div class="bi">📈</div><p>Can read a simple chart? You can <strong>read Search Console</strong>.</p></div>
+      </div>
+      <div class="belong-banner anim d6">No degree. No code. No office. No permission required. The tools are point-and-click. What this field demands is what you already control — <em>curiosity, honesty, and the patience to keep improving a page until it earns its place.</em></div>
+    </div>
+  </section>
+
+  <!-- ═══ SLIDE 17: CLOSING (dark) ═══ -->
+  <section class="slide dark closing-slide" data-slide="17">
+    <div class="slide-inner">
+      <div class="eyebrow anim d1" style="justify-content:center"><span class="dot"></span> The Invitation</div>
+      <div class="closing-quote anim d2">Every helpful page you landed on this week was once <em>somebody's first attempt to answer better</em>.</div>
+      <p class="closing-sub anim d3">This week you take one real page from research to optimization to measurement, end to end. It won't make you rank number one by Friday. It will make you <strong style="color:#fff">capable</strong> — genuinely, honestly capable.</p>
+      <div class="closing-pills anim d4">
+        <div class="closing-pill">Publish the honest answer</div>
+        <div class="closing-pill alt">Read the numbers</div>
+        <div class="closing-pill alt">Come back next month better</div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ── DECK CHROME ── -->
+<div class="deck-chrome">
+  <div class="deck-counter"><span id="cur">1</span> <span class="total">/ 17</span></div>
+  <div class="deck-controls">
+    <button class="deck-btn" id="prevBtn" aria-label="Previous slide">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <button class="deck-btn" id="nextBtn" aria-label="Next slide">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>
+  </div>
+</div>
+<div class="hint">Navigate with <kbd>←</kbd> <kbd>→</kbd> or <kbd>Space</kbd></div>
+
+<script>
+(function(){
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const total = slides.length;
+  let idx = 0;
+  const cur = document.getElementById('cur');
+  const progress = document.getElementById('progress');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+
+  function show(i){
+    idx = Math.max(0, Math.min(total - 1, i));
+    slides.forEach((s, j) => s.classList.toggle('active', j === idx));
+    cur.textContent = idx + 1;
+    progress.style.width = ((idx + 1) / total * 100) + '%';
+    prevBtn.disabled = idx === 0;
+    nextBtn.disabled = idx === total - 1;
+    document.body.classList.toggle('dark-slide', slides[idx].classList.contains('dark'));
+    // animate score bars on concept slide
+    slides[idx].querySelectorAll('.score-fill').forEach(f => {
+      f.style.width = '0';
+      requestAnimationFrame(() => { setTimeout(() => { f.style.width = f.dataset.w; }, 50); });
+    });
+  }
+
+  prevBtn.addEventListener('click', () => show(idx - 1));
+  nextBtn.addEventListener('click', () => show(idx + 1));
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); show(idx + 1); }
+    else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); show(idx - 1); }
+    else if (e.key === 'Home') { e.preventDefault(); show(0); }
+    else if (e.key === 'End') { e.preventDefault(); show(total - 1); }
+  });
+
+  // click right/left thirds of the deck to advance/go back
+  document.getElementById('deck').addEventListener('click', e => {
+    if (e.target.closest('button, a, input')) return;
+    const x = e.clientX / window.innerWidth;
+    if (x > 0.72) show(idx + 1);
+    else if (x < 0.1) show(idx - 1);
+  });
+
+  // touch swipe
+  let touchX = null;
+  document.addEventListener('touchstart', e => { touchX = e.touches[0].clientX; }, {passive:true});
+  document.addEventListener('touchend', e => {
+    if (touchX === null) return;
+    const dx = e.changedTouches[0].clientX - touchX;
+    if (Math.abs(dx) > 60) show(idx + (dx < 0 ? 1 : -1));
+    touchX = null;
+  }, {passive:true});
+
+  show(0);
+})();
+</script>
+</body>
+</html>
