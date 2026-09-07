@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>An Industry Perspective on Your Week 3 Topic — AI Content Marketing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+  :root{
+    --orange:#E87A2E;--orange-dark:#D06A20;--orange-light:#F5943E;--orange-glow:rgba(232,122,46,0.12);
+    --navy:#2B2D42;--navy-dark:#1A1B2E;
+    --bg:#F3EDE7;--bg-card:#FFFFFF;--bg-light:#F9F5F0;
+    --text-primary:#2B2D42;--text-secondary:#6B6D7B;--text-muted:#9597A6;
+    --border:#E5DDD4;
+    --green:#4CAF50;--green-light:#E8F5E9;--blue:#4285F4;--red:#EA4335;--purple:#8B5CF6;
+    --shadow-sm:0 2px 8px rgba(43,45,66,0.06);
+    --shadow-md:0 8px 24px rgba(43,45,66,0.08);
+    --shadow-lg:0 16px 48px rgba(43,45,66,0.12);
+    --radius:14px;--radius-sm:8px;
+  }
+  html,body{height:100%}
+  body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text-primary);overflow:hidden;-webkit-font-smoothing:antialiased}
+
+  .deck{position:fixed;inset:0;overflow:hidden}
+  .slide{position:absolute;inset:0;padding:4.5rem 5.5rem 5rem;display:flex;flex-direction:column;opacity:0;pointer-events:none;transition:opacity .55s ease;background:var(--bg)}
+  .slide.active{opacity:1;pointer-events:auto;z-index:2}
+  .slide::before{content:'';position:absolute;top:-15%;right:-10%;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle, rgba(232,122,46,0.08) 0%, rgba(232,122,46,0) 70%);pointer-events:none;z-index:0}
+  .slide::after{content:'';position:absolute;bottom:-20%;left:-12%;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle, rgba(43,45,66,0.04) 0%, rgba(43,45,66,0) 70%);pointer-events:none;z-index:0}
+  .slide.dark{background:var(--navy-dark)}
+  .slide.dark::before{background:radial-gradient(circle, rgba(232,122,46,0.14) 0%, rgba(232,122,46,0) 70%)}
+  .slide.dark::after{background:radial-gradient(circle, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 70%)}
+
+  .deck-logo{position:fixed;top:1.3rem;right:2rem;width:52px;height:auto;z-index:50;filter:drop-shadow(0 4px 12px rgba(43,45,66,0.10));animation:logoFloat 5s ease-in-out infinite}
+  @keyframes logoFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+  .deck-wordmark{position:fixed;top:1.55rem;right:5.6rem;z-index:50;text-align:right;line-height:1.1;user-select:none}
+  .deck-wordmark .wm-name{font-family:'DM Serif Display',serif;font-size:1.05rem;color:var(--navy)}
+  .deck-wordmark .wm-name span{color:var(--orange)}
+  .deck-wordmark .wm-tag{font-size:.58rem;color:var(--text-muted);font-weight:500;letter-spacing:.04em;text-transform:uppercase}
+  body.dark-slide .deck-wordmark .wm-name{color:#fff}
+  body.dark-slide .deck-wordmark .wm-tag{color:rgba(255,255,255,0.5)}
+
+  .slide-inner{position:relative;z-index:2;flex:1;display:flex;flex-direction:column;max-width:1280px;margin:0 auto;width:100%}
+  .eyebrow{display:inline-flex;align-items:center;gap:.5rem;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--orange);margin-bottom:1.1rem}
+  .eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--orange);animation:pulse 2s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+
+  h2.slide-title{font-family:'DM Serif Display',serif;font-size:clamp(1.9rem,3.4vw,2.9rem);line-height:1.12;color:var(--navy);margin-bottom:.9rem}
+  h2.slide-title em{font-style:normal;color:var(--orange)}
+  .slide.dark h2.slide-title{color:#fff}
+  .slide-sub{font-size:1.02rem;color:var(--text-secondary);line-height:1.6;max-width:760px;margin-bottom:1.6rem}
+  .slide.dark .slide-sub{color:rgba(255,255,255,0.72)}
+
+  .anim{opacity:0;transform:translateY(22px)}
+  .slide.active .anim{animation:fadeUp .75s cubic-bezier(.2,.7,.2,1) forwards}
+  .slide.active .anim.d1{animation-delay:.05s}
+  .slide.active .anim.d2{animation-delay:.18s}
+  .slide.active .anim.d3{animation-delay:.32s}
+  .slide.active .anim.d4{animation-delay:.46s}
+  .slide.active .anim.d5{animation-delay:.6s}
+  .slide.active .anim.d6{animation-delay:.74s}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+  .anim-scale{opacity:0;transform:scale(.92)}
+  .slide.active .anim-scale{animation:scaleIn .75s cubic-bezier(.2,.7,.2,1) forwards}
+  .slide.active .anim-scale.d1{animation-delay:.1s}
+  .slide.active .anim-scale.d2{animation-delay:.25s}
+  .slide.active .anim-scale.d3{animation-delay:.4s}
+  .slide.active .anim-scale.d4{animation-delay:.55s}
+  @keyframes scaleIn{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:scale(1)}}
+
+  /* ── SLIDE 1: TITLE ── */
+  .title-slide .slide-inner{align-items:center;justify-content:center;text-align:center}
+  .title-badge{display:inline-flex;align-items:center;gap:.5rem;padding:.5rem 1.2rem;border-radius:50px;background:var(--orange-glow);color:var(--orange);font-size:.76rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:1.8rem}
+  .title-slide h1{font-family:'DM Serif Display',serif;font-size:clamp(2.6rem,5.4vw,4.6rem);line-height:1.06;color:var(--navy);margin-bottom:1rem;letter-spacing:-.01em}
+  .title-slide h1 em{font-style:normal;color:var(--orange)}
+  .title-slide .subtitle{font-size:1.15rem;color:var(--text-secondary);max-width:720px;line-height:1.55;margin-bottom:2.4rem}
+  .title-meta{display:flex;gap:2.2rem;justify-content:center;color:var(--text-muted);font-size:.82rem;font-weight:500;letter-spacing:.05em;text-transform:uppercase}
+  .title-meta span{display:inline-flex;align-items:center;gap:.5rem}
+  .title-meta span::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--orange)}
+
+  /* ── SLIDE 2: HOOK ── */
+  .hook-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-top:1rem;max-width:1160px}
+  .hook-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:1.3rem 1.35rem;box-shadow:var(--shadow-sm);transition:transform .3s, box-shadow .3s}
+  .hook-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-md)}
+  .hook-icon{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.35rem;margin-bottom:.8rem}
+  .hook-card:nth-child(1) .hook-icon{background:rgba(66,133,244,0.1)}
+  .hook-card:nth-child(2) .hook-icon{background:var(--orange-glow)}
+  .hook-card:nth-child(3) .hook-icon{background:rgba(139,92,246,0.1)}
+  .hook-card:nth-child(4) .hook-icon{background:rgba(76,175,80,0.1)}
+  .hook-card h4{font-family:'DM Serif Display',serif;font-size:1.02rem;color:var(--navy);margin-bottom:.3rem;line-height:1.3}
+  .hook-card p{font-size:.82rem;color:var(--text-secondary);line-height:1.5}
+  .hook-bottom{margin-top:1.6rem;padding:1.1rem 1.4rem;background:var(--navy-dark);color:#fff;border-radius:var(--radius);font-size:1rem;font-weight:500;line-height:1.55;max-width:1160px;box-shadow:var(--shadow-md)}
+  .hook-bottom em{color:var(--orange-light);font-style:normal;font-weight:700}
+
+  /* ── SLIDE 3: REVEAL ── */
+  .reveal-slide .slide-inner{align-items:center;justify-content:center;text-align:center}
+  .reveal-headline{font-family:'DM Serif Display',serif;font-size:clamp(2.2rem,4.4vw,3.7rem);line-height:1.12;color:var(--navy);max-width:1050px;margin-bottom:1.8rem}
+  .reveal-headline .strike{position:relative;color:var(--text-muted)}
+  .reveal-headline .strike::after{content:'';position:absolute;left:-3%;right:-3%;top:55%;height:4px;background:var(--orange);transform:scaleX(0);transform-origin:left}
+  .slide.active .reveal-headline .strike::after{animation:strike .6s ease forwards .8s}
+  @keyframes strike{to{transform:scaleX(1)}}
+  .reveal-headline em{font-style:normal;color:var(--orange)}
+  .reveal-compare{display:grid;grid-template-columns:1fr auto 1fr;gap:1.2rem;align-items:stretch;max-width:980px;width:100%;margin-bottom:1.6rem}
+  .reveal-col{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:1.2rem 1.4rem;text-align:left;box-shadow:var(--shadow-sm)}
+  .reveal-col h5{font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.7rem}
+  .reveal-col.then h5{color:var(--text-muted)}
+  .reveal-col.now h5{color:var(--orange)}
+  .reveal-col ul{list-style:none}
+  .reveal-col li{font-size:.85rem;color:var(--text-secondary);line-height:1.5;padding:.3rem 0 .3rem 1.2rem;position:relative}
+  .reveal-col.then li::before{content:'✕';position:absolute;left:0;color:var(--text-muted);font-size:.75rem}
+  .reveal-col.now li::before{content:'✓';position:absolute;left:0;color:var(--green);font-weight:800;font-size:.8rem}
+  .reveal-col.now{border-color:rgba(232,122,46,0.4)}
+  .reveal-mid{display:flex;align-items:center;justify-content:center;font-size:1.6rem;color:var(--orange);font-weight:800}
+  .reveal-caution{padding:.8rem 1.4rem;border-radius:50px;background:rgba(234,67,53,0.08);border:1px solid rgba(234,67,53,0.25);color:#B3362B;font-size:.9rem;font-weight:600}
+
+  /* ── INDUSTRY STOPS (4–6) ── */
+  .industry-layout{display:grid;grid-template-columns:1fr 1.05fr;gap:2.6rem;align-items:center;flex:1}
+  .industry-left{display:flex;flex-direction:column;justify-content:center}
+  .industry-tag{display:inline-flex;align-items:center;gap:.5rem;padding:.4rem 1rem;border-radius:50px;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:1.1rem;width:fit-content}
+  .industry-left h2{font-family:'DM Serif Display',serif;font-size:clamp(1.9rem,3.4vw,2.9rem);color:var(--navy);line-height:1.12;margin-bottom:1.1rem}
+  .industry-left h2 em{font-style:normal;color:var(--orange)}
+  .industry-left p.lede{font-size:.98rem;color:var(--text-secondary);line-height:1.65;margin-bottom:1.5rem}
+  .industry-key{background:var(--navy-dark);color:#fff;padding:1.05rem 1.3rem;border-radius:var(--radius);font-size:.94rem;font-weight:500;line-height:1.5;border-left:4px solid var(--orange)}
+  .industry-key em{font-style:normal;color:var(--orange-light);font-weight:700}
+  .industry-right{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:1.7rem;box-shadow:var(--shadow-md)}
+  .industry-right h5{font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:1.1rem}
+  .use-list{display:flex;flex-direction:column;gap:.8rem}
+  .use-item{display:flex;align-items:flex-start;gap:.85rem;padding:.8rem .95rem;background:var(--bg-light);border-radius:var(--radius-sm);border-left:3px solid var(--orange)}
+  .use-item .num{width:26px;height:26px;border-radius:50%;background:var(--orange);color:#fff;font-size:.76rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .use-item p{font-size:.88rem;color:var(--text-primary);line-height:1.5}
+  .use-item p strong{color:var(--navy);font-weight:700}
+  .industry-content .industry-tag{background:rgba(66,133,244,0.1);color:var(--blue)}
+  .industry-service .industry-tag{background:var(--orange-glow);color:var(--orange)}
+  .industry-ops .industry-tag{background:rgba(76,175,80,0.1);color:var(--green)}
+  .stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:.7rem;margin-bottom:1.1rem}
+  .stat-card{padding:.85rem .6rem;background:var(--bg-light);border-radius:var(--radius-sm);text-align:center;border:1px solid var(--border)}
+  .stat-card .sv{font-family:'DM Serif Display',serif;font-size:1.4rem;color:var(--orange);line-height:1.1}
+  .stat-card .sl{font-size:.62rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em;font-weight:700;margin-top:.3rem}
+
+  /* flow diagram (slide 6) */
+  .flow-col{display:flex;flex-direction:column;gap:.45rem}
+  .flow-node{display:flex;align-items:center;gap:.8rem;padding:.7rem .95rem;background:var(--bg-light);border-radius:var(--radius-sm);border:1.5px solid var(--border);font-size:.86rem;font-weight:600;color:var(--navy)}
+  .flow-node .fi{width:32px;height:32px;border-radius:8px;background:var(--orange-glow);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+  .flow-node.auto{border-color:rgba(76,175,80,0.45)}
+  .flow-node.auto .fi{background:rgba(76,175,80,0.12)}
+  .flow-node .tag-auto{margin-left:auto;font-size:.6rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--green);background:var(--green-light);padding:.2rem .5rem;border-radius:4px}
+  .flow-down{text-align:center;color:var(--orange);font-weight:800;font-size:.95rem;line-height:1}
+
+  /* ── SLIDE 7: PATTERN ── */
+  .pattern-slide .slide-inner{align-items:center;justify-content:center;text-align:center}
+  .pattern-quote{font-family:'DM Serif Display',serif;font-size:clamp(2.2rem,4.4vw,3.6rem);line-height:1.14;color:var(--navy);max-width:1050px;margin-bottom:1.2rem}
+  .pattern-quote em{font-style:normal;color:var(--orange)}
+  .pattern-divide{width:80px;height:3px;background:var(--orange);margin:1.2rem auto 1.8rem;border-radius:2px}
+  .pattern-loop{display:flex;align-items:center;gap:.7rem;flex-wrap:wrap;justify-content:center;margin-bottom:1.6rem}
+  .loop-chip{padding:.65rem 1.3rem;border-radius:50px;background:var(--bg-card);border:1.5px solid var(--border);font-size:.9rem;font-weight:700;color:var(--navy);box-shadow:var(--shadow-sm)}
+  .loop-chip.hot{background:var(--orange);border-color:var(--orange);color:#fff;box-shadow:0 6px 20px rgba(232,122,46,0.3)}
+  .loop-arrow{color:var(--orange);font-weight:800;font-size:1.15rem}
+  .pattern-tag{font-size:1.08rem;color:var(--text-secondary);max-width:800px;line-height:1.55}
+  .pattern-tag strong{color:var(--navy);font-weight:700}
+
+  /* ── SLIDE 8: CURRICULUM BRIDGE ── */
+  .bridge-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.1rem;margin-top:.6rem;max-width:1080px}
+  .bridge-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:1.35rem 1.5rem;box-shadow:var(--shadow-sm);position:relative;overflow:hidden}
+  .bridge-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px}
+  .bridge-card:nth-child(1)::before{background:linear-gradient(90deg,var(--blue),#7BAAF7)}
+  .bridge-card:nth-child(2)::before{background:linear-gradient(90deg,var(--orange),var(--orange-light))}
+  .bridge-card:nth-child(3)::before{background:linear-gradient(90deg,var(--purple),#A78BFA)}
+  .bridge-card:nth-child(4)::before{background:linear-gradient(90deg,var(--green),#7BC67E)}
+  .bridge-num{font-size:.66rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--orange);margin-bottom:.4rem}
+  .bridge-card h4{font-family:'DM Serif Display',serif;font-size:1.15rem;color:var(--navy);margin-bottom:.35rem}
+  .bridge-card p{font-size:.85rem;color:var(--text-secondary);line-height:1.55}
+  .bridge-card .maps{margin-top:.6rem;font-size:.72rem;font-weight:700;color:var(--orange);text-transform:uppercase;letter-spacing:.05em}
+
+  /* ── CONCEPT SLIDES (9–12) ── */
+  .concept-layout{display:grid;grid-template-columns:1fr 1fr;gap:2.6rem;align-items:center;flex:1}
+  .concept-left h2{font-family:'DM Serif Display',serif;font-size:clamp(1.8rem,3.2vw,2.7rem);color:var(--navy);line-height:1.14;margin-bottom:1rem}
+  .concept-left h2 em{font-style:normal;color:var(--orange)}
+  .concept-left p.lede{font-size:.96rem;color:var(--text-secondary);line-height:1.65;margin-bottom:1.3rem}
+  .concept-visual{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:1.6rem;box-shadow:var(--shadow-md)}
+  .concept-visual h5{font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:1rem}
+  /* slide 9 vs table */
+  .vs-table{display:grid;grid-template-columns:1fr 1fr;gap:.9rem}
+  .vs-col{border-radius:var(--radius-sm);padding:1rem 1.1rem;border:1.5px solid var(--border)}
+  .vs-col.market{background:rgba(66,133,244,0.06);border-color:rgba(66,133,244,0.3)}
+  .vs-col.own{background:var(--orange-glow);border-color:rgba(232,122,46,0.35)}
+  .vs-col h6{font-size:.72rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.6rem}
+  .vs-col.market h6{color:var(--blue)}
+  .vs-col.own h6{color:var(--orange)}
+  .vs-col ul{list-style:none}
+  .vs-col li{font-size:.78rem;color:var(--text-primary);line-height:1.45;padding:.28rem 0 .28rem 1.1rem;position:relative}
+  .vs-col li::before{content:'•';position:absolute;left:0;color:currentColor;font-weight:800}
+  .vs-col.market li::before{color:var(--blue)}
+  .vs-col.own li::before{color:var(--orange)}
+  .vs-foot{grid-column:1/-1;font-size:.78rem;color:var(--text-secondary);line-height:1.5;text-align:center;margin-top:.3rem}
+  .vs-foot strong{color:var(--navy)}
+  /* slide 10 copy compare */
+  .copy-compare{display:flex;flex-direction:column;gap:.8rem}
+  .copy-block{padding:.95rem 1.05rem;border-radius:var(--radius-sm);font-size:.86rem;line-height:1.55}
+  .copy-block .cb-tag{display:inline-block;font-size:.6rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:.18rem .55rem;border-radius:4px;margin-bottom:.45rem}
+  .copy-block.generic{background:var(--bg-light);border:1.5px dashed var(--border);color:var(--text-muted)}
+  .copy-block.generic .cb-tag{background:#E5E0DA;color:var(--text-secondary)}
+  .copy-block.directed{background:var(--orange-glow);border:1.5px solid rgba(232,122,46,0.35);color:var(--text-primary)}
+  .copy-block.directed .cb-tag{background:var(--orange);color:#fff}
+  /* slide 11 chat mock */
+  .chat-mini{display:flex;flex-direction:column;gap:.6rem}
+  .cm-row{display:flex;gap:.6rem;align-items:flex-start}
+  .cm-bubble{padding:.7rem .9rem;border-radius:12px;font-size:.82rem;line-height:1.45;max-width:88%}
+  .cm-row.q .cm-bubble{background:var(--bg-light);border:1px solid var(--border);color:var(--text-primary);border-bottom-left-radius:3px}
+  .cm-row.a{justify-content:flex-end}
+  .cm-row.a .cm-bubble{background:var(--orange-glow);border:1px solid rgba(232,122,46,0.3);color:var(--text-primary);border-bottom-right-radius:3px}
+  .cm-tag{display:inline-block;font-size:.58rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.3rem}
+  .cm-row.q .cm-tag{color:var(--blue)}
+  .cm-row.a .cm-tag{color:var(--orange)}
+  .cm-escalate{margin-top:.4rem;padding:.7rem .9rem;border-radius:var(--radius-sm);background:var(--navy-dark);color:#fff;font-size:.8rem;line-height:1.45}
+  .cm-escalate strong{color:var(--orange-light)}
+  /* slide 12 ops tiles */
+  .ops-list{display:flex;flex-direction:column;gap:.7rem}
+  .ops-item{display:flex;align-items:center;gap:.9rem;padding:.85rem 1rem;background:var(--bg-light);border-radius:var(--radius-sm);border-left:3px solid var(--orange)}
+  .ops-item .oi{width:38px;height:38px;border-radius:9px;background:var(--orange-glow);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
+  .ops-item .ot{font-size:.85rem;color:var(--text-primary);line-height:1.4}
+  .ops-item .ot b{color:var(--navy)}
+  .ops-item .alert{margin-left:auto;font-size:.6rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--green);background:var(--green-light);padding:.25rem .55rem;border-radius:5px;flex-shrink:0}
+
+  /* ── SLIDE 13: HONEST (dark) ── */
+  .honest-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.1rem;margin:1.4rem 0;max-width:1080px}
+  .honest-card{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.14);border-radius:var(--radius);padding:1.3rem 1.5rem}
+  .honest-card.dur{border-color:rgba(76,175,80,0.35)}
+  .honest-card.hype{border-color:rgba(234,67,53,0.35)}
+  .honest-card h4{font-size:.68rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;margin-bottom:.7rem}
+  .honest-card.dur h4{color:#7BC67E}
+  .honest-card.hype h4{color:#F0857A}
+  .honest-card ul{list-style:none}
+  .honest-card li{font-size:.86rem;color:rgba(255,255,255,0.8);line-height:1.5;padding:.28rem 0 .28rem 1.4rem;position:relative}
+  .honest-card.dur li::before{content:'✓';position:absolute;left:0;color:#7BC67E;font-weight:800}
+  .honest-card.hype li::before{content:'✕';position:absolute;left:0;color:#F0857A;font-weight:800}
+  .honest-key{max-width:1080px;padding:1.05rem 1.35rem;border-radius:var(--radius);background:rgba(232,122,46,0.14);border-left:4px solid var(--orange);color:#fff;font-size:.98rem;font-weight:500;line-height:1.55}
+  .honest-key em{font-style:normal;color:var(--orange-light);font-weight:700}
+
+  /* ── SLIDE 14: VALUE ── */
+  .value-layout{display:grid;grid-template-columns:1.05fr 1fr;gap:2.6rem;align-items:center;flex:1}
+  .value-list{display:flex;flex-direction:column;gap:.8rem}
+  .value-item{display:flex;align-items:flex-start;gap:.9rem;padding:.9rem 1.05rem;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);box-shadow:var(--shadow-sm)}
+  .value-item .vi{width:38px;height:38px;border-radius:10px;background:var(--orange-glow);display:flex;align-items:center;justify-content:center;font-size:1.05rem;flex-shrink:0}
+  .value-item h4{font-size:.92rem;color:var(--navy);font-weight:700;margin-bottom:.15rem}
+  .value-item p{font-size:.8rem;color:var(--text-secondary);line-height:1.5}
+  .proof-card{background:var(--navy-dark);border-radius:var(--radius);padding:1.7rem;color:#fff;box-shadow:var(--shadow-lg)}
+  .proof-card h5{font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--orange-light);margin-bottom:1rem}
+  .proof-card .doc{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:var(--radius-sm);padding:1.05rem 1.2rem}
+  .proof-card .doc h4{font-family:'DM Serif Display',serif;font-size:1.15rem;margin-bottom:.6rem}
+  .proof-card .doc ul{list-style:none}
+  .proof-card .doc li{font-size:.84rem;color:rgba(255,255,255,0.78);padding:.28rem 0 .28rem 1.3rem;position:relative;line-height:1.45}
+  .proof-card .doc li::before{content:'✓';position:absolute;left:0;color:var(--orange-light);font-weight:800}
+  .proof-card .verdict-line{margin-top:.9rem;font-size:.88rem;color:rgba(255,255,255,0.85);line-height:1.5}
+  .proof-card .verdict-line em{font-style:normal;color:var(--orange-light);font-weight:700}
+
+  /* ── SLIDE 15: WHO WINS ── */
+  .roles-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-top:1.2rem;max-width:1160px}
+  .role-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:1.4rem 1.3rem;box-shadow:var(--shadow-sm);transition:transform .3s}
+  .role-card:hover{transform:translateY(-4px)}
+  .role-icon{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;margin-bottom:.8rem}
+  .role-card:nth-child(1) .role-icon{background:rgba(66,133,244,0.1)}
+  .role-card:nth-child(2) .role-icon{background:var(--orange-glow)}
+  .role-card:nth-child(3) .role-icon{background:rgba(139,92,246,0.1)}
+  .role-card:nth-child(4) .role-icon{background:rgba(76,175,80,0.1)}
+  .role-card h4{font-family:'DM Serif Display',serif;font-size:1.05rem;color:var(--navy);margin-bottom:.35rem}
+  .role-card p{font-size:.82rem;color:var(--text-secondary);line-height:1.55}
+  .roles-footer{margin-top:1.5rem;font-size:1rem;color:var(--text-secondary);max-width:1160px}
+  .roles-footer strong{color:var(--orange)}
+
+  /* ── SLIDE 16: BELONG ── */
+  .belong-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;margin-top:.8rem;max-width:1000px}
+  .belong-item{display:flex;align-items:flex-start;gap:.9rem;padding:1rem 1.15rem;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow-sm)}
+  .belong-item .bi{width:40px;height:40px;border-radius:10px;background:var(--orange-glow);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
+  .belong-item p{font-size:.88rem;color:var(--text-primary);line-height:1.55}
+  .belong-item p strong{color:var(--navy)}
+  .belong-banner{margin-top:1.4rem;max-width:1000px;padding:1.05rem 1.35rem;background:var(--navy-dark);color:#fff;border-radius:var(--radius);font-size:.98rem;line-height:1.55;font-weight:500}
+  .belong-banner em{font-style:normal;color:var(--orange-light);font-weight:700}
+
+  /* ── SLIDE 17: CLOSING (dark) ── */
+  .closing-slide .slide-inner{align-items:center;justify-content:center;text-align:center}
+  .closing-quote{font-family:'DM Serif Display',serif;font-size:clamp(2.2rem,4.6vw,3.9rem);line-height:1.12;color:#fff;max-width:1050px;margin-bottom:1.6rem}
+  .closing-quote em{font-style:normal;color:var(--orange-light)}
+  .closing-sub{font-size:1.1rem;color:rgba(255,255,255,0.72);max-width:780px;line-height:1.6;margin-bottom:2.2rem}
+  .closing-pills{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center}
+  .closing-pill{padding:.7rem 1.6rem;border-radius:50px;background:var(--orange);color:#fff;font-weight:700;font-size:1rem;letter-spacing:.03em;box-shadow:0 6px 20px rgba(232,122,46,0.35)}
+  .closing-pill.alt{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.25);box-shadow:none}
+
+  /* ── DECK CHROME ── */
+  .deck-progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--orange),var(--orange-light));width:0;z-index:60;transition:width .4s ease}
+  .deck-chrome{position:fixed;bottom:1.4rem;left:0;right:0;z-index:40;display:flex;justify-content:space-between;align-items:center;padding:0 2rem;pointer-events:none}
+  .deck-counter{pointer-events:auto;background:var(--bg-card);border:1px solid var(--border);box-shadow:var(--shadow-sm);padding:.45rem .9rem;border-radius:50px;font-size:.78rem;font-weight:700;color:var(--navy);font-variant-numeric:tabular-nums;letter-spacing:.04em}
+  .deck-counter .total{color:var(--text-muted);font-weight:500}
+  .deck-controls{pointer-events:auto;display:flex;gap:.5rem}
+  .deck-btn{width:38px;height:38px;border-radius:50%;border:1px solid var(--border);background:var(--bg-card);box-shadow:var(--shadow-sm);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--navy);transition:all .2s}
+  .deck-btn:hover{background:var(--orange);color:#fff;border-color:var(--orange);transform:translateY(-2px)}
+  .deck-btn:disabled{opacity:.35;cursor:not-allowed;pointer-events:none}
+  .deck-btn svg{width:16px;height:16px}
+  body.dark-slide .deck-counter{background:rgba(255,255,255,0.1);color:#fff;border-color:rgba(255,255,255,0.2)}
+  body.dark-slide .deck-btn{background:rgba(255,255,255,0.1);color:#fff;border-color:rgba(255,255,255,0.2)}
+  .hint{position:fixed;bottom:1.55rem;left:50%;transform:translateX(-50%);pointer-events:none;font-size:.68rem;color:var(--text-muted);letter-spacing:.08em;text-transform:uppercase;font-weight:600;opacity:.6;z-index:30}
+  .hint kbd{background:var(--bg-card);border:1px solid var(--border);border-bottom-width:2px;border-radius:5px;padding:.15rem .4rem;font-family:inherit;font-size:.68rem;color:var(--navy);margin:0 .15rem}
+  body.dark-slide .hint{color:rgba(255,255,255,0.5)}
+  body.dark-slide .hint kbd{background:rgba(255,255,255,0.1);color:#fff;border-color:rgba(255,255,255,0.2)}
+
+  @media (max-width:1100px){
+    .slide{padding:3.5rem 2.5rem 5rem}
+    .industry-layout,.concept-layout,.value-layout{grid-template-columns:1fr;gap:1.4rem}
+    .roles-grid{grid-template-columns:repeat(2,1fr)}
+    .hook-grid{grid-template-columns:repeat(2,1fr)}
+    .bridge-grid,.honest-grid,.belong-grid,.vs-table{grid-template-columns:1fr}
+    .reveal-compare{grid-template-columns:1fr}
+    .reveal-mid{transform:rotate(90deg)}
+    .deck-wordmark{display:none}
+    .hint{display:none}
+  }
+</style>
+</head>
+<body>
+
+<div class="deck-progress" id="progress"></div>
+
+<!-- Persistent MokshPath mascot logo -->
+<svg class="deck-logo" viewBox="0 0 955 1486" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect x="453" y="314" width="48" height="55" rx="6" fill="#EF7F1A"/>
+  <ellipse cx="210" cy="408" rx="68" ry="82" fill="#D9DADA"/>
+  <ellipse cx="740" cy="408" rx="68" ry="82" fill="#D9DADA"/>
+  <ellipse cx="477" cy="380" rx="285" ry="324" fill="#EBE3D6"/>
+  <ellipse cx="477" cy="392" rx="240" ry="225" fill="#412C23"/>
+  <circle cx="389" cy="430" r="38" fill="#fff"/>
+  <circle cx="565" cy="430" r="38" fill="#fff"/>
+  <circle cx="389" cy="430" r="15" fill="#2B2D42"/>
+  <circle cx="565" cy="430" r="15" fill="#2B2D42"/>
+  <circle cx="395" cy="424" r="5" fill="#fff"/>
+  <circle cx="571" cy="424" r="5" fill="#fff"/>
+  <path d="M380 1180c30 28 65 42 97 42s67-14 97-42" stroke="#A34E1C" stroke-width="16" stroke-linecap="round" fill="none"/>
+  <ellipse cx="477" cy="1350" rx="430" ry="105" fill="#EF7F1A"/>
+  <ellipse cx="477" cy="1320" rx="380" ry="78" fill="#FF9429"/>
+</svg>
+
+<div class="deck-wordmark">
+  <div class="wm-name">AI Content<span> Marketing</span></div>
+  <div class="wm-tag">Week 3 · Industry Perspective</div>
+</div>
+
+<div class="deck" id="deck">
+
+  <!-- ═══ SLIDE 1: TITLE ═══ -->
+  <section class="slide title-slide active" data-slide="1">
+    <div class="slide-inner">
+      <div class="title-badge anim d1"><span style="width:8px;height:8px;border-radius:50%;background:var(--orange);animation:pulse 2s infinite"></span> Hello and Welcome</div>
+      <h1 class="anim d2">An <em>Industry Perspective</em><br>on Your Week 3 Topic</h1>
+      <p class="subtitle anim d3">Who actually makes the content you read, where AI genuinely does the work, what lasts versus what's just noise, and which skills — the ones you build this week — decide whether content quietly compounds or gets buried in the feed.</p>
+      <div class="title-meta anim d4">
+        <span>School of AI Marketing: Zero to Job-Ready</span>
+        <span>Week 3 · AI Content Marketing</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SLIDE 2: HOOK ═══ -->
+  <section class="slide" data-slide="2">
+    <div class="slide-inner">
+      <div class="eyebrow anim d1"><span class="dot"></span> The Hook</div>
+      <h2 class="slide-title anim d2">Content Is a <em>System</em>, Not a Post</h2>
+      <p class="slide-sub anim d3">Beginners see one clever post. Professionals see one idea moving through three stages — and AI now moves into every stage of it.</p>
+      <div class="hook-grid">
+        <div class="hook-card anim-scale d1">
+          <div class="hook-icon">💡</div>
+          <h4>One idea</h4>
+          <p>The single thought worth saying — before a word is written or a channel is chosen.</p>
+        </div>
+        <div class="hook-card anim-scale d2">
+          <div class="hook-icon">🎯</div>
+          <h4>Strategy &amp; ideation</h4>
+          <p>Deciding what to say and to whom, and generating the angles worth someone's attention.</p>
+        </div>
+        <div class="hook-card anim-scale d3">
+          <div class="hook-icon">✍️</div>
+          <h4>Creation &amp; repurposing</h4>
+          <p>Turning one idea into a draft, and that draft into a week of pieces across every channel.</p>
+        </div>
+        <div class="hook-card anim-scale d4">
+          <div class="hook-icon">📊</div>
+          <h4>Distribution &amp; measurement</h4>
+          <p>Getting it in front of humans — and reading what actually worked.</p>
+        </div>
+      </div>
+      <div class="hook-bottom anim d5">Freelance writer, solo creator, junior on a brand team — same three stages, every time. AI doesn't replace the system. <em>It moves into every stage of it</em> — and this week, you tour all three.</div>
+    </div>
+  </section>
+
+  <!-- ═══ SLIDE 3: REVEAL ═══ -->
+  <section class="slide reveal-slide" data-slide="3">
+    <div class="slide-inner">
+      <div class="eyebrow anim d1" style="justify-content:center"><span class="dot"></span> The Reveal</div>
+      <div class="reveal-headline anim d2">AI used to be <span class="strike">a tab you opened</span>.<br>Now it's a <em>layer your content runs on</em>.</div>
+      <div class="reveal-compare">
+        <div class="reveal-col then anim-scale d2">
+          <h5>AI as a tool you visit</h5>
+          <ul>
+            <li>Open a chat tab, ask for a caption</li>
+            <li>Copy the text back into your doc</li>
+            <li>Close the tab, do it again next time</li>
+            <li>A helper you visited</li>
+          </ul>
+        </div>
+        <div class="reveal-mid anim d3">→</div>
+        <div class="reveal-col now anim-scale d3">
+          <h5>AI as a layer you run on</h5>
+          <ul>
+            <li>Brainstorms twenty angles the moment you name a topic</li>
+            <li>Reshapes one blog into a thread, newsletter, five posts, a script</li>
+            <li>Reformats each piece to fit its channel</li>
+            <li>Reads your analytics, points at what to double down on</li>
+          </ul>
+        </div>
+      </div>
+      <div class="reveal-caution anim d4">⚠ Content that runs on AI with <strong>no human judgment</strong> sounds exactly like everyone else's, at massive scale. AI became the engine — you still decide what's worth saying.</div>
+    </div>
+  </section>
+
+  <!-- ═══ SLIDE 4: INDUSTRY STOP 1 — SOLO CREATOR ═══ -->
+  <section class="slide industry-content" data-slide="4">
+    <div class="slide-inner">
+      <div class="industry-layout">
+        <div class="industry-left">
+          <div class="industry-tag anim d1">Stop 1 · The Solo Creator</div>
+          <h2 class="anim d2">The Solo Creator's <em>Content Engine</em></h2>
+          <p class="lede anim d3">A newsletter writer who used to stare at a blank page every Monday — every issue meant starting from nothing, alone. It's why she posted twice a month, then went quiet. Now she brings one real idea and AI spins it out: ten angles, a first draft, and the magic move — repurposing.</p>
+          <div class="industry-key anim d4">Her edge isn't writing faster than everyone — it's <em>consistency</em>. In content, the person who shows up every day beats the person with the better single post.</div>
+        </div>
+        <div class="industry-right anim-scale d3">
+          <h5>One idea → a week of content</h5>
+          <div class="stat-row">
+            <div class="stat-card"><div class="sv">2/mo → daily</div><div class="sl">From going quiet to showing up</div></div>
+            <div class="stat-card"><div class="sv">1 idea</div><div class="sl">Spun into a week of pieces</div></div>
+            <div class="stat-card"><div class="sv">Every channel</div><div class="sl">From one good thought</div></div>
+          </div>
+          <div class="use-list">
+            <div class="use-item"><div class="num">1</div><p><strong>Ten angles to test:</strong> AI turns one real idea into a spread of directions worth trying.</p></div>
+            <div class="use-item"><div class="num">2</div><p><strong>A first draft to react to:</strong> something on the page to sharpen, instead of a blank one.</p></div>
+            <div class="use-item"><div class="num">3</div><p><strong>Repurpose it:</strong> newsletter, LinkedIn post, three tweets, a reel caption — all from one idea.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SLIDE 5: INDUSTRY STOP 2 — BRAND TEAM ═══ -->
+  <section class="slide industry-service" data-slide="5">
+    <div class="slide-inner">
+      <div class="industry-layout">
+        <div class="industry-left">
+          <div class="industry-tag anim d1">Stop 2 · The Brand Team</div>
+          <h2 class="anim d2">The Brand Team's <em>Assembly Line</em></h2>
+          <p class="lede anim d3">A junior marketer inside a real content assembly line. Two years ago the bottleneck was drafting — blogs, product pages, help articles, captions all waited on a writer with a full queue, and the calendar slipped every month. Now AI produces the first drafts fast, and the humans do the part that's the actual job.</p>
+          <div class="industry-key anim d4">The lesson the industry learned the hard way: <em>AI writes the draft, humans make it true and make it theirs</em>. Publish AI drafts unedited and you lose trust fast.</div>
+        </div>
+        <div class="industry-right anim-scale d3">
+          <h5>AI drafts fast · humans edit for what matters</h5>
+          <div class="stat-row">
+            <div class="stat-card"><div class="sv">First drafts</div><div class="sl">Outlines, articles, caption options</div></div>
+            <div class="stat-card"><div class="sv">E-E-A-T</div><div class="sl">Experience · expertise · authority · trust</div></div>
+            <div class="stat-card"><div class="sv">Judgment</div><div class="sl">What to keep, what to fix</div></div>
+          </div>
+          <div class="use-list">
+            <div class="use-item"><div class="num">1</div><p><strong>Edit for voice:</strong> so it sounds like the brand and not a robot.</p></div>
+            <div class="use-item"><div class="num">2</div><p><strong>Edit for E-E-A-T:</strong> add the real story, the real data, the real point of view AI doesn't have.</p></div>
+            <div class="use-item"><div class="num">3</div><p><strong>Edit for brand safety:</strong> catch the confident claim that's subtly wrong or off-brand before it ships.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SLIDE 6: INDUSTRY STOP 3 — DISTRIBUTION & ANALYTICS ═══ -->
+  <section class="slide industry-ops" data-slide="6">
+    <div class="slide-inner">
+      <div class="industry-layout">
+        <div class="industry-left">
+          <div class="industry-tag anim d1">Stop 3 · The Invisible Layer</div>
+          <h2 class="anim d2">The Distribution &amp; <em>Analytics Layer</em></h2>
+          <p class="lede anim d3">The stage beginners never see, because it's invisible from the feed — everything that happens <em>after</em> the writing, and where most content quietly dies. It used to be copy-pasting into six platforms, resizing by hand, and never knowing what worked. Now AI runs it almost by itself.</p>
+          <div class="industry-key anim d4">The distribution layer doesn't just <em>publish</em> anymore — it <em>tells you where to aim next</em>. AI reports the numbers; you still decide what they mean.</div>
+        </div>
+        <div class="industry-right anim-scale d3">
+          <h5>From "post &amp; guess" → aimed by the numbers</h5>
+          <div class="flow-col">
+            <div class="flow-node auto"><div class="fi">🔀</div>One piece reformatted to fit every channel<span class="tag-auto">reformat</span></div>
+            <div class="flow-down">↓</div>
+            <div class="flow-node auto"><div class="fi">🕒</div>Scheduled to post at the right time — without you awake<span class="tag-auto">schedule</span></div>
+            <div class="flow-down">↓</div>
+            <div class="flow-node auto"><div class="fi">📈</div>Analytics: this topic doubled reach, that format flopped<span class="tag-auto">report</span></div>
+            <div class="flow-down">↓</div>
+            <div class="flow-node"><div class="fi">🧠</div>You read the signal → <strong>&nbsp;aim next</strong></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SLIDE 7: PATTERN ═══ -->
+  <section class="slide pattern-slide" data-slide="7">
+    <div class="slide-inner">
+      <div class="eyebrow anim d1" style="justify-content:center"><span class="dot"></span> The Pattern Across All Three Stages</div>
+      <div class="pattern-quote anim d2">AI does the <em>volume</em>.<br>Humans do the <em>judgment</em>.</div>
+      <div class="pattern-divide anim d3"></div>
+      <div class="pattern-loop anim d4">
+        <div class="loop-chip">Let AI cover the volume</div><div class="loop-arrow">→</div>
+        <div class="loop-chip">Apply judgment where it counts</div><div class="loop-arrow">→</div>
+        <div class="loop-chip hot">Repeat, every stage</div><div class="loop-arrow">↺</div>
+      </div>
+      <p class="pattern-tag anim d5">AI generates 20 angles — a human decides the one worth saying. AI drafts and repurposes it ten ways — a human supplies the real experience and brand voice. AI reformats and reports — a human decides what to double down on and what to retire. <strong>That loop isn't a hack. It's a skill — and it's what this week teaches you.</strong></p>
+    </div>
+  </section>
+
+  <!-- ═══ SLIDE 8: CURRICULUM BRIDGE ═══ -->
+  <section class="slide" data-slide="8">
+    <div class="slide-inner">
+      <div class="eyebrow anim d1"><span class="dot"></span> Curriculum Bridge</div>
+      <h2 class="slide-title anim d2">Your Four Lessons — <em>Three Stages</em> of One System</h2>
+      <p class="slide-sub anim d3">By the end of the week you won't have studied content marketing. You'll have walked the whole pipeline — blank page to published to measured — and seen where AI lives at each step.</p>
+      <div class="bridge-grid">
+        <div class="bridge-card anim-scale d1">
+          <div class="bridge-num">Lesson 1</div>
+          <h4>Content Marketing in the AI Era</h4>
+          <p>The big picture — why content still wins, and where AI fits into the whole system.</p>
+          <div class="maps">↳ maps to: the whole pipeline</div>
+        </div>
+        <div class="bridge-card anim-scale d2">
+          <div class="bridge-num">Lesson 2</div>
+          <h4>AI Content Strategy &amp; Ideation</h4>
+          <p>The part before writing — knowing your audience, choosing what to say, generating worthy angles.</p>
+          <div class="maps">↳ maps to: strategy &amp; ideation</div>
+        </div>
+        <div class="bridge-card anim-scale d3">
+          <div class="bridge-num">Lesson 3</div>
+          <h4>AI Content Creation &amp; Repurposing</h4>
+          <p>The engine in your hands — drafting real pieces and turning one idea into a week of content.</p>
+          <div class="maps">↳ maps to: creation &amp; repurposing</div>
+        </div>
+        <div class="bridge-card anim-scale d4">
+          <div class="bridge-num">Lesson 4</div>
+          <h4>AI Content Distribution &amp; Measurement</h4>
+          <p>Getting it in front of humans on every channel, and reading the analytics to know what worked.</p>
+          <div class="maps">↳ maps to: distribution &amp; measurement</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SLIDE 9: CONCEPT 1 — CONTENT MARKETING IN THE AI ERA ═══ -->
+  <section class="slide" data-slide="9">
+    <div class="slide-inner">
+      <div class="concept-layout">
+        <div class="concept-left">
+          <div class="eyebrow anim d1"><span class="dot"></span> Concept 1 of 4</div>
+          <h2 class="anim d2">Content Marketing <em>in the AI Era</em></h2>
+          <p class="lede anim d3">You earn attention by being genuinely useful or interesting, over and over, until people trust you enough to buy — the opposite of an ad that interrupts. The twist AI created: writing got easy, so everyone publishes more, which makes attention harder to earn, not easier.</p>
+          <div class="industry-key anim d4">The winning move flipped — from "who produces the most words" to "who's <em>worth reading</em> in a sea of sameness." AI is leverage; the reason someone follows <em>you</em> is human.</div>
+        </div>
+        <div class="concept-visual anim-scale d3">
+          <h5>The move that flipped</h5>
+          <div class="vs-table">
+            <div class="vs-col market">
+              <h6>The old game</h6>
+              <ul>
+                <li>Produce the most words</li>
+                <li>More volume = more reach</li>
+                <li>Grunt work of drafting was the barrier</li>
+                <li>Scarce content, easy attention</li>
+              </ul>
+            </div>
+            <div class="vs-col own">
+              <h6>The new game</h6>
+              <ul>
+                <li>Be worth reading, not just more</li>
+                <li>Making content costs almost nothing</li>
+                <li>AI removes the grunt work</li>
+                <li>Flooded feed, attention is the scarce thing</li>
+              </ul>
+            </div>
+            <p class="vs-foot">AI gives you <strong>leverage</strong> · a human reason gives you the <strong>follow</strong>. Knowing that is the whole game.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SLIDE 10: CONCEPT 2 — CONTENT & EXPERIENCE ═══ -->
+  <section class="slide" data-slide="10">
+    <div class="slide-inner">
+      <div class="concept-layout">
+        <div class="concept-left">
+          <div class="eyebrow anim d1"><span class="dot"></span> Concept 2 of 4</div>
+          <h2 class="anim d2">AI Content Strategy &amp; <em>Ideation</em></h2>
+          <p class="lede anim d3">Most content fails before a single word is written, because nobody decided <em>who it's for</em> or <em>why they'd care</em>. AI makes this worse, not better — it will happily draft a beautiful post about nothing to no one. So the skill moves upstream.</p>
+          <div class="industry-key anim d4">AI generates the <em>options</em>; you supply the <em>strategy</em>. Quantity of ideas is a trap without direction — the selection is the skill, and it never changes.</div>
+        </div>
+        <div class="concept-visual anim-scale d3">
+          <h5>Same topic · two ways to brief AI</h5>
+          <div class="copy-compare">
+            <div class="copy-block generic">
+              <span class="cb-tag">No direction</span>
+              "Write a blog post about productivity." → A beautiful, forgettable post about nothing, aimed at no one.
+            </div>
+            <div class="copy-block directed">
+              <span class="cb-tag">Audience + one problem, then twenty angles</span>
+              "For freelancers who lose their evenings to email — give me 20 angles: questions they're asking, myths to bust, stories to tell." Then <em>you</em> pick the one worth making.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SLIDE 11: CONCEPT 3 — CUSTOMER SERVICE ═══ -->
+  <section class="slide" data-slide="11">
+    <div class="slide-inner">
+      <div class="concept-layout">
+        <div class="concept-left">
+          <div class="eyebrow anim d1"><span class="dot"></span> Concept 3 of 4</div>
+          <h2 class="anim d2">AI Content Creation &amp; <em>Repurposing</em></h2>
+          <p class="lede anim d3">The pros don't "type a prompt, copy the answer, publish." It's a conversation: you give AI your angle, voice, and real point of view — it drafts, then <em>you</em> edit in the story only you have. Then the multiplier: one piece becomes a newsletter, a thread, five posts, a script.</p>
+          <div class="industry-key anim d4">The catch the industry keeps relearning: <em>repurposing sameness just spreads sameness faster</em>. Make the original genuinely good and genuinely yours.</div>
+        </div>
+        <div class="concept-visual anim-scale d3">
+          <h5>Draft → your edit → repurpose</h5>
+          <div class="chat-mini">
+            <div class="cm-row q"><div class="cm-bubble"><span class="cm-tag">You · the brief</span>Here's my angle, my voice, and my real point of view — draft the blog post.</div></div>
+            <div class="cm-row a"><div class="cm-bubble"><span class="cm-tag">AI · a first draft</span>Solid structure — but you add the specific story, the example, the opinion only you can hold ✍️</div></div>
+            <div class="cm-escalate">🔁 <strong>The multiplier:</strong> that one good post becomes a newsletter, a thread, five short posts, and a script — each reshaped to fit its channel. If the source is real, every copy carries something <strong>real</strong>.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SLIDE 12: CONCEPT 4 — DISTRIBUTION & MEASUREMENT ═══ -->
+  <section class="slide" data-slide="12">
+    <div class="slide-inner">
+      <div class="concept-layout">
+        <div class="concept-left">
+          <div class="eyebrow anim d1"><span class="dot"></span> Concept 4 of 4</div>
+          <h2 class="anim d2">AI Content Distribution &amp; <em>Measurement</em></h2>
+          <p class="lede anim d3">Creating the content is <em>half</em> the job, at most — a brilliant post nobody sees is worth nothing. So the pro treats distribution as seriously as writing: AI reformats one idea to every channel and schedules it, then measurement closes the loop.</p>
+          <div class="industry-key anim d4">Beginners publish and hope. Professionals publish, <em>measure, and adjust</em> — calmly, every week — long before they run out of ideas.</div>
+        </div>
+        <div class="concept-visual anim-scale d3">
+          <h5>Three readings — not verdicts</h5>
+          <div class="ops-list">
+            <div class="ops-item"><div class="oi">📣</div><div class="ot"><b>Reach:</b> this topic drove reach — do more of it.</div><span class="alert">report</span></div>
+            <div class="ops-item"><div class="oi">❤️</div><div class="ot"><b>Engagement:</b> this format got engagement — the other one flopped.</div><span class="alert">signal</span></div>
+            <div class="ops-item"><div class="oi">🔗</div><div class="ot"><b>Traffic:</b> this piece brought traffic and this one didn't — you decide next.</div><span class="alert">decide</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SLIDE 13: HONEST (dark) ═══ -->
+  <section class="slide dark" data-slide="13">
+    <div class="slide-inner">
+      <div class="eyebrow anim d1"><span class="dot"></span> The Honest Slide</div>
+      <h2 class="slide-title anim d2">Hype vs <em>Durable</em></h2>
+      <p class="slide-sub anim d3">Content marketing is drowning in "go viral overnight" hype. Here's what actually lasts — and what doesn't.</p>
+      <div class="honest-grid">
+        <div class="honest-card dur anim-scale d1">
+          <h4>✓ The durable truth</h4>
+          <ul>
+            <li>Content is a long game — it compounds over months, not days</li>
+            <li>The newsletter that matters was built one honest issue at a time</li>
+            <li>Audiences and Google now reward originality, real experience, and trust</li>
+          </ul>
+        </div>
+        <div class="honest-card hype anim-scale d2">
+          <h4>✕ The hype to be skeptical of</h4>
+          <ul>
+            <li>"Go viral overnight"</li>
+            <li>"Publish a hundred posts a day"</li>
+            <li>"Set it and forget it" — there is no guaranteed viral button</li>
+          </ul>
+        </div>
+      </div>
+      <div class="honest-key anim d4">AI is real leverage — it makes creating and repurposing almost free. But it's <em>leverage, not magic</em>: distribution matters as much as creation. Build the durable thing — consistently, with a real voice.</div>
+    </div>
+  </section>
+
+  <!-- ═══ SLIDE 14: VALUE ═══ -->
+  <section class="slide" data-slide="14">
+    <div class="slide-inner">
+      <div class="eyebrow anim d1"><span class="dot"></span> Career Note</div>
+      <h2 class="slide-title anim d2">What Clients &amp; Recruiters <em>Actually Value</em></h2>
+      <div class="value-layout">
+        <div class="value-list">
+          <div class="value-item anim d2"><div class="vi">🌍</div><div><h4>In-demand everywhere</h4><p>Every brand, agency, and startup is hiring for this — everyone needs content, few do it well.</p></div></div>
+          <div class="value-item anim d3"><div class="vi">✍️</div><div><h4>A real content asset</h4><p>A blog post, a newsletter, a campaign you actually made — not a certificate or "I can prompt."</p></div></div>
+          <div class="value-item anim d4"><div class="vi">🔁</div><div><h4>Repurposed pieces</h4><p>The thread, the posts, the caption you spun from that one idea — all published.</p></div></div>
+          <div class="value-item anim d5"><div class="vi">📊</div><div><h4>Before-and-after numbers</h4><p>Reach, engagement, traffic — with an honest write-up of what worked and what flopped.</p></div></div>
+        </div>
+        <div class="proof-card anim-scale d3">
+          <h5>What impresses most — not a certificate</h5>
+          <div class="doc">
+            <h4>📁 One Documented Content Project</h4>
+            <ul>
+              <li>"One idea — strategy to published to measured"</li>
+              <li>"The repurposed pieces I spun from it"</li>
+              <li>"Real screenshots, reach, and traffic after"</li>
+            </ul>
+          </div>
+          <p class="verdict-line">One idea, taken all the way, with real numbers. That says: <em>this person can run modern content end to end.</em></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SLIDE 15: WHO WINS ═══ -->
+  <section class="slide" data-slide="15">
+    <div class="slide-inner">
+      <div class="eyebrow anim d1"><span class="dot"></span> From Inside the Industry</div>
+      <h2 class="slide-title anim d2">Who Actually <em>Wins</em> at AI Content Marketing</h2>
+      <p class="slide-sub anim d3">Not the fastest typist. Not the biggest account — small, sharp voices out-earn bland big ones every day. The winners are <strong>consistent</strong>, and they share four more habits — every one built, not born.</p>
+      <div class="roles-grid">
+        <div class="role-card anim-scale d1">
+          <div class="role-icon">🎯</div>
+          <h4>Strategic</h4>
+          <p>They decide who it's for and why they'd care before they write a single word.</p>
+        </div>
+        <div class="role-card anim-scale d2">
+          <div class="role-icon">🎨</div>
+          <h4>Real voice &amp; experience</h4>
+          <p>They refuse to let AI flatten them into everyone else's generic feed.</p>
+        </div>
+        <div class="role-card anim-scale d3">
+          <div class="role-icon">📣</div>
+          <h4>Distribution discipline</h4>
+          <p>They treat getting seen as seriously as getting written — not an afterthought.</p>
+        </div>
+        <div class="role-card anim-scale d4">
+          <div class="role-icon">📊</div>
+          <h4>Honest with metrics</h4>
+          <p>They read the numbers calmly — double down on what works, retire what doesn't.</p>
+        </div>
+      </div>
+      <p class="roles-footer anim d5">Every one is a habit, not a talent — and habits can be built. <strong>Starting this week.</strong></p>
+    </div>
+  </section>
+
+  <!-- ═══ SLIDE 16: YOU BELONG ═══ -->
+  <section class="slide" data-slide="16">
+    <div class="slide-inner">
+      <div class="eyebrow anim d1"><span class="dot"></span> Whatever You're Bringing</div>
+      <h2 class="slide-title anim d2">You <em>Belong</em> Here</h2>
+      <div class="belong-grid">
+        <div class="belong-item anim d2"><div class="bi">💬</div><p>Ever explained something clearly to a friend? You can <strong>write content</strong>.</p></div>
+        <div class="belong-item anim d3"><div class="bi">📖</div><p>Ever known which story to tell at the right moment? You already have <strong>editorial taste</strong>.</p></div>
+        <div class="belong-item anim d4"><div class="bi">🎯</div><p>Ever cared whether a message actually landed? You understand <strong>distribution</strong> better than most.</p></div>
+        <div class="belong-item anim d5"><div class="bi">🛠️</div><p>Ever learned something the hard way? You have the <strong>real experience</strong> AI can't fake.</p></div>
+      </div>
+      <div class="belong-banner anim d6">No code. No degree. No permission required. AI now covers the parts that used to need a full content team. What this field demands is what you already control — <em>a clear story, a real point of view, honesty, and the willingness to press "publish" and then improve.</em></div>
+    </div>
+  </section>
+
+  <!-- ═══ SLIDE 17: CLOSING (dark) ═══ -->
+  <section class="slide dark closing-slide" data-slide="17">
+    <div class="slide-inner">
+      <div class="eyebrow anim d1" style="justify-content:center"><span class="dot"></span> The Invitation</div>
+      <div class="closing-quote anim d2">Every piece of content that earned your attention is just <em>one honest idea, moved through a system</em>.</div>
+      <p class="closing-sub anim d3">Strategy, creation, distribution — and a human who cared enough to make it worth your time. None of it magic, all of it now buildable by one person with AI and a little judgment. This week you walk the whole pipeline and put AI to work at every stage. It won't build the audience for you. It will make you the kind of <strong style="color:#fff">content marketer</strong> who can.</p>
+      <div class="closing-pills anim d4">
+        <div class="closing-pill">Have something real to say</div>
+        <div class="closing-pill alt">Say it in a human voice</div>
+        <div class="closing-pill alt">Read your numbers honestly</div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ── DECK CHROME ── -->
+<div class="deck-chrome">
+  <div class="deck-counter"><span id="cur">1</span> <span class="total">/ 17</span></div>
+  <div class="deck-controls">
+    <button class="deck-btn" id="prevBtn" aria-label="Previous slide">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <button class="deck-btn" id="nextBtn" aria-label="Next slide">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>
+  </div>
+</div>
+<div class="hint">Navigate with <kbd>←</kbd> <kbd>→</kbd> or <kbd>Space</kbd></div>
+
+<script>
+(function(){
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const total = slides.length;
+  let idx = 0;
+  const cur = document.getElementById('cur');
+  const progress = document.getElementById('progress');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+
+  function show(i){
+    idx = Math.max(0, Math.min(total - 1, i));
+    slides.forEach((s, j) => s.classList.toggle('active', j === idx));
+    cur.textContent = idx + 1;
+    progress.style.width = ((idx + 1) / total * 100) + '%';
+    prevBtn.disabled = idx === 0;
+    nextBtn.disabled = idx === total - 1;
+    document.body.classList.toggle('dark-slide', slides[idx].classList.contains('dark'));
+  }
+
+  prevBtn.addEventListener('click', () => show(idx - 1));
+  nextBtn.addEventListener('click', () => show(idx + 1));
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); show(idx + 1); }
+    else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); show(idx - 1); }
+    else if (e.key === 'Home') { e.preventDefault(); show(0); }
+    else if (e.key === 'End') { e.preventDefault(); show(total - 1); }
+  });
+
+  // click right/left thirds of the deck to advance/go back
+  document.getElementById('deck').addEventListener('click', e => {
+    if (e.target.closest('button, a, input')) return;
+    const x = e.clientX / window.innerWidth;
+    if (x > 0.72) show(idx + 1);
+    else if (x < 0.1) show(idx - 1);
+  });
+
+  // touch swipe
+  let touchX = null;
+  document.addEventListener('touchstart', e => { touchX = e.touches[0].clientX; }, {passive:true});
+  document.addEventListener('touchend', e => {
+    if (touchX === null) return;
+    const dx = e.changedTouches[0].clientX - touchX;
+    if (Math.abs(dx) > 60) show(idx + (dx < 0 ? 1 : -1));
+    touchX = null;
+  }, {passive:true});
+
+  show(0);
+})();
+</script>
+</body>
+</html>
