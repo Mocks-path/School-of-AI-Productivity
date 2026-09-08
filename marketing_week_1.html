@@ -1,0 +1,1203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Marketing Week 1 — Rank Roastwell on Google with AI SEO</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --orange:#E87A2E;--orange-dark:#D06A20;--orange-light:#F5943E;--orange-glow:rgba(232,122,46,0.12);
+  --navy:#2B2D42;--navy-dark:#1A1B2E;
+  --bg:#F3EDE7;--bg-card:#FFFFFF;--bg-light:#F9F5F0;
+  --text-primary:#2B2D42;--text-secondary:#6B6D7B;--text-muted:#9597A6;
+  --border:#E5DDD4;
+  --green:#4CAF50;--green-light:#E8F5E9;
+  --blue:#3F88C5;--purple:#8B5CF6;--pink:#EC4899;--red:#E74C3C;
+  --shadow-sm:0 2px 8px rgba(43,45,66,0.06);
+  --shadow-md:0 8px 24px rgba(43,45,66,0.08);
+  --shadow-lg:0 16px 48px rgba(43,45,66,0.12);
+  --radius:14px;--radius-sm:8px;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text-primary);overflow-x:hidden;-webkit-font-smoothing:antialiased;line-height:1.6}
+
+/* ─── HEADER ─── */
+.header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:.8rem 2rem;display:flex;align-items:center;justify-content:space-between}
+.header-left{display:flex;align-items:center;gap:.7rem}
+.header-title{font-family:'DM Serif Display',serif;font-size:1.15rem;color:var(--navy);line-height:1.2}
+.header-title span{color:var(--orange)}
+.header-tag{font-size:.65rem;color:var(--text-muted);font-weight:500;letter-spacing:.04em;text-transform:uppercase}
+.logo-mascot{width:44px;height:44px;flex-shrink:0}
+.progress-pill{display:flex;align-items:center;gap:.6rem;padding:.4rem .9rem;background:var(--orange-glow);border-radius:50px;font-size:.72rem;color:var(--orange);font-weight:700}
+.progress-pill .dot{width:7px;height:7px;border-radius:50%;background:var(--orange);animation:pulse 2s infinite}
+
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.9)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes popIn{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:scale(1)}}
+
+/* ─── HERO ─── */
+.hero{padding:3.5rem 2rem 2.5rem;background:linear-gradient(180deg,var(--bg) 0%,var(--bg-light) 100%);position:relative;overflow:hidden}
+.hero-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1.4fr 1fr;gap:2.5rem;align-items:center}
+.hero-badge{display:inline-flex;align-items:center;gap:.45rem;padding:.4rem 1rem;border-radius:50px;background:var(--orange-glow);color:var(--orange);font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:1rem;animation:fadeUp .7s ease}
+.hero h1{font-family:'DM Serif Display',serif;font-size:clamp(1.9rem,4vw,2.8rem);line-height:1.15;color:var(--navy);margin-bottom:.9rem;animation:fadeUp .7s ease .1s both}
+.hero h1 em{font-style:normal;color:var(--orange)}
+.hero-sub{font-size:.95rem;color:var(--text-secondary);line-height:1.7;margin-bottom:1.4rem;animation:fadeUp .7s ease .2s both}
+.usecase-banner{background:#fff;border-radius:var(--radius);padding:1rem 1.2rem;border:1px solid var(--border);box-shadow:var(--shadow-sm);display:flex;align-items:center;gap:1rem;animation:fadeUp .7s ease .3s both}
+.usecase-icon{width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,#FF6B6B,#EC4899);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.4rem}
+.usecase-text{font-size:.82rem;color:var(--text-secondary);line-height:1.5}
+.usecase-text strong{color:var(--navy);font-weight:700}
+.hero-visual{display:flex;justify-content:center;align-items:center;animation:fadeUp .8s ease .2s both}
+.hero-mascot{width:230px;height:auto;animation:float 3.5s ease-in-out infinite;filter:drop-shadow(0 12px 40px rgba(232,122,46,0.22))}
+.budget-strip{max-width:1100px;margin:1.6rem auto 0;display:grid;grid-template-columns:repeat(4,1fr);gap:.8rem;animation:fadeUp .8s ease .35s both}
+.budget-chip{background:#fff;border:1px solid var(--border);border-radius:10px;padding:.75rem .9rem;text-align:center;box-shadow:var(--shadow-sm)}
+.budget-chip .bv{font-family:'DM Serif Display',serif;font-size:1.25rem;color:var(--orange)}
+.budget-chip .bl{font-size:.64rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;font-weight:700;margin-top:.15rem}
+
+/* ─── SECTION SHELL ─── */
+.section{padding:3rem 2rem;scroll-margin-top:80px}
+.section.alt{background:var(--bg-light)}
+.container{max-width:1100px;margin:0 auto}
+.section-header{margin-bottom:2rem}
+.section-num{display:inline-flex;align-items:center;gap:.5rem;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--orange);margin-bottom:.5rem}
+.section-num .num{width:24px;height:24px;border-radius:50%;background:var(--orange);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.7rem}
+.section-title{font-family:'DM Serif Display',serif;font-size:clamp(1.5rem,2.8vw,2rem);color:var(--navy);line-height:1.25;margin-bottom:.4rem}
+.section-sub{font-size:.92rem;color:var(--text-secondary);line-height:1.65;max-width:720px}
+.story-beat{background:#fff;border-left:4px solid var(--orange);border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:1rem 1.2rem;font-size:.88rem;color:var(--text-primary);line-height:1.65;box-shadow:var(--shadow-sm);margin-bottom:1.6rem}
+.story-beat .sb-tag{display:inline-block;font-size:.62rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--orange);margin-bottom:.3rem}
+.story-beat em{color:var(--text-secondary)}
+
+/* ─── TAB NAV ─── */
+.tab-nav{display:flex;gap:.4rem;overflow-x:auto;padding:.4rem;background:rgba(255,255,255,0.7);backdrop-filter:blur(8px);border-radius:50px;border:1px solid var(--border);box-shadow:var(--shadow-sm);position:sticky;top:72px;z-index:50;margin:0 auto 2rem;max-width:fit-content;flex-wrap:nowrap;-ms-overflow-style:none;scrollbar-width:none}
+.tab-nav::-webkit-scrollbar{display:none}
+.tab-btn{padding:.55rem 1.1rem;border-radius:50px;border:none;background:transparent;color:var(--text-secondary);font-size:.78rem;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap;transition:all .2s}
+.tab-btn:hover{color:var(--orange)}
+.tab-btn.active{background:var(--orange);color:#fff;box-shadow:0 3px 12px rgba(232,122,46,0.35)}
+
+/* ─── GENERIC CARDS/GRIDS ─── */
+.pick-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1.5rem}
+.pick-card{background:#fff;border-radius:var(--radius);padding:1.4rem;border:2px solid var(--border);cursor:pointer;transition:all .3s;position:relative;overflow:hidden}
+.pick-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;transition:height .3s}
+.pick-card:nth-child(1)::before{background:linear-gradient(90deg,var(--green),#7BC67E)}
+.pick-card:nth-child(2)::before{background:linear-gradient(90deg,var(--blue),#5DADE2)}
+.pick-card:nth-child(3)::before{background:linear-gradient(90deg,var(--pink),#F48FB1)}
+.pick-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-md)}
+.pick-card.active{border-color:var(--orange);box-shadow:var(--shadow-md)}
+.pick-card.active::before{height:6px}
+.pick-icon{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;margin-bottom:.8rem;background:var(--bg-light)}
+.pick-card h4{font-family:'DM Serif Display',serif;font-size:1.1rem;color:var(--navy);margin-bottom:.3rem}
+.pick-card .pc-tag{font-size:.68rem;color:var(--orange);font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.6rem}
+.pick-card p{font-size:.8rem;color:var(--text-secondary);line-height:1.55}
+.pick-detail{background:#fff;border-radius:var(--radius);padding:1.3rem 1.5rem;border:1px solid var(--border);box-shadow:var(--shadow-sm);font-size:.86rem;line-height:1.65;display:none}
+.pick-detail.show{display:block;animation:fadeUp .4s ease}
+.pick-detail strong{color:var(--navy)}
+.pick-detail .verdict-pill{display:inline-block;padding:.2rem .7rem;border-radius:50px;font-size:.68rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;margin-bottom:.5rem}
+.vp-good{background:var(--green-light);color:#2E7D32}
+.vp-mid{background:#FFF3CD;color:#856404}
+.vp-bad{background:#FEE;color:#C62828}
+
+/* ─── SCENARIO QUIZ ─── */
+.scenario-panel{background:#fff;border-radius:var(--radius);padding:1.5rem;border:1px solid var(--border);box-shadow:var(--shadow-sm);margin-top:1.4rem}
+.scenario-title{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-muted);margin-bottom:.6rem}
+.scenario-q{font-size:1rem;color:var(--navy);margin-bottom:1rem;font-weight:600;line-height:1.5}
+.scenario-options{display:grid;grid-template-columns:1fr;gap:.6rem;margin-bottom:1rem}
+.scenario-btn{padding:.75rem .9rem;border-radius:8px;border:1.5px solid var(--border);background:#fff;font-size:.82rem;font-weight:600;color:var(--text-primary);cursor:pointer;font-family:inherit;transition:all .2s;text-align:left;line-height:1.45}
+.scenario-btn:hover{border-color:var(--orange);color:var(--orange)}
+.scenario-btn.correct{background:var(--green-light);border-color:var(--green);color:#2E7D32}
+.scenario-btn.wrong{background:#FEE;border-color:var(--red);color:#C62828}
+.scenario-feedback{padding:.9rem;border-radius:8px;font-size:.83rem;line-height:1.55;display:none}
+.scenario-feedback.show{display:block;animation:fadeUp .4s ease}
+.scenario-feedback.success{background:var(--green-light);color:#2E7D32;border-left:3px solid var(--green)}
+.scenario-feedback.fail{background:#FEE;color:#C62828;border-left:3px solid var(--red)}
+.btn-action{padding:.55rem 1.1rem;border-radius:8px;background:var(--orange);color:#fff;border:none;font-size:.82rem;font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s}
+.btn-action:hover{background:var(--orange-dark);transform:translateY(-1px);box-shadow:0 4px 12px rgba(232,122,46,0.3)}
+.btn-secondary{background:transparent;color:var(--text-primary);border:1.5px solid var(--border);padding:.55rem 1.1rem;border-radius:8px;font-size:.82rem;font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s}
+.btn-secondary:hover{border-color:var(--orange);color:var(--orange)}
+
+/* ─── CHAT MOCK (Day 1 prompt showdown) ─── */
+.chat-mock{background:#fff;border-radius:var(--radius);border:1px solid var(--border);box-shadow:var(--shadow-sm);overflow:hidden;margin-top:1rem}
+.chat-head{background:var(--navy-dark);color:#fff;padding:.6rem 1rem;font-size:.78rem;font-weight:600;display:flex;align-items:center;gap:.5rem}
+.chat-head .cdot{width:8px;height:8px;border-radius:50%;background:var(--green)}
+.chat-body{padding:1.1rem;display:flex;flex-direction:column;gap:.8rem;min-height:150px}
+.chat-msg{max-width:88%;padding:.8rem 1rem;border-radius:12px;font-size:.83rem;line-height:1.55}
+.chat-msg.user{align-self:flex-end;background:var(--orange-glow);color:var(--text-primary);border:1px solid rgba(232,122,46,0.25);border-bottom-right-radius:3px}
+.chat-msg.ai{align-self:flex-start;background:var(--bg-light);border:1px solid var(--border);border-bottom-left-radius:3px}
+.chat-msg.ai strong{color:var(--orange)}
+.chat-msg .who{display:block;font-size:.62rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--text-muted);margin-bottom:.3rem}
+
+/* ─── PRODUCT RESEARCH ─── */
+.prod-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1rem}
+.prod-card{background:#fff;border-radius:var(--radius);border:2px solid var(--border);overflow:hidden;cursor:pointer;transition:all .3s}
+.prod-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-md)}
+.prod-card.chosen{border-color:var(--orange)}
+.prod-img{height:110px;display:flex;align-items:center;justify-content:center;font-size:3rem}
+.prod-card:nth-child(1) .prod-img{background:linear-gradient(135deg,#FBE4D5,#F8C8A8)}
+.prod-card:nth-child(2) .prod-img{background:linear-gradient(135deg,#DCEFE3,#BBDFC9)}
+.prod-card:nth-child(3) .prod-img{background:linear-gradient(135deg,#E3E4F5,#C9CBEE)}
+.prod-body{padding:1rem 1.1rem}
+.prod-body h4{font-family:'DM Serif Display',serif;font-size:1.02rem;color:var(--navy);margin-bottom:.5rem}
+.prod-stats{display:flex;flex-direction:column;gap:.3rem}
+.prod-stat{display:flex;justify-content:space-between;font-size:.75rem;color:var(--text-secondary)}
+.prod-stat b{color:var(--navy)}
+.prod-stat .good{color:#2E7D32;font-weight:700}
+.prod-stat .bad{color:#C62828;font-weight:700}
+.prod-stat .mid{color:#B8860B;font-weight:700}
+.prod-cta{margin-top:.7rem;font-size:.72rem;font-weight:800;color:var(--orange);text-transform:uppercase;letter-spacing:.05em}
+
+/* review mining */
+.review-mine{background:#fff;border-radius:var(--radius);padding:1.4rem;border:1px solid var(--border);box-shadow:var(--shadow-sm);margin-top:1.4rem}
+.review-cols{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:.9rem}
+.review-col{border-radius:var(--radius-sm);padding:1rem 1.1rem}
+.review-col.love{background:var(--green-light)}
+.review-col.hate{background:#FEE}
+.review-col h5{font-size:.72rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.6rem}
+.review-col.love h5{color:#2E7D32}
+.review-col.hate h5{color:#C62828}
+.review-col li{font-size:.8rem;line-height:1.5;margin-left:1.1rem;margin-bottom:.35rem;color:var(--text-primary)}
+
+/* ─── CALCULATOR ─── */
+.calc{background:#fff;border-radius:var(--radius);padding:1.5rem;border:1px solid var(--border);box-shadow:var(--shadow-sm);margin-top:1.4rem}
+.calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.4rem}
+.calc-field{margin-bottom:1rem}
+.calc-field label{display:flex;justify-content:space-between;font-size:.78rem;font-weight:700;color:var(--text-primary);margin-bottom:.35rem}
+.calc-field label output{color:var(--orange);font-weight:800}
+.calc-slider{-webkit-appearance:none;appearance:none;width:100%;height:6px;border-radius:3px;background:var(--border);outline:none;cursor:pointer}
+.calc-slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:20px;height:20px;border-radius:50%;background:#fff;border:3px solid var(--orange);cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.15)}
+.calc-slider::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:#fff;border:3px solid var(--orange);cursor:pointer}
+.calc-out{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;align-content:start}
+.calc-tile{padding:.95rem;background:var(--bg-light);border-radius:10px;text-align:center;border:1.5px solid transparent;transition:all .3s}
+.calc-tile.warn{border-color:var(--red);background:#FEE}
+.calc-tile.ok{border-color:var(--green);background:var(--green-light)}
+.calc-tile .cv{font-family:'DM Serif Display',serif;font-size:1.45rem;color:var(--navy);line-height:1.1}
+.calc-tile .cl{font-size:.64rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em;font-weight:700;margin-top:.3rem}
+.calc-note{grid-column:1/-1;font-size:.8rem;line-height:1.55;padding:.8rem 1rem;border-radius:8px;background:var(--orange-glow);color:var(--text-primary)}
+.calc-note strong{color:var(--orange)}
+
+/* ─── STORE BUILDER ─── */
+.voice-tabs{display:flex;gap:.4rem;margin-bottom:1rem;flex-wrap:wrap}
+.voice-tab{padding:.45rem .9rem;border-radius:50px;border:1.5px solid var(--border);background:#fff;font-size:.75rem;font-weight:600;color:var(--text-secondary);cursor:pointer;font-family:inherit;transition:all .2s}
+.voice-tab:hover{border-color:var(--orange);color:var(--orange)}
+.voice-tab.active{background:var(--orange);border-color:var(--orange);color:#fff}
+.store-preview{background:#fff;border-radius:var(--radius);border:1px solid var(--border);box-shadow:var(--shadow-md);overflow:hidden}
+.store-chrome{background:#F5F5F7;padding:.55rem 1rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:.4rem;font-size:.72rem;color:var(--text-muted)}
+.store-chrome .sdot{width:9px;height:9px;border-radius:50%}
+.store-url{margin-left:.6rem;background:#fff;border:1px solid var(--border);border-radius:50px;padding:.2rem .9rem;font-size:.7rem;color:var(--text-secondary)}
+.store-body{padding:1.4rem 1.6rem}
+.store-brand{display:flex;align-items:center;gap:.6rem;margin-bottom:1rem}
+.store-logo{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--orange),var(--orange-light));display:flex;align-items:center;justify-content:center;font-size:1rem}
+.store-brand b{font-family:'DM Serif Display',serif;font-size:1.15rem;color:var(--navy)}
+.store-hero-line{font-family:'DM Serif Display',serif;font-size:1.35rem;color:var(--navy);line-height:1.3;margin-bottom:.6rem;transition:opacity .3s}
+.store-desc{font-size:.84rem;color:var(--text-secondary);line-height:1.65;transition:opacity .3s}
+.store-price-row{display:flex;align-items:center;gap:.8rem;margin-top:1rem}
+.store-price{font-family:'DM Serif Display',serif;font-size:1.3rem;color:var(--orange)}
+.store-price s{color:var(--text-muted);font-size:.9rem;margin-left:.4rem}
+.store-buy{padding:.55rem 1.4rem;border-radius:8px;background:var(--navy);color:#fff;font-size:.8rem;font-weight:700;border:none;cursor:default}
+.copy-toggle{display:flex;gap:.5rem;margin:1.4rem 0 .8rem}
+.before-after{border-radius:var(--radius-sm);padding:1rem 1.1rem;font-size:.85rem;line-height:1.6}
+.before-after.before{background:var(--bg-light);border:1.5px dashed var(--border);color:var(--text-muted)}
+.before-after.after{background:var(--orange-glow);border:1.5px solid rgba(232,122,46,0.35);color:var(--text-primary)}
+
+/* checklist + feed */
+.build-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1.5rem}
+.build-card{background:#fff;border-radius:var(--radius);padding:1.3rem;border:1px solid var(--border);box-shadow:var(--shadow-sm)}
+.build-card h4{font-size:.95rem;color:var(--navy);margin-bottom:.7rem;display:flex;align-items:center;gap:.5rem}
+.build-card h4::before{content:'';width:10px;height:10px;border-radius:50%;background:var(--orange)}
+.checklist{list-style:none;padding:0}
+.checklist li{display:flex;align-items:flex-start;gap:.6rem;padding:.42rem 0;font-size:.84rem;color:var(--text-primary);cursor:pointer;line-height:1.45}
+.checklist li .check{width:18px;height:18px;border-radius:5px;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;transition:all .2s}
+.checklist li.done .check{background:var(--green);border-color:var(--green)}
+.checklist li.done .check::after{content:'✓';color:#fff;font-size:.7rem;font-weight:800}
+.checklist li.done{color:var(--text-muted);text-decoration:line-through}
+.feed{background:var(--navy-dark);border-radius:10px;padding:1rem 1.1rem;min-height:220px;max-height:280px;overflow-y:auto}
+.feed-line{display:flex;gap:.6rem;font-size:.78rem;line-height:1.55;padding:.3rem 0;color:#D8DAE5;animation:fadeUp .4s ease}
+.feed-line .ft{color:var(--orange-light);font-weight:700;flex-shrink:0}
+.feed-line.hint-line{color:#8B8DA0;font-style:italic}
+.done-note{margin-top:1rem;padding:.8rem;background:var(--green-light);border-radius:7px;font-size:.78rem;color:#2E7D32;display:none}
+
+/* ─── AD BUILDER ─── */
+.ad-builder-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:1.4rem;margin-top:1.4rem}
+.ad-controls .prompt-field{display:flex;flex-direction:column;gap:.4rem;margin-bottom:.9rem}
+.ad-controls label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted)}
+.ad-controls select{padding:.6rem .8rem;border:1.5px solid var(--border);border-radius:7px;font-family:inherit;font-size:.83rem;color:var(--text-primary);background:#fff}
+.ad-controls select:focus{outline:none;border-color:var(--orange)}
+.ad-preview{background:#fff;border-radius:var(--radius);border:1px solid var(--border);box-shadow:var(--shadow-md);overflow:hidden;max-width:400px;margin:0 auto;width:100%}
+.adp-head{display:flex;align-items:center;gap:.6rem;padding:.7rem 1rem}
+.adp-avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--orange),var(--orange-light));display:flex;align-items:center;justify-content:center;font-size:.85rem}
+.adp-name{font-size:.78rem;font-weight:700;color:var(--navy)}
+.adp-sponsored{font-size:.64rem;color:var(--text-muted)}
+.adp-visual{height:190px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:.5rem;font-size:2.6rem;background:linear-gradient(135deg,#2A2440,#4A3E68);color:#fff;text-align:center;padding:1rem;transition:all .3s}
+.adp-visual .adp-hook{font-family:'DM Serif Display',serif;font-size:1.15rem;line-height:1.35;max-width:300px}
+.adp-caption{padding:.8rem 1rem;font-size:.8rem;color:var(--text-primary);line-height:1.5}
+.adp-cta{margin:0 1rem 1rem;padding:.6rem;border-radius:8px;background:var(--orange);color:#fff;font-size:.8rem;font-weight:700;text-align:center}
+
+/* ─── DAY 7 METRICS ─── */
+.eval-dashboard{background:#fff;border-radius:var(--radius);padding:1.5rem;border:1px solid var(--border);box-shadow:var(--shadow-sm)}
+.eval-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:.8rem;margin-bottom:1.2rem}
+.metric-card{padding:1rem;background:var(--bg-light);border-radius:10px;text-align:center;border:1.5px solid transparent}
+.metric-card.highlight{border-color:var(--orange);background:var(--orange-glow)}
+.metric-value{font-family:'DM Serif Display',serif;font-size:1.65rem;color:var(--navy);line-height:1}
+.metric-card.highlight .metric-value{color:var(--orange)}
+.metric-label{font-size:.66rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;font-weight:700;margin-top:.4rem}
+.adset{display:grid;grid-template-columns:1.2fr 1fr auto;gap:1rem;align-items:center;padding:1rem 1.1rem;background:var(--bg-light);border-radius:10px;margin-bottom:.7rem;border:1.5px solid transparent;transition:all .3s}
+.adset.decided-scale{border-color:var(--green);background:var(--green-light)}
+.adset.decided-kill{border-color:var(--red);background:#FEE}
+.adset.decided-watch{border-color:#E0A800;background:#FFF8E1}
+.adset-name{font-size:.86rem;font-weight:700;color:var(--navy);line-height:1.4}
+.adset-name span{display:block;font-size:.7rem;font-weight:600;color:var(--text-muted)}
+.adset-nums{display:flex;gap:1rem;font-size:.75rem;color:var(--text-secondary);flex-wrap:wrap}
+.adset-nums b{display:block;font-size:.88rem;color:var(--navy)}
+.adset-actions{display:flex;gap:.4rem}
+.adset-btn{padding:.4rem .8rem;border-radius:7px;border:1.5px solid var(--border);background:#fff;font-size:.72rem;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s}
+.adset-btn:hover{border-color:var(--orange);color:var(--orange)}
+.adset-btn:disabled{opacity:.45;cursor:not-allowed}
+.adset-feedback{grid-column:1/-1;font-size:.78rem;line-height:1.5;padding:.6rem .8rem;border-radius:7px;display:none}
+.adset-feedback.show{display:block;animation:fadeUp .4s ease}
+.adset-feedback.good{background:rgba(76,175,80,0.12);color:#2E7D32}
+.adset-feedback.warn{background:#FFF3CD;color:#856404}
+.week-verdict{display:none;margin-top:1.4rem;background:var(--navy-dark);border-radius:var(--radius);padding:1.6rem;color:#fff;animation:popIn .5s ease}
+.week-verdict.show{display:block}
+.week-verdict h4{font-family:'DM Serif Display',serif;font-size:1.35rem;margin-bottom:.8rem}
+.week-verdict h4 em{font-style:normal;color:var(--orange-light)}
+.wv-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.7rem;margin-bottom:1rem}
+.wv-tile{background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.14);border-radius:9px;padding:.8rem;text-align:center}
+.wv-tile .v{font-family:'DM Serif Display',serif;font-size:1.3rem;color:var(--orange-light)}
+.wv-tile .l{font-size:.62rem;text-transform:uppercase;letter-spacing:.05em;color:rgba(255,255,255,0.55);font-weight:700;margin-top:.25rem}
+.week-verdict p{font-size:.87rem;line-height:1.65;color:rgba(255,255,255,0.85)}
+.week-verdict p strong{color:var(--orange-light)}
+
+/* ─── FOOTER / RECAP ─── */
+.footer-cta{text-align:center;padding:3rem 2rem 5.5rem;background:var(--navy-dark);color:#fff}
+.footer-cta h2{font-family:'DM Serif Display',serif;font-size:1.9rem;margin-bottom:.6rem}
+.footer-cta h2 em{color:var(--orange);font-style:normal}
+.footer-cta>p{font-size:.92rem;color:rgba(255,255,255,0.7);max-width:600px;margin:0 auto 1.8rem}
+.recap-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.9rem;max-width:1050px;margin:0 auto 1.8rem;text-align:left}
+.recap-card{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.13);border-radius:var(--radius);padding:1.2rem 1.3rem}
+.recap-card .rn{font-size:.62rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--orange-light);margin-bottom:.35rem}
+.recap-card h4{font-family:'DM Serif Display',serif;font-size:1.02rem;margin-bottom:.35rem;color:#fff}
+.recap-card p{font-size:.76rem;color:rgba(255,255,255,0.65);line-height:1.55}
+.footer-note{font-size:.72rem;color:rgba(255,255,255,0.4);margin-top:1.6rem;max-width:640px;margin-left:auto;margin-right:auto;line-height:1.6}
+
+/* ─── COMPLETION BAR ─── */
+.completion-bar{position:fixed;bottom:0;left:0;right:0;background:rgba(255,255,255,0.95);backdrop-filter:blur(10px);border-top:1px solid var(--border);padding:.7rem 2rem;display:flex;align-items:center;justify-content:space-between;z-index:90;box-shadow:0 -2px 12px rgba(0,0,0,0.05)}
+.completion-info{display:flex;align-items:center;gap:.8rem;font-size:.82rem;color:var(--text-primary);font-weight:600}
+.completion-track{flex:1;max-width:280px;height:8px;background:var(--bg-light);border-radius:4px;overflow:hidden;margin:0 1rem}
+.completion-fill{height:100%;background:linear-gradient(90deg,var(--orange),var(--orange-light));border-radius:4px;transition:width .5s ease}
+.completion-percent{font-family:'DM Serif Display',serif;color:var(--orange);font-size:1.15rem}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:880px){
+  .hero-inner{grid-template-columns:1fr;text-align:center}
+  .hero-mascot{width:170px;margin:0 auto}
+  .usecase-banner{text-align:left}
+  .budget-strip{grid-template-columns:repeat(2,1fr)}
+  .pick-grid,.prod-grid{grid-template-columns:1fr}
+  .calc-grid,.build-grid,.ad-builder-grid,.review-cols{grid-template-columns:1fr}
+  .eval-metrics{grid-template-columns:repeat(2,1fr)}
+  .adset{grid-template-columns:1fr}
+  .wv-grid,.recap-grid{grid-template-columns:repeat(2,1fr)}
+  .header{padding:.7rem 1rem}
+  .section{padding:2.2rem 1rem}
+  .hero{padding:2.5rem 1rem 2rem}
+}
+</style>
+</head>
+<body>
+
+<!-- ─── HEADER ─── -->
+<header class="header">
+  <div class="header-left">
+    <svg class="logo-mascot" viewBox="0 0 955 1486" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="477" cy="380" rx="285" ry="324" fill="#EBE3D6"/>
+      <ellipse cx="477" cy="380" rx="240" ry="270" fill="#412C23"/>
+      <circle cx="389" cy="430" r="36" fill="#fff"/>
+      <circle cx="565" cy="430" r="36" fill="#fff"/>
+      <circle cx="389" cy="430" r="14" fill="#2B2D42"/>
+      <circle cx="565" cy="430" r="14" fill="#2B2D42"/>
+      <path d="M380 1180c30 28 65 42 97 42s67-14 97-42" stroke="#A34E1C" stroke-width="14" stroke-linecap="round" fill="none"/>
+      <ellipse cx="477" cy="1350" rx="430" ry="100" fill="#EF7F1A"/>
+      <ellipse cx="477" cy="1350" rx="380" ry="78" fill="#FF9429"/>
+    </svg>
+    <div>
+      <div class="header-title">AI Marketing <span>&amp; SEO</span></div>
+      <div class="header-tag">Week 1 · Fun While You Learn</div>
+    </div>
+  </div>
+  <div class="progress-pill"><span class="dot"></span> <span id="headerProgressText">0 of 6 chapters explored</span></div>
+</header>
+
+<!-- ─── HERO ─── -->
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-badge"><span style="width:7px;height:7px;border-radius:50%;background:var(--orange);display:inline-block"></span> Story Project · 4 Chapters</div>
+      <h1>Rank <em>Roastwell</em> — Get a Tiny Coffee Blog onto Google's First Page with AI SEO</h1>
+      <p class="hero-sub">You are the one-person marketing team for Roastwell, a small specialty coffee-roaster's blog that nobody can find on Google. You have a laptop, a few free AI tools, and zero SEO experience. Across four chapters you'll learn how search really works, use AI to find keywords, optimize a page without AI slop, fix technical issues, earn a link or two — then read Search Console and decide what to do next. Every choice below has consequences. Choose wisely.</p>
+      <div class="usecase-banner">
+        <div class="usecase-icon">☕</div>
+        <div class="usecase-text"><strong>The Mission:</strong> Get Roastwell's coffee guides ranking for the queries real buyers and beginners type into Google — ethically, with AI as your assistant, not your ghost-writer. SEO is a long game: wins compound over months and nothing is guaranteed. By the end you'll own the full AI SEO playbook, from intent to impressions.</div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <svg class="hero-mascot" viewBox="0 0 955 1486" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="bodyGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#EBE3D6"/><stop offset="1" stop-color="#D1D0CC"/></linearGradient>
+          <linearGradient id="faceGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7A6A48"/><stop offset="1" stop-color="#412C23"/></linearGradient>
+          <linearGradient id="feetGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FF9429"/><stop offset="1" stop-color="#EF7F1A"/></linearGradient>
+        </defs>
+        <ellipse cx="210" cy="408" rx="68" ry="82" fill="#D9DADA"/>
+        <ellipse cx="740" cy="408" rx="68" ry="82" fill="#D9DADA"/>
+        <ellipse cx="477" cy="380" rx="285" ry="324" fill="url(#bodyGrad)"/>
+        <ellipse cx="477" cy="392" rx="240" ry="225" fill="url(#faceGrad)"/>
+        <circle cx="389" cy="430" r="38" fill="#fff"/>
+        <circle cx="565" cy="430" r="38" fill="#fff"/>
+        <circle cx="389" cy="430" r="15" fill="#2B2D42"/>
+        <circle cx="565" cy="430" r="15" fill="#2B2D42"/>
+        <circle cx="395" cy="424" r="5" fill="#fff"/>
+        <circle cx="571" cy="424" r="5" fill="#fff"/>
+        <path d="M380 1180c30 28 65 42 97 42s67-14 97-42" stroke="#A34E1C" stroke-width="16" stroke-linecap="round" fill="none"/>
+        <ellipse cx="477" cy="1350" rx="430" ry="105" fill="url(#feetGrad)"/>
+        <ellipse cx="477" cy="1320" rx="380" ry="78" fill="#FF9429"/>
+      </svg>
+    </div>
+  </div>
+  <div class="budget-strip">
+    <div class="budget-chip"><div class="bv">₹0</div><div class="bl">Free AI + tools</div></div>
+    <div class="budget-chip"><div class="bv">4 chapters</div><div class="bl">Intent → measurement</div></div>
+    <div class="budget-chip"><div class="bv">0 lines</div><div class="bl">Of code required</div></div>
+    <div class="budget-chip"><div class="bv">4 lessons</div><div class="bl">Woven into 1 story</div></div>
+  </div>
+</section>
+
+<!-- ─── TAB NAVIGATION ─── -->
+<div class="tab-nav" id="tabNav">
+  <button class="tab-btn active" data-target="s1">Ch 1 · Strategy</button>
+  <button class="tab-btn" data-target="s2">Ch 2 · Keywords</button>
+  <button class="tab-btn" data-target="s3">Ch 3 · On-Page</button>
+  <button class="tab-btn" data-target="s4">Ch 3 · Snippets</button>
+  <button class="tab-btn" data-target="s5">Ch 4 · Technical</button>
+  <button class="tab-btn" data-target="s6">Ch 4 · Measure</button>
+</div>
+
+<!-- ═══════════ DAY 1: NICHE ═══════════ -->
+<section class="section" id="s1">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-num"><div class="num">1</div> Chapter One · SEO in the AI Era</div>
+      <h2 class="section-title">Understand How Search Works &amp; Pick Roastwell's Strategy</h2>
+      <p class="section-sub">Rule one of SEO: you don't rank for "everything" — you rank for what <strong>your people</strong> actually type. Today you learn how Google decides who wins, then choose the strategy that fits a tiny site with real coffee expertise but almost no authority yet.</p>
+    </div>
+
+    <div class="story-beat">
+      <span class="sb-tag">📖 The story so far</span>
+      Monday, 7:40 p.m. You open Search Console and see the truth: Roastwell gets 11 visits a day. The roaster is brilliant with beans but invisible on Google. Instead of guessing, you do what professionals do: <em>use AI to structure the strategy, not fake the expertise.</em> Three ways to compete land on your shortlist. Click each to inspect it — then commit.
+    </div>
+
+    <div class="pick-grid">
+      <div class="pick-card" data-niche="home" onclick="pickNiche('home')">
+        <div class="pick-icon">🎯</div>
+        <div class="pc-tag">Long-tail · Winnable</div>
+        <h4>Helpful Coffee Guides</h4>
+        <p>Answer the specific questions beginners and buyers ask — "how to brew with a moka pot", "best beans for a French press". Lower search volume each, but low competition and a real chance to rank in months.</p>
+      </div>
+      <div class="pick-card" data-niche="gadget" onclick="pickNiche('gadget')">
+        <div class="pick-icon">🏔️</div>
+        <div class="pc-tag">Head term · Brutal</div>
+        <h4>Chase "Buy Coffee Online"</h4>
+        <p>Huge volume, huge authority wall. The first page is owned by giant retailers with millions of backlinks. A brand-new blog fighting for the biggest keyword is chess against the whole internet.</p>
+      </div>
+      <div class="pick-card" data-niche="fashion" onclick="pickNiche('fashion')">
+        <div class="pick-icon">⚡</div>
+        <div class="pc-tag">Trendy · Fragile</div>
+        <h4>Ride Viral Coffee Trends</h4>
+        <p>"Dalgona", "cloud coffee", whatever TikTok crowns this month. Quick spikes, but demand collapses fast and dozens of sites pile on the same trend the same week.</p>
+      </div>
+    </div>
+    <div class="pick-detail" id="nicheDetail"></div>
+
+    <div class="chat-mock">
+      <div class="chat-head"><span class="cdot"></span> Claude · SEO Strategy — the prompt showdown</div>
+      <div class="chat-body" id="promptChat">
+        <div class="chat-msg ai"><span class="who">Narrator</span>You get out of an AI assistant exactly what you put in. Below are three prompts you could send about Roastwell's SEO. <strong>Pick the one you think earns the most useful answer</strong> — then see what comes back.</div>
+      </div>
+    </div>
+    <div class="scenario-panel">
+      <div class="scenario-title">🎯 Checkpoint · Pick your prompt</div>
+      <div class="scenario-q">Which prompt do you send to Claude?</div>
+      <div class="scenario-options">
+        <button class="scenario-btn" onclick="pickPrompt(0)">"How do I do SEO?"</button>
+        <button class="scenario-btn" onclick="pickPrompt(1)">"Give me the SEO tricks that will guarantee I rank #1 on Google fast."</button>
+        <button class="scenario-btn" onclick="pickPrompt(2)">"Act as an SEO strategist. Roastwell is a brand-new specialty coffee blog with real roasting expertise but almost no backlinks. Suggest 5 realistic SEO targets we could rank for within 3–6 months. For each: the search intent, why a small site can win it, and one risk."</button>
+      </div>
+      <div class="scenario-feedback" id="promptFb"></div>
+    </div>
+
+    <div class="scenario-panel">
+      <div class="scenario-title">🧠 Pop Quiz · SEO instincts (3 rounds)</div>
+      <div class="scenario-q" id="nicheQ">Loading…</div>
+      <div class="scenario-options" id="nicheOpts"></div>
+      <div class="scenario-feedback" id="nicheFb"></div>
+      <button class="btn-secondary" id="nicheNext" onclick="nextNicheQ()" style="margin-top:.5rem;display:none">Next round →</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ DAY 2: PRODUCT ═══════════ -->
+<section class="section alt" id="s2">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-num"><div class="num">2</div> Chapter Two · AI Keyword &amp; Topic Research</div>
+      <h2 class="section-title">Find Keywords &amp; Build a Topic Cluster — AI as Your Analyst</h2>
+      <p class="section-sub">A winnable keyword has a checkable profile: real search volume, low-enough difficulty for a small site, and clear intent you can satisfy. AI (with Ahrefs / Semrush / Google Trends) can surface and cluster candidates in minutes — but <strong>you</strong> classify the intent and pick the target.</p>
+    </div>
+
+    <div class="story-beat">
+      <span class="sb-tag">📖 The story so far</span>
+      Tuesday evening. Your AI research session produced a shortlist of three keyword targets, each the head of a small topic cluster. You paste real "People Also Ask" questions and forum threads into Claude and ask it to group them by intent. Now three contenders sit in front of you — and Roastwell can only build <em>one</em> pillar page first. Inspect the cards, then choose your target.
+    </div>
+
+    <div class="prod-grid">
+      <div class="prod-card" onclick="chooseProduct('lamp', this)">
+        <div class="prod-img">🛒</div>
+        <div class="prod-body">
+          <h4>"best coffee beans"</h4>
+          <div class="prod-stats">
+            <div class="prod-stat"><span>Volume</span><b class="good">Very high</b></div>
+            <div class="prod-stat"><span>Difficulty (KD)</span><b class="bad">78 / 100</b></div>
+            <div class="prod-stat"><span>Intent</span><b class="mid">Broad / mixed</b></div>
+            <div class="prod-stat"><span>Competition</span><b class="bad">Big retailers</b></div>
+            <div class="prod-stat"><span>Trend</span><b class="mid">Flat, saturated</b></div>
+          </div>
+          <div class="prod-cta">Choose this →</div>
+        </div>
+      </div>
+      <div class="prod-card" onclick="chooseProduct('diffuser', this)">
+        <div class="prod-img">☕</div>
+        <div class="prod-body">
+          <h4>"how to use a moka pot"</h4>
+          <div class="prod-stats">
+            <div class="prod-stat"><span>Volume</span><b class="good">Healthy (2.4k/mo)</b></div>
+            <div class="prod-stat"><span>Difficulty (KD)</span><b class="good">18 / 100</b></div>
+            <div class="prod-stat"><span>Intent</span><b class="good">Clear · how-to</b></div>
+            <div class="prod-stat"><span>Competition</span><b class="mid">Beatable blogs</b></div>
+            <div class="prod-stat"><span>Trend</span><b class="good">Rising steadily</b></div>
+          </div>
+          <div class="prod-cta">Choose this →</div>
+        </div>
+      </div>
+      <div class="prod-card" onclick="chooseProduct('ceramic', this)">
+        <div class="prod-img">🌫️</div>
+        <div class="prod-body">
+          <h4>"coffee stuff"</h4>
+          <div class="prod-stats">
+            <div class="prod-stat"><span>Volume</span><b class="mid">Vague / thin</b></div>
+            <div class="prod-stat"><span>Difficulty (KD)</span><b class="good">Low</b></div>
+            <div class="prod-stat"><span>Intent</span><b class="bad">Unclear</b></div>
+            <div class="prod-stat"><span>Competition</span><b class="good">Low</b></div>
+            <div class="prod-stat"><span>Trend</span><b class="bad">No real demand</b></div>
+          </div>
+          <div class="prod-cta">Choose this →</div>
+        </div>
+      </div>
+    </div>
+    <div class="pick-detail" id="prodDetail"></div>
+
+    <div class="review-mine">
+      <div style="font-family:'DM Serif Display',serif;font-size:1.1rem;color:var(--navy)">🔍 AI Intent Mining — 60 related queries clustered in 30 seconds</div>
+      <p style="font-size:.82rem;color:var(--text-secondary);margin-top:.3rem">You asked Claude: <em>"Here are the People-Also-Ask and autocomplete queries around 'moka pot'. Group them by search intent."</em> This becomes the outline for your pillar page and its internal links.</p>
+      <div class="review-cols">
+        <div class="review-col love">
+          <h5>💚 Informational intent (win these first)</h5>
+          <ul>
+            <li>"how to use a moka pot" — the pillar page</li>
+            <li>"moka pot coffee ratio" — sub-topic to cluster</li>
+            <li>"why is my moka pot coffee bitter" — a real FAQ</li>
+          </ul>
+        </div>
+        <div class="review-col hate">
+          <h5>💛 Commercial / buyer intent (link out to these)</h5>
+          <ul>
+            <li>"best moka pot for beginners" → <strong>a buyer's-guide post</strong></li>
+            <li>"moka pot vs French press" → <strong>a comparison post</strong></li>
+            <li>"where to buy a moka pot" → <strong>link to Roastwell's shop page</strong></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="calc">
+      <div style="font-family:'DM Serif Display',serif;font-size:1.1rem;color:var(--navy);margin-bottom:.3rem">🧮 The Keyword-Value Machine — is this page worth writing?</div>
+      <p style="font-size:.82rem;color:var(--text-secondary);margin-bottom:1.1rem">SEO effort dies or survives on economics. Drag the sliders to weigh what a ranking page costs to make versus what a conversion is worth. Rule of thumb: the value per conversion should be roughly <strong>3× the cost to earn each visitor</strong>, or the page won't pay for itself.</p>
+      <div class="calc-grid">
+        <div>
+          <div class="calc-field">
+            <label>Content cost per conversion <output id="oCost">₹350</output></label>
+            <input type="range" class="calc-slider" id="inCost" min="150" max="800" step="10" value="350">
+          </div>
+          <div class="calc-field">
+            <label>Promotion / link cost per conversion <output id="oShip">₹150</output></label>
+            <input type="range" class="calc-slider" id="inShip" min="50" max="400" step="10" value="150">
+          </div>
+          <div class="calc-field">
+            <label>Value of one conversion <output id="oPrice">₹1,499</output></label>
+            <input type="range" class="calc-slider" id="inPrice" min="499" max="2999" step="50" value="1499">
+          </div>
+        </div>
+        <div class="calc-out">
+          <div class="calc-tile" id="tProfit"><div class="cv" id="vProfit">₹999</div><div class="cl">Net value per conversion</div></div>
+          <div class="calc-tile" id="tMargin"><div class="cv" id="vMargin">67%</div><div class="cl">Value margin</div></div>
+          <div class="calc-tile"><div class="cv" id="vMarkup">3.0×</div><div class="cl">Value vs total cost</div></div>
+          <div class="calc-tile"><div class="cv" id="vCPA">₹999</div><div class="cl">Max spend to win a conversion</div></div>
+          <div class="calc-note" id="calcNote"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ DAY 3–4: STORE BUILD ═══════════ -->
+<section class="section" id="s3">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-num"><div class="num">3</div> Chapter Three · AI On-Page &amp; Content Optimization</div>
+      <h2 class="section-title">Draft &amp; Optimize the Page — AI Writes, You Add Real Experience</h2>
+      <p class="section-sub">Google (and readers) give a page seconds to prove it's worth ranking. AI can draft your guide in minutes — but generic prompts produce thin "AI slop" that helps no one. Your job is direction and first-hand experience: the E-E-A-T Google rewards.</p>
+    </div>
+
+    <div class="story-beat">
+      <span class="sb-tag">📖 The story so far</span>
+      Wednesday. You asked Claude for a "how to use a moka pot" draft; it produced a competent-but-bland 900 words that read like every other guide. So you did the real work: you added the roaster's actual tips (the one about pulling it off the heat early), a photo of your own moka pot, and honest fixes for common mistakes. The same topic can read like slop or like a trusted expert — depending on the voice and experience you bring. Try all three angles below.
+    </div>
+
+    <div class="voice-tabs">
+      <button class="voice-tab active" data-voice="calm" onclick="setVoice('calm')">🧑‍🍳 Friendly Expert</button>
+      <button class="voice-tab" data-voice="sci" onclick="setVoice('sci')">🔬 Precise &amp; Technical</button>
+      <button class="voice-tab" data-voice="fun" onclick="setVoice('fun')">🎉 Playful Barista</button>
+    </div>
+
+    <div class="store-preview">
+      <div class="store-chrome">
+        <span class="sdot" style="background:#FF5F57"></span><span class="sdot" style="background:#FEBC2E"></span><span class="sdot" style="background:#28C840"></span>
+        <span class="store-url">🔒 roastwell.blog/guides/how-to-use-a-moka-pot</span>
+      </div>
+      <div class="store-body">
+        <div class="store-brand"><div class="store-logo">☕</div><b>Roastwell</b><span style="font-size:.7rem;color:var(--text-muted);margin-left:auto">Guides · Brewing · Beans</span></div>
+        <div class="store-hero-line" id="storeHeadline">How to Use a Moka Pot (Without the Bitter Aftertaste)</div>
+        <div class="store-desc" id="storeDesc">After years of scorched, bitter brews, here's the method our roaster actually uses. Start with pre-heated water, a level basket of medium-coarse grounds, and pull it off the heat the moment you hear the gurgle. Below: the exact ratio, three mistakes to avoid, and photos from our own kitchen — not stock images.</div>
+        <div class="store-price-row">
+          <div class="store-price">2.4k/mo <s>KD 18</s></div>
+          <button class="store-buy">Read the guide →</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="copy-toggle">
+      <button class="btn-secondary" id="beforeBtn" onclick="toggleCopy('before')">😬 Before: raw AI slop</button>
+      <button class="btn-action" id="afterBtn" onclick="toggleCopy('after')">✨ After: AI draft + real experience</button>
+    </div>
+    <div class="before-after before" id="copyBefore" style="display:none">
+      "A moka pot is a popular way to make coffee. In this comprehensive guide, we will explore everything you need to know about how to use a moka pot. Coffee is enjoyed by millions of people around the world. There are many factors to consider when brewing coffee…"
+      <div style="margin-top:.5rem;font-size:.75rem">← This is what a lazy "write me an article" prompt produces: padded, generic, zero experience. Google's helpful-content systems can smell it — and so can readers.</div>
+    </div>
+    <div class="before-after after" id="copyAfter">
+      "The mistake almost everyone makes: leaving the moka pot on the heat until it sputters. Pull it off the second you hear the gurgle and swirl it in cold water — that's how our roaster kills the bitterness. Here's the exact 1:10 ratio we use, with a photo of our own stovetop."
+      <div style="margin-top:.5rem;font-size:.75rem;color:var(--text-secondary)">← Same topic. AI drafted both — the difference is <strong>direction + real experience</strong>: a first-hand tip, a specific ratio, an original photo. That's E-E-A-T, not slop.</div>
+    </div>
+
+    <div class="build-grid">
+      <div class="build-card">
+        <h4>Your on-page optimization checklist</h4>
+        <ul class="checklist" id="buildList">
+          <li data-step="0" onclick="runBuildStep(0)"><span class="check"></span>Write a title tag &amp; meta description with the keyword (under 60 / 155 chars)</li>
+          <li data-step="1" onclick="runBuildStep(1)"><span class="check"></span>Structure one H1 + logical H2/H3 headings around the intent</li>
+          <li data-step="2" onclick="runBuildStep(2)"><span class="check"></span>Have Claude draft it, then rewrite the slop &amp; add a first-hand tip</li>
+          <li data-step="3" onclick="runBuildStep(3)"><span class="check"></span>Add E-E-A-T: author bio, an original photo, a real "we tested this" note</li>
+          <li data-step="4" onclick="runBuildStep(4)"><span class="check"></span>Add internal links to the cluster (ratio post, best-moka-pot buyer's guide)</li>
+          <li data-step="5" onclick="runBuildStep(5)"><span class="check"></span>Check the Surfer/Frase content score &amp; publish</li>
+        </ul>
+        <div class="done-note" id="buildDone">✅ <strong>The moka-pot guide is live!</strong> Genuinely helpful, well-structured, and not slop. Technical fixes next.</div>
+      </div>
+      <div class="build-card">
+        <h4>Optimization feed (click checklist items)</h4>
+        <div class="feed" id="buildFeed">
+          <div class="feed-line hint-line"><span class="ft">--:--</span>Waiting for you to start optimizing… tick items on the left.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="scenario-panel">
+      <div class="scenario-title">🎯 Checkpoint · Pick the title tag</div>
+      <div class="scenario-q">Which title tag goes on the moka-pot guide?</div>
+      <div class="scenario-options">
+        <button class="scenario-btn" onclick="headlineQ(0)">"Roastwell Blog | Coffee, Beans, Guides, Tips, Brewing &amp; More — Buy Now!"</button>
+        <button class="scenario-btn" onclick="headlineQ(1)">"How to Use a Moka Pot: Step-by-Step Guide (No Bitterness) | Roastwell"</button>
+        <button class="scenario-btn" onclick="headlineQ(2)">"The Ultimate Comprehensive Resource for Moka Pot Brewing Solutions"</button>
+      </div>
+      <div class="scenario-feedback" id="headlineFb"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ DAY 5: ADS ═══════════ -->
+<section class="section alt" id="s4">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-num"><div class="num">4</div> Chapter Three · The Search Snippet</div>
+      <h2 class="section-title">Win the Click in the SERP — Titles, Meta &amp; Snippets</h2>
+      <p class="section-sub">Ranking isn't the finish line — you still have to earn the <strong>click</strong>. In the search results you get one line of title and two lines of description to beat nine rivals. So you won't write one snippet; you'll draft <strong>several</strong> and pick the one a real searcher would tap.</p>
+    </div>
+
+    <div class="story-beat">
+      <span class="sb-tag">📖 The story so far</span>
+      Thursday. You ask AI for <em>ten title variations, three description angles, and a few FAQ snippets</em> for the moka-pot guide. Ninety seconds later you have more options than you could write in an afternoon. But volume without judgment is noise — first, prove you can spot a title that actually earns the click.
+    </div>
+
+    <div class="scenario-panel">
+      <div class="scenario-title">🎯 Checkpoint · The search-result click test</div>
+      <div class="scenario-q">Your result is #4 on Google. Which title actually makes the searcher tap it?</div>
+      <div class="scenario-options">
+        <button class="scenario-btn" onclick="hookQ(0)">"Moka Pot Guide — Best Quality Coffee Tips, Click Here Now!"</button>
+        <button class="scenario-btn" onclick="hookQ(1)">"How to Use a Moka Pot: 5 Steps to Rich Coffee (No Bitterness)"</button>
+        <button class="scenario-btn" onclick="hookQ(2)">"An In-Depth Exploration of Stovetop Espresso Maker Methodologies"</button>
+      </div>
+      <div class="scenario-feedback" id="hookFb"></div>
+    </div>
+
+    <div class="ad-builder-grid">
+      <div class="ad-controls">
+        <div style="font-family:'DM Serif Display',serif;font-size:1.1rem;color:var(--navy);margin-bottom:.8rem">🎬 Snippet Assembler — draft your SERP listing</div>
+        <div class="prompt-field">
+          <label>Title angle (AI generated 10 — you shortlisted 3)</label>
+          <select id="adHook" onchange="renderAd()">
+            <option value="pov">How-to + benefit</option>
+            <option value="pain">Problem-solving question</option>
+            <option value="deal">Keyword-stuffed shout</option>
+          </select>
+        </div>
+        <div class="prompt-field">
+          <label>Rich result / SERP feature</label>
+          <select id="adVisual" onchange="renderAd()">
+            <option value="night">FAQ rich snippet</option>
+            <option value="unbox">Step-by-step how-to</option>
+            <option value="studio">Plain blue link</option>
+          </select>
+        </div>
+        <div class="prompt-field">
+          <label>Meta description close</label>
+          <select id="adCta" onchange="renderAd()">
+            <option value="calm">"…fix the bitterness in 5 steps."</option>
+            <option value="shop">"…the exact ratio our roaster uses."</option>
+            <option value="off">"…click here for the best guide!"</option>
+          </select>
+        </div>
+        <p style="font-size:.78rem;color:var(--text-muted);line-height:1.55;margin-top:.6rem">💡 In real life you'd A/B a few of these and watch which earns the best <strong>CTR in Search Console</strong>. The preview on the right updates as you choose.</p>
+      </div>
+      <div>
+        <div class="ad-preview">
+          <div class="adp-head">
+            <div class="adp-avatar">☕</div>
+            <div><div class="adp-name">roastwell.blog</div><div class="adp-sponsored">› guides › moka-pot</div></div>
+          </div>
+          <div class="adp-visual" id="adVisualBox">
+            <div id="adEmoji">⭐</div>
+            <div class="adp-hook" id="adHookText">How to Use a Moka Pot: 5 Steps to Rich Coffee (No Bitterness)</div>
+          </div>
+          <div class="adp-caption" id="adCaption">Our roaster's step-by-step method to fix the bitterness in 5 steps. Includes the exact ratio, three mistakes to avoid, and original photos.</div>
+          <div class="adp-cta" id="adCtaBtn">…fix the bitterness in 5 steps.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="scenario-panel">
+      <div class="scenario-title">⚖️ Choice Point · How do you build out the content?</div>
+      <div class="scenario-q">The moka-pot pillar is done. How do you spend your writing time next?</div>
+      <div class="scenario-options">
+        <button class="scenario-btn" onclick="budgetQ(0)">Bet everything on one giant 5,000-word "ultimate guide" and publish nothing else.</button>
+        <button class="scenario-btn" onclick="budgetQ(1)">Publish the pillar + 3 focused cluster posts (ratio, best-moka-pot, vs French press), interlink them, then let them mature 6–8 weeks before judging.</button>
+        <button class="scenario-btn" onclick="budgetQ(2)">Don't publish more — keep editing the one page for weeks until it's "perfect".</button>
+      </div>
+      <div class="scenario-feedback" id="budgetFb"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ DAY 6: LAUNCH ═══════════ -->
+<section class="section" id="s5">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-num"><div class="num">5</div> Chapter Four · Technical SEO &amp; Links</div>
+      <h2 class="section-title">Fix the Plumbing, Earn a Link, Then Sit on Your Hands</h2>
+      <p class="section-sub">Technical SEO is a checklist, not black magic — make sure Google can crawl, index, and load the page fast. Then the hardest SEO skill of all: <strong>patience</strong>. Rankings take weeks, and beginners who tweak the page every day never let Google settle.</p>
+    </div>
+
+    <div class="story-beat">
+      <span class="sb-tag">📖 The story so far</span>
+      Publish day. Screaming Frog crawled the site and PageSpeed Insights flagged two easy wins. You'll fix the plumbing, submit the sitemap, earn a couple of honest links — and then, against every instinct, <em>wait</em>. Work through the checklist and watch the days unfold in the feed.
+    </div>
+
+    <div class="build-grid">
+      <div class="build-card">
+        <h4>Technical + links checklist</h4>
+        <ul class="checklist" id="launchList">
+          <li data-step="0" onclick="runLaunchStep(0)"><span class="check"></span>Mobile + PageSpeed check — compress images, fix Core Web Vitals</li>
+          <li data-step="1" onclick="runLaunchStep(1)"><span class="check"></span>Submit XML sitemap &amp; request indexing in Search Console</li>
+          <li data-step="2" onclick="runLaunchStep(2)"><span class="check"></span>Add schema markup (Article + FAQ) so rich results can show</li>
+          <li data-step="3" onclick="runLaunchStep(3)"><span class="check"></span>Earn 2 ethical links: a guest post + a coffee-forum answer</li>
+          <li data-step="4" onclick="runLaunchStep(4)"><span class="check"></span>Set a "do not touch the page for 3 weeks" reminder</li>
+          <li data-step="5" onclick="runLaunchStep(5)"><span class="check"></span>Note the starting position &amp; impressions in Search Console</li>
+        </ul>
+        <div class="done-note" id="launchDone">🚀 <strong>Roastwell's guide is indexed &amp; clean.</strong> Now the discipline part: let Google crawl, rank, and settle.</div>
+      </div>
+      <div class="build-card">
+        <h4>Crawl &amp; ranking feed</h4>
+        <div class="feed" id="launchFeed">
+          <div class="feed-line hint-line"><span class="ft">--:--</span>Complete the checklist to get indexed…</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="scenario-panel">
+      <div class="scenario-title">⚖️ Choice Point · The Day-3 panic</div>
+      <div class="scenario-q">Three days in: indexed, but ranking #38 with <strong>almost no clicks</strong>. Your stomach drops. What do you do?</div>
+      <div class="scenario-options">
+        <button class="scenario-btn" onclick="panicQ(0)">Delete the page. It clearly failed — cut your losses.</button>
+        <button class="scenario-btn" onclick="panicQ(1)">Rewrite the whole page and re-request indexing every single day.</button>
+        <button class="scenario-btn" onclick="panicQ(2)">Do nothing yet. SEO takes weeks to months — check Search Console again after a few weeks, as planned.</button>
+      </div>
+      <div class="scenario-feedback" id="panicFb"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ DAY 7: METRICS ═══════════ -->
+<section class="section alt" id="s6">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-num"><div class="num">6</div> Chapter Four · Measurement</div>
+      <h2 class="section-title">Read Search Console — Refresh, Watch, or Scale</h2>
+      <p class="section-sub">Six weeks later. Feelings are worthless; four numbers matter — impressions, clicks, CTR, and average position. A page ranking on <strong>page 1 (position ≤ 10)</strong> is winning attention; deep on page 3+ is barely seen. Judge each page below.</p>
+    </div>
+
+    <div class="story-beat">
+      <span class="sb-tag">📖 The story so far</span>
+      Six weeks of data. Some pages climbed, some stalled — which is exactly what was supposed to happen. Pros double down on what's working and refresh what's close. Time to act like one: decide <strong>Refresh, Watch, or Scale</strong> for each page below.
+    </div>
+
+    <div class="eval-dashboard">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:.6rem">
+        <div>
+          <div style="font-family:'DM Serif Display',serif;font-size:1.15rem;color:var(--navy)">Roastwell · 6-Week Search Console Report</div>
+          <div style="font-size:.78rem;color:var(--text-muted)">3 pages live · page-1 threshold = position ≤ 10</div>
+        </div>
+      </div>
+      <div class="eval-metrics">
+        <div class="metric-card"><div class="metric-value">4,120</div><div class="metric-label">Total impressions</div></div>
+        <div class="metric-card"><div class="metric-value">168</div><div class="metric-label">Total clicks</div></div>
+        <div class="metric-card"><div class="metric-value">4.1%</div><div class="metric-label">Blended CTR</div></div>
+        <div class="metric-card highlight"><div class="metric-value">14.2</div><div class="metric-label">Avg position</div></div>
+      </div>
+
+      <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted);margin:1rem 0 .6rem">Judge each page (page-1 threshold = position ≤ 10)</div>
+
+      <div class="adset" id="asA">
+        <div class="adset-name">Page A · "how to use a moka pot"<span>The pillar guide</span></div>
+        <div class="adset-nums"><span>Impr.<b>2,600</b></span><span>CTR<b>5.2%</b></span><span>Clicks<b>135</b></span><span>Position<b>6.1</b></span></div>
+        <div class="adset-actions">
+          <button class="adset-btn" onclick="judge('A','kill',this)">Refresh</button>
+          <button class="adset-btn" onclick="judge('A','watch',this)">Watch</button>
+          <button class="adset-btn" onclick="judge('A','scale',this)">Scale</button>
+        </div>
+        <div class="adset-feedback" id="fbA"></div>
+      </div>
+
+      <div class="adset" id="asB">
+        <div class="adset-name">Page B · "coffee stuff" landing page<span>The vague, no-intent page</span></div>
+        <div class="adset-nums"><span>Impr.<b>90</b></span><span>CTR<b>0.4%</b></span><span>Clicks<b>0</b></span><span>Position<b>41</b></span></div>
+        <div class="adset-actions">
+          <button class="adset-btn" onclick="judge('B','kill',this)">Refresh</button>
+          <button class="adset-btn" onclick="judge('B','watch',this)">Watch</button>
+          <button class="adset-btn" onclick="judge('B','scale',this)">Scale</button>
+        </div>
+        <div class="adset-feedback" id="fbB"></div>
+      </div>
+
+      <div class="adset" id="asC">
+        <div class="adset-name">Page C · "moka pot vs French press"<span>Cluster post — indexed late</span></div>
+        <div class="adset-nums"><span>Impr.<b>1,430</b></span><span>CTR<b>2.3%</b></span><span>Clicks<b>33</b></span><span>Position<b>12.4</b></span></div>
+        <div class="adset-actions">
+          <button class="adset-btn" onclick="judge('C','kill',this)">Refresh</button>
+          <button class="adset-btn" onclick="judge('C','watch',this)">Watch</button>
+          <button class="adset-btn" onclick="judge('C','scale',this)">Scale</button>
+        </div>
+        <div class="adset-feedback" id="fbC"></div>
+      </div>
+
+      <div class="week-verdict" id="weekVerdict">
+        <h4>📜 The 6-Week Verdict: <em>Roastwell is on page one.</em></h4>
+        <div class="wv-grid">
+          <div class="wv-tile"><div class="v">4,120</div><div class="l">Impressions · 6 weeks</div></div>
+          <div class="wv-tile"><div class="v">168</div><div class="l">Clicks earned</div></div>
+          <div class="wv-tile"><div class="v">Pos 6.1</div><div class="l">Pillar page ranking</div></div>
+          <div class="wv-tile"><div class="v">+15×</div><div class="l">Traffic vs the old blog</div></div>
+        </div>
+        <p>Six weeks in, Roastwell went from invisible to <strong>ranking #6 for its target keyword</strong> — a genuine first-page win for a brand-new site. The plan for next month writes itself: <strong>scale</strong> the moka-pot cluster with more supporting posts, <strong>watch</strong> the "vs French press" page that's knocking on page one, and <strong>refresh</strong> the thin "coffee stuff" page with real intent — or delete it. Remember: SEO is a long game, wins compound over months, and nothing is guaranteed. Most beginners quit at the Day-3 panic. You didn't. 🎉</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FOOTER RECAP ─── -->
+<div class="footer-cta">
+  <h2>🎉 Six weeks ago, nobody could find <em>Roastwell</em>.</h2>
+  <p>Now you've run the entire AI SEO loop once — for real. Here's what the story secretly taught you: the four lessons of Week 1.</p>
+  <div class="recap-grid">
+    <div class="recap-card">
+      <div class="rn">Lesson 1</div>
+      <h4>SEO in the AI Era</h4>
+      <p>How search actually works: crawl, index, rank. Pick winnable targets and match intent — AI speeds the strategy, it doesn't fake authority. Chapter 1.</p>
+    </div>
+    <div class="recap-card">
+      <div class="rn">Lesson 2</div>
+      <h4>AI Keyword &amp; Topic Research</h4>
+      <p>Seed → cluster → classify intent → validate volume/difficulty in Ahrefs, Semrush &amp; Google Trends. AI suggests, the data decides. Chapter 2.</p>
+    </div>
+    <div class="recap-card">
+      <div class="rn">Lesson 3</div>
+      <h4>AI On-Page &amp; Content</h4>
+      <p>AI drafts; you add real experience (E-E-A-T), fix the slop, and nail title, meta, headings &amp; internal links. Chapter 3.</p>
+    </div>
+    <div class="recap-card">
+      <div class="rn">Lesson 4</div>
+      <h4>Technical SEO &amp; Measurement</h4>
+      <p>Crawlability, speed, schema, a couple of ethical links — then read Search Console (impressions, clicks, CTR, position) and refresh or scale. Chapter 4.</p>
+    </div>
+  </div>
+  <button class="btn-action" style="font-size:.9rem;padding:.8rem 1.8rem" onclick="document.getElementById('s1').scrollIntoView({behavior:'smooth'})">↻ Replay the 4 chapters</button>
+  <div class="footer-note">Roastwell is a teaching scenario. Real SEO results vary widely, take months, and are never guaranteed — the goal of week one is a measured, honest, white-hat process that compounds over time. No tricks, no bought links, no AI slop.</div>
+</div>
+
+<!-- ─── COMPLETION BAR ─── -->
+<div class="completion-bar">
+  <div class="completion-info"><span style="font-size:1.1rem">☕</span><span>Roastwell Progress</span></div>
+  <div class="completion-track"><div class="completion-fill" id="completionFill" style="width:0%"></div></div>
+  <div class="completion-percent" id="completionPct">0%</div>
+</div>
+
+<script>
+/* ───────── PROGRESS TRACKING ───────── */
+const visited = new Set();
+function markVisited(id){
+  visited.add(id);
+  const pct = Math.round((visited.size / 6) * 100);
+  document.getElementById('completionFill').style.width = pct + '%';
+  document.getElementById('completionPct').textContent = pct + '%';
+  document.getElementById('headerProgressText').textContent = `${visited.size} of 6 chapters explored`;
+}
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.target).scrollIntoView({behavior:'smooth', block:'start'});
+    markVisited(btn.dataset.target);
+  });
+});
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting && e.intersectionRatio > 0.3) {
+      markVisited(e.target.id);
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.target === e.target.id));
+    }
+  });
+}, {threshold:[0.3]});
+document.querySelectorAll('.section').forEach(s => observer.observe(s));
+
+/* ───────── DAY 1: NICHE PICK ───────── */
+const nicheInfo = {
+  home: `<span class="verdict-pill vp-good">Strong choice</span><br><strong>Helpful Coffee Guides — this becomes Roastwell's strategy.</strong> Long-tail informational queries have lower volume each, but they're winnable: low keyword difficulty, clear intent you can satisfy with real expertise, and dozens of them add up. This is exactly how a small site with genuine E-E-A-T climbs — one honest, useful guide at a time. <em>The story continues with this strategy.</em>`,
+  gadget: `<span class="verdict-pill vp-mid">Tempting trap</span><br><strong>Chasing "buy coffee online" — shiny, but brutal.</strong> The biggest head terms are owned by retailers with millions of backlinks and years of authority. A brand-new blog aiming there ranks on page 8 and gets zero clicks. Big keywords come later, once you've earned authority on the small ones. <em>You wisely park it for "someday".</em>`,
+  fashion: `<span class="verdict-pill vp-bad">High-risk for a small site</span><br><strong>Riding viral coffee trends — looks great until the spike dies.</strong> Trend traffic collapses as fast as it arrives, dozens of sites pile onto the same trend the same week, and you're left with stale pages and no compounding value. It also needs constant churn — a lot of work for nothing that lasts. <em>You pass, and your future self thanks you.</em>`
+};
+function pickNiche(k){
+  document.querySelectorAll('#s1 .pick-card').forEach(c => c.classList.toggle('active', c.dataset.niche === k));
+  const d = document.getElementById('nicheDetail');
+  d.innerHTML = nicheInfo[k];
+  d.classList.add('show');
+}
+
+/* prompt showdown */
+const promptResults = [
+  {ok:false, fb:'✗ Too vague. The AI replies with a generic checklist — "do keyword research, write good content, build links…" — the same advice it gives everyone. Vague prompt in, vague answer out. Try the detailed one.',
+   chat:`<div class="chat-msg user"><span class="who">You</span>How do I do SEO?</div><div class="chat-msg ai"><span class="who">Claude</span>Sure! SEO generally involves: keyword research, on-page optimization, quality content, technical fixes, and backlinks… <strong>(…the same generic 5-step list every other beginner also just received.)</strong></div>`},
+  {ok:false, fb:'✗ No one can guarantee #1 rankings — Google\'s own guidelines warn against anyone who promises it. Prompts demanding "guaranteed tricks" invite black-hat tactics that get sites penalised. Give it your real situation instead.',
+   chat:`<div class="chat-msg user"><span class="who">You</span>Give me the SEO tricks that will guarantee I rank #1 on Google fast.</div><div class="chat-msg ai"><span class="who">Claude</span>I can\'t promise a #1 ranking — nobody honestly can. <strong>(Ranking depends on relevance, authority and competition, and it takes time. Beware anyone selling "guaranteed" shortcuts — they\'re often the tactics that get sites penalised.)</strong> Even the AI is telling you this.</div>`},
+  {ok:true, fb:'✓ Exactly. Role + your real situation + honest constraints + a requested format. This prompt earns a structured, realistic answer — and #3 on its list becomes Roastwell\'s first pillar: <strong>a "how to use a moka pot" guide backed by real roasting experience.</strong>',
+   chat:`<div class="chat-msg user"><span class="who">You</span>Act as an SEO strategist. Roastwell is a brand-new coffee blog with real roasting expertise but almost no backlinks. 5 realistic targets we could rank for in 3–6 months — intent, why a small site can win it, one risk each.</div><div class="chat-msg ai"><span class="who">Claude</span>Great constraints. <strong>1) "coffee to water ratio"</strong> — informational, low KD, risk: many guides… <strong>3) "how to use a moka pot"</strong> — clear how-to intent, KD ~18, small sites rank with genuine experience &amp; photos; risk: needs real expertise, not slop. <strong>← This one fits every criterion you set.</strong></div>`}
+];
+let promptAnswered = false;
+function pickPrompt(i){
+  const r = promptResults[i];
+  const btns = document.querySelectorAll('#s1 .scenario-panel:first-of-type .scenario-btn');
+  if (!promptAnswered){
+    btns.forEach((b,j) => { if (j===2) b.classList.add('correct'); else if (j===i && !r.ok) b.classList.add('wrong'); });
+    if (r.ok) promptAnswered = true;
+  }
+  const fb = document.getElementById('promptFb');
+  fb.className = 'scenario-feedback show ' + (r.ok ? 'success' : 'fail');
+  fb.innerHTML = r.fb;
+  document.getElementById('promptChat').innerHTML = r.chat;
+}
+
+/* niche quiz */
+const nicheQs = [
+  {q:"A search query is 'evergreen' when…", opts:["It's spiking on social media this month","People search it steadily, year after year (how to brew, best beans, ratios)","It only contains eco-friendly keywords"], correct:1, explain:"Evergreen = steady, repeating search demand. Trend queries can bring fast traffic, but it collapses; evergreen guides compound for years."},
+  {q:"Why can a tiny site realistically rank for 'how to use a moka pot' but not 'buy coffee online'?", opts:["Long-tail queries don't matter","The long-tail term has clearer intent and far lower keyword difficulty, while the head term is owned by high-authority retailers","Google hides big keywords from small sites"], correct:1, explain:"Head terms need enormous authority and backlinks. Specific long-tail queries have less competition and clear intent you can fully satisfy — that's where small sites win first."},
+  {q:"The AI suggests a keyword with great numbers that you know nothing about. Best move?", opts:["Trust the AI — numbers are numbers","Reject it — never write what you don't know","Treat it as a lead: check the real SERP, volume/difficulty in Ahrefs, and Google Trends before committing"], correct:2, explain:"AI output is a starting point for verification, never the final word. Checking the live SERP and the tool data is the actual skill."}
+];
+let nqIdx = 0;
+function renderNicheQ(){
+  const s = nicheQs[nqIdx];
+  document.getElementById('nicheQ').textContent = `Round ${nqIdx+1}/3 — ${s.q}`;
+  document.getElementById('nicheOpts').innerHTML = s.opts.map((o,i)=>`<button class="scenario-btn" onclick="answerNicheQ(${i})">${o}</button>`).join('');
+  const fb = document.getElementById('nicheFb');
+  fb.className = 'scenario-feedback'; fb.innerHTML = '';
+  document.getElementById('nicheNext').style.display = 'none';
+}
+function answerNicheQ(i){
+  const s = nicheQs[nqIdx];
+  document.querySelectorAll('#nicheOpts .scenario-btn').forEach((b,j)=>{
+    b.disabled = true;
+    if (j===s.correct) b.classList.add('correct'); else if (j===i) b.classList.add('wrong');
+  });
+  const fb = document.getElementById('nicheFb');
+  fb.className = 'scenario-feedback show ' + (i===s.correct ? 'success' : 'fail');
+  fb.innerHTML = (i===s.correct ? '✓ Spot on! ' : '✗ Not quite. ') + s.explain + (nqIdx===nicheQs.length-1 ? '<br><br>🎉 Chapter 1 complete — strategy locked: <strong>winnable long-tail coffee guides</strong>. Next: find the keywords.' : '');
+  document.getElementById('nicheNext').style.display = nqIdx < nicheQs.length-1 ? 'inline-block' : 'none';
+}
+function nextNicheQ(){ nqIdx++; if (nqIdx < nicheQs.length) renderNicheQ(); }
+renderNicheQ();
+
+/* ───────── DAY 2: PRODUCT CHOICE ───────── */
+const prodInfo = {
+  lamp: `<span class="verdict-pill vp-mid">Risky pick — here's why</span><br><strong>"best coffee beans":</strong> huge volume, but the AI difficulty check shows KD <em>78</em> — the first page is wall-to-wall giant retailers and established review sites with millions of backlinks. A brand-new blog lands on page 6 and earns nothing. <strong>Consequence:</strong> months of effort for near-zero clicks. The moka-pot keyword is the smarter first bet — but respect: you now know why. Click it to continue the story.`,
+  diffuser: `<span class="verdict-pill vp-good">✓ Locked in — "how to use a moka pot"</span><br><strong>The scorecard agrees with you:</strong> healthy 2.4k/mo volume, low KD 18, unmistakable how-to intent, and a rising Google Trends line. Intent mining even handed you the outline (ratio, mistakes, FAQ) and the cluster to link out to (best moka pot, vs French press). <em>Roastwell has its first pillar page. On to the Keyword-Value Machine below — make sure the effort pays off.</em>`,
+  ceramic: `<span class="verdict-pill vp-bad">Trap — no real demand</span><br><strong>"coffee stuff":</strong> "low competition" felt clever, but competition is low <em>because almost nobody searches it, and the intent is a fog</em> — is it gear? recipes? gifts? Google can't tell, so it won't rank you well, and even a top spot brings a trickle. <strong>Consequence:</strong> in this story it draws 90 impressions in six weeks and zero clicks. Sometimes low competition means low opportunity. The moka-pot keyword awaits.`
+};
+function chooseProduct(k, el){
+  document.querySelectorAll('.prod-card').forEach(c => c.classList.remove('chosen'));
+  el.classList.add('chosen');
+  const d = document.getElementById('prodDetail');
+  d.innerHTML = prodInfo[k];
+  d.classList.add('show');
+}
+
+/* margin calculator */
+const fmt = n => '₹' + Math.round(n).toLocaleString('en-IN');
+function calc(){
+  const cost = +document.getElementById('inCost').value;
+  const ship = +document.getElementById('inShip').value;
+  const price = +document.getElementById('inPrice').value;
+  document.getElementById('oCost').textContent = fmt(cost);
+  document.getElementById('oShip').textContent = fmt(ship);
+  document.getElementById('oPrice').textContent = fmt(price);
+  const landed = cost + ship;
+  const profit = price - landed;
+  const margin = price > 0 ? (profit / price) * 100 : 0;
+  const markup = landed > 0 ? price / landed : 0;
+  document.getElementById('vProfit').textContent = fmt(profit);
+  document.getElementById('vMargin').textContent = Math.round(margin) + '%';
+  document.getElementById('vMarkup').textContent = markup.toFixed(1) + '×';
+  document.getElementById('vCPA').textContent = fmt(Math.max(0, profit));
+  const tP = document.getElementById('tProfit'), tM = document.getElementById('tMargin');
+  tP.className = 'calc-tile ' + (profit <= 0 ? 'warn' : profit >= landed * 1.5 ? 'ok' : '');
+  tM.className = 'calc-tile ' + (margin < 50 ? 'warn' : margin >= 65 ? 'ok' : '');
+  const note = document.getElementById('calcNote');
+  if (profit <= 0){
+    note.innerHTML = '🚨 <strong>This page costs more to rank than a conversion is worth.</strong> Target a higher-value query or make the content far cheaper to produce.';
+  } else if (markup < 2.2){
+    note.innerHTML = '⚠️ Value under ~2.2× the cost — <strong>one slow-ranking month wipes out the return.</strong> Earning a ranking visitor realistically costs real time and effort. You have almost no room.';
+  } else if (markup < 3){
+    note.innerHTML = '🟡 Workable, but tight. You can afford about <strong>' + fmt(profit) + ' per conversion in effort</strong> before it stops paying off. A well-targeted page could still make this work.';
+  } else {
+    note.innerHTML = '✅ <strong>Healthy economics!</strong> At this value, your breakeven ratio is <strong>' + (price/profit).toFixed(1) + '</strong> — every ₹1 of effort must return ' + (price/profit).toFixed(1) + ' in value. Comfortable room to invest. (Remember this idea — measurement stars in Chapter 4.)';
+  }
+}
+['inCost','inShip','inPrice'].forEach(id => document.getElementById(id).addEventListener('input', calc));
+calc();
+
+/* ───────── DAY 3–4: STORE ───────── */
+const voices = {
+  calm: {h:'How to Use a Moka Pot (Without the Bitter Aftertaste)', d:'After years of scorched, bitter brews, here\'s the method our roaster actually uses. Start with pre-heated water, a level basket of medium-coarse grounds, and pull it off the heat the moment you hear the gurgle. Below: the exact ratio, three mistakes to avoid, and photos from our own kitchen — not stock images.'},
+  sci: {h:'Moka Pot Method: Grind, Ratio &amp; Extraction, Precisely', d:'A moka pot brews by forcing near-boiling water (≈96°C) up through a puck of medium-coarse grounds via steam pressure of ~1.5 bar. Use a 1:10 coffee-to-water ratio, a level (not tamped) basket, and remove from heat at first gurgle to halt over-extraction. We measured each variable; the numbers are below.'},
+  fun: {h:'Your Moka Pot Isn\'t Broken — You\'re Just Boiling It 😅', d:'Real talk: that bitter, burnt cup isn\'t the pot\'s fault, it\'s the raging flame. Pre-heat the water, keep the heat gentle, and yank it off the stove the second it gurgles like a tiny volcano. Our roaster swears by it. Full step-by-step (with our own photos) below. ☕'}
+};
+function setVoice(v){
+  document.querySelectorAll('.voice-tab').forEach(t => t.classList.toggle('active', t.dataset.voice === v));
+  const h = document.getElementById('storeHeadline'), d = document.getElementById('storeDesc');
+  h.style.opacity = 0; d.style.opacity = 0;
+  setTimeout(()=>{ h.textContent = voices[v].h; d.textContent = voices[v].d; h.style.opacity = 1; d.style.opacity = 1; }, 250);
+}
+function toggleCopy(which){
+  document.getElementById('copyBefore').style.display = which==='before' ? 'block' : 'none';
+  document.getElementById('copyAfter').style.display = which==='after' ? 'block' : 'none';
+}
+
+/* build checklist + feed */
+const buildEvents = [
+  {t:'Wed 10:12', msg:'Title tag set: "How to Use a Moka Pot: Step-by-Step Guide (No Bitterness) | Roastwell" — keyword up front, 58 characters. Meta description written to earn the click.'},
+  {t:'Wed 11:05', msg:'Heading structure mapped: one H1, H2s for each step, H3s for the FAQ. Google now sees a clear, intent-matched outline.'},
+  {t:'Wed 15:40', msg:'Claude drafted the guide in 90 seconds. You rewrote the padded intro and added the roaster\'s "pull it off early" tip — that\'s the job: AI drafts, you direct and add experience.'},
+  {t:'Thu 09:30', msg:'E-E-A-T added: author bio (10 years roasting), an original photo of the actual pot, and a "we tested 4 ratios" note. This is what beats the slop.'},
+  {t:'Thu 12:15', msg:'Internal links added to the ratio post and the "best moka pot" buyer\'s guide — the cluster now points inward and shares authority.'},
+  {t:'Thu 18:02', msg:'Surfer content score 82/100. Published. It reads like a trusted expert wrote it. Because one did.'}
+];
+const buildSteps = new Set();
+function runBuildStep(i){
+  if (buildSteps.has(i)) return;
+  buildSteps.add(i);
+  document.querySelector(`#buildList li[data-step="${i}"]`).classList.add('done');
+  const feed = document.getElementById('buildFeed');
+  if (buildSteps.size === 1) feed.innerHTML = '';
+  const e = buildEvents[i];
+  feed.innerHTML += `<div class="feed-line"><span class="ft">${e.t}</span><span>${e.msg}</span></div>`;
+  feed.scrollTop = feed.scrollHeight;
+  if (buildSteps.size === buildEvents.length) document.getElementById('buildDone').style.display = 'block';
+}
+
+/* headline quiz */
+const headlineFbs = [
+  {ok:false, fb:'✗ Keyword-stuffed and off-topic. It buries the actual query, ignores the searcher\'s intent, and reads like spam — Google may even rewrite it. This title earns neither rankings nor clicks.'},
+  {ok:true, fb:'✓ Yes. The <strong>keyword</strong> ("how to use a moka pot") is up front, it promises a clear benefit (5 steps, no bitterness), the brand sits at the end, and it fits within ~60 characters so Google won\'t truncate it. This is a title that ranks <em>and</em> gets clicked.'},
+  {ok:false, fb:'✗ "In-Depth Exploration of Methodologies" is corporate wallpaper — grammatically perfect, keyword-free, and it never matches what a beginner actually types. This is the kind of vague title <em>undirected</em> AI tends to write.'}
+];
+function headlineQ(i){
+  const r = headlineFbs[i];
+  const btns = document.querySelectorAll('#s3 .scenario-panel .scenario-btn');
+  btns.forEach((b,j)=>{ b.disabled = true; if (headlineFbs[j].ok) b.classList.add('correct'); else if (j===i) b.classList.add('wrong'); });
+  const fb = document.getElementById('headlineFb');
+  fb.className = 'scenario-feedback show ' + (r.ok ? 'success' : 'fail');
+  fb.innerHTML = r.fb + (r.ok ? '' : '<br><br>The winner: <strong>"How to Use a Moka Pot: Step-by-Step Guide (No Bitterness) | Roastwell"</strong>');
+}
+
+/* ───────── DAY 5: ADS ───────── */
+const hookFbs = [
+  {ok:false, fb:'✗ "Best Quality Coffee Tips, Click Here Now!" reads like clickbait spam. It buries the query and over-promises — searchers skip it and Google may rewrite it. A shout is not a compelling snippet.'},
+  {ok:true, fb:'✓ That\'s the one. It leads with the exact query, promises a concrete outcome (5 steps, no bitterness), and reassures the searcher they\'ll get precisely what they came for. High relevance = higher CTR, and CTR is one of the numbers you\'ll watch in Search Console.'},
+  {ok:false, fb:'✗ "In-Depth Exploration of Methodologies" is jargon nobody types. It never matches the searcher\'s words, so it looks irrelevant in the results and gets scrolled past. Match the query, then earn the click.'}
+];
+function hookQ(i){
+  const r = hookFbs[i];
+  const btns = document.querySelectorAll('#s4 .scenario-panel:first-of-type .scenario-btn');
+  btns.forEach((b,j)=>{ b.disabled = true; if (hookFbs[j].ok) b.classList.add('correct'); else if (j===i) b.classList.add('wrong'); });
+  const fb = document.getElementById('hookFb');
+  fb.className = 'scenario-feedback show ' + (r.ok ? 'success' : 'fail');
+  fb.innerHTML = r.fb;
+}
+
+/* ad assembler */
+const adData = {
+  hooks: {
+    pov:{txt:'How to Use a Moka Pot: 5 Steps to Rich Coffee (No Bitterness)', cap:'Our roaster\'s step-by-step method to fix the bitterness in 5 steps. Includes the exact ratio, three mistakes to avoid, and original photos.'},
+    pain:{txt:'Why Is My Moka Pot Coffee So Bitter? (And How to Fix It)', cap:'Burnt, bitter cup? It\'s the heat, not the pot. Here\'s the gentle-flame method our roaster uses — plus the exact ratio and the gurgle trick.'},
+    deal:{txt:'Moka Pot Guide — Best Quality Coffee Tips, Click Here Now!', cap:'The ultimate best guide to coffee brewing tips and moka pot stuff. Click here for the best information now!'}
+  },
+  visuals: {night:{e:'❓', bg:'linear-gradient(135deg,#2A2440,#4A3E68)'}, unbox:{e:'1️⃣', bg:'linear-gradient(135deg,#5A4632,#8A6D4B)'}, studio:{e:'🔗', bg:'linear-gradient(135deg,#7A7E8C,#AEB2C0)'}},
+  ctas: {calm:'…fix the bitterness in 5 steps.', shop:'…the exact ratio our roaster uses.', off:'…click here for the best guide!'}
+};
+function renderAd(){
+  const h = document.getElementById('adHook').value;
+  const v = document.getElementById('adVisual').value;
+  const c = document.getElementById('adCta').value;
+  document.getElementById('adHookText').textContent = adData.hooks[h].txt;
+  document.getElementById('adCaption').textContent = adData.hooks[h].cap;
+  document.getElementById('adEmoji').textContent = adData.visuals[v].e;
+  document.getElementById('adVisualBox').style.background = adData.visuals[v].bg;
+  document.getElementById('adCtaBtn').textContent = adData.ctas[c];
+}
+
+/* budget choice */
+const budgetFbs = [
+  {cls:'fail', fb:'⚠️ <strong>The one-giant-page bet.</strong> A single monster post has no supporting content to link from, so it stands alone with no topical depth. If it doesn\'t rank, you learn nothing and cover no related queries. Breadth of a cluster beats one lonely page.'},
+  {cls:'success', fb:'✓ <strong>The topic-cluster play.</strong> A pillar plus focused supporting posts, interlinked, then given weeks to mature. This builds topical authority, captures the whole intent map, and lets Search Console show you which pages to double down on. This is exactly how the story proceeds — and it\'s why Chapter 4 has a page-one winner. 🎯'},
+  {cls:'fail', fb:'⚠️ <strong>The perfectionist stall.</strong> "One more week of editing" is how content never ships. You cannot edit your way to knowing what ranks — only the live SERP and Search Console tell you that, weeks after publishing. Publish, then measure.'}
+];
+function budgetQ(i){
+  const btns = document.querySelectorAll('#s4 .scenario-panel:last-of-type .scenario-btn');
+  btns.forEach((b,j)=>{ b.disabled = true; if (j===1) b.classList.add('correct'); else if (j===i && i!==1) b.classList.add('wrong'); });
+  const fb = document.getElementById('budgetFb');
+  fb.className = 'scenario-feedback show ' + budgetFbs[i].cls;
+  fb.innerHTML = budgetFbs[i].fb;
+}
+
+/* ───────── DAY 6: LAUNCH ───────── */
+const launchEvents = [
+  {t:'Day 1', msg:'PageSpeed Insights: images compressed, Core Web Vitals green. Page loads in 1.8s — nobody waits for a slow page, and Google notices.'},
+  {t:'Day 1', msg:'XML sitemap submitted in Search Console, indexing requested. Screaming Frog confirms no broken links or noindex traps.'},
+  {t:'Day 2', msg:'Article + FAQ schema added. Now the guide is eligible for rich results — those star-and-question snippets that lift CTR.'},
+  {t:'Day 4', msg:'🔗 Two ethical links earned: a genuine guest post on a coffee blog + a helpful, non-spammy forum answer linking the guide. No bought links, ever.'},
+  {t:'Day 4', msg:'Reminder set: "DO NOT TOUCH THE PAGE FOR 3 WEEKS." Future-you will itch to tweak it daily. Don\'t let them.'},
+  {t:'Day 5', msg:'Indexed! First few impressions appear in Search Console at position ~30. Early and low — completely normal. Rankings take time. Breathe.'}
+];
+const launchSteps = new Set();
+function runLaunchStep(i){
+  if (launchSteps.has(i)) return;
+  launchSteps.add(i);
+  document.querySelector(`#launchList li[data-step="${i}"]`).classList.add('done');
+  const feed = document.getElementById('launchFeed');
+  if (launchSteps.size === 1) feed.innerHTML = '';
+  const e = launchEvents[i];
+  feed.innerHTML += `<div class="feed-line"><span class="ft">${e.t}</span><span>${e.msg}</span></div>`;
+  feed.scrollTop = feed.scrollHeight;
+  if (launchSteps.size === launchEvents.length){
+    document.getElementById('launchDone').style.display = 'block';
+    feed.innerHTML += `<div class="feed-line"><span class="ft">Week 2</span><span>Two weeks in: the moka-pot guide climbs to position ~18, first clicks trickle in. Still moving. Too early to judge — that's a Chapter 4 measurement job.</span></div>`;
+    feed.scrollTop = feed.scrollHeight;
+  }
+}
+
+/* panic choice */
+const panicFbs = [
+  {cls:'fail', fb:'✗ <strong>You just deleted a page that was working.</strong> Ranking #38 on day 3 is completely normal — new pages start deep and climb as Google gathers signals. In this story, deleting now means never discovering that this page reaches position #6 within six weeks. The most expensive emotion in SEO is panic.'},
+  {cls:'fail', fb:'✗ <strong>Now you\'ve made it worse.</strong> Rewriting the whole page and re-requesting indexing every day resets Google\'s evaluation and confuses the signals — the page never gets a stable run to prove itself. Constant thrashing means the experiment never actually happens.'},
+  {cls:'success', fb:'✓ <strong>Iron discipline.</strong> You set the "don\'t touch for 3 weeks" reminder precisely because you knew this moment would come. Position #38 on day 3 is just the starting line — Google hasn\'t finished ranking you yet. Weeks later, the same Search Console tells a completely different story. This patience is the single hardest — and most valuable — skill in the whole week.'}
+];
+function panicQ(i){
+  const btns = document.querySelectorAll('#s5 .scenario-panel .scenario-btn');
+  btns.forEach((b,j)=>{ b.disabled = true; if (j===2) b.classList.add('correct'); else if (j===i && i!==2) b.classList.add('wrong'); });
+  const fb = document.getElementById('panicFb');
+  fb.className = 'scenario-feedback show ' + panicFbs[i].cls;
+  fb.innerHTML = panicFbs[i].fb;
+}
+
+/* ───────── DAY 7: JUDGE ───────── */
+const judgeKey = {
+  A: {right:'scale', fb:{
+    scale:'✓ Correct — <strong>SCALE.</strong> Position 6.1 (page one), a strong 5.2% CTR, and 135 real clicks. This pillar works — now build out its cluster with more supporting posts and internal links to push it toward the top three.',
+    kill:'✗ Refresh your best page? It\'s already ranking #6 with the highest CTR on the site — it doesn\'t need fixing, it needs feeding. This is the page the whole strategy was built to produce. Verdict: <strong>SCALE</strong>.',
+    watch:'△ Cautious, but too cautious. A page one result with a healthy CTR is your proven winner — just watching it wastes momentum. Winners get built out. Verdict: <strong>SCALE</strong>.'}},
+  B: {right:'kill', fb:{
+    kill:'✓ Correct — <strong>REFRESH (or retire).</strong> Position 41, 90 impressions, zero clicks: the "coffee stuff" page has no intent and no demand. Rewrite it around a real query with clear intent — or delete it and redirect. Thin, aimless pages only drag the site down.',
+    scale:'✗ You can\'t scale a page that no one searches for and no one clicks. Position 41 with zero clicks means the topic itself was the problem. Verdict: <strong>REFRESH</strong> it around real intent, or retire it.',
+    watch:'△ Watching a page stuck at position 41 with zero clicks just lets dead weight sit on your site. It needs a real fix, not patience. Verdict: <strong>REFRESH</strong> — put the attention on A and C.'}},
+  C: {right:'watch', fb:{
+    watch:'✓ Correct — <strong>WATCH.</strong> Position 12.4 is just off page one, but it was indexed late and is still climbing with decent impressions. Give it a few more weeks to settle, add an internal link or two, then reassess. It\'s knocking on the door.',
+    kill:'△ Understandable, but premature — it indexed late and is already at position 12, right on the edge of page one and still trending up. Refreshing now interrupts its climb. Verdict: <strong>WATCH</strong> a few more weeks.',
+    scale:'✗ Pouring effort into a page that hasn\'t reached page one yet is betting ahead of the data. Let it prove it can crack the top 10 first. Verdict: <strong>WATCH</strong>.'}}
+};
+const judged = {};
+function judge(set, verdict, btn){
+  const k = judgeKey[set];
+  judged[set] = true;
+  const row = document.getElementById('as'+set);
+  row.className = 'adset decided-' + k.right;
+  row.querySelectorAll('.adset-btn').forEach(b => b.disabled = true);
+  const fb = document.getElementById('fb'+set);
+  fb.className = 'adset-feedback show ' + (verdict===k.right ? 'good' : 'warn');
+  fb.innerHTML = k.fb[verdict];
+  if (judged.A && judged.B && judged.C){
+    setTimeout(()=>{ document.getElementById('weekVerdict').classList.add('show'); document.getElementById('weekVerdict').scrollIntoView({behavior:'smooth', block:'center'}); }, 600);
+  }
+}
+</script>
+</body>
+</html>
